@@ -26,7 +26,6 @@ public final class R {
         public static final int ic_login_page=0x7f020001;
     }
     public static final class id {
-        public static final int action_settings=0x7f080009;
         public static final int btn_login=0x7f080003;
         public static final int btn_login_facebook=0x7f080005;
         public static final int forget_password=0x7f080007;
@@ -39,11 +38,9 @@ public final class R {
     }
     public static final class layout {
         public static final int activity_login=0x7f030000;
-        public static final int activity_main=0x7f030001;
     }
     public static final class menu {
         public static final int login_option=0x7f070000;
-        public static final int main=0x7f070001;
     }
     public static final class string {
         public static final int action_settings=0x7f050001;
