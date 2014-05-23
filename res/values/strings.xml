@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">it3197-casestudy</string>
+    <string name="app_name">Community Outreach</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="username_or_email"> Username or Email </string>
+    <string name="password"> Password </string>
+    <string name="login">Login</string>
+    <string name="or_login_with">- Or Login with - </string>
+    <string name="login_with_facebook">Login with Facebook</string>
+    <string name="forget_password">Forget Password</string>
+    <string name="sign_up">Sign Up</string>
 
 </resources>
