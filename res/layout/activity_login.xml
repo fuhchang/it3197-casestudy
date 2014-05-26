@@ -1,12 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="top"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     tools:context=".LoginActivity" >
 
     <ImageView
@@ -27,6 +22,7 @@
         android:layout_marginTop="20dp"
         android:ems="10"
         android:inputType="text" 
+        android:fontFamily="Roboto Thin"
         android:hint="@string/username_or_email">
 
         <requestFocus android:layout_width="wrap_content" />
@@ -42,6 +38,7 @@
         android:layout_marginTop="20dp"
         android:ems="10"
         android:inputType="textPassword"
+        android:fontFamily="Roboto Thin"
         android:hint="@string/password" />
 
     <Button
@@ -52,6 +49,7 @@
         android:layout_alignRight="@+id/tv_password"
         android:layout_below="@+id/tv_password"
         android:layout_marginTop="20dp"
+        android:fontFamily="Roboto Thin"
         android:text="@string/login" />
 
     <TextView
@@ -61,6 +59,7 @@
         android:layout_below="@+id/btn_login"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
+        android:fontFamily="Roboto Thin"
         android:text="@string/or_login_with" />
 
     <Button
@@ -71,6 +70,7 @@
         android:layout_alignRight="@+id/btn_login"
         android:layout_below="@+id/tv_login"
         android:layout_marginTop="20dp"
+        android:fontFamily="Roboto Thin"
         android:text="@string/login_with_facebook" />
 
     <TextView
@@ -84,4 +84,44 @@
         android:text="@string/app_name"
         android:textSize="@dimen/normal_font_size" />
 
+	    <LinearLayout
+	        android:id="@+id/layout_inner_layout"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentBottom="true"
+	        android:layout_centerHorizontal="true"
+	        android:background="@color/Red"
+	        android:orientation="horizontal" >
+
+	        <Button
+	            android:id="@+id/btn_forget_password"
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_gravity="left"
+	            android:layout_weight="1.0"
+	            android:textColor="@color/White"
+	            android:background="@color/Red"
+	            android:fontFamily="Roboto Thin"
+	            android:text="@string/forget_password" />
+	        
+		    <TextView
+		        android:id="@+id/tv_divider"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:fontFamily="Roboto Thin"
+		        android:text="@string/divider"
+		        android:textColor="@color/White"
+		        android:textSize="@dimen/normal_font_size" />
+		    
+	        <Button
+	            android:id="@+id/btn_sign_up"
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1.0"
+	            android:textColor="@color/White"
+	            android:background="@color/Red"
+	            android:fontFamily="Roboto Thin"
+	            android:text="@string/sign_up" />
+	    </LinearLayout>
+	    
 </RelativeLayout>
