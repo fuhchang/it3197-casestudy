@@ -12,5 +12,6 @@
     <string name="forget_password">Forget Password</string>
     <string name="divider"> | </string>
     <string name="sign_up">Sign Up</string>
+    <string name="title_activity_main_page">Main Page</string>
 
 </resources>

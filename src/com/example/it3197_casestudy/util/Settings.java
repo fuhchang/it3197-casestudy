@@ -1,4 +1,4 @@
-package com.example.it3197_casestudy;
+package com.example.it3197_casestudy.util;
 
 /**
  * This interface is to make coding easier
