@@ -4,14 +4,6 @@
     android:layout_height="fill_parent"
     tools:context=".LoginActivity" >
 
-    <ImageView
-        android:id="@+id/iv_login_pic"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:src="@drawable/ic_login_page"
-        tools:ignore="ContentDescription" />
-
     <EditText
         android:id="@+id/tv_user_name"
         android:layout_width="wrap_content"
@@ -65,17 +57,6 @@
         android:fontFamily="Roboto Thin"
         android:text="@string/or_login_with" />
 
-    <Button
-        android:id="@+id/btn_login_facebook"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/btn_login"
-        android:layout_alignRight="@+id/btn_login"
-        android:layout_below="@+id/tv_login"
-        android:layout_marginTop="20dp"
-        android:fontFamily="Roboto Thin"
-        android:text="@string/login_with_facebook" />
-
     <TextView
         android:id="@+id/tv_app_name"
         android:layout_width="wrap_content"
@@ -106,16 +87,6 @@
 	            android:background="@color/Red"
 	            android:fontFamily="Roboto Thin"
 	            android:text="@string/forget_password" />
-	        
-		    <TextView
-		        android:id="@+id/tv_divider"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_gravity="center"
-		        android:fontFamily="Roboto Thin"
-		        android:text="@string/divider"
-		        android:textColor="@color/White"
-		        android:textSize="@dimen/normal_font_size" />
 		    
 	        <Button
 	            android:id="@+id/btn_sign_up"
@@ -127,5 +98,26 @@
 	            android:fontFamily="Roboto Thin"
 	            android:text="@string/sign_up" />
 	    </LinearLayout>
+
+	    <ImageView
+	        android:id="@+id/iv_login_pic"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_alignParentTop="true"
+	        android:layout_marginTop="35dp"
+	        android:src="@drawable/ic_login_page"
+	        tools:ignore="ContentDescription" />
+
+	    <Button
+	        android:id="@+id/btn_login_facebook"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_alignParentRight="true"
+	        android:layout_below="@+id/tv_login"
+	        android:layout_marginTop="14dp"
+	        android:fontFamily="Roboto Thin"
+	        android:text="@string/login_with_facebook" />
 	    
 </RelativeLayout>

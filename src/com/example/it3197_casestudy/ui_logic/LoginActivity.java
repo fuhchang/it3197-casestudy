@@ -17,6 +17,11 @@ import android.view.View;
  */
 public class LoginActivity extends Activity {
 	private ActionBar loginActionBar;
+	
+	public LoginActivity(){
+		
+	}
+	
 	/**
 	 * Login activity is created
 	 */
@@ -51,6 +56,7 @@ public class LoginActivity extends Activity {
 			case R.id.btn_login:
 				Intent intent = new Intent(LoginActivity.this, MainPageActivity.class);
 				startActivity(intent);
+				this.finish();
 				break;
 			default:
 				LoginActivity.this.finish();

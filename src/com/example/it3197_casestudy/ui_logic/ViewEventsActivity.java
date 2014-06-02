@@ -1,28 +1,18 @@
 package com.example.it3197_casestudy.ui_logic;
 
-import java.util.Locale;
-
 import com.example.it3197_casestudy.R;
-import com.example.it3197_casestudy.util.MainPageAdapter;
+import com.example.it3197_casestudy.util.ViewEventsAdapter;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
-public class MainPageActivity extends FragmentActivity implements ActionBar.TabListener {
+public class ViewEventsActivity extends FragmentActivity implements ActionBar.TabListener {
 
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -32,56 +22,71 @@ public class MainPageActivity extends FragmentActivity implements ActionBar.TabL
 	 * intensive, it may be best to switch to a
 	 * {@link android.support.v4.app.FragmentStatePagerAdapter}.
 	 */
-	MainPageAdapter mMainPagePagerAdapter;
+	ViewEventsAdapter mViewEventsPagerAdapter;
 
 	/**
 	 * The {@link ViewPager} that will host the section contents.
 	 */
 	ViewPager mViewPager;
 
-	public MainPageActivity(){
-		
-	}
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main_page);
+		setContentView(R.layout.activity_view_events);
 
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		// Show the Up button in the action bar.
+		actionBar.setDisplayHomeAsUpEnabled(true);
 
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the app.
-		mMainPagePagerAdapter = new MainPageAdapter(
-				getSupportFragmentManager());
+		mViewEventsPagerAdapter = new ViewEventsAdapter(getSupportFragmentManager());
 
 		// Set up the ViewPager with the sections adapter.
-		mViewPager = (ViewPager) findViewById(R.id.main_page_pager);
-		mViewPager.setAdapter(mMainPagePagerAdapter);
+		mViewPager = (ViewPager) findViewById(R.id.pager);
+		mViewPager.setAdapter(mViewEventsPagerAdapter);
 
 		// When swiping between different sections, select the corresponding
 		// tab. We can also use ActionBar.Tab#select() to do this if we have
 		// a reference to the Tab.
-		mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-			@Override
-			public void onPageSelected(int position) {
-				actionBar.setSelectedNavigationItem(position);
-			}
-		});
+		mViewPager
+				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+					@Override
+					public void onPageSelected(int position) {
+						actionBar.setSelectedNavigationItem(position);
+					}
+				});
+		actionBar.addTab(actionBar.newTab().setText("Details").setTabListener(this));
+		actionBar.addTab(actionBar.newTab().setText("Timeline").setTabListener(this));
+		actionBar.addTab(actionBar.newTab().setText("Gallery").setTabListener(this));
+		actionBar.addTab(actionBar.newTab().setText("Location").setTabListener(this));
 		
-		//Create new fixed tabs
-		actionBar.addTab(actionBar.newTab().setText("Home").setTabListener(this));
-		actionBar.addTab(actionBar.newTab().setText("Donation").setTabListener(this));
-		actionBar.addTab(actionBar.newTab().setText("Profile").setTabListener(this));
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main_page, menu);
+		getMenuInflater().inflate(R.menu.view_events, menu);
 		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			// This ID represents the Home or Up button. In the case of this
+			// activity, the Up button is shown. Use NavUtils to allow users
+			// to navigate up one level in the application structure. For
+			// more details, see the Navigation pattern on Android Design:
+			//
+			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
+			//
+			NavUtils.navigateUpFromSameTask(this);
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override

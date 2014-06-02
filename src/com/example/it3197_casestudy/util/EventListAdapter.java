@@ -10,6 +10,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+/**
+ * This is the event list adapter to bind it with the event list at the main page
+ * @author Lee Zhuo Xun
+ *
+ */
 public class EventListAdapter extends ArrayAdapter<String>{
 	private final Activity context;
 	private final String[] eventNameList;
@@ -23,7 +28,6 @@ public class EventListAdapter extends ArrayAdapter<String>{
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
- 
 		View rowView = inflater.inflate(R.layout.list_events, null, true);
 		TextView textView = (TextView) rowView.findViewById(R.id.tv_event_name);
 		TextView textView2 = (TextView) rowView.findViewById(R.id.tv_event_date_time);

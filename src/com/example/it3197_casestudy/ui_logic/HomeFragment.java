@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.util.EventListAdapter;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
@@ -24,10 +25,6 @@ import android.widget.Toast;
  * displays dummy text.
  */
 public class HomeFragment extends ListFragment implements OnItemClickListener  {
-
-	public HomeFragment() {
-	}
-
 	String[] myFrriends = new String[] {  
 		       "Sunil Gupta",
 		          "Abhishek Tripathi",
@@ -40,12 +37,17 @@ public class HomeFragment extends ListFragment implements OnItemClickListener  {
 		          "Shishir Verma",
 		          "Ravi BBD"
 		      };
-		         
+	
+
+	public HomeFragment() {
+	}
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 		  //ArrayAdapter<String> adapter= new ArrayAdapter<String>(inflater.getContext(), android.R.layout.simple_list_item_1, myFrriends);
 		  EventListAdapter adapter = new EventListAdapter(HomeFragment.this.getActivity(),myFrriends);
 		  setListAdapter(adapter);
+		  
 		  return super.onCreateView(inflater, container, savedInstanceState);	
 	}
 		   // this code for item click of the list 
@@ -58,6 +60,8 @@ public class HomeFragment extends ListFragment implements OnItemClickListener  {
 		  
 	@Override
 	public void onItemClick(AdapterView adapter, View view, int position, long id) {
-		Toast.makeText(getActivity().getBaseContext(), "Item clicked: " + myFrriends[position], Toast.LENGTH_LONG).show();
+		//Toast.makeText(getActivity().getBaseContext(), "Item clicked: " + myFrriends[position], Toast.LENGTH_LONG).show();
+		Intent intent = new Intent(getActivity(), ViewEventsActivity.class);
+		getActivity().startActivity(intent);
 	}
 }

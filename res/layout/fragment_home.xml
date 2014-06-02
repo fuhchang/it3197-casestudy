@@ -1,16 +1,32 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/home_fragment"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical"
+    android:layout_height="wrap_content"
     tools:context=".ui_logic.MainPageActivity" >
+        
+    <TextView 
+        android:id="@+id/tv_upcoming_events"
+    	android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:layout_marginTop="100dp"
+        android:text="@string/upcoming_events"/>
         
     <ListView
         android:id="@+id/lv_upcoming_events"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/btn_create_event" >
+
     </ListView>
 
+    <Button
+        android:id="@+id/btn_create_event"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="100dp"
+        android:text="@string/create_event" />
 
-</LinearLayout>
+</RelativeLayout>
