@@ -3,6 +3,7 @@
 
     <string name="app_name">Community Outreach</string>
     <string name="action_settings">Settings</string>
+    <string name="create_event">Create Event</string>
     <string name="hello_world">Hello world!</string>
     <string name="username_or_email"> Username or Email </string>
     <string name="password"> Password </string>
@@ -13,6 +14,23 @@
     <string name="sign_up">Sign Up</string>
     <string name="title_activity_main_page">Main Page</string>
     <string name="upcoming_events">Upcoming Events</string>
-	<string name="create_event">Create Event</string>
-	<string name="title_view_events">View Events</string>
+    <string name="title_view_events">View Events</string>
+    <string name="title_activity_create_event">Create Event</string>
+    
+    <string name="create_event_instructions">Please fill in the event details</string>
+    <string name="create_event_instructions_1">Select the type of event</string>
+    <string name="name">Name: </string>
+    <string name="hint_name">Event name </string>
+    <string name="category">Category: </string>
+    <string name="description">Description: </string>
+    <string name="number_of_participants">No. of participants allowed: </string>
+    <string name="number_of_volunteers">No. of volunteers allowed: </string>
+    <string name="date">Date: </string>
+    <string name="time">Time: </string>
+    <string name="to">to</string>
+    <string name="location">Location: </string>
+    <string name="suggest_location">Suggest Location</string>
+    <string name="cancel">Cancel</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
 </resources>
