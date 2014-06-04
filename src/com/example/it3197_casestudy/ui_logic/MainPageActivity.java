@@ -3,11 +3,17 @@ package com.example.it3197_casestudy.ui_logic;
 import java.util.Locale;
 
 import com.example.it3197_casestudy.R;
+import com.example.it3197_casestudy.model.Event;
 import com.example.it3197_casestudy.util.MainPageAdapter;
+import com.example.it3197_casestudy.util.SelectTypeOfEventDialog;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -39,7 +45,7 @@ public class MainPageActivity extends FragmentActivity implements ActionBar.TabL
 	 * The {@link ViewPager} that will host the section contents.
 	 */
 	ViewPager mViewPager;
-
+	
 	public MainPageActivity(){
 		
 	}
@@ -48,7 +54,7 @@ public class MainPageActivity extends FragmentActivity implements ActionBar.TabL
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main_page);
-
+		//Remember event type at the create event step 1 activity
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -91,9 +97,9 @@ public class MainPageActivity extends FragmentActivity implements ActionBar.TabL
 		System.out.println(item.getItemId());
 		switch (item.getItemId()) {
     		case R.id.create_event:
-    			Intent intent = new Intent(this, CreateEventStep1Activity.class);
-    			startActivity(intent);
-    			finish();
+    			
+    			SelectTypeOfEventDialog dialog = new SelectTypeOfEventDialog(MainPageActivity.this);
+    			dialog.show(getSupportFragmentManager(), "Select type of event");
     			break;
     		default:
     			break;

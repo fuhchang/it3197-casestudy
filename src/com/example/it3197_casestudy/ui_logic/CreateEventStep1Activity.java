@@ -5,21 +5,25 @@ import com.example.it3197_casestudy.R.layout;
 import com.example.it3197_casestudy.R.menu;
 
 import android.os.Bundle;
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v4.app.NavUtils;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Spinner;
 
 public class CreateEventStep1Activity extends Activity {
+	EditText etEventName,etDescription;
+	Spinner spinnerCategory;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_event_step_1);
+		etEventName = (EditText) findViewById(R.id.et_name);
+		spinnerCategory = (Spinner) findViewById(R.id.spinner_category);
+		etDescription = (EditText) findViewById(R.id.et_description);
 	}
 
 	@Override
@@ -28,7 +32,6 @@ public class CreateEventStep1Activity extends Activity {
 		getMenuInflater().inflate(R.menu.main_page, menu);
 		return false;
 	}
-	
 	
 	public void onClick(View view){
 		Intent intent;
@@ -40,9 +43,7 @@ public class CreateEventStep1Activity extends Activity {
 				this.finish();
 				break;
 			case R.id.btn_cancel:
-				intent = new Intent(CreateEventStep1Activity.this, MainPageActivity.class);
-				startActivity(intent);
-				this.finish();
+				onBackPressed();
 				break;
 			default:
 				CreateEventStep1Activity.this.finish();
@@ -60,4 +61,5 @@ public class CreateEventStep1Activity extends Activity {
 		startActivity(intent);
 		this.finish();
 	}
+
 }
