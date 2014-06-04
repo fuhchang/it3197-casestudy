@@ -1,0 +1,87 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" 
+    android:layout_height="match_parent">
+
+	<RelativeLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:gravity="bottom"
+	    tools:context=".CreateEventStep1Activity" >
+	
+	    <TextView
+	        android:id="@+id/tv_create_event_instructions"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/create_event_instructions" />
+
+	    <LinearLayout
+	        android:id="@+id/linear_layout"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_below="@+id/tv_create_event_instructions"
+	        android:orientation="vertical" >
+
+	        <TextView
+	            android:id="@+id/tv_number_of_participants"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="10dp"
+	            android:text="@string/number_of_participants" />
+	        	        
+	        <EditText
+	            android:id="@+id/et_number_of_participants"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1.0"
+	            android:ems="10"
+	            android:inputType="number" />
+	        
+			<TextView
+	            android:id="@+id/tv_number_of_volunteers"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="10dp"
+	            android:text="@string/number_of_volunteers" />
+	        
+	        <EditText
+	            android:id="@+id/et_number_of_volunteers"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1.0"
+	            android:ems="10"
+	            android:inputType="number" />
+	        
+	    </LinearLayout>	    
+	    <LinearLayout
+	        android:id="@+id/layout_inner_layout"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentBottom="true"
+	        android:layout_centerHorizontal="true"
+	        android:layout_below="@+id/linear_layout"
+	        android:orientation="horizontal" >
+
+	        
+		    <Button
+		        android:id="@+id/btn_previous"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_marginTop="15dp"
+		        android:layout_weight="1.0"
+		        android:onClick="onClick"
+		        android:text="@string/previous" />
+	        	    	        
+			<Button
+			    android:id="@+id/btn_create_event"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_weight="0.5"
+			    android:layout_marginTop="15dp"
+			    android:onClick="onClick"
+			    android:text="@string/create_event" />
+			
+		</LinearLayout>
+	</RelativeLayout>
+</ScrollView>

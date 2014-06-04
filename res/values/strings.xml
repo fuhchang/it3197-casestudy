@@ -19,6 +19,8 @@
     
     <string name="create_event_instructions">Please fill in the event details</string>
     <string name="create_event_instructions_1">Select the type of event</string>
+    <string name="big_type_events">Big-Type event</string>
+    <string name="small_type_events">Small-Type event</string>
     <string name="name">Name: </string>
     <string name="hint_name">Event name </string>
     <string name="category">Category: </string>
@@ -26,6 +28,7 @@
     <string name="number_of_participants">No. of participants allowed: </string>
     <string name="number_of_volunteers">No. of volunteers allowed: </string>
     <string name="date">Date: </string>
+    <string name="repeats">Repeat the event: </string>
     <string name="time">Time: </string>
     <string name="to">to</string>
     <string name="location">Location: </string>

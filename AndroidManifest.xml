@@ -43,7 +43,15 @@
             android:label="@string/title_activity_create_event" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.CreateEventStep3Activity"
+            android:name="com.example.it3197_casestudy.ui_logic.CreateEventStep3aActivity"
+            android:label="@string/title_activity_create_event" >
+        </activity>
+		<activity
+            android:name="com.example.it3197_casestudy.ui_logic.CreateEventStep3bActivity"
+            android:label="@string/title_activity_create_event" >
+        </activity>
+		<activity
+            android:name="com.example.it3197_casestudy.ui_logic.CreateEventStep3cActivity"
             android:label="@string/title_activity_create_event" >
         </activity>
         <activity

@@ -7,6 +7,7 @@ import com.example.it3197_casestudy.util.MainPageAdapter;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -83,6 +84,23 @@ public class MainPageActivity extends FragmentActivity implements ActionBar.TabL
 		getMenuInflater().inflate(R.menu.main_page, menu);
 		return true;
 	}
+	
+	@Override	
+    public boolean onOptionsItemSelected(MenuItem item) {
+		
+		System.out.println(item.getItemId());
+		switch (item.getItemId()) {
+    		case R.id.create_event:
+    			Intent intent = new Intent(this, CreateEventStep1Activity.class);
+    			startActivity(intent);
+    			finish();
+    			break;
+    		default:
+    			break;
+		}
+		return true;
+    }
+
 
 	@Override
 	public void onTabSelected(ActionBar.Tab tab,

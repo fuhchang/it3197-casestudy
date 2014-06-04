@@ -1,0 +1,70 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" 
+    android:layout_height="match_parent">
+
+	<RelativeLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:gravity="bottom"
+	    tools:context=".CreateEventStep1Activity" >
+	
+	    <TextView
+	        android:id="@+id/tv_create_event_instructions"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/create_event_instructions_1" />
+
+	    <LinearLayout
+	        android:id="@+id/linear_layout"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_below="@+id/tv_create_event_instructions"
+	        android:layout_marginTop="10dp"
+	        android:orientation="vertical" >
+
+	        <RadioButton
+	            android:id="@+id/radioButton1"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/big_type_events" />
+
+	        
+	        <RadioButton
+	            android:id="@+id/radioButton2"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="0.5"
+	            android:text="@string/small_type_events" />
+	    </LinearLayout>	    
+	    <LinearLayout
+	        android:id="@+id/layout_inner_layout"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentBottom="true"
+	        android:layout_centerHorizontal="true"
+	        android:layout_below="@+id/linear_layout"
+	        android:orientation="horizontal" >
+
+		    <Button
+		        android:id="@+id/btn_cancel"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_marginTop="15dp"
+		        android:layout_weight="0.5"
+		        android:onClick="onClick"
+		        android:text="@string/cancel" />
+	        	    	        
+			<Button
+			    android:id="@+id/btn_next"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_weight="0.5"
+			    android:layout_marginTop="15dp"
+			    android:onClick="onClick"
+			    android:text="@string/next" />
+			
+		</LinearLayout>
+	</RelativeLayout>
+</ScrollView>
