@@ -7,9 +7,16 @@ import android.os.Bundle;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Toast;
 
 /**
  * This is the UI logic activity class for the Login Page
@@ -28,10 +35,10 @@ public class LoginActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_login);
 		loginActionBar = getActionBar();
 		//Hide the action bar
 		loginActionBar.hide();
+		setContentView(R.layout.activity_login);
 	}
 
 	/**
@@ -66,5 +73,4 @@ public class LoginActivity extends Activity {
 			e.printStackTrace();
 		}
 	}
-
 }

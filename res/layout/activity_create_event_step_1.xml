@@ -1,0 +1,158 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" 
+    android:layout_height="match_parent">
+
+	<RelativeLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:gravity="bottom"
+	    tools:context=".CreateEventStep1Activity" >
+	
+	    <TextView
+	        android:id="@+id/tv_create_event_instructions"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/create_event_instructions" />
+
+	    <LinearLayout
+	        android:id="@+id/linear_layout"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_below="@+id/tv_create_event_instructions"
+	        android:orientation="vertical" >
+
+	        <TextView
+	            android:id="@+id/tv_name"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="10dp"
+	            android:text="@string/event_name" />
+
+	        <EditText
+	            android:id="@+id/et_name"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="5dp"
+	            android:ems="10"
+	            android:hint="@string/hint_event_name" >
+
+	            <requestFocus />
+	        </EditText>
+
+	        <TextView
+	            android:id="@+id/tv_category"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="10dp"
+	            android:text="@string/category" />
+
+	        <Spinner
+	            android:id="@+id/spinner_category"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="5dp" />
+
+	        <TextView
+	            android:id="@+id/tv_description"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="10dp"
+	            android:text="@string/description" />
+
+	        <EditText
+	            android:id="@+id/et_description"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:ems="10"
+	            android:inputType="textMultiLine"
+	            android:lines="4"
+	            android:maxLines="4" 
+	            android:hint="@string/hint_event_description"/>
+	        
+	        
+	        <TextView
+	            android:id="@+id/tv_location"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="10dp"
+	            android:text="@string/location" />
+
+	        <EditText
+	            android:id="@+id/et_location"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:ems="10"
+	            android:hint="@string/hint_event_location"/>
+
+	        <Button
+	            android:id="@+id/btn_suggest_location"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="10dp"
+	            android:text="@string/suggest_location" />	  
+	            
+	        <TextView
+	            android:id="@+id/tv_number_of_participants"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="10dp"
+	            android:text="@string/number_of_participants" />
+	        	        
+	        <EditText
+	            android:id="@+id/et_number_of_participants"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1.0"
+	            android:ems="10"
+	            android:inputType="number"
+	            android:hint="@string/hint_no_of_participants"/>
+	        
+			<TextView
+	            android:id="@+id/tv_number_of_volunteers"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="10dp"
+	            android:text="@string/number_of_volunteers" />
+	        
+	        <EditText
+	            android:id="@+id/et_number_of_volunteers"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1.0"
+	            android:ems="10"
+	            android:inputType="number"
+	            android:hint="@string/hint_no_of_volunteers" />
+	    </LinearLayout>	    
+	    <LinearLayout
+	        android:id="@+id/layout_inner_layout"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentBottom="true"
+	        android:layout_centerHorizontal="true"
+	        android:layout_below="@+id/linear_layout"
+	        android:orientation="horizontal" >
+
+	        
+		    <Button
+		        android:id="@+id/btn_cancel"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_marginTop="15dp"
+		        android:layout_weight="0.5"
+		        android:onClick="onClick"
+		        android:text="@string/cancel" />
+	        	    	        
+			<Button
+			    android:id="@+id/btn_next"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_weight="0.5"
+			    android:layout_marginTop="15dp"
+			    android:onClick="onClick"
+			    android:text="@string/next" />
+			
+		</LinearLayout>
+	</RelativeLayout>
+</ScrollView>
