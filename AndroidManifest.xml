@@ -24,7 +24,7 @@
         </activity>
         <activity
             android:name="com.example.it3197_casestudy.ui_logic.MainPageActivity"
-            android:label="@string/upcoming_events" >
+            android:label="@string/title_activity_main_page" >
         </activity>
         <activity
             android:name="com.example.it3197_casestudy.ui_logic.ViewEventsActivity"
@@ -40,6 +40,14 @@
         </activity>
         <activity
             android:name="com.example.it3197_casestudy.ui_logic.CreateEventStep2Activity"
+            android:label="@string/title_activity_create_event" >
+        </activity>
+        <activity
+            android:name="com.example.it3197_casestudy.ui_logic.CreateEventStep3Activity"
+            android:label="@string/title_activity_create_event" >
+        </activity>
+        <activity
+            android:name="com.example.it3197_casestudy.ui_logic.CreateEventStep4Activity"
             android:label="@string/title_activity_create_event" >
         </activity>
     </application>
