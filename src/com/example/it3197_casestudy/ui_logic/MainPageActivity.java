@@ -97,7 +97,6 @@ public class MainPageActivity extends FragmentActivity implements ActionBar.TabL
 		System.out.println(item.getItemId());
 		switch (item.getItemId()) {
     		case R.id.create_event:
-    			
     			SelectTypeOfEventDialog dialog = new SelectTypeOfEventDialog(MainPageActivity.this);
     			dialog.show(getSupportFragmentManager(), "Select type of event");
     			break;

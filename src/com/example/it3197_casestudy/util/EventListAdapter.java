@@ -18,21 +18,23 @@ import android.widget.TextView;
 public class EventListAdapter extends ArrayAdapter<String>{
 	private final Activity context;
 	private final String[] eventNameList;
+	private final String[] eventDateList;
  
-	public EventListAdapter(Activity context, String[] eventNameList) {
+	public EventListAdapter(Activity context, String[] eventNameList, String[] eventDateList) {
 		super(context, R.layout.list_events, eventNameList);
 		this.context = context;
 		this.eventNameList = eventNameList;
+		this.eventDateList = eventDateList;
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View rowView = inflater.inflate(R.layout.list_events, null, true);
-		TextView textView = (TextView) rowView.findViewById(R.id.tv_event_name);
-		TextView textView2 = (TextView) rowView.findViewById(R.id.tv_event_date_time);
-		textView.setText(eventNameList[position]);
-		textView2.setText(eventNameList[position]);
+		TextView tvEventName = (TextView) rowView.findViewById(R.id.tv_event_name);
+		TextView tvDateTime = (TextView) rowView.findViewById(R.id.tv_event_date_time);
+		tvEventName.setText(eventNameList[position]);
+		tvDateTime.setText(eventDateList[position]);
  
 		// Change icon based on name
 		String s = eventNameList[position];

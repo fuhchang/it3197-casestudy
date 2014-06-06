@@ -5,7 +5,7 @@
 
 	<RelativeLayout
 	    android:layout_width="match_parent"
-	    android:layout_height="match_parent"
+	    android:layout_height="wrap_content"
 	    android:gravity="bottom"
 	    tools:context=".CreateEventStep1Activity" >
 	
@@ -23,6 +23,26 @@
 	        android:layout_below="@+id/tv_create_event_instructions"
 	        android:orientation="vertical" >
 
+	        <TextView
+	            android:id="@+id/tv_poster"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="10dp"
+	            android:text="@string/event_poster" />
+	        	
+	        <ImageView
+	            android:id="@+id/iv_event_poster"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="10dp"
+	            android:contentDescription="@string/event_poster_desc"/>
+	        <Button
+	            android:id="@+id/btn_upload_event_poster"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="10dp"
+	            android:text="@string/upload_event_poster" />	
+	        
 	        <TextView
 	            android:id="@+id/tv_name"
 	            android:layout_width="wrap_content"
@@ -52,7 +72,8 @@
 	            android:id="@+id/spinner_category"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:layout_marginTop="5dp" />
+	            android:layout_marginTop="5dp" 
+	            android:entries="@array/categorys"/>
 
 	        <TextView
 	            android:id="@+id/tv_description"

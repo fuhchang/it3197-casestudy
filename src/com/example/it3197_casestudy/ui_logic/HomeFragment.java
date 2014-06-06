@@ -26,26 +26,20 @@ import android.widget.Toast;
  */
 public class HomeFragment extends ListFragment implements OnItemClickListener  {
 	String[] myFrriends = new String[] {  
-		       "Sunil Gupta",
-		          "Abhishek Tripathi",
-		          "Awadhesh Diwakar",
-		          "Amit Verma",
-		          "Jitendra Singh",
-		          "Ravi Jhansi",
-		          "Ashish Jain",
-		          "Sandeep Pal",
-		          "Shishir Verma",
-		          "Ravi BBD"
+		       "Tution on English",
 		      };
 	
-
+	String[] myFrriends1 = new String[] {  
+		       "10/8/2014 4:00PM",
+		      };
+	
 	public HomeFragment() {
 	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 		  //ArrayAdapter<String> adapter= new ArrayAdapter<String>(inflater.getContext(), android.R.layout.simple_list_item_1, myFrriends);
-		  EventListAdapter adapter = new EventListAdapter(HomeFragment.this.getActivity(),myFrriends);
+		  EventListAdapter adapter = new EventListAdapter(HomeFragment.this.getActivity(),myFrriends,myFrriends1);
 		  setListAdapter(adapter);
 		  
 		  return super.onCreateView(inflater, container, savedInstanceState);	

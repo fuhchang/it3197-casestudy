@@ -20,6 +20,9 @@
     
     <string name="create_event_instructions">Please fill in the event details</string>
     <string name="create_event_instructions_1">Please fill in the schedule</string>
+    <string name="event_poster">Poster: </string>
+    <string name="event_poster_desc">This is a event poster </string>
+    <string name="upload_event_poster">Upload poster </string>
     <string name="event_name">Name: </string>
     <string name="hint_event_name">Event name </string>
     <string name="hint_event_description">Event description </string>
@@ -33,7 +36,8 @@
     <string name="date">Date: </string>
     <string name="repeats">Repeat the event: </string>
     <string name="time">Time: </string>
-    <string name="to">to</string>
+    <string name="from">From: </string>
+    <string name="to">To: </string>
     <string name="location">Location: </string>
     <string name="suggest_location">Suggest Location</string>
     <string name="cancel">Cancel</string>
@@ -45,8 +49,11 @@
         <item>Small Event</item>
     </string-array>
     
-    <string-array name="category">
-        <item></item>
+    <string-array name="categorys">
+        <item>Arts</item>
+        <item>Education</item>
+        <item>Family</item>
+        <item>Health</item>
     </string-array>
     <string-array name="repeats">
         <item>Once</item>
