@@ -5,5 +5,6 @@ package com.example.it3197_casestudy.util;
  * @author Lee Zhuo Xun
  */
 public interface Settings {
-
+	String DROPBOX_API_KEY = "cqvf3nim3klslqb";
+	
 }

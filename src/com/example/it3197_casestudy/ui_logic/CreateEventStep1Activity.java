@@ -6,6 +6,7 @@ import com.dropbox.chooser.android.DbxChooser;
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.R.layout;
 import com.example.it3197_casestudy.R.menu;
+import com.example.it3197_casestudy.util.Settings;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,7 +22,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
-public class CreateEventStep1Activity extends Activity {
+public class CreateEventStep1Activity extends Activity implements Settings{
 	EditText etEventName,etDescription;
 	Spinner spinnerCategory;
 	ImageView iv_poster;
@@ -38,7 +39,7 @@ public class CreateEventStep1Activity extends Activity {
 		etDescription = (EditText) findViewById(R.id.et_description);
 		btnUploadEventPoster = (Button) findViewById(R.id.btn_upload_event_poster);
 		iv_poster = (ImageView) findViewById(R.id.iv_event_poster);
-		mChooser = new DbxChooser("cqvf3nim3klslqb");
+		mChooser = new DbxChooser(DROPBOX_API_KEY);
 
 		btnUploadEventPoster.setOnClickListener(new OnClickListener(){
 	        @Override
