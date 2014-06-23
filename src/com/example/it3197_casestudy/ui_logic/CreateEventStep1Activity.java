@@ -101,9 +101,9 @@ public class CreateEventStep1Activity extends Activity implements Settings{
 	
 	@Override 
 	public void onBackPressed(){  
-		Intent intent = new Intent(CreateEventStep1Activity.this, MainPageActivity.class);
+		/*Intent intent = new Intent(CreateEventStep1Activity.this, MainPageActivity.class);
 		startActivity(intent);
-		this.finish();
+		this.finish();*/
 	}
 
 }

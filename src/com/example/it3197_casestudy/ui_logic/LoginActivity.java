@@ -61,9 +61,9 @@ public class LoginActivity extends Activity {
 		try {
 			switch (view.getId()) {
 			case R.id.btn_login:
-				Intent intent = new Intent(LoginActivity.this, MainPageActivity.class);
+				/*Intent intent = new Intent(LoginActivity.this, MainPageActivity.class);
 				startActivity(intent);
-				this.finish();
+				this.finish();*/
 				break;
 			default:
 				LoginActivity.this.finish();

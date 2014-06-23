@@ -2,7 +2,6 @@ package com.example.it3197_casestudy.util;
 
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.ui_logic.CreateEventStep1Activity;
-import com.example.it3197_casestudy.ui_logic.MainPageActivity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
