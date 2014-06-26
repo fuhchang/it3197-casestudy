@@ -17,7 +17,6 @@
     <string name="upcoming_events">Upcoming Events</string>
     <string name="title_view_events">View Events</string>
     <string name="title_activity_create_event">Create Event</string>
-    
     <string name="create_event_instructions">Please fill in the event details</string>
     <string name="create_event_instructions_1">Please fill in the schedule</string>
     <string name="event_poster">Poster: </string>
@@ -43,12 +42,12 @@
     <string name="cancel">Cancel</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-    
+    <string name="imgdesc">navigation</string>
+
     <string-array name="type_of_events">
         <item>Big Event</item>
         <item>Small Event</item>
     </string-array>
-    
     <string-array name="categorys">
         <item>Arts</item>
         <item>Education</item>
@@ -62,4 +61,21 @@
         <item>Monthly</item>
         <item>Annually</item>
     </string-array>
+    <string-array name="titles">
+        <item>setting1</item>
+        <item>setting2</item>
+        <item>setting3</item>
+        <item>setting4</item>
+    </string-array>
+
+    <array name="icons">
+        <item>@drawable/article</item>
+        <item>@drawable/events</item>
+        <item>@drawable/hobbies</item>
+    </array>
+
+    <string name="title_activity_main_link_page">MainLinkPage</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_view_hobbies_main">ViewHobbiesMain</string>
+
 </resources>

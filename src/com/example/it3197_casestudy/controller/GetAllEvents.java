@@ -49,8 +49,8 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 		eventDateTimeList = new String[eventList.size()];
 		for(int i=0;i<eventList.size();i++){
 			eventNameList[i] = eventList.get(i).getEventName();
-			String dateTime = dateTimeFormatter.format(eventList.get(i).getEventDateTime());
-			eventDateTimeList[i] = dateTime;
+			//String dateTime = dateTimeFormatter.format(eventList.get(i).getEventDateTime());
+			//eventDateTimeList[i] = dateTime;
 		}
 		EventListAdapter adapter = new EventListAdapter(listFragment.getActivity(),eventNameList, eventDateTimeList);
 		listFragment.setListAdapter(adapter);
@@ -89,7 +89,7 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 				
 				event = new Event();
 				event.setEventName(dataJob.getString("eventName"));
-				event.setEventDateTime(date);
+				//event.setEventDateTime(date);
 				eventList.add(event);
 			}
 		} catch (Exception e) {

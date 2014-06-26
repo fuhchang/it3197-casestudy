@@ -19,6 +19,7 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -49,6 +50,18 @@
         <activity
             android:name="com.example.it3197_casestudy.ui_logic.CreateEventStep4Activity"
             android:label="@string/title_activity_create_event" >
+        </activity>
+        <activity
+            android:name="com.example.it3197_casestudy.ui_logic.MainLinkPage"
+            android:label="@string/title_activity_main_link_page" >
+        </activity>
+        <activity
+            android:name="com.example.it3197_casestudy.MainActivity"
+            android:label="@string/title_activity_main" >
+        </activity>
+        <activity
+            android:name="com.example.it3197_casestudy.ui_logic.ViewHobbiesMain"
+            android:label="@string/title_activity_view_hobbies_main" >
         </activity>
     </application>
 
