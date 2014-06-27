@@ -8,9 +8,8 @@ import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.R.layout;
 import com.example.it3197_casestudy.R.menu;
 import com.example.it3197_casestudy.SubmitArticle;
-import com.example.it3197_casestudy.model.DrawerItem;
 import com.example.it3197_casestudy.model.RowItem;
-import com.example.it3197_casestudy.util.CustomDrawerAdapter;
+
 import com.example.it3197_casestudy.util.GridImageList;
 
 import android.os.Bundle;
@@ -39,7 +38,7 @@ public class MainLinkPage extends Activity {
 			R.drawable.article, R.drawable.riddles, R.drawable.profile,
 			R.drawable.setting };
 
-    List<DrawerItem> dataList;
+ 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

@@ -16,7 +16,7 @@ import android.widget.TextView;
 public class Hobbies_Joined extends Fragment {
 
 	public Hobbies_Joined() {
-
+		
 	}
 
 	@Override
