@@ -63,6 +63,14 @@
             android:name="com.example.it3197_casestudy.ui_logic.ViewHobbiesMain"
             android:label="@string/title_activity_view_hobbies_main" >
         </activity>
+        <activity
+            android:name="com.example.it3197_casestudy.ui_logic.Hobbies_Joined"
+            android:label="@string/title_activity_hobbies__joined" >
+        </activity>
+        <activity
+            android:name="com.example.it3197_casestudy.ui_logic.Hobbies_All"
+            android:label="@string/title_activity_hobbies__all" >
+        </activity>
     </application>
 
 </manifest>
