@@ -12,12 +12,16 @@ import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -32,6 +36,7 @@ public class ViewHobbiesMain extends FragmentActivity implements
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private DrawerItem[] drawerItem;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -63,18 +68,50 @@ public class ViewHobbiesMain extends FragmentActivity implements
 				.setTabListener(this));
 		actionBar
 				.addTab(actionBar.newTab().setText("All").setTabListener(this));
-		mNavigationDrawerItemTitles = getResources().getStringArray(R.array.navgigation_drawer_items_array);
+		mNavigationDrawerItemTitles = getResources().getStringArray(
+				R.array.navgigation_drawer_items_array);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
-		
+
 		drawerItem = new DrawerItem[3];
 		drawerItem[0] = new DrawerItem(R.drawable.ic_launcher);
 		drawerItem[1] = new DrawerItem(R.drawable.article);
 		drawerItem[2] = new DrawerItem(R.drawable.events);
-		
-		CustomDrawerAdapter adapter = new CustomDrawerAdapter(this, R.layout.list_hobbie, drawerItem);
-		
+
+		CustomDrawerAdapter adapter = new CustomDrawerAdapter(this,
+				R.layout.list_hobbie, drawerItem);
+
 		mDrawerList.setAdapter(adapter);
+		mDrawerList.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+
+			}
+
+			private void SelectItem(int position) {
+				Fragment fragment = null;
+				switch (position) {
+				case 0:
+					fragment = new CreateFragment();
+					break;
+				case 1 :
+					fragment = new ReadFragment();
+					break;
+				case 2 :
+					fragment = new HelpFragment();
+					break;
+				default:
+					break;
+				}
+				
+				if(fragment != null){
+					android.app.FragmentManager fm = getFragmentManager();
+					
+				}
+			}
+		});
 	}
 
 	@Override
