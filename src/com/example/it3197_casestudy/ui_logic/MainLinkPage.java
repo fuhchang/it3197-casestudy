@@ -7,10 +7,9 @@ import java.util.List;
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.R.layout;
 import com.example.it3197_casestudy.R.menu;
-import com.example.it3197_casestudy.ui_logic.SubmitArticle;
 import com.example.it3197_casestudy.model.RowItem;
-
 import com.example.it3197_casestudy.util.GridImageList;
+import com.example.it3197_casestudy.ui_logic.SubmitArticle;
 
 import android.os.Bundle;
 import android.app.ActionBar;
@@ -61,7 +60,7 @@ public class MainLinkPage extends Activity {
 					startActivity(hobbies);
 				}else if(position == 2){
 					Toast.makeText(getApplicationContext(), "ARTICLE", Toast.LENGTH_LONG).show();
-					Intent intent = new Intent(getApplicationContext(), SubmitArticle.class);
+					Intent intent = new Intent(MainLinkPage.this, SubmitArticle.class);
 					startActivity(intent);
 				}else if (position == 3){
 					Toast.makeText(getApplicationContext(), "RIDDLES", Toast.LENGTH_LONG).show();
