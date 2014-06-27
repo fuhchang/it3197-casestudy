@@ -75,6 +75,13 @@
         <item>Help</item>
     </string-array>
 
+     <string-array name="article_category_choice">
+        <item>Feedback(Complain)</item>
+        <item>News Around The Neighbourhood</item>
+        <item>Location Usage</item>
+    </string-array>
+    
+    
     <string name="title_activity_main_link_page">MainLinkPage</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_view_hobbies_main">ViewHobbiesMain</string>
