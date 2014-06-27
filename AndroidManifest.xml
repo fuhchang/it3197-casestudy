@@ -71,6 +71,10 @@
             android:name="com.example.it3197_casestudy.ui_logic.Hobbies_All"
             android:label="@string/title_activity_hobbies__all" >
         </activity>
+        <activity
+            android:name="com.example.it3197_casestudy.SubmitArticle"
+            android:label="@string/title_activity_submit_article" >
+        </activity>
     </application>
 
 </manifest>

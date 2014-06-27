@@ -43,8 +43,9 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
     <string name="imgdesc">navigation</string>
-	<string name="drawer_open">Open drawer</string>
-	<string name="drawer_close">close drawer</string>
+    <string name="drawer_open">Open drawer</string>
+    <string name="drawer_close">close drawer</string>
+
     <string-array name="type_of_events">
         <item>Big Event</item>
         <item>Small Event</item>
@@ -68,7 +69,6 @@
         <item>setting3</item>
         <item>setting4</item>
     </string-array>
-
     <string-array name="navgigation_drawer_items_array">
         <item>Create</item>
         <item>Read</item>
@@ -80,5 +80,6 @@
     <string name="title_activity_view_hobbies_main">ViewHobbiesMain</string>
     <string name="title_activity_hobbies__joined">Hobbies_Joined</string>
     <string name="title_activity_hobbies__all">Hobbies_All</string>
+    <string name="title_activity_submit_article">SubmitArticle</string>
 
 </resources>
