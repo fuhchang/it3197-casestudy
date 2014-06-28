@@ -60,7 +60,7 @@ public class ArticleLocSelection extends Activity implements LocationListener, O
 
     MarkerOptions mp = new MarkerOptions();
     
-    Button done;
+    Button done, cancel;
 	
     double finalizedLat;
     double finalizedLon;
@@ -88,7 +88,7 @@ public class ArticleLocSelection extends Activity implements LocationListener, O
 			//  map.setMapType(GoogleMap.MAP_TYPE_TERRAIN);		  
 			  map.setOnMarkerDragListener(this);
 			  
-			  map.setTrafficEnabled(true);
+			//  map.setTrafficEnabled(true);
 			  
 			  //map.setMyLocationEnabled(true);	  
 			  
@@ -128,6 +128,17 @@ public class ArticleLocSelection extends Activity implements LocationListener, O
 					myIntent.putExtra("selectedLon", String.valueOf(finalizedLon));
 					startActivityForResult(myIntent, 1);*/
 					 finish();
+				}
+				  
+			  });
+			  
+			  cancel = (Button) findViewById(R.id.cancel);
+			  cancel.setOnClickListener(new OnClickListener(){
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					finish();
 				}
 				  
 			  });
