@@ -103,7 +103,7 @@
             android:value="AIzaSyBm1w2P3qipVFeAhjSi3F6eQx2M3KmMB18" />
 
         <activity
-            android:name="com.example.it3197_casestudy.ArticleLocSelection"
+            android:name="com.example.it3197_casestudy.ui_logic.ArticleLocSelection"
             android:label="@string/title_activity_article_loc_selection" >
         </activity>
     </application>

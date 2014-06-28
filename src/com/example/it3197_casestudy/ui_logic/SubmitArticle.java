@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-import com.example.it3197_casestudy.ArticleLocSelection;
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.R.array;
 import com.example.it3197_casestudy.R.id;
