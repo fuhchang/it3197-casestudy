@@ -82,7 +82,7 @@
     <EditText
 	    android:id="@+id/articleContent"
 	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
+	    android:layout_height="230dp"
 	    android:layout_marginLeft="5dp"
 	    android:layout_marginTop="5dp"
 	    android:background="@drawable/article_styling"
@@ -91,7 +91,7 @@
 	    android:hint="Content"
 	    android:inputType="textMultiLine" />
     
-    
+    <!--  
     <LinearLayout
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
@@ -120,33 +120,61 @@
 		        android:text="Go"
 		        android:onClick="geoLocate"/>
 		    
-		   "
+		   
 		     
-    </LinearLayout>
-     <LinearLayout
+    </LinearLayout>-->
+    
+    <View 
+	   	android:layout_marginTop="5dp"
+	  	android:layout_width="fill_parent"
+	    android:layout_height="2dp"      
+	    android:background="#000"/>
+    
+    
+    <LinearLayout
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
-        android:orientation="vertical">
+        android:orientation="horizontal">
+    <Button
+         android:id="@+id/icon"
+         android:layout_width="40dp"
+         android:layout_height="40dp"
+         android:background="@drawable/location2"
+         />
+    
+    <TextView
+         android:id="@+id/chooseLoc"
+         android:layout_width="fill_parent"
+         android:layout_height="40dp"
+         android:textSize="20sp"
+         android:onClick="changeLoc"
+		 android:clickable="true"
+		 android:textColor="#0000ff"
+         android:text="@string/changeLoc"
+         />
+     
+        </LinearLayout>
         
-        
-        	<TextView
-        	    android:id="@+id/storingLoc"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        
-		        android:textSize="20sp"/>
+    <TextView
+        android:id="@+id/storingLoc"
+		android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+        android:textSize="20sp"/>
 		    
 		   
 		    
 		   
 		     
-    </LinearLayout>
     
-     <fragment  
+    
+     
+     
+    
+    <!--   <fragment  
           android:id="@+id/map"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:name="com.google.android.gms.maps.MapFragment"
           />
-    
+    -->
 </LinearLayout>
