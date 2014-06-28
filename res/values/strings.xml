@@ -88,5 +88,6 @@
     <string name="title_activity_hobbies__all">Hobbies_All</string>
     <string name="title_activity_submit_article">SubmitArticle</string>
     <string name="title_activity_article_loc_selection">ArticleLocSelection</string>
+    <string name="title_activity_profile">Profile</string>
 
 </resources>
