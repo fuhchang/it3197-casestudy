@@ -1,108 +1,87 @@
 package com.example.it3197_casestudy.model;
 
 public class User {
-	private String userNRIC;
+	private String nric;
 	private String name;
-	private int age;
-	private String email;
+	private String type;
 	private String password;
-	private String phoneNumber;
-	private String homeLocation;
-	private String gender;
+	private String contactNo;
+	private String address;
+	private String email;
+	private int active;
+	
 	/**
-	 * @return the userNRIC
+	 * User's default constructor
 	 */
-	public String getUserNRIC() {
-		return userNRIC;
+	public User(){};
+	
+	/**
+	 * This constructor is to retrieve users
+	 * @param nric
+	 * @param name
+	 * @param type
+	 * @param password
+	 * @param contactNo
+	 * @param address
+	 * @param email
+	 * @param active
+	 */
+	public User(String nric, String name, String type, String password,String contactNo, String address, String email, int active) {
+		this.nric = nric;
+		this.name = name;
+		this.type = type;
+		this.password = password;
+		this.contactNo = contactNo;
+		this.address = address;
+		this.email = email;
+		this.active = active;
 	}
-	/**
-	 * @param userNRIC the userNRIC to set
-	 */
-	public void setUserNRIC(String userNRIC) {
-		this.userNRIC = userNRIC;
+	public String getNric() {
+		return nric;
 	}
-	/**
-	 * @return the name
-	 */
+	public void setNric(String nric) {
+		this.nric = nric;
+	}
 	public String getName() {
 		return name;
 	}
-	/**
-	 * @param name the name to set
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
-	/**
-	 * @return the age
-	 */
-	public int getAge() {
-		return age;
+	public String getType() {
+		return type;
 	}
-	/**
-	 * @param age the age to set
-	 */
-	public void setAge(int age) {
-		this.age = age;
+	public void setType(String type) {
+		this.type = type;
 	}
-	/**
-	 * @return the email
-	 */
-	public String getEmail() {
-		return email;
-	}
-	/**
-	 * @param email the email to set
-	 */
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	/**
-	 * @return the password
-	 */
 	public String getPassword() {
 		return password;
 	}
-	/**
-	 * @param password the password to set
-	 */
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	/**
-	 * @return the phoneNumber
-	 */
-	public String getPhoneNumber() {
-		return phoneNumber;
+	public String getContactNo() {
+		return contactNo;
 	}
-	/**
-	 * @param phoneNumber the phoneNumber to set
-	 */
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
+	public void setContactNo(String contactNo) {
+		this.contactNo = contactNo;
 	}
-	/**
-	 * @return the homeLocation
-	 */
-	public String getHomeLocation() {
-		return homeLocation;
+	public String getAddress() {
+		return address;
 	}
-	/**
-	 * @param homeLocation the homeLocation to set
-	 */
-	public void setHomeLocation(String homeLocation) {
-		this.homeLocation = homeLocation;
+	public void setAddress(String address) {
+		this.address = address;
 	}
-	/**
-	 * @return the gender
-	 */
-	public String getGender() {
-		return gender;
+	public String getEmail() {
+		return email;
 	}
-	/**
-	 * @param gender the gender to set
-	 */
-	public void setGender(String gender) {
-		this.gender = gender;
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public int getActive() {
+		return active;
+	}
+	public void setActive(int active) {
+		this.active = active;
 	}
 }
