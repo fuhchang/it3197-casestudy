@@ -77,10 +77,10 @@ public class CreateEventStep2Activity extends Activity {
 				Toast.makeText(getApplicationContext(),
 						"Event created successfully.", Toast.LENGTH_SHORT)
 						.show();
-				/*intent = new Intent(CreateEventStep2Activity.this,
-						MainPageActivity.class);
+				intent = new Intent(CreateEventStep2Activity.this,
+						ViewAllEventsActivity.class);
 				startActivity(intent);
-				this.finish();*/
+				this.finish();
 				break;
 			case R.id.btn_previous:
 				onBackPressed();

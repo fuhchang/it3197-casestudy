@@ -11,7 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 /**
- * This is the event list adapter to bind it with the event list at the main page
+ * This is the event list adapter to bind it with the event list at the view all events page
  * @author Lee Zhuo Xun
  *
  */

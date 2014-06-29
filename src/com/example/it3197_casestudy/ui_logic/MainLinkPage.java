@@ -52,29 +52,27 @@ public class MainLinkPage extends Activity {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 					long arg3) {
 				// TODO Auto-generated method stub
+				Intent intent = null;
 				if(position == 0){
-					Intent event = new Intent(MainLinkPage.this,ViewEventsActivity.class);
-					startActivity(event);
+					intent = new Intent(MainLinkPage.this,ViewAllEventsActivity.class);
 				}else if(position == 1){
-					Intent hobbies = new Intent(MainLinkPage.this, ViewHobbiesMain.class);
-					startActivity(hobbies);
+					intent = new Intent(MainLinkPage.this, ViewHobbiesMain.class);
 				}else if(position == 2){
 					Toast.makeText(getApplicationContext(), "ARTICLE", Toast.LENGTH_LONG).show();
-					Intent intent = new Intent(MainLinkPage.this, SubmitArticle.class);
-					startActivity(intent);
+					intent = new Intent(MainLinkPage.this, SubmitArticle.class);
 				}else if (position == 3){
 					Toast.makeText(getApplicationContext(), "RIDDLES", Toast.LENGTH_LONG).show();
 				}else if (position == 4){
 					Toast.makeText(getApplicationContext(), "PROFILE", Toast.LENGTH_LONG).show();
 				}else if(position == 5){
 					Toast.makeText(getApplicationContext(), "SETTING", Toast.LENGTH_LONG).show();
+				}else{
+					Toast.makeText(getApplicationContext(), "Please choose 1 of options.", Toast.LENGTH_LONG).show();
 				}
+				startActivity(intent);
+				MainLinkPage.this.finish();
 			}
-			
-		});
-		
-		
-		
+		});		
 	}
 
 	@Override
