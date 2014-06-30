@@ -105,6 +105,9 @@
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
 	            android:ems="10"
+				android:inputType="textMultiLine"
+	            android:lines="4"
+	            android:maxLines="4" 
 	            android:hint="@string/hint_event_location"/>
 
 	        <Button
@@ -129,22 +132,6 @@
 	            android:ems="10"
 	            android:inputType="number"
 	            android:hint="@string/hint_no_of_participants"/>
-	        
-			<TextView
-	            android:id="@+id/tv_number_of_volunteers"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_marginTop="10dp"
-	            android:text="@string/number_of_volunteers" />
-	        
-	        <EditText
-	            android:id="@+id/et_number_of_volunteers"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_weight="1.0"
-	            android:ems="10"
-	            android:inputType="number"
-	            android:hint="@string/hint_no_of_volunteers" />
 	    </LinearLayout>	    
 	    <LinearLayout
 	        android:id="@+id/layout_inner_layout"

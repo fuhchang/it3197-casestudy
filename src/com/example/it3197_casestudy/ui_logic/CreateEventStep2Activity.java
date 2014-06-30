@@ -74,11 +74,8 @@ public class CreateEventStep2Activity extends Activity {
 		try {
 			switch (view.getId()) {
 			case R.id.btn_create_event:
-				Toast.makeText(getApplicationContext(),
-						"Event created successfully.", Toast.LENGTH_SHORT)
-						.show();
-				intent = new Intent(CreateEventStep2Activity.this,
-						ViewAllEventsActivity.class);
+				Toast.makeText(getApplicationContext(),"Event created successfully.", Toast.LENGTH_SHORT).show();
+				intent = new Intent(CreateEventStep2Activity.this,ViewAllEventsActivity.class);
 				startActivity(intent);
 				this.finish();
 				break;

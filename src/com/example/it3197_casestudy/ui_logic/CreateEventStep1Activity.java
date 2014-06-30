@@ -11,36 +11,43 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.dropbox.chooser.android.DbxChooser;
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.util.Settings;
+import com.example.it3197_casestudy.validation.Field;
+import com.example.it3197_casestudy.validation.Form;
+import com.example.it3197_casestudy.validation.validations.NotEmpty;
 
 public class CreateEventStep1Activity extends Activity implements Settings{
-	EditText etEventName,etDescription;
+	EditText etEventName,etDescription,etLocation,etNoOfParticipants;
 	Spinner spinnerCategory;
-	ImageView iv_poster;
+	ImageView ivPoster;
 	
 	static final int DBX_CHOOSER_REQUEST = 0;  // You can change this if needed
-	Button btnUploadEventPoster;
+	Button btnUploadEventPoster,btnSuggestLocation;
 	private DbxChooser mChooser;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
 		setContentView(R.layout.activity_create_event_step_1);
+		
 		etEventName = (EditText) findViewById(R.id.et_name);
 		spinnerCategory = (Spinner) findViewById(R.id.spinner_category);
 		etDescription = (EditText) findViewById(R.id.et_description);
+		etLocation = (EditText) findViewById(R.id.et_location);
+		etNoOfParticipants = (EditText) findViewById(R.id.et_number_of_participants);
 		btnUploadEventPoster = (Button) findViewById(R.id.btn_upload_event_poster);
-		iv_poster = (ImageView) findViewById(R.id.iv_event_poster);
+		btnSuggestLocation = (Button) findViewById(R.id.btn_suggest_location);
+		ivPoster = (ImageView) findViewById(R.id.iv_event_poster);
 		mChooser = new DbxChooser(DROPBOX_API_KEY);
 
 		btnUploadEventPoster.setOnClickListener(new OnClickListener(){
 	        @Override
 	        public void onClick(View v) {
-	          mChooser.forResultType(DbxChooser.ResultType.FILE_CONTENT)
-	                    .launch(CreateEventStep1Activity.this, DBX_CHOOSER_REQUEST);
+	          mChooser.forResultType(DbxChooser.ResultType.FILE_CONTENT).launch(CreateEventStep1Activity.this, DBX_CHOOSER_REQUEST);
 	        }
 	    });
 	}
@@ -55,7 +62,7 @@ public class CreateEventStep1Activity extends Activity implements Settings{
 	            String validatingFileName = fileName.substring(fileName.lastIndexOf("."),fileName.length());
 	            Log.d("main", "Link to selected file extension: " + validatingFileName);
 	            Log.d("main", "Link to selected file: " + result.getLink());
-	            iv_poster.setImageURI(result.getLink());
+	            ivPoster.setImageURI(result.getLink());
 	            // Handle the result
 	        } else {
 	            // Failed or was cancelled by the user.
@@ -77,9 +84,13 @@ public class CreateEventStep1Activity extends Activity implements Settings{
 		try {
 			switch (view.getId()) {
 			case R.id.btn_next:
-				intent = new Intent(CreateEventStep1Activity.this, CreateEventStep2Activity.class);
-				startActivity(intent);
-				this.finish();
+				Form form = new Form(this);
+				form.addField(Field.using(etEventName).validate(NotEmpty.build(this)));
+				if(form.isValid()){
+					intent = new Intent(CreateEventStep1Activity.this, CreateEventStep2Activity.class);
+					startActivity(intent);
+					this.finish();
+				}
 				break;
 			case R.id.btn_cancel:
 				onBackPressed();
@@ -100,5 +111,4 @@ public class CreateEventStep1Activity extends Activity implements Settings{
 		startActivity(intent);
 		this.finish();
 	}
-
 }
