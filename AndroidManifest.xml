@@ -92,6 +92,14 @@
             android:name="com.example.it3197_casestudy.ui_logic.SubmitArticle"
             android:label="@string/title_activity_submit_article" >
         </activity>
+        <activity
+            android:name="com.example.it3197_casestudy.ui_logic.ProfileActivity"
+            android:label="@string/title_activity_profile"
+            android:parentActivityName="com.example.it3197_casestudy.ui_logic.MainPageActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.it3197_casestudy.ui_logic.MainPageActivity" />
+        </activity>
 
         <service
             android:name="com.example.it3197_casestudy.geofencing.ReceiveTransitionsIntentService"
