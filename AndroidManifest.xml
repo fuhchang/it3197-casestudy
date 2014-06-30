@@ -119,6 +119,11 @@
             android:name="com.example.it3197_casestudy.ui_logic.ViewAllEventsActivity"
             android:label="@string/title_activity_view_all_events" >
         </activity>
+        
+        <activity
+            android:name="com.example.it3197_casestudy.ArticleLocSelection"
+            android:label="@string/title_activity_article_loc_selection" >
+        </activity>
     </application>
 
 </manifest>
