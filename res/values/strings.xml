@@ -45,7 +45,10 @@
     <string name="imgdesc">navigation</string>
     <string name="drawer_open">Open drawer</string>
     <string name="drawer_close">close drawer</string>
-
+	<string name="gName">Group Name</string>
+	<string name="gType">Group Type</string>
+	<string name="gDesc">Group Description</string>
+  
     <string-array name="type_of_events">
         <item>Big Event</item>
         <item>Small Event</item>

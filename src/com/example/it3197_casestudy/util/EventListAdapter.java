@@ -2,6 +2,7 @@ package com.example.it3197_casestudy.util;
 
 import com.example.it3197_casestudy.R;
 
+
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
