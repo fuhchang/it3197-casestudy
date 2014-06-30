@@ -1,32 +1,22 @@
 package com.example.it3197_casestudy.ui_logic;
 
-import java.util.ArrayList;
-
-import java.util.List;
-
 import com.example.it3197_casestudy.R;
-import com.example.it3197_casestudy.R.layout;
-import com.example.it3197_casestudy.R.menu;
-import com.example.it3197_casestudy.model.RowItem;
 import com.example.it3197_casestudy.util.GridImageList;
-import com.example.it3197_casestudy.ui_logic.SubmitArticle;
 
-import android.os.Bundle;
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.TypedArray;
-import android.graphics.Color;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
-import android.widget.ListView;
 import android.widget.Toast;
+
+import com.example.it3197_casestudy.ui_logic.ViewAllEventsActivity;
+import com.example.it3197_casestudy.ui_logic.ViewHobbiesMain;
+import com.example.it3197_casestudy.ui_logic.SubmitArticle;
+import com.example.it3197_casestudy.ui_logic.ProfileActivity;
 
 public class MainLinkPage extends Activity {
 	GridView gv;
@@ -52,25 +42,26 @@ public class MainLinkPage extends Activity {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 					long arg3) {
 				// TODO Auto-generated method stub
-				Intent intent = null;
 				if(position == 0){
-					intent = new Intent(MainLinkPage.this,ViewAllEventsActivity.class);
+					Intent intent = new Intent(MainLinkPage.this,ViewAllEventsActivity.class);
+					startActivity(intent);
 				}else if(position == 1){
-					intent = new Intent(MainLinkPage.this, ViewHobbiesMain.class);
+					Intent intent = new Intent(MainLinkPage.this, ViewHobbiesMain.class);
+					startActivity(intent);
 				}else if(position == 2){
 					Toast.makeText(getApplicationContext(), "ARTICLE", Toast.LENGTH_LONG).show();
-					intent = new Intent(MainLinkPage.this, SubmitArticle.class);
+					Intent intent = new Intent(MainLinkPage.this, SubmitArticle.class);
+					startActivity(intent);
 				}else if (position == 3){
 					Toast.makeText(getApplicationContext(), "RIDDLES", Toast.LENGTH_LONG).show();
 				}else if (position == 4){
-					intent = new Intent(MainLinkPage.this, ProfileActivity.class);
+					Intent intent = new Intent(MainLinkPage.this, ProfileActivity.class);
+					startActivity(intent);
 				}else if(position == 5){
 					Toast.makeText(getApplicationContext(), "SETTING", Toast.LENGTH_LONG).show();
 				}else{
 					Toast.makeText(getApplicationContext(), "Please choose 1 of options.", Toast.LENGTH_LONG).show();
 				}
-				startActivity(intent);
-				MainLinkPage.this.finish();
 			}
 		});		
 	}
