@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import com.example.it3197_casestudy.ui_logic.ArticleLocSelection;
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.R.array;
 import com.example.it3197_casestudy.R.id;
@@ -31,7 +32,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -45,7 +48,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-public class SubmitArticle extends Activity implements LocationListener, OnMarkerClickListener, OnMarkerDragListener{
+public class SubmitArticle extends Activity {
 	GoogleMap map;
 	Spinner spCat;
 	ArrayAdapter<CharSequence> adapter;
@@ -70,6 +73,10 @@ public class SubmitArticle extends Activity implements LocationListener, OnMarke
 	
 	String locToBeStored = "";
 
+	Button chooseLoc;
+	
+	final int CHOOSE_LOC=1;
+	
     MarkerOptions mp = new MarkerOptions();
 	
 	@SuppressLint("NewApi")
@@ -107,7 +114,7 @@ public class SubmitArticle extends Activity implements LocationListener, OnMarke
 storingLoc = (TextView)findViewById(R.id.storingLoc);
 		
 		
-		
+		/*
 		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();		
 		map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(1.3667, 103.8), 10));
 			  map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
@@ -134,7 +141,7 @@ storingLoc = (TextView)findViewById(R.id.storingLoc);
 						enteredLoc();
 					
 				}
-			  });
+			  });*/
 			  
 			  /****For constant updating of location****/
 			//		 lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -142,6 +149,22 @@ storingLoc = (TextView)findViewById(R.id.storingLoc);
 			  
 			  /*****Get location when entering app*****/
 			  getMyCurrentLocation();
+			  
+		//	  chooseLoc = (Button) findViewById(R.id.chooseLoc);
+		//	  chooseLoc.setOnClickListener(new OnClickListener(){
+
+		//		@Override
+		//		public void onClick(View arg0) {
+		//			// TODO Auto-generated method stub
+					
+		//			Intent myIntent = new Intent(SubmitArticle.this, ArticleLocSelection.class);
+		//			myIntent.putExtra("mainSubmitLat", String.valueOf(lat));
+		//			myIntent.putExtra("mainSubmitLon", String.valueOf(lon));
+		//			startActivityForResult(myIntent, CHOOSE_LOC);
+					
+		//		}
+				  
+		//	  });
 		
 	}
 
@@ -153,7 +176,7 @@ storingLoc = (TextView)findViewById(R.id.storingLoc);
 		return true;
 	}
 
-
+/*
 	@Override
 	public void onMarkerDrag(Marker mp) {
 		// TODO Auto-generated method stub
@@ -237,7 +260,7 @@ storingLoc = (TextView)findViewById(R.id.storingLoc);
 		
 	}
 	
-	
+	*/
 	
 	/** Check the type of GPS Provider available at that instance and  collect the location informations**/
 	   void getMyCurrentLocation() {    
@@ -288,7 +311,7 @@ storingLoc = (TextView)findViewById(R.id.storingLoc);
 	       }
 
 	      if (Address != null && !Address.isEmpty()) {
-	    	  mp.position(new LatLng(location.getLatitude(), location.getLongitude()));
+	    //	  mp.position(new LatLng(location.getLatitude(), location.getLongitude()));
 	    	 // mp.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
 		   	   try
 		   	      {
@@ -306,17 +329,19 @@ storingLoc = (TextView)findViewById(R.id.storingLoc);
 		   	          e.printStackTrace();
 		   	      }
 		   	   
-		   	   mp.title(Address + ", " + City);
+	//	   	   mp.title(Address + ", " + City);
 		   	   
 		   	   
 		   	   locToBeStored=Address + "\n" + City;
-		   	   updateLoc(locToBeStored);
+		   	  // updateLoc(locToBeStored);
 		   	   
-		   	   mp.snippet("(Co-ordinates: " + lat +", " + lon + ").");
-		   	   mp.draggable(true);
-		   	   map.addMarker(mp).showInfoWindow();
+		   	   storingLoc.setText("Estimated location: \n" + locToBeStored + "\n(Coordinates: " + lat + ", " + lon + ")");
+		   	   
+	//	   	   mp.snippet("(Co-ordinates: " + lat +", " + lon + ").");
+	//	   	   mp.draggable(true);
+	//	   	   map.addMarker(mp).showInfoWindow();
 	
-		   	   map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 16));
+	//	   	   map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 16));
 	      }
 	      else{ 
 	         AlertDialog.Builder builder1 = new AlertDialog.Builder(SubmitArticle.this);
@@ -331,7 +356,12 @@ storingLoc = (TextView)findViewById(R.id.storingLoc);
 	           AlertDialog alert11 = builder1.create();
 	           alert11.show();
 	           
-	           mp.position(new LatLng(1.3667, 103.8));
+	           lat=1.3667;
+	           lon=103.8;
+	           
+	           storingLoc.setText("Default Location: \n601 Island Club Rd \nSingapore \n(Coordinates: " + lat + ", " + lon +")");
+	           
+	       /*    mp.position(new LatLng(1.3667, 103.8));
 		     //  mp.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
 		       mp.title("Singapore, Singapore");
 		       
@@ -341,10 +371,10 @@ storingLoc = (TextView)findViewById(R.id.storingLoc);
 		       
 		   	   mp.snippet("(Co-ordinates: " + 1.3667 +", " + 103.8 + ").");
 		       mp.draggable(true);
-		   	   map.addMarker(mp).showInfoWindow();
+		   	   map.addMarker(mp).showInfoWindow();*/
 	      }
 	   }  
-	   
+	   /*
 	   public void enteredLoc(){
 		   
 		   String enteredAddress = et.getText().toString();
@@ -396,11 +426,41 @@ storingLoc = (TextView)findViewById(R.id.storingLoc);
 			     }
 		   }
 	   }
-	   
+	   */
 	   
 	   public void updateLoc(String loc){
 		   storingLoc.setText(loc);
 		   
 	   }
+
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		if(requestCode==CHOOSE_LOC){
+			if(resultCode==RESULT_OK){
+				//String selectedAddress = data.getStringExtra();
+				
+				String selectedAdd = data.getStringExtra("selectedAdd");
+				 String selectedLat = data.getStringExtra("selectedLat");
+				 String selectedLon = data.getStringExtra("selectedLon");
+				 
+				 storingLoc.setText("Location: \n" +selectedAdd);
+				 lat=Double.parseDouble(selectedLat);
+				 lon = Double.parseDouble(selectedLon);
+				 
+				// Log.d("TESTTTTTTT", String.valueOf(lat));
+			}
+			
+		}
+	}
+	
+	
+	public void changeLoc(View v){
+		Intent myIntent = new Intent(SubmitArticle.this, ArticleLocSelection.class);
+		myIntent.putExtra("mainSubmitLat", String.valueOf(lat));
+		myIntent.putExtra("mainSubmitLon", String.valueOf(lon));
+		startActivityForResult(myIntent, CHOOSE_LOC);
+	}
 
 }
