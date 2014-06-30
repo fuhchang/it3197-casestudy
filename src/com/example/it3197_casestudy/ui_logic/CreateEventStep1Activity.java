@@ -16,9 +16,6 @@ import android.widget.TextView;
 import com.dropbox.chooser.android.DbxChooser;
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.util.Settings;
-import com.example.it3197_casestudy.validation.Field;
-import com.example.it3197_casestudy.validation.Form;
-import com.example.it3197_casestudy.validation.validations.NotEmpty;
 
 public class CreateEventStep1Activity extends Activity implements Settings{
 	EditText etEventName,etDescription,etLocation,etNoOfParticipants;
@@ -84,13 +81,13 @@ public class CreateEventStep1Activity extends Activity implements Settings{
 		try {
 			switch (view.getId()) {
 			case R.id.btn_next:
-				Form form = new Form(this);
+				/*Form form = new Form(this);
 				form.addField(Field.using(etEventName).validate(NotEmpty.build(this)));
 				if(form.isValid()){
 					intent = new Intent(CreateEventStep1Activity.this, CreateEventStep2Activity.class);
 					startActivity(intent);
 					this.finish();
-				}
+				}*///Git
 				break;
 			case R.id.btn_cancel:
 				onBackPressed();
