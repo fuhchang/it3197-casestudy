@@ -48,6 +48,7 @@
 	<string name="gName">Group Name</string>
 	<string name="gType">Group Type</string>
 	<string name="gDesc">Group Description</string>
+	<string name="articleLocSelection"><u>Not the location you want?</u></string>
   
     <string-array name="type_of_events">
         <item>Big Event</item>
