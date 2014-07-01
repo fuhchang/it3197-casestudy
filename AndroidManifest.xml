@@ -119,10 +119,21 @@
             android:name="com.example.it3197_casestudy.ui_logic.ViewAllEventsActivity"
             android:label="@string/title_activity_view_all_events" >
         </activity>
-        
         <activity
             android:name="com.example.it3197_casestudy.ui_logic.ArticleLocSelection"
             android:label="@string/title_activity_article_loc_selection" >
+        </activity>
+        <activity
+            android:name="com.example.it3197_casestudy.ui_logic.CreateGroupActivityStep1"
+            android:label="@string/title_activity_create_group_activity_step1" >
+        </activity>
+        <activity
+            android:name="com.example.it3197_casestudy.ui_logic.CreateGroupActivityStep2"
+            android:label="@string/title_activity_create_group_activity_step2" >
+        </activity>
+        <activity
+            android:name="com.example.it3197_casestudy.CreateGroupActivityStep3"
+            android:label="@string/title_activity_create_group_activity_step3" >
         </activity>
     </application>
 

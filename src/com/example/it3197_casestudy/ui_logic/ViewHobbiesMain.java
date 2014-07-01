@@ -4,11 +4,15 @@ import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.util.viewHobbiesAdapter;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 
 
 public class ViewHobbiesMain extends FragmentActivity implements
@@ -16,7 +20,7 @@ public class ViewHobbiesMain extends FragmentActivity implements
 
 	ViewPager ViewPager;
 	viewHobbiesAdapter viewHobbies;
-
+	Button btnNewGrp;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +31,7 @@ public class ViewHobbiesMain extends FragmentActivity implements
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		// Show the Up button in the action bar.
-		actionBar.setDisplayHomeAsUpEnabled(true);
+		//actionBar.setDisplayHomeAsUpEnabled(true);
 
 		viewHobbies = new viewHobbiesAdapter(getSupportFragmentManager());
 
@@ -63,8 +67,10 @@ public class ViewHobbiesMain extends FragmentActivity implements
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case android.R.id.home:
-
+		case R.id.new_group:
+			Intent intentNewGrp = new Intent(this, CreateGroupActivityStep1.class);
+			startActivity(intentNewGrp);
+			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}

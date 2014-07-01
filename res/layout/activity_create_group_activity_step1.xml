@@ -1,0 +1,44 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+	
+    <TextView
+        android:id="@+id/gName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/gName" />
+    <EditText 
+        android:id="@+id/gTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
+        android:layout_alignRight="@+id/gName"
+        android:hint="@string/gTitleHint"/>
+    
+    <TextView 
+        android:id="@+id/gType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/gName"
+        android:paddingTop="20dp"
+        android:text="@string/gType"/>
+    
+	 <Spinner
+        android:id="@+id/sType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/gType"
+        android:layout_below="@+id/gTitle"
+        android:paddingTop="20dp"
+        android:entries="@array/country_arrays"
+        android:prompt="@string/country_prompt" />
+	 
+	 <Button 
+	     android:id="@+id/btnNext"
+	    android:layout_height="wrap_content"
+	    android:layout_width="wrap_content"
+	    android:paddingTop="20dp"
+	    android:layout_below="@+id/sType"
+	    android:text="NEXT"/>
+</LinearLayout>
