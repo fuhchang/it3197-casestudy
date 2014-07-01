@@ -50,7 +50,8 @@
     <string name="gDesc">Group Description</string>
     <string name="articleLocSelection"><u>Not the location you want?</u></string>
     <string name="gTitleHint">Enter Group Name</string>
-
+	<string name="SelectImg">Please upload an Image for this group</string>
+    <string name="uploadImg">Please select the type</string>
     <string-array name="type_of_events">
         <item>Big Event</item>
         <item>Small Event</item>
@@ -74,7 +75,10 @@
         <item>setting3</item>
         <item>setting4</item>
     </string-array>
-
+	<string-array name="imgBy">
+	    <item>Gallery</item>
+	    <item>Camera</item>
+	</string-array>
     <!-- Testing -->
     <string name="country_prompt">Choose a country</string>
 
