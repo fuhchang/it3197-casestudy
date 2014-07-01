@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.transition.Visibility;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -26,9 +27,12 @@ import com.example.it3197_casestudy.validation.validator.NotEmptyValidator;
 import com.example.it3197_casestudy.validation_controller.CreateEventStep1ValidationController;
 
 public class CreateEventStep1Activity extends Activity implements Settings{
+	String typeOfEvent;
+	
 	EditText etEventName,etDescription,etLocation,etNoOfParticipants;
 	Spinner spinnerCategory;
 	ImageView ivPoster;
+	TextView tvLocation, tvLocationAlt, tvPoster;
 	
 	static final int DBX_CHOOSER_REQUEST = 0;  // You can change this if needed
 	Button btnUploadEventPoster,btnSuggestLocation;
@@ -38,7 +42,10 @@ public class CreateEventStep1Activity extends Activity implements Settings{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_event_step_1);
-		
+		Bundle bundle = getIntent().getExtras();
+		if(bundle != null){
+			typeOfEvent = bundle.getString("typeOfEvent","Small Event");
+		}
 		etEventName = (EditText) findViewById(R.id.et_name);
 		spinnerCategory = (Spinner) findViewById(R.id.spinner_category);
 		etDescription = (EditText) findViewById(R.id.et_description);
@@ -47,6 +54,10 @@ public class CreateEventStep1Activity extends Activity implements Settings{
 		btnUploadEventPoster = (Button) findViewById(R.id.btn_upload_event_poster);
 		btnSuggestLocation = (Button) findViewById(R.id.btn_suggest_location);
 		ivPoster = (ImageView) findViewById(R.id.iv_event_poster);
+		tvPoster = (TextView) findViewById(R.id.tv_event_poster);
+		tvLocation = (TextView) findViewById(R.id.tv_location);
+		tvLocationAlt = (TextView) findViewById(R.id.tv_location_alt);
+		
 		mChooser = new DbxChooser(DROPBOX_API_KEY);		
 		btnUploadEventPoster.setOnClickListener(new OnClickListener(){
 	        @Override
@@ -54,6 +65,20 @@ public class CreateEventStep1Activity extends Activity implements Settings{
 	          mChooser.forResultType(DbxChooser.ResultType.FILE_CONTENT).launch(CreateEventStep1Activity.this, DBX_CHOOSER_REQUEST);
 	        }
 	    });
+		
+		tvPoster.setVisibility(View.GONE);
+		if(typeOfEvent.equals("Big Event")){
+			tvLocation.setVisibility(View.VISIBLE);
+			tvLocationAlt.setVisibility(View.VISIBLE);
+			etLocation.setVisibility(View.GONE);
+			btnSuggestLocation.setVisibility(View.GONE);
+		}
+		else{
+			tvLocation.setVisibility(View.VISIBLE);
+			tvLocationAlt.setVisibility(View.GONE);
+			etLocation.setVisibility(View.VISIBLE);
+			btnSuggestLocation.setVisibility(View.VISIBLE);
+		}
 	}
 	
 	@Override
@@ -67,6 +92,7 @@ public class CreateEventStep1Activity extends Activity implements Settings{
 	            Log.d("main", "Link to selected file extension: " + validatingFileName);
 	            Log.d("main", "Link to selected file: " + result.getLink());
 	            ivPoster.setImageURI(result.getLink());
+	            tvPoster.setVisibility(View.VISIBLE);
 	            // Handle the result
 	        } else {
 	            // Failed or was cancelled by the user.
@@ -92,12 +118,27 @@ public class CreateEventStep1Activity extends Activity implements Settings{
 				
 				Validate eventNameField = new Validate(etEventName);
 				eventNameField.addValidator(new NotEmptyValidator(this));
+				Validate eventDescriptionField = new Validate(etDescription);
+				eventDescriptionField.addValidator(new NotEmptyValidator(this));
+				Validate eventLocationField = new Validate(etLocation);
+				eventLocationField.addValidator(new NotEmptyValidator(this));
+				Validate noOfParticipantsField = new Validate(etNoOfParticipants);
+				noOfParticipantsField.addValidator(new NotEmptyValidator(this));
+				
 				mForm.addValidates(eventNameField);
+				mForm.addValidates(eventDescriptionField);
+				mForm.addValidates(noOfParticipantsField);
 				
 				ArrayList<Validate> validatorsArrList = new ArrayList<Validate>();
 				validatorsArrList.add(eventNameField);
+				validatorsArrList.add(eventDescriptionField);
+				if(!typeOfEvent.equals("Big Event")){
+					mForm.addValidates(eventLocationField);
+					validatorsArrList.add(eventLocationField);
+				}
+				validatorsArrList.add(noOfParticipantsField);
 				
-				CreateEventStep1ValidationController validationController = new CreateEventStep1ValidationController(CreateEventStep1Activity.this);
+				CreateEventStep1ValidationController validationController = new CreateEventStep1ValidationController(CreateEventStep1Activity.this,typeOfEvent);
 				validationController.validateForm(intent, mForm, validatorsArrList);
 				break;
 			case R.id.btn_cancel:

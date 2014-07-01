@@ -24,7 +24,7 @@
 	        android:orientation="vertical" >
 
 	        <TextView
-	            android:id="@+id/tv_poster"
+	            android:id="@+id/tv_event_poster"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:layout_marginTop="10dp"
@@ -58,7 +58,6 @@
 	            android:ems="10"
 	            android:hint="@string/hint_event_name" >
 
-	            <requestFocus />
 	        </EditText>
 
 	        <TextView
@@ -70,7 +69,7 @@
 
 	        <Spinner
 	            android:id="@+id/spinner_category"
-	            android:layout_width="wrap_content"
+	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
 	            android:layout_marginTop="5dp" 
 	            android:entries="@array/categorys"/>
@@ -100,6 +99,15 @@
 	            android:layout_marginTop="10dp"
 	            android:text="@string/location" />
 
+	        <TextView
+	            android:id="@+id/tv_location_alt"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="10dp"
+	            android:textStyle="bold"
+	            android:textSize="16dp"
+	            android:text="@string/location_alt" />
+	        
 	        <EditText
 	            android:id="@+id/et_location"
 	            android:layout_width="match_parent"
@@ -126,12 +134,12 @@
 	        	        
 	        <EditText
 	            android:id="@+id/et_number_of_participants"
-	            android:layout_width="wrap_content"
+	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
-	            android:layout_weight="1.0"
 	            android:ems="10"
-	            android:inputType="number"
-	            android:hint="@string/hint_no_of_participants"/>
+	            android:hint="@string/hint_no_of_participants"
+	            android:inputType="number" />
+
 	    </LinearLayout>	    
 	    <LinearLayout
 	        android:id="@+id/layout_inner_layout"
