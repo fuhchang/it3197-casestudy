@@ -1,5 +1,7 @@
 package com.example.it3197_casestudy.ui_logic;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,7 +17,13 @@ import android.widget.TextView;
 
 import com.dropbox.chooser.android.DbxChooser;
 import com.example.it3197_casestudy.R;
+import com.example.it3197_casestudy.crouton.Crouton;
+import com.example.it3197_casestudy.crouton.Style;
 import com.example.it3197_casestudy.util.Settings;
+import com.example.it3197_casestudy.validation.Form;
+import com.example.it3197_casestudy.validation.Validate;
+import com.example.it3197_casestudy.validation.validator.NotEmptyValidator;
+import com.example.it3197_casestudy.validation_controller.CreateEventStep1ValidationController;
 
 public class CreateEventStep1Activity extends Activity implements Settings{
 	EditText etEventName,etDescription,etLocation,etNoOfParticipants;
@@ -39,8 +47,7 @@ public class CreateEventStep1Activity extends Activity implements Settings{
 		btnUploadEventPoster = (Button) findViewById(R.id.btn_upload_event_poster);
 		btnSuggestLocation = (Button) findViewById(R.id.btn_suggest_location);
 		ivPoster = (ImageView) findViewById(R.id.iv_event_poster);
-		mChooser = new DbxChooser(DROPBOX_API_KEY);
-
+		mChooser = new DbxChooser(DROPBOX_API_KEY);		
 		btnUploadEventPoster.setOnClickListener(new OnClickListener(){
 	        @Override
 	        public void onClick(View v) {
@@ -77,17 +84,21 @@ public class CreateEventStep1Activity extends Activity implements Settings{
 	}
 	
 	public void onClick(View view){
-		Intent intent;
+		Intent intent = null;
 		try {
 			switch (view.getId()) {
 			case R.id.btn_next:
-				/*Form form = new Form(this);
-				form.addField(Field.using(etEventName).validate(NotEmpty.build(this)));
-				if(form.isValid()){
-					intent = new Intent(CreateEventStep1Activity.this, CreateEventStep2Activity.class);
-					startActivity(intent);
-					this.finish();
-				}*///Git
+				Form mForm = new Form();
+				
+				Validate eventNameField = new Validate(etEventName);
+				eventNameField.addValidator(new NotEmptyValidator(this));
+				mForm.addValidates(eventNameField);
+				
+				ArrayList<Validate> validatorsArrList = new ArrayList<Validate>();
+				validatorsArrList.add(eventNameField);
+				
+				CreateEventStep1ValidationController validationController = new CreateEventStep1ValidationController(CreateEventStep1Activity.this);
+				validationController.validateForm(intent, mForm, validatorsArrList);
 				break;
 			case R.id.btn_cancel:
 				onBackPressed();
