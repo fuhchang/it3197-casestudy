@@ -125,11 +125,11 @@
         </activity>
         <activity
             android:name="com.example.it3197_casestudy.ui_logic.CreateGroupActivityStep1"
-            android:label="@string/title_activity_create_group_activity_step1" >
+            android:label="@string/title_activity_create_group_activity_step1">
         </activity>
         <activity
             android:name="com.example.it3197_casestudy.ui_logic.CreateGroupActivityStep2"
-            android:label="@string/title_activity_create_group_activity_step2" >
+            android:label="@string/title_activity_create_group_activity_step2">
         </activity>
         <activity
             android:name="com.example.it3197_casestudy.CreateGroupActivityStep3"

@@ -16,19 +16,19 @@
             android:text="@string/create_event_instructions_1" />
 
         <TextView
-            android:id="@+id/tv_date"
+            android:id="@+id/tv_from"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:layout_below="@+id/tv_create_event_instructions_1"
-            android:text="@string/date" />
+            android:text="@string/from" />
 
         <Button
             android:id="@+id/btn_date_from"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onClick"
-            android:layout_below="@+id/tv_date" />
+            android:layout_below="@+id/tv_from" />
 
         <Button
             android:id="@+id/btn_time_from"
@@ -36,15 +36,13 @@
             android:layout_height="wrap_content" 
             android:layout_toRightOf="@+id/btn_date_from"
             android:onClick="onClick"
-            android:layout_below="@+id/tv_date"/>
+            android:layout_below="@+id/tv_from"/>
 
         <TextView
             android:id="@+id/tv_to"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/btn_date_from"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center_horizontal"
             android:text="@string/to" />
 
         <Button

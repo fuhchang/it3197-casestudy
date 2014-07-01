@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:paddingLeft="5dp"
         android:layout_alignRight="@+id/gName"
-        android:hint="@string/gTitleHint"/>
+        android:hint="@string/gTitleHint" />
     
     <TextView 
         android:id="@+id/gType"

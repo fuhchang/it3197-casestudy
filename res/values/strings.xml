@@ -48,7 +48,8 @@
 	<string name="gType">Group Type</string>
 	<string name="gDesc">Group Description</string>
 	<string name="articleLocSelection"><u>Not the location you want?</u></string>
-  
+    <string name="gTitleHint">Enter Group Name</string>
+    
     <string-array name="type_of_events">
         <item>Big Event</item>
         <item>Small Event</item>
@@ -71,6 +72,22 @@
         <item>setting2</item>
         <item>setting3</item>
         <item>setting4</item>
+    </string-array>
+    
+    
+    
+    <!-- Testing -->
+    <string name="country_prompt">Choose a country</string>
+
+    <string-array name="country_arrays">
+        <item>Malaysia</item>
+        <item>United States</item>
+        <item>Indonesia</item>
+        <item>France</item>
+        <item>Italy</item>
+        <item>Singapore</item>
+        <item>New Zealand</item>
+        <item>India</item>
     </string-array>
     <string-array name="navgigation_drawer_items_array">
         <item>Create</item>
@@ -226,4 +243,7 @@
     <string name="validator_date">The entered date is not valid.</string>
     <string name="validator_ip">The ip address is not valid.</string>
     <string name="validator_num">Inputed text contains something that isn\'t numeric.</string>
+    <string name="title_activity_create_group_activity_step1">CreateGroupActivityStep1</string>
+    <string name="title_activity_create_group_activity_step2">CreateGroupActivityStep2</string>
+    <string name="title_activity_create_group_activity_step3">CreateGroupActivityStep3</string>
 </resources>
