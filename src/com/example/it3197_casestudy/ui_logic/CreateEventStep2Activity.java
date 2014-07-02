@@ -5,32 +5,50 @@ import java.util.Calendar;
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.R.layout;
 import com.example.it3197_casestudy.R.menu;
+import com.example.it3197_casestudy.util.Settings;
+import com.example.it3197_casestudy.validation.Form;
+import com.example.it3197_casestudy.validation.validate.ConfirmValidate;
+import com.example.it3197_casestudy.validation_controller.CreateEventStep2ValidationController;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-public class CreateEventStep2Activity extends Activity {
+public class CreateEventStep2Activity extends Activity implements Settings{
+	String typeOfEvent;
+	
 	Button btnDateFrom, btnDateTo, btnTimeFrom, btnTimeTo;
 	Spinner spinnerRepeats;
-
-	private int year;
-	private int month;
-	private int day;
+	TextView tvRepeats;
 	
-	private int hour;
-	private int minute;
+	private int yearFrom;
+	private int monthFrom;
+	private int dayFrom;
+	private int yearTo;
+	private int monthTo;
+	private int dayTo;
+	
+	private int hourFrom;
+	private int minuteFrom;
+	private int hourTo;
+	private int minuteTo;
 
 	static final int DATE_DIALOG_ID = 999;
 	static final int DATE_DIALOG_ID_1 = 1000;
@@ -42,24 +60,47 @@ public class CreateEventStep2Activity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_event_step_2);
-
+		Bundle bundle = getIntent().getExtras();
+		if(bundle != null){
+			typeOfEvent = bundle.getString("typeOfEvent","Small Event");
+		}
+		
 		btnDateFrom = (Button) findViewById(R.id.btn_date_from);
 		btnDateTo = (Button) findViewById(R.id.btn_date_to);
 		btnTimeFrom = (Button) findViewById(R.id.btn_time_from);
 		btnTimeTo = (Button) findViewById(R.id.btn_time_to);
+		spinnerRepeats = (Spinner) findViewById(R.id.spinner_repeats);
+		tvRepeats = (TextView) findViewById(R.id.tv_repeats);
 		
-		Calendar calendar = Calendar.getInstance();
-		day = calendar.get(Calendar.DAY_OF_MONTH);
-		month = calendar.get(Calendar.MONTH);
-		year = calendar.get(Calendar.YEAR);
-		hour = calendar.get(Calendar.HOUR_OF_DAY);
-		minute = calendar.get(Calendar.MINUTE);
+		Calendar calendarFrom = Calendar.getInstance();
+		dayFrom = calendarFrom.get(Calendar.DAY_OF_MONTH);
+		monthFrom = calendarFrom.get(Calendar.MONTH);
+		yearFrom = calendarFrom.get(Calendar.YEAR);
+		hourFrom = calendarFrom.get(Calendar.HOUR_OF_DAY);
+		minuteFrom = calendarFrom.get(Calendar.MINUTE);
 		
-		btnDateFrom.setText(new StringBuilder().append(day).append("/").append(month + 1).append("/").append(year).append(" "));
-		btnDateTo.setText(new StringBuilder().append(day).append("/").append(month + 1).append("/").append(year).append(" "));
-		btnTimeFrom.setText(new StringBuilder().append(pad(hour)).append(":").append(pad(minute)));
-		btnTimeTo.setText(new StringBuilder().append(pad(hour)).append(":").append(pad(minute)));
-		 
+		Calendar calendarTo = Calendar.getInstance();
+		dayTo = calendarTo.get(Calendar.DAY_OF_MONTH);
+		monthTo = calendarTo.get(Calendar.MONTH);
+		yearTo = calendarTo.get(Calendar.YEAR);
+		hourTo = calendarTo.get(Calendar.HOUR_OF_DAY);
+		minuteTo = calendarTo.get(Calendar.MINUTE) + 1;
+		
+		btnDateFrom.setText(new StringBuilder().append(dayFrom).append("/").append(monthFrom + 1).append("/").append(yearFrom).append(" "));
+		btnDateTo.setText(new StringBuilder().append(dayTo).append("/").append(monthTo + 1).append("/").append(yearTo).append(" "));		
+		btnTimeFrom.setText(new StringBuilder().append(pad(hourFrom)).append(":").append(pad(minuteFrom)));
+		btnTimeTo.setText(new StringBuilder().append(pad(hourTo)).append(":").append(pad(minuteTo)));
+		
+		if(typeOfEvent.equals("Small Event")){
+			spinnerRepeats.setVisibility(View.GONE);
+			tvRepeats.setVisibility(View.GONE);
+			btnTimeFrom.setY(0);
+			btnTimeTo.setY(360);
+		}
+		else{
+			spinnerRepeats.setVisibility(View.VISIBLE);
+			tvRepeats.setVisibility(View.VISIBLE);
+		}
 	}
 
 	@Override
@@ -70,14 +111,31 @@ public class CreateEventStep2Activity extends Activity {
 	}
 
 	public void onClick(View view) {
-		Intent intent;
+		Intent intent = null;
+		Log.i("Type of event: ",typeOfEvent);
 		try {
 			switch (view.getId()) {
 			case R.id.btn_create_event:
-				Toast.makeText(getApplicationContext(),"Event created successfully.", Toast.LENGTH_SHORT).show();
-				intent = new Intent(CreateEventStep2Activity.this,ViewAllEventsActivity.class);
-				startActivity(intent);
-				this.finish();
+				/*String fromDate = btnDateFrom.getText().toString() + btnTimeFrom.getText().toString(); 
+				String toDate = btnDateTo.getText().toString() + btnTimeTo.getText().toString();*/
+				Calendar calendarFrom = Calendar.getInstance();
+				calendarFrom.set(Calendar.DAY_OF_MONTH,dayFrom);
+				calendarFrom.set(Calendar.MONTH,monthFrom);
+				calendarFrom.set(Calendar.YEAR,yearFrom);
+				calendarFrom.set(Calendar.HOUR_OF_DAY,hourFrom);
+				calendarFrom.set(Calendar.MINUTE,minuteFrom);
+				
+				Calendar calendarTo = Calendar.getInstance();
+				calendarTo.set(Calendar.DAY_OF_MONTH,dayTo);
+				calendarTo.set(Calendar.MONTH,monthTo);
+				calendarTo.set(Calendar.YEAR,yearTo);
+				calendarTo.set(Calendar.HOUR_OF_DAY,hourTo);
+				calendarTo.set(Calendar.MINUTE,minuteTo);
+				
+				System.out.println("From Date: " + sqlDateTimeFormatter.format(calendarFrom.getTime()));
+				System.out.println("To Date: " + sqlDateTimeFormatter.format(calendarTo.getTime()));
+				CreateEventStep2ValidationController controller = new CreateEventStep2ValidationController(CreateEventStep2Activity.this,typeOfEvent);
+				controller.validateForm(intent,calendarFrom,calendarTo);
 				break;
 			case R.id.btn_previous:
 				onBackPressed();
@@ -86,7 +144,12 @@ public class CreateEventStep2Activity extends Activity {
 				showDialog(DATE_DIALOG_ID);
 				break;
 			case R.id.btn_date_to:
-				showDialog(DATE_DIALOG_ID_1);
+				if(typeOfEvent.equals("Small Event")){
+					showDialog(DATE_DIALOG_ID);
+				}
+				else{
+					showDialog(DATE_DIALOG_ID_1);
+				}
 				break;
 			case R.id.btn_time_from:
 				showDialog(TIME_DIALOG_ID);
@@ -106,8 +169,9 @@ public class CreateEventStep2Activity extends Activity {
 
 	@Override
 	public void onBackPressed() {
-		Intent intent = new Intent(CreateEventStep2Activity.this,
-				CreateEventStep1Activity.class);
+		Intent intent = new Intent(CreateEventStep2Activity.this,CreateEventStep1Activity.class);
+
+		intent.putExtra("typeOfEvent", typeOfEvent);
 		startActivity(intent);
 		this.finish();
 	}
@@ -117,21 +181,21 @@ public class CreateEventStep2Activity extends Activity {
 		switch (id) {
 		case DATE_DIALOG_ID:
 			// set date picker as current date
-			return new DatePickerDialog(this, datePickerFromListener, year,
-					month, day);
+			return new DatePickerDialog(this, datePickerFromListener, yearFrom,
+					monthFrom, dayFrom);
 
 		case DATE_DIALOG_ID_1:
-			return new DatePickerDialog(this, datePickerToListener, year,
-					month, day);
+			return new DatePickerDialog(this, datePickerToListener, yearTo,
+					monthTo, dayTo);
 		
 		case TIME_DIALOG_ID:
 			// set time picker as current time
 			return new TimePickerDialog(this, 
-                                        timePickerFromListener, hour, minute,false);
+                                        timePickerFromListener, hourFrom, minuteFrom,false);
 		case TIME_DIALOG_ID_1:
 			// set time picker as current time
 			return new TimePickerDialog(this, 
-                                        timePickerToListener, hour, minute,false);
+                                        timePickerToListener, hourTo, minuteTo,false);
 		}
 		return null;
 	}
@@ -141,13 +205,23 @@ public class CreateEventStep2Activity extends Activity {
 		// when dialog box is closed, below method will be called.
 		public void onDateSet(DatePicker view, int selectedYear,
 				int selectedMonth, int selectedDay) {
-			year = selectedYear;
-			month = selectedMonth;
-			day = selectedDay;
+			yearFrom = selectedYear;
+			monthFrom = selectedMonth;
+			dayFrom = selectedDay;
 
 			// set selected date into textview
-			btnDateFrom.setText(new StringBuilder().append(day).append("/")
-					.append(month + 1).append("/").append(year).append(" "));
+			btnDateFrom.setText(new StringBuilder().append(dayFrom).append("/")
+					.append(monthFrom + 1).append("/").append(yearFrom).append(" "));
+			
+			if(typeOfEvent.equals("Small Event")){
+				yearTo = selectedYear;
+				monthTo = selectedMonth;
+				dayTo = selectedDay;
+
+				// set selected date into textview
+				btnDateTo.setText(new StringBuilder().append(dayTo).append("/")
+						.append(monthTo + 1).append("/").append(yearTo).append(" "));
+			}
 		}
 	};
 	private DatePickerDialog.OnDateSetListener datePickerToListener = new DatePickerDialog.OnDateSetListener() {
@@ -155,13 +229,23 @@ public class CreateEventStep2Activity extends Activity {
 		// when dialog box is closed, below method will be called.
 		public void onDateSet(DatePicker view, int selectedYear,
 				int selectedMonth, int selectedDay) {
-			year = selectedYear;
-			month = selectedMonth;
-			day = selectedDay;
+			yearTo = selectedYear;
+			monthTo = selectedMonth;
+			dayTo = selectedDay;
 
 			// set selected date into textview
-			btnDateTo.setText(new StringBuilder().append(day).append("/")
-					.append(month + 1).append("/").append(year).append(" "));
+			btnDateTo.setText(new StringBuilder().append(dayTo).append("/")
+					.append(monthTo + 1).append("/").append(yearTo).append(" "));
+			
+			if(typeOfEvent.equals("Small Event")){
+				yearFrom = selectedYear;
+				monthFrom = selectedMonth;
+				dayFrom = selectedDay;
+
+				// set selected date into textview
+				btnDateFrom.setText(new StringBuilder().append(dayFrom).append("/")
+						.append(monthFrom + 1).append("/").append(yearFrom).append(" "));
+			}
 		}
 	};
 	 
@@ -169,11 +253,11 @@ public class CreateEventStep2Activity extends Activity {
             new TimePickerDialog.OnTimeSetListener() {
 		public void onTimeSet(TimePicker view, int selectedHour,
 				int selectedMinute) {
-			hour = selectedHour;
-			minute = selectedMinute;
+			hourFrom = selectedHour;
+			minuteFrom = selectedMinute;
  
 			// set current time into textview
-			btnTimeFrom.setText(new StringBuilder().append(pad(hour)).append(":").append(pad(minute)));
+			btnTimeFrom.setText(new StringBuilder().append(pad(hourFrom)).append(":").append(pad(minuteFrom)));
 		}
 	};
 	
@@ -181,11 +265,11 @@ public class CreateEventStep2Activity extends Activity {
             new TimePickerDialog.OnTimeSetListener() {
 		public void onTimeSet(TimePicker view, int selectedHour,
 				int selectedMinute) {
-			hour = selectedHour;
-			minute = selectedMinute;
+			hourTo = selectedHour;
+			minuteTo = selectedMinute;
  
 			// set current time into textview
-			btnTimeTo.setText(new StringBuilder().append(pad(hour)).append(":").append(pad(minute)));
+			btnTimeTo.setText(new StringBuilder().append(pad(hourTo)).append(":").append(pad(minuteTo)));
 		}
 	};
  
