@@ -35,7 +35,7 @@
     <string name="time">Time: </string>
     <string name="from">From: </string>
     <string name="to">To: </string>
-    <string name="location">Location: </string> 
+    <string name="location">Location: </string>
     <string name="location_alt">You have requested for an event location.</string>
     <string name="suggest_location">Suggest Location</string>
     <string name="cancel">Cancel</string>
@@ -44,13 +44,18 @@
     <string name="imgdesc">navigation</string>
     <string name="drawer_open">Open drawer</string>
     <string name="drawer_close">close drawer</string>
-	<string name="gName">Group Name</string>
-	<string name="gType">Group Type</string>
-	<string name="gDesc">Group Description</string>
-	<string name="articleLocSelection"><u>Not the location you want?</u></string>
+    <string name="gName">Group Name</string>
+    <string name="gType">Group Type</string>
+    <string name="gDesc">Group Description</string>
+    <string name="articleLocSelection"><u>Not the location you want?</u></string>
     <string name="gTitleHint">Enter Group Name</string>
     <string name="SelectImg">Please Select An ImageFor Your Group </string>
-     <string name="uploadImg">Select An Image From gallery</string>
+    <string name="uploadImg">Select An Image From gallery</string>
+	<string name="createGrp">Create Group</string>
+    <string-array name="imgBy">
+        <item>Gallery</item>
+        <item>Camera</item>
+    </string-array>
     <string-array name="type_of_events">
         <item>Big Event</item>
         <item>Small Event</item>
@@ -74,9 +79,7 @@
         <item>setting3</item>
         <item>setting4</item>
     </string-array>
-    
-    
-    
+
     <!-- Testing -->
     <string name="country_prompt">Choose a country</string>
 
@@ -107,12 +110,13 @@
     <string name="title_activity_hobbies__joined">Hobbies_Joined</string>
     <string name="title_activity_hobbies__all">Hobbies_All</string>
     <string name="title_activity_submit_article">SubmitArticle</string>
-     <string name="title_activity_article_loc_selection">ArticleLocSelection</string>
-    
+    <string name="title_activity_article_loc_selection">ArticleLocSelection</string>
+
     <!-- Location -->
     <string name="title_activity_profile">Profile</string>
 
     <!-- User interface labels and strings -->
+
 
     <!-- Address format -->
     <string name="address_output_string">%1$s %2$s %3$s</string>
@@ -134,21 +138,15 @@
     <string name="disconnected">Client disconnected</string>
     <string name="get_address">Get Address</string>
     <string name="get_location">Get Location</string>
-    <string name="illegal_argument_exception">
-        Illegal arguments: Latitude %1$.8f Longitude %2$.8f
-    </string>
+    <string name="illegal_argument_exception">        Illegal arguments: Latitude %1$.8f Longitude %2$.8f</string>
     <string name="invalid_action">Invalid intent action %1$s</string>
     <string name="invalid_integer_id">Invalid integer request ID: %1$s</string>
     <string name="IO_Exception_getFromLocation">IO Exception in Geocoder.getFromLocation()</string>
     <string name="location_requested">Periodic updates requested</string>
     <string name="location_updated">Location updated</string>
     <string name="location_update_error">Location update failed</string>
-    <string name="location_update_error_detail">
-        Location update error. code %1$d message %2$s
-    </string>
-    <string name="location_update_missing_update">
-        Location update error. No incoming location.
-    </string>
+    <string name="location_update_error_detail">        Location update error. code %1$d message %2$s</string>
+    <string name="location_update_missing_update">        Location update error. No incoming location.</string>
     <string name="location_updates_stopped">Periodic updates stopped</string>
     <string name="log_new_location">New location: %1$s</string>
     <string name="no_address_found">No address found for location</string>
@@ -159,18 +157,15 @@
     <string name="no_resolution">Google Play services: unable to resolve connection error.</string>
     <string name="periodic_update_stop">Stopping periodic updates</string>
     <string name="play_services_available">Google Play services is available</string>
-    <string name="request_location_updates_in_progress">
-        Can\'t request location updates, previous request hasn\'t finished
-    </string>
+    <string name="request_location_updates_in_progress">        Can\'t request location updates, previous request hasn\'t finished</string>
     <string name="start_updates">Start Updates</string>
     <string name="stop_updates">Stop Updates</string>
     <string name="unknown">--Unknown--</string>
-    <string name="unknown_activity_request_code">
-        Received an unknown activity request code %1$d in onActivityResult.
-    </string>
+    <string name="unknown_activity_request_code">        Received an unknown activity request code %1$d in onActivityResult.</string>
     <!-- /Location -->
 
-<!--     	Geofencing String Resources -->
+
+    <!-- Geofencing String Resources -->
     <!-- app name and title -->
     <string name="title_activity_geofence">Geofence Entry</string>
 
@@ -230,8 +225,8 @@
     <string name="lat_lng_pattern">* ###.00000000;* -###.00000000</string>
     <string name="radius_pattern">* #.0000</string>
     <string name="title_activity_view_all_events">Upcoming Events</string>
-    
-<!--  Validation  -->  
+
+    <!-- Validation -->
     <string name="validator_email">The e-mail address is not in a valid format.</string>
     <string name="validator_empty">You must complete this field.</string>
     <string name="validator_url">The URL entered is incorrect.</string>
@@ -247,4 +242,5 @@
     <string name="title_activity_create_group_activity_step1">CreateGroupActivityStep1</string>
     <string name="title_activity_create_group_activity_step2">CreateGroupActivityStep2</string>
     <string name="title_activity_create_group_activity_step3">CreateGroupActivityStep3</string>
+
 </resources>

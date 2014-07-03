@@ -132,7 +132,7 @@
             android:label="@string/title_activity_create_group_activity_step2">
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.CreateGroupActivityStep3"
+            android:name="com.example.it3197_casestudy.ui_logic.CreateGroupActivityStep3"
             android:label="@string/title_activity_create_group_activity_step3" >
         </activity>
     </application>

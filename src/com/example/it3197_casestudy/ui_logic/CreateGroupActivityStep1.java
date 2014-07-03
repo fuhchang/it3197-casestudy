@@ -25,6 +25,7 @@ public class CreateGroupActivityStep1 extends Activity {
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(CreateGroupActivityStep1.this, CreateGroupActivityStep2.class);
+				
 				startActivity(intent);
 			}
 			

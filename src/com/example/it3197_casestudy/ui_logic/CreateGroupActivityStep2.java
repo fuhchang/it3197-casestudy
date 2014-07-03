@@ -6,14 +6,35 @@ import com.example.it3197_casestudy.R.menu;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
 
 public class CreateGroupActivityStep2 extends Activity {
-
+	Button btnNext;
+	String Desc;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_create_group_activity_step2);
+		setContentView(R.layout.activity_create_group_activity_step2); 
+		final EditText etDesc = (EditText) findViewById(R.id.etDesc);
+		btnNext = (Button) findViewById(R.id.btnNext);
+		btnNext.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(CreateGroupActivityStep2.this, CreateGroupActivityStep3.class);
+				Desc = etDesc.getText().toString();
+				intent.putExtra("Desc", Desc);
+				startActivity(intent);
+			}
+			
+		});
+		
 	}
 
 	@Override
