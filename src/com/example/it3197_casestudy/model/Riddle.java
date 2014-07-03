@@ -4,12 +4,12 @@ public class Riddle {
 	private int riddleID;
 	private String riddleTitle;
 	private String riddleContent;
-	private Riddle_Answered riddleAnsID;
+	private RiddleAnswered riddleAnsID;
 	private int riddlePoints;
 	
 	public Riddle(){};
 	
-	public Riddle(int riddleID, String riddleTitle, String riddleContent, Riddle_Answered riddleAnsID, int riddlePoints){
+	public Riddle(int riddleID, String riddleTitle, String riddleContent, RiddleAnswered riddleAnsID, int riddlePoints){
 		this.riddleID = riddleID;
 		this.riddleTitle = riddleTitle;
 		this.riddleContent = riddleContent;
@@ -35,10 +35,10 @@ public class Riddle {
 	public void setRiddleContent(String riddleContent) {
 		this.riddleContent = riddleContent;
 	}
-	public Riddle_Answered getRiddleAnsID() {
+	public RiddleAnswered getRiddleAnsID() {
 		return riddleAnsID;
 	}
-	public void setRiddleAnsID(Riddle_Answered riddleAnsID) {
+	public void setRiddleAnsID(RiddleAnswered riddleAnsID) {
 		this.riddleAnsID = riddleAnsID;
 	}
 	public int getRiddlePoints() {

@@ -1,15 +1,15 @@
 package com.example.it3197_casestudy.model;
 
-public class Riddle_Answered {
+public class RiddleAnswered {
 	private int riddleAnsID;
 	private Riddle riddleID;
 	private User nric;
 	private String riddleAns;
 	private String riddleStatus;
 	
-	public Riddle_Answered(){};
+	public RiddleAnswered(){};
 	
-	public Riddle_Answered(int riddleAnsID, Riddle riddleID, User nric, String riddleAns, String riddleStatus){
+	public RiddleAnswered(int riddleAnsID, Riddle riddleID, User nric, String riddleAns, String riddleStatus){
 		this.riddleAnsID = riddleAnsID;
 		this.riddleID = riddleID;
 		this.nric = nric;
