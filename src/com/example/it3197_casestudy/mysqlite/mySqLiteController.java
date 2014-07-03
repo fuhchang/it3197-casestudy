@@ -63,7 +63,7 @@ public class mySqLiteController {
 					+ "(groupID INTEGER PRIMARY KEY AUTOINCREMENT, groupName TEXT, category TEXT, location TEXT, description TEXT, groupImg BLOB, active INTEGER)");
 			db.execSQL("CREATE TABLE "
 					+ database_riddle
-					+ "(riddleID INTEGER PRIMARY KEY AUTOINCREMENT, riddleTitle TEXT, riddleDesc TEXT, riddleAnsID INTEGER, riddlePoints INTEGER)");
+					+ "(riddleID INTEGER PRIMARY KEY AUTOINCREMENT, riddleTitle TEXT, riddleContent TEXT, riddleAnsID INTEGER, riddlePoints INTEGER)");
 			db.execSQL("CREATE TABLE "
 					+ database_riddle_answered
 					+ "(riddleAnsID INTEGER PRIMARY KEY AUTOINCREMENT, riddleID INTEGER, nric TEXT, riddleAns TEXT, riddleStatus TEXT)");
