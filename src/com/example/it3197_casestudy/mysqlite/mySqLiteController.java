@@ -19,6 +19,8 @@ public class mySqLiteController {
 	private static final String database_post = "post";
 	private static final String database_user = "user";
 	private static final String database_hobby = "hobbies_group";
+	private static final String database_riddle = "riddle";
+	private static final String database_riddle_answered = "riddle_answered";
 
 	private static final int database_version = 1;
 	private DBHelper ourHelper;
@@ -37,7 +39,7 @@ public class mySqLiteController {
 			// TODO Auto-generated method stub
 			db.execSQL("CREATE TABLE "
 					+ database_user
-					+ "(nric TEXT PRIMARY KEY, name TEXT, type TEXT, password TEXT, contactNo TEXT, address TEXT, email TEXT, active INTEGER)");
+					+ "(nric TEXT PRIMARY KEY, name TEXT, type TEXT, password TEXT, contactNo TEXT, address TEXT, email TEXT, active INTEGER, points INTEGER)");
 			db.execSQL("CREATE TABLE "
 					+ database_article
 					+ "(articleID INTEGER PRIMARY KEY, title TEXT, content TEXT, dateTime DATETIME, category TEXT, location TEXT, userNRIC TEXT, active INTEGER, approved INTEGER)");
@@ -59,6 +61,12 @@ public class mySqLiteController {
 			db.execSQL("CREATE TABLE "
 					+ database_hobby
 					+ "(groupID INTEGER PRIMARY KEY AUTOINCREMENT, groupName TEXT, category TEXT, location TEXT, description TEXT, groupImg BLOB, active INTEGER)");
+			db.execSQL("CREATE TABLE "
+					+ database_riddle
+					+ "(riddleID INTEGER PRIMARY KEY AUTOINCREMENT, riddleTitle TEXT, riddleDesc TEXT, riddleAnsID INTEGER, riddlePoints INTEGER)");
+			db.execSQL("CREATE TABLE "
+					+ database_riddle_answered
+					+ "(riddleAnsID INTEGER PRIMARY KEY AUTOINCREMENT, riddleID INTEGER, nric TEXT, riddleAns TEXT, riddleStatus TEXT)");
 		}
 
 		@Override
@@ -91,5 +99,10 @@ public class mySqLiteController {
 	public String getUserTable(){
 		return database_user;
 	}
-	
+	public String getRiddleTable(){
+		return database_riddle;
+	}
+	public String getRiddleAnsTable(){
+		return database_riddle_answered;
+	}
 }
