@@ -49,7 +49,8 @@
 	<string name="gDesc">Group Description</string>
 	<string name="articleLocSelection"><u>Not the location you want?</u></string>
     <string name="gTitleHint">Enter Group Name</string>
-    
+    <string name="SelectImg">Please Select An ImageFor Your Group </string>
+     <string name="uploadImg">Select An Image From gallery</string>
     <string-array name="type_of_events">
         <item>Big Event</item>
         <item>Small Event</item>

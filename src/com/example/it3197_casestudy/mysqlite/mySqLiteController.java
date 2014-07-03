@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class mysqliteConnection {
+public class mySqLiteController {
 	private static final String database_name = "community_outreach";
 	private static final String database_article = "article";
 	private static final String database_comments = "comments";
@@ -58,7 +58,7 @@ public class mysqliteConnection {
 					+ "(postID INTEGER PRIMARY KEY, datetime DATETIME, content TEXT , location TEXT, groupID INTEGER)");
 			db.execSQL("CREATE TABLE "
 					+ database_hobby
-					+ "(groupID INTEGER PRIMARY KEY AUTOINCREMENT, groupName TEXT, category TEXT, location TEXT, description TEXT, active INTEGER)");
+					+ "(groupID INTEGER PRIMARY KEY AUTOINCREMENT, groupName TEXT, category TEXT, location TEXT, description TEXT, groupImg BLOB, active INTEGER)");
 		}
 
 		@Override
@@ -69,11 +69,11 @@ public class mysqliteConnection {
 
 	}
 
-	public mysqliteConnection(Context context) {
+	public mySqLiteController(Context context) {
 		ourContext = context;
 	}
 
-	public mysqliteConnection open() throws SQLException {
+	public mySqLiteController open() throws SQLException {
 		ourHelper = new DBHelper(ourContext);
 		ourDatabase = ourHelper.getWritableDatabase();
 		return this;
@@ -82,15 +82,14 @@ public class mysqliteConnection {
 	public void close() {
 		ourHelper.close();
 	}
-
-	public long insertGroup(Hobby hobby) {
-		ContentValues cv = new ContentValues();
-		cv.put("groupID", hobby.getGroupID());
-		cv.put("category", hobby.getCategory());
-		cv.put("location", hobby.getLocation());
-		cv.put("description", hobby.getDescription());
-		cv.put("active", hobby.getActive());
-		
-		return ourDatabase.insert(database_hobby, null, cv);
+	public String getHobbyTable(){
+		return database_hobby;
 	}
+	public SQLiteDatabase getDB(){
+		return ourDatabase;
+	}
+	public String getUserTable(){
+		return database_user;
+	}
+	
 }

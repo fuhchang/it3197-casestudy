@@ -7,6 +7,7 @@ public class Hobby {
 	private String location;
 	private String description;
 	private int active;
+	private byte[] GrpImg;
 
 	public int getGroupID() {
 		return groupID;
@@ -54,5 +55,20 @@ public class Hobby {
 
 	public void setActive(int active) {
 		this.active = active;
+	}
+
+	/**
+	 * @return the grpImg
+	 */
+	public byte[] getGrpImg() {
+		return GrpImg;
+	}
+
+	/**
+	 * @param grpImg
+	 *            the grpImg to set
+	 */
+	public void setGrpImg(byte[] grpImg) {
+		GrpImg = grpImg;
 	}
 }
