@@ -29,8 +29,8 @@ import com.example.it3197_casestudy.validation_controller.CreateEventStep1Valida
 public class CreateEventStep1Activity extends Activity implements Settings{
 	String typeOfEvent;
 	
-	EditText etEventName,etDescription,etLocation,etNoOfParticipants;
-	Spinner spinnerCategory;
+	EditText etEventName,etDescription,etLocation;
+	Spinner spinnerCategory,spinnerNoOfParticipants;
 	ImageView ivPoster;
 	TextView tvLocation, tvLocationAlt, tvPoster;
 	
@@ -50,7 +50,7 @@ public class CreateEventStep1Activity extends Activity implements Settings{
 		spinnerCategory = (Spinner) findViewById(R.id.spinner_category);
 		etDescription = (EditText) findViewById(R.id.et_description);
 		etLocation = (EditText) findViewById(R.id.et_location);
-		etNoOfParticipants = (EditText) findViewById(R.id.et_number_of_participants);
+		spinnerNoOfParticipants = (Spinner) findViewById(R.id.spinner_no_of_participants);
 		btnUploadEventPoster = (Button) findViewById(R.id.btn_upload_event_poster);
 		btnSuggestLocation = (Button) findViewById(R.id.btn_suggest_location);
 		ivPoster = (ImageView) findViewById(R.id.iv_event_poster);
@@ -122,12 +122,9 @@ public class CreateEventStep1Activity extends Activity implements Settings{
 				eventDescriptionField.addValidator(new NotEmptyValidator(this));
 				Validate eventLocationField = new Validate(etLocation);
 				eventLocationField.addValidator(new NotEmptyValidator(this));
-				Validate noOfParticipantsField = new Validate(etNoOfParticipants);
-				noOfParticipantsField.addValidator(new NotEmptyValidator(this));
 				
 				mForm.addValidates(eventNameField);
 				mForm.addValidates(eventDescriptionField);
-				mForm.addValidates(noOfParticipantsField);
 				
 				ArrayList<Validate> validatorsArrList = new ArrayList<Validate>();
 				validatorsArrList.add(eventNameField);
@@ -136,7 +133,6 @@ public class CreateEventStep1Activity extends Activity implements Settings{
 					mForm.addValidates(eventLocationField);
 					validatorsArrList.add(eventLocationField);
 				}
-				validatorsArrList.add(noOfParticipantsField);
 				
 				CreateEventStep1ValidationController validationController = new CreateEventStep1ValidationController(CreateEventStep1Activity.this,typeOfEvent);
 				validationController.validateForm(intent, mForm, validatorsArrList);

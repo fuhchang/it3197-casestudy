@@ -36,12 +36,6 @@
 	            android:layout_height="wrap_content"
 	            android:layout_marginTop="10dp"
 	            android:contentDescription="@string/event_poster_desc"/>
-	        <Button
-	            android:id="@+id/btn_upload_event_poster"
-	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            android:layout_marginTop="10dp"
-	            android:text="@string/upload_event_poster" />	
 	        
 	        <TextView
 	            android:id="@+id/tv_name"
@@ -131,15 +125,21 @@
 	            android:layout_height="wrap_content"
 	            android:layout_marginTop="10dp"
 	            android:text="@string/number_of_participants" />
-	        	        
-	        <EditText
-	            android:id="@+id/et_number_of_participants"
+	        
+			<Spinner
+	            android:id="@+id/spinner_no_of_participants"
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
-	            android:ems="10"
-	            android:hint="@string/hint_no_of_participants"
-	            android:inputType="number" />
-
+	            android:layout_marginTop="5dp" 
+	            android:entries="@array/noOfParticipants"/>
+	        	        
+	        <Button
+	            android:id="@+id/btn_upload_event_poster"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="10dp"
+	            android:text="@string/upload_event_poster" />	
+	            
 	    </LinearLayout>	    
 	    <LinearLayout
 	        android:id="@+id/layout_inner_layout"

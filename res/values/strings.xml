@@ -66,6 +66,13 @@
         <item>Family</item>
         <item>Health</item>
     </string-array>
+  	<string-array name="noOfParticipants">
+        <item> 0 - 99 </item>
+        <item> 100 - 499 </item>
+        <item> 500 - 999 </item>
+        <item> 1000 - 9999 </item>
+        <item> 10000 - 99999 </item>
+    </string-array>
     <string-array name="repeats">
         <item>Once</item>
         <item>Daily</item>
