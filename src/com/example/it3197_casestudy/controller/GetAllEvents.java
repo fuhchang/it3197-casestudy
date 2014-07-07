@@ -14,6 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
@@ -29,6 +30,8 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 	private String[] eventDateTimeList;
 	private Activity activity;
 	private ListView lvViewAllEvents;
+
+	private ProgressDialog dialog;
 	
 	public GetAllEvents(Activity activity,ListView lvViewAllEvents){
 		this.activity = activity;
@@ -37,7 +40,9 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 	
 	@Override
 	protected void onPreExecute() {
-		eventList = new ArrayList<Event>();
+		eventList = new ArrayList<Event>(); 
+		dialog = ProgressDialog.show(activity,
+				"Retrieving events", "Please wait...", true);
 	}
 
 	@Override
@@ -57,6 +62,7 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 		}
 		EventListAdapter adapter = new EventListAdapter(activity,eventNameList, eventDateTimeList);
 		lvViewAllEvents.setAdapter(adapter);
+		dialog.dismiss();
 	}
 
 	public String retrieveEvents() {

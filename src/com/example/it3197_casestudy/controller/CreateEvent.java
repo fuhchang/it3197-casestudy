@@ -15,6 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.ListView;
@@ -29,6 +30,9 @@ import com.example.it3197_casestudy.util.Settings;
 public class CreateEvent extends AsyncTask<Object, Object, Object> implements Settings{
 	private CreateEventStep2Activity activity;
 	private Event event;
+	
+	private ProgressDialog dialog;
+	
 	public CreateEvent(CreateEventStep2Activity activity, Event event){
 		this.activity = activity;
 		this.event = event;
@@ -36,6 +40,8 @@ public class CreateEvent extends AsyncTask<Object, Object, Object> implements Se
 	
 	@Override
 	protected void onPreExecute() {
+		dialog = ProgressDialog.show(activity,
+				"Creating event", "Please wait...", true);
 	}
 
 	@Override
@@ -81,13 +87,14 @@ public class CreateEvent extends AsyncTask<Object, Object, Object> implements Se
 			json = new JSONObject(responseBody);
 			boolean success = json.getBoolean("success");
 			if(success){
+				dialog.dismiss();
 				Toast.makeText(activity.getApplicationContext(),"Event created successfully.", Toast.LENGTH_SHORT).show();
 				Intent intent = new Intent(activity,ViewAllEventsActivity.class);
 				activity.startActivity(intent);
 				activity.finish();
 			}
 			else{
-				Toast.makeText(activity, json.getString("message"), Toast.LENGTH_LONG);
+				Toast.makeText(activity, json.getString("message"), Toast.LENGTH_LONG).show();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
