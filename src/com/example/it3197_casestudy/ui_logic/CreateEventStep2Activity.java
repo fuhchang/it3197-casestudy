@@ -5,6 +5,7 @@ import java.util.Calendar;
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.R.layout;
 import com.example.it3197_casestudy.R.menu;
+import com.example.it3197_casestudy.model.Event;
 import com.example.it3197_casestudy.util.Settings;
 import com.example.it3197_casestudy.validation.Form;
 import com.example.it3197_casestudy.validation.validate.ConfirmValidate;
@@ -32,6 +33,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 public class CreateEventStep2Activity extends Activity implements Settings{
+	Event event;
 	String typeOfEvent;
 	
 	Button btnDateFrom, btnDateTo, btnTimeFrom, btnTimeTo;
@@ -55,14 +57,26 @@ public class CreateEventStep2Activity extends Activity implements Settings{
 
 	static final int TIME_DIALOG_ID = 99;
 	static final int TIME_DIALOG_ID_1 = 100;
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_event_step_2);
 		Bundle bundle = getIntent().getExtras();
 		if(bundle != null){
+			String eventName = bundle.getString("eventName", "");
+			String eventCategory = bundle.getString("eventCategory","");
+			String eventDescription = bundle.getString("eventDescription", "");
 			typeOfEvent = bundle.getString("typeOfEvent","Small Event");
+			String eventLocation = bundle.getString("eventLocation", "");
+			String noOfParticipants = bundle.getString("noOfParticipants", "");
+			event = new Event();
+			event.setEventName(eventName);
+			event.setEventCategory(eventCategory);
+			event.setEventDescription(eventDescription);
+			event.setEventType(typeOfEvent);
+			event.setEventLocation(eventLocation);
+			event.setNoOfParticipantsAllowed(9999);
 		}
 		
 		btnDateFrom = (Button) findViewById(R.id.btn_date_from);
@@ -134,8 +148,9 @@ public class CreateEventStep2Activity extends Activity implements Settings{
 				
 				System.out.println("From Date: " + sqlDateTimeFormatter.format(calendarFrom.getTime()));
 				System.out.println("To Date: " + sqlDateTimeFormatter.format(calendarTo.getTime()));
+				
 				CreateEventStep2ValidationController controller = new CreateEventStep2ValidationController(CreateEventStep2Activity.this,typeOfEvent);
-				controller.validateForm(intent,calendarFrom,calendarTo);
+				controller.validateForm(intent,calendarFrom,calendarTo,event,spinnerRepeats.getSelectedItem().toString());
 				break;
 			case R.id.btn_previous:
 				onBackPressed();

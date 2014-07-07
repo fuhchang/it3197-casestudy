@@ -27,7 +27,12 @@ public class CreateEventStep1ValidationController implements Settings{
 		// Launch Validation
 		if(mForm.validate()){
 			intent = new Intent(activity, CreateEventStep2Activity.class);
+			intent.putExtra("eventName", activity.getEtEventName().getText().toString());
+			intent.putExtra("eventCategory", activity.getSpinnerCategory().getSelectedItem().toString());
+			intent.putExtra("eventDescription", activity.getEtDescription().getText().toString());
 			intent.putExtra("typeOfEvent", typeOfEvent);
+			intent.putExtra("eventLocation", activity.getEtLocation().getText().toString());
+			intent.putExtra("noOfParticipants", activity.getSpinnerCategory().getSelectedItem().toString());
 			activity.startActivity(intent);
 			activity.finish();
 		}
@@ -41,18 +46,10 @@ public class CreateEventStep1ValidationController implements Settings{
 				crouton.show();
 			}
 			if(typeOfEvent.equals("Big Event")){
-				if(!validatorsArrList.get(2).isValid()){
-					Crouton crouton = Crouton.makeText(activity,"Please enter the number of participants.",Style.ALERT);
-					crouton.show();
-				}
 			}
 			else{
 				if(!validatorsArrList.get(2).isValid()){
 					Crouton crouton = Crouton.makeText(activity,"Please enter a event location.",Style.ALERT);
-					crouton.show();
-				}
-				if(!validatorsArrList.get(3).isValid()){
-					Crouton crouton = Crouton.makeText(activity,"Please enter the number of participants.",Style.ALERT);
 					crouton.show();
 				}
 			}

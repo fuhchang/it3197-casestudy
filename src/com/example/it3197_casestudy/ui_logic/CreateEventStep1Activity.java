@@ -38,6 +38,54 @@ public class CreateEventStep1Activity extends Activity implements Settings{
 	Button btnUploadEventPoster,btnSuggestLocation;
 	private DbxChooser mChooser;
 	
+	public EditText getEtEventName() {
+		return etEventName;
+	}
+
+	public void setEtEventName(EditText etEventName) {
+		this.etEventName = etEventName;
+	}
+
+	public EditText getEtDescription() {
+		return etDescription;
+	}
+
+	public void setEtDescription(EditText etDescription) {
+		this.etDescription = etDescription;
+	}
+
+	public EditText getEtLocation() {
+		return etLocation;
+	}
+
+	public void setEtLocation(EditText etLocation) {
+		this.etLocation = etLocation;
+	}
+
+	public Spinner getSpinnerCategory() {
+		return spinnerCategory;
+	}
+
+	public void setSpinnerCategory(Spinner spinnerCategory) {
+		this.spinnerCategory = spinnerCategory;
+	}
+
+	public Spinner getSpinnerNoOfParticipants() {
+		return spinnerNoOfParticipants;
+	}
+
+	public void setSpinnerNoOfParticipants(Spinner spinnerNoOfParticipants) {
+		this.spinnerNoOfParticipants = spinnerNoOfParticipants;
+	}
+
+	public ImageView getIvPoster() {
+		return ivPoster;
+	}
+
+	public void setIvPoster(ImageView ivPoster) {
+		this.ivPoster = ivPoster;
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
