@@ -14,7 +14,7 @@
         android:layout_marginTop="20dp"
         android:ems="10"
         android:inputType="text" 
-        android:fontFamily="Roboto Thin"
+        android:fontFamily="sans-serif-light"
         android:foreground="@color/Black"
         android:hint="@string/username_or_email">
 
@@ -31,7 +31,7 @@
         android:layout_marginTop="20dp"
         android:ems="10"
         android:inputType="textPassword"
-        android:fontFamily="Roboto Thin"
+        android:fontFamily="sans-serif-light"
         android:foreground="@color/Black"
         android:hint="@string/password" />
 
@@ -43,7 +43,7 @@
         android:layout_alignRight="@+id/tv_password"
         android:layout_below="@+id/tv_password"
         android:layout_marginTop="20dp"
-        android:fontFamily="Roboto Thin"
+        android:fontFamily="sans-serif-light"
         android:onClick="onClick"
         android:text="@string/login" />
 
@@ -54,7 +54,7 @@
         android:layout_below="@+id/btn_login"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
-        android:fontFamily="Roboto Thin"
+        android:fontFamily="sans-serif-light"
         android:text="@string/or_login_with" />
 
     <TextView
@@ -64,7 +64,7 @@
         android:layout_above="@+id/iv_login_pic"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="19dp"
-        android:fontFamily="Roboto Thin"
+        android:fontFamily="sans-serif-bold"
         android:text="@string/app_name"
         android:textSize="@dimen/normal_font_size" />
 
@@ -85,7 +85,7 @@
 	            android:layout_weight="1.0"
 	            android:textColor="@color/White"
 	            android:background="@color/Red"
-	            android:fontFamily="Roboto Thin"
+	            android:fontFamily="sans-serif-light"
 	            android:text="@string/forget_password" />
 		    
 	        <Button
@@ -95,7 +95,7 @@
 	            android:layout_weight="1.0"
 	            android:textColor="@color/White"
 	            android:background="@color/Red"
-	            android:fontFamily="Roboto Thin"
+	            android:fontFamily="sans-serif-light"
 	            android:text="@string/sign_up" />
 	    </LinearLayout>
 
@@ -106,6 +106,7 @@
 	        android:layout_alignParentLeft="true"
 	        android:layout_alignParentTop="true"
 	        android:layout_marginTop="35dp"
+	        android:fontFamily="sans-serif-light"
 	        android:src="@drawable/ic_login_page"
 	        tools:ignore="ContentDescription" />
 
@@ -117,7 +118,7 @@
 	        android:layout_alignParentRight="true"
 	        android:layout_below="@+id/tv_login"
 	        android:layout_marginTop="14dp"
-	        android:fontFamily="Roboto Thin"
+	        android:fontFamily="sans-serif-light"
 	        android:text="@string/login_with_facebook" />
 	    
 </RelativeLayout>

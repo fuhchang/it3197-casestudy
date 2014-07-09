@@ -1,6 +1,8 @@
 package com.example.it3197_casestudy.ui_logic;
 
 import com.example.it3197_casestudy.R;
+import com.example.it3197_casestudy.controller.GetEvent;
+import com.example.it3197_casestudy.model.Event;
 import com.example.it3197_casestudy.util.ViewEventsAdapter;
 
 import android.app.ActionBar;
@@ -29,11 +31,18 @@ public class ViewEventsActivity extends FragmentActivity implements ActionBar.Ta
 	 */
 	ViewPager mViewPager;
 
+	private int eventID;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_view_events);
-
+		
+		savedInstanceState = getIntent().getExtras();
+		if(savedInstanceState != null){
+			eventID = savedInstanceState.getInt("eventID");
+		}
+		
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -42,7 +51,7 @@ public class ViewEventsActivity extends FragmentActivity implements ActionBar.Ta
 
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the app.
-		mViewEventsPagerAdapter = new ViewEventsAdapter(getSupportFragmentManager());
+		mViewEventsPagerAdapter = new ViewEventsAdapter(getSupportFragmentManager(),eventID);
 
 		// Set up the ViewPager with the sections adapter.
 		mViewPager = (ViewPager) findViewById(R.id.pager);

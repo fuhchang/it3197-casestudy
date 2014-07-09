@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginLeft="10dp"
     android:orientation="vertical"
     tools:context=".ViewEventsActivity$DummySectionFragment" >
 
@@ -9,15 +10,17 @@
         android:id="@+id/tv_event_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="Roboto"
-        android:textSize="12sp" />
+        android:fontFamily="sans-serif-light"
+        android:layout_marginTop="10dp"
+        android:textSize="10sp" />
 
     <TextView
         android:id="@+id/tv_event_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        android:textSize="26sp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="sans-serif-bold" />
 
     <ImageView
         android:id="@+id/iv_event_poster"
@@ -25,55 +28,64 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:contentDescription="@string/event_poster_desc"
-        android:fontFamily="Roboto"
+        android:fontFamily="sans-serif-light"
         android:textSize="@dimen/normal_font_size" />
 
     <TextView
         android:id="@+id/tv_event_category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="Roboto"
+        android:fontFamily="sans-serif-light"
+        android:layout_marginTop="10dp"
         android:textSize="@dimen/normal_font_size" />
 
     <TextView
         android:id="@+id/tv_event_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="Roboto"
+        android:fontFamily="sans-serif-light"
+        android:layout_marginTop="10dp"
+        android:maxLines="4"
         android:textSize="@dimen/normal_font_size" />
 
     <TextView
         android:id="@+id/tv_event_date_time_from"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="Roboto"
+        android:fontFamily="sans-serif-light"
+        android:layout_marginTop="10dp"
         android:textSize="@dimen/normal_font_size" />
 
     <TextView
         android:id="@+id/tv_event_date_time_to"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="Roboto"
+        android:fontFamily="sans-serif-light"
+        android:layout_marginTop="10dp"
         android:textSize="@dimen/normal_font_size" />
 
     <TextView
         android:id="@+id/tv_event_occur"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="Roboto"
+        android:fontFamily="sans-serif-light"
+        android:layout_marginTop="10dp"
         android:textSize="@dimen/normal_font_size" />
     
   	<TextView
         android:id="@+id/tv_event_no_of_participants"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="Roboto"
+        android:fontFamily="sans-serif-light"
+        android:layout_marginTop="10dp"
         android:textSize="@dimen/normal_font_size" />
   	
   	<Button 
 	    android:id="@+id/btn_check_in"
 	    android:layout_height="wrap_content"
 	    android:layout_width="fill_parent"
+	    android:layout_marginTop="10dp"
+	    android:fontFamily="sans-serif-light"
 	    android:text="@string/check_in"/>
 
 </LinearLayout>

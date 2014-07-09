@@ -24,9 +24,11 @@ import android.widget.Toast;
 
 import com.example.it3197_casestudy.model.Event;
 import com.example.it3197_casestudy.ui_logic.ViewAllEventsActivity;
+import com.example.it3197_casestudy.ui_logic.ViewEventsActivity;
 import com.example.it3197_casestudy.ui_logic.ViewEventsDetailsFragment;
 import com.example.it3197_casestudy.util.EventListAdapter;
 import com.example.it3197_casestudy.util.Settings;
+import com.example.it3197_casestudy.util.ViewEventsAdapter;
 
 public class GetEvent extends AsyncTask<Object, Object, Object> implements Settings{
 	private ViewEventsDetailsFragment activity;
@@ -52,7 +54,16 @@ public class GetEvent extends AsyncTask<Object, Object, Object> implements Setti
 	@Override
 	protected void onPostExecute(Object result) {
 		parseJSONResponse((String) result);
-		activity.tvEventName.setText(event.getEventName());
+		
+		activity.getTvEventID().setText("Event No: #" + event.getEventID());
+		activity.getTvEventName().setText(event.getEventName());
+		activity.getTvEventCategory().setText("Category: \n" + event.getEventCategory());
+		activity.getTvEventDescription().setText("Description: \n" + event.getEventDescription());
+		activity.getTvEventDateTimeFrom().setText("From: \n" + sqlDateTimeFormatter.format(event.getEventDateTimeFrom()));
+		activity.getTvEventDateTimeTo().setText("To: \n" + sqlDateTimeFormatter.format(event.getEventDateTimeTo()));
+		activity.getTvEventOccur().setText("Occurs: \n" + event.getOccurence());
+		activity.getTvEventNoOfParticipants().setText("No of participants allowed: \n" + event.getNoOfParticipantsAllowed());
+		
 		dialog.dismiss();
 	}
 
