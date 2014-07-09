@@ -7,12 +7,15 @@
 	<TextView
 	        android:id="@+id/tv_event_name"
 	        android:layout_width="wrap_content"
+	        android:textSize="@dimen/normal_font_size"
+	        android:layout_marginTop="10dp"
 	        android:layout_height="50dp">
 	</TextView>
 	
 	<TextView
 		android:id="@+id/tv_event_date_time"
 	   	android:layout_width="wrap_content"
+	   	android:textSize="@dimen/normal_font_size"
 	   	android:layout_height="50dp">
 	</TextView>
 </LinearLayout>
