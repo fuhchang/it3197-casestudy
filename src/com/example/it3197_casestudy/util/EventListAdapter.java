@@ -1,7 +1,7 @@
 package com.example.it3197_casestudy.util;
 
 import com.example.it3197_casestudy.R;
-
+import com.example.it3197_casestudy.model.Event;
 
 import android.app.Activity;
 import android.content.Context;
@@ -16,33 +16,25 @@ import android.widget.TextView;
  * @author Lee Zhuo Xun
  *
  */
-public class EventListAdapter extends ArrayAdapter<String>{
+public class EventListAdapter extends ArrayAdapter<Event> implements Settings{
 	private final Activity context;
-	private final String[] eventNameList;
-	private final String[] eventDateList;
+	private final Event[] eventList;
  
-	public EventListAdapter(Activity context, String[] eventNameList, String[] eventDateList) {
-		super(context, R.layout.list_events, eventNameList);
+	public EventListAdapter(Activity context, Event[] eventList) {
+		super(context, R.layout.list_events, eventList);
 		this.context = context;
-		this.eventNameList = eventNameList;
-		this.eventDateList = eventDateList;
+		this.eventList = eventList;
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View rowView = inflater.inflate(R.layout.list_events, null, true);
+		rowView.setId(eventList[position].getEventID());
 		TextView tvEventName = (TextView) rowView.findViewById(R.id.tv_event_name);
 		TextView tvDateTime = (TextView) rowView.findViewById(R.id.tv_event_date_time);
-		tvEventName.setText(eventNameList[position]);
-		tvDateTime.setText(eventDateList[position]);
- 
-		// Change icon based on name
-		String s = eventNameList[position];
- 
-		System.out.println(s);
-
- 
+		tvEventName.setText(eventList[position].getEventName().toString());
+		tvDateTime.setText(sqlDateTimeFormatter.format(eventList[position].getEventDateTimeFrom()) + " -- " + sqlDateTimeFormatter.format(eventList[position].getEventDateTimeTo()));
 		return rowView;
 	}
 }

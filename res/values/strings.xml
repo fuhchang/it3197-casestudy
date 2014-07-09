@@ -35,6 +35,7 @@
     <string name="time">Time: </string>
     <string name="from">From: </string>
     <string name="to">To: </string>
+    <string name="check_in">Check In </string>
     <string name="location">Location: </string>
     <string name="location_alt">You have requested for an event location.</string>
     <string name="suggest_location">Suggest Location</string>

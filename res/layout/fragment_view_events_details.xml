@@ -1,41 +1,79 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     tools:context=".ViewEventsActivity$DummySectionFragment" >
+
+    <TextView
+        android:id="@+id/tv_event_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="Roboto"
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/tv_event_name"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    
-	<TextView
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/iv_event_poster"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:contentDescription="@string/event_poster_desc"
+        android:fontFamily="Roboto"
+        android:textSize="@dimen/normal_font_size" />
+
+    <TextView
         android:id="@+id/tv_event_category"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-        
-	<TextView
+        android:layout_height="wrap_content"
+        android:fontFamily="Roboto"
+        android:textSize="@dimen/normal_font_size" />
+
+    <TextView
         android:id="@+id/tv_event_description"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-	
-	<TextView
-        android:id="@+id/tv_event_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-	
-	<TextView
-        android:id="@+id/tv_event_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-	
-	<TextView
-        android:id="@+id/tv_event_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:fontFamily="Roboto"
+        android:textSize="@dimen/normal_font_size" />
 
-</RelativeLayout>
+    <TextView
+        android:id="@+id/tv_event_date_time_from"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="Roboto"
+        android:textSize="@dimen/normal_font_size" />
+
+    <TextView
+        android:id="@+id/tv_event_date_time_to"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="Roboto"
+        android:textSize="@dimen/normal_font_size" />
+
+    <TextView
+        android:id="@+id/tv_event_occur"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="Roboto"
+        android:textSize="@dimen/normal_font_size" />
+    
+  	<TextView
+        android:id="@+id/tv_event_no_of_participants"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="Roboto"
+        android:textSize="@dimen/normal_font_size" />
+  	
+  	<Button 
+	    android:id="@+id/btn_check_in"
+	    android:layout_height="wrap_content"
+	    android:layout_width="fill_parent"
+	    android:text="@string/check_in"/>
+
+</LinearLayout>

@@ -15,21 +15,25 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 
 import com.example.it3197_casestudy.model.Event;
 import com.example.it3197_casestudy.ui_logic.ViewAllEventsActivity;
+import com.example.it3197_casestudy.ui_logic.ViewEventsActivity;
 import com.example.it3197_casestudy.util.EventListAdapter;
 import com.example.it3197_casestudy.util.Settings;
 
 public class GetAllEvents extends AsyncTask<Object, Object, Object> implements Settings{
-	private ArrayList<Event> eventList;
-	private String[] eventNameList;
-	private String[] eventDateTimeList;
+	private ArrayList<Event> eventArrList;
+	private Event[] eventList;
 	private ViewAllEventsActivity activity;
 	private ListView lvViewAllEvents;
 
@@ -42,7 +46,7 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 	
 	@Override
 	protected void onPreExecute() {
-		eventList = new ArrayList<Event>(); 
+		eventArrList = new ArrayList<Event>(); 
 		dialog = ProgressDialog.show(activity,
 				"Retrieving events", "Please wait...", true);
 	}
@@ -55,15 +59,20 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 	@Override
 	protected void onPostExecute(Object result) {
 		parseJSONResponse((String) result);
-		eventNameList = new String[eventList.size()];
-		eventDateTimeList = new String[eventList.size()];
-		for(int i=0;i<eventList.size();i++){
-			eventNameList[i] = eventList.get(i).getEventName();
-			String dateTime = dateTimeFormatter.format(eventList.get(i).getEventDateTimeFrom());
-			eventDateTimeList[i] = dateTime;
+		eventList = new Event[eventArrList.size()];
+		for(int i=0;i<eventArrList.size();i++){
+			eventList[i] = eventArrList.get(i);
 		}
-		EventListAdapter adapter = new EventListAdapter(activity,eventNameList, eventDateTimeList);
+		EventListAdapter adapter = new EventListAdapter(activity,eventList);
 		lvViewAllEvents.setAdapter(adapter);
+		lvViewAllEvents.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position,long arg3) {
+		        Intent i = new Intent(activity,ViewEventsActivity.class);
+		        i.putExtra("eventID", view.getId());
+		        activity.startActivity(i);
+			}
+		});
 		dialog.dismiss();
 	}
 
@@ -91,18 +100,20 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 		Event event;
 		try {
 			json = new JSONObject(responseBody);
+			System.out.println(responseBody);
 			if(json.getBoolean("success")){
 				data_array = json.getJSONArray("eventInfo");
 				for (int i = 0; i < data_array.length(); i++) {
 					JSONObject dataJob = new JSONObject(data_array.getString(i));
-					String dateFromInString = dataJob.getString("eventDateTimeFrom").toString();
-					Date date = sqlDateTimeFormatter.parse(dateFromInString);
+					
 					int active = dataJob.getInt("active");
 					event = new Event();
+					event.setEventID(dataJob.getInt("eventID"));
 					event.setEventName(dataJob.getString("eventName"));
-					event.setEventDateTimeFrom(date);
+					event.setEventDateTimeFrom(sqlDateTimeFormatter.parse(dataJob.getString("eventDateTimeFrom")));
+					event.setEventDateTimeTo(sqlDateTimeFormatter.parse(dataJob.getString("eventDateTimeTo")));
 					if(active == 1){
-						eventList.add(event);
+						eventArrList.add(event);
 					}
 				}
 			}
