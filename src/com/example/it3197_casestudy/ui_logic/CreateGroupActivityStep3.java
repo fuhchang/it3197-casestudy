@@ -39,6 +39,7 @@ public class CreateGroupActivityStep3 extends Activity {
 	Button imgUpload;
 	String[] mUploadImg;
 	static int selected;
+	Button btnNext;
 	String uriOfImage , title, type, desc;
 	ImageView imgView;
 	byte[] blobImg;
@@ -54,8 +55,10 @@ public class CreateGroupActivityStep3 extends Activity {
 		mUploadImg = getResources().getStringArray(R.array.imgBy);
 		imgUpload = (Button) findViewById(R.id.uploadImg);
 		imgView = (ImageView) findViewById(R.id.gImg);
+		btnNext = (Button) findViewById(R.id.btnNext);
+		btnNext.setVisibility(View.INVISIBLE);
 		imgUpload.setOnClickListener(new OnClickListener() {
-
+			
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
@@ -69,6 +72,17 @@ public class CreateGroupActivityStep3 extends Activity {
 
 			}
 
+		});
+		
+		btnNext.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(CreateGroupActivityStep3.this, CreateGroupActivityStep4.class);
+				startActivity(intent);
+			}
+			
 		});
 
 	}
@@ -87,6 +101,7 @@ public class CreateGroupActivityStep3 extends Activity {
 					Image = Media
 							.getBitmap(this.getContentResolver(), imageUri);
 					imgView.setImageBitmap(Image);
+					btnNext.setVisibility(View.VISIBLE);
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
