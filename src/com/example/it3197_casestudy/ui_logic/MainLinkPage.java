@@ -68,7 +68,7 @@ public class MainLinkPage extends Activity {
 				}else if (position == 3){
 					Toast.makeText(getApplicationContext(), "RIDDLES", Toast.LENGTH_LONG).show();
 				}else if (position == 4){
-					Toast.makeText(getApplicationContext(), "PROFILE", Toast.LENGTH_LONG).show();
+					intent = new Intent(MainLinkPage.this, ProfileActivity.class);
 				}else if(position == 5){
 					Toast.makeText(getApplicationContext(), "SETTING", Toast.LENGTH_LONG).show();
 				}else{
