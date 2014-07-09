@@ -7,6 +7,8 @@ import java.util.Locale;
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.R.layout;
 import com.example.it3197_casestudy.R.menu;
+import com.example.it3197_casestudy.controller.CreatehobbyGroup;
+import com.example.it3197_casestudy.model.Hobby;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -26,7 +28,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -59,10 +63,11 @@ public class CreateGroupActivityStep4 extends Activity implements LocationListen
 		addressTV = (TextView) findViewById(R.id.LocAddress);
 		findAddress = (EditText) findViewById(R.id.addressET);
 		findLoc = (Button) findViewById(R.id.btnFind);
-		createGrp = (Button) findViewById(R.id.createGrp);
+		
 		MarkerOptions mp = new MarkerOptions();
 		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.gMap)).getMap();
 		map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+		
 		map.setOnMarkerDragListener(this);
 		
 		getMyCurrentLocation();
@@ -84,7 +89,10 @@ public class CreateGroupActivityStep4 extends Activity implements LocationListen
 		getMenuInflater().inflate(R.menu.create_group_activity_step4, menu);
 		return true;
 	}
-
+	
+	public void onClick(View view){
+		
+	}
 	@Override
 	public void onMarkerDrag(Marker arg0) {
 		// TODO Auto-generated method stub
@@ -283,5 +291,23 @@ public class CreateGroupActivityStep4 extends Activity implements LocationListen
   			 Toast.makeText(getApplicationContext(), "No location matches ", Toast.LENGTH_LONG).show();
   		  }
   	  }
+  	  
+  	  
     }
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
+		switch(item.getItemId()){
+		case R.id.createGrp:
+		Intent intentValue = getIntent();
+		Hobby hobby = new Hobby();
+		hobby.setGroupName(intentValue.getStringExtra("eventName"));
+		hobby.setCategory(intentValue.getStringExtra("category"));
+		hobby.setDescription(intentValue.getStringExtra("eventDesc"));
+		CreatehobbyGroup createHobby = new CreatehobbyGroup(this, hobby);
+		createHobby.createHobby();
+		}
+		return super.onOptionsItemSelected(item);
+	}
 }
