@@ -60,8 +60,8 @@ public class ProfileActivity extends FragmentActivity implements
     SharedPreferences.Editor mEditor;
 
     /*
-     * Note if updates have been turned on. Starts out as "false"; is set to "true" in the
-     * method handleRequestSuccess of LocationUpdateReceiver.*
+     * Note if updates have been turned on. Starts out as "false";
+     * is set to "true" in the method handleRequestSuccess of LocationUpdateReceiver.
      */
     boolean mUpdatesRequested = false;
 	
@@ -101,8 +101,7 @@ public class ProfileActivity extends FragmentActivity implements
         mEditor = mPrefs.edit();
 
         /*
-         * Create a new location client, using the enclosing class to
-         * handle callbacks.
+         * Create a new location client, using the enclosing class to handle callbacks.
          */
         mLocationClient = new LocationClient(this, this, this);
 	}
@@ -483,9 +482,7 @@ public class ProfileActivity extends FragmentActivity implements
                  * Call the synchronous getFromLocation() method with the latitude and
                  * longitude of the current location. Return at most 1 address.
                  */
-                addresses = geocoder.getFromLocation(location.getLatitude(),
-                    location.getLongitude(), 1
-                );
+                addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
 
                 // Catch network or other I/O problems.
                 } catch (IOException exception1) {
@@ -525,11 +522,7 @@ public class ProfileActivity extends FragmentActivity implements
                     String addressText = getString(R.string.address_output_string,
 
                             // If there's a street address, add it
-                            address.getMaxAddressLineIndex() > 0 ?
-                                    address.getAddressLine(0) : "",
-
-                            // Locality is usually a city
-                            address.getLocality(),
+                            address.getMaxAddressLineIndex() > 0 ? address.getAddressLine(0) : "",
 
                             // The country of the address
                             address.getCountryName()

@@ -21,9 +21,7 @@
         android:id="@+id/lat_lng"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/label_lat_lng"
-        android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/label_lat_lng"
+        android:layout_below="@+id/label_lat_lng"
         android:textIsSelectable="true"
         android:textSize="20sp" />
 
@@ -32,7 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/label_lat_lng"
+        android:layout_below="@+id/lat_lng"
         android:text="@string/address"
         android:textSize="20sp" />
 
