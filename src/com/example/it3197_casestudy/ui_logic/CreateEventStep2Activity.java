@@ -76,7 +76,24 @@ public class CreateEventStep2Activity extends Activity implements Settings{
 			event.setEventDescription(eventDescription);
 			event.setEventType(typeOfEvent);
 			event.setEventLocation(eventLocation);
-			event.setNoOfParticipantsAllowed(9999);
+			if(noOfParticipants.equals("0 - 99")){
+				event.setNoOfParticipantsAllowed(99);
+			}
+			else if(noOfParticipants.equals("100 - 499")){
+				event.setNoOfParticipantsAllowed(499);
+			}
+			else if(noOfParticipants.equals("100 - 499")){
+				event.setNoOfParticipantsAllowed(499);
+			}
+			else if(noOfParticipants.equals("500 - 999")){
+				event.setNoOfParticipantsAllowed(999);
+			}
+			else if(noOfParticipants.equals("1000 - 9999")){
+				event.setNoOfParticipantsAllowed(9999);
+			}
+			else if(noOfParticipants.equals("10000 - 99999")){
+				event.setNoOfParticipantsAllowed(99999);
+			}
 		}
 		
 		btnDateFrom = (Button) findViewById(R.id.btn_date_from);
@@ -108,8 +125,6 @@ public class CreateEventStep2Activity extends Activity implements Settings{
 		if(typeOfEvent.equals("Small Event")){
 			spinnerRepeats.setVisibility(View.GONE);
 			tvRepeats.setVisibility(View.GONE);
-			btnTimeFrom.setY(0);
-			btnTimeTo.setY(360);
 		}
 		else{
 			spinnerRepeats.setVisibility(View.VISIBLE);

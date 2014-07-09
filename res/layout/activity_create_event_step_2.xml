@@ -69,8 +69,9 @@
             android:id="@+id/btn_time_to"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/tv_repeats"
+            android:layout_below="@+id/btn_time_from"
             android:onClick="onClick"
+            android:layout_marginTop="24dp"
             android:fontFamily="sans-serif-light"
             android:textSize="@dimen/normal_font_size"
             android:layout_alignLeft="@+id/btn_time_from" />

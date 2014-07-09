@@ -118,8 +118,7 @@
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:layout_marginTop="10dp"
-	            android:textStyle="bold"
-	            android:fontFamily="sans-serif-light"
+	            android:fontFamily="sans-serif-bold"
 	            android:textSize="@dimen/normal_font_size"
 	            android:text="@string/location_alt" />
 	        

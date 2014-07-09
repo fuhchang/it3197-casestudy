@@ -32,7 +32,7 @@ public class CreateEventStep1ValidationController implements Settings{
 			intent.putExtra("eventDescription", activity.getEtDescription().getText().toString());
 			intent.putExtra("typeOfEvent", typeOfEvent);
 			intent.putExtra("eventLocation", activity.getEtLocation().getText().toString());
-			intent.putExtra("noOfParticipants", activity.getSpinnerCategory().getSelectedItem().toString());
+			intent.putExtra("noOfParticipants", activity.getSpinnerNoOfParticipants().getSelectedItem().toString());
 			activity.startActivity(intent);
 			activity.finish();
 		}
