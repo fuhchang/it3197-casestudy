@@ -26,7 +26,7 @@ public class ViewAllEventsActivity extends FragmentActivity {
 
 		lvViewAllEvents = (ListView) findViewById(R.id.lv_view_all_events);
 		
-		GetAllEvents getAllEvents = new GetAllEvents(this,lvViewAllEvents);
+		GetAllEvents getAllEvents = new GetAllEvents(ViewAllEventsActivity.this,lvViewAllEvents);
 		getAllEvents.execute();
 		lvViewAllEvents.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -37,7 +37,6 @@ public class ViewAllEventsActivity extends FragmentActivity {
 		        Intent i = new Intent(ViewAllEventsActivity.this,ViewEventsActivity.class);
 		        startActivity(i);
 			}
-
 		});
 	}
 
