@@ -139,6 +139,7 @@
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
 	            android:layout_marginTop="10dp"
+	            android:onClick="onClick"
 	            android:fontFamily="sans-serif-light"
 	            android:textSize="@dimen/normal_font_size"
 	            android:text="@string/suggest_location" />	  

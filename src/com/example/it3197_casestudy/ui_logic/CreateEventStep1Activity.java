@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.transition.Visibility;
 import android.util.Log;
 import android.view.Menu;
@@ -161,6 +162,10 @@ public class CreateEventStep1Activity extends Activity implements Settings{
 		Intent intent = null;
 		try {
 			switch (view.getId()) {
+			case R.id.btn_suggest_location:{
+				Intent i = new Intent(CreateEventStep1Activity.this,SuggestLocationActivity.class);
+				startActivity(i);
+			}
 			case R.id.btn_next:
 				Form mForm = new Form();
 				

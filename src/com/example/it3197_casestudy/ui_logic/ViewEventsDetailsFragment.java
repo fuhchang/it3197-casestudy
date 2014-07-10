@@ -107,12 +107,16 @@ public class ViewEventsDetailsFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_view_events_details, container, false);
 		eventID = getArguments().getInt("eventID");
+
 		return rootView;
 	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
+		super.onActivityCreated(savedInstanceState);
+
+		
 		tvEventID = (TextView) getActivity().findViewById(R.id.tv_event_id);
 		tvEventName = (TextView) getActivity().findViewById(R.id.tv_event_name);
 		ivEventPoster = (ImageView) getActivity().findViewById(R.id.iv_event_poster);
@@ -124,11 +128,9 @@ public class ViewEventsDetailsFragment extends Fragment {
 		tvEventNoOfParticipants = (TextView) getActivity().findViewById(R.id.tv_event_no_of_participants);
 		btnCheckIn = (Button) getActivity().findViewById(R.id.btn_check_in);
 		
-		ivEventPoster.setVisibility(View.GONE);
+		//ivEventPoster.setVisibility(View.GONE);
 		
 		GetEvent getEvent = new GetEvent(ViewEventsDetailsFragment.this, eventID);
 		getEvent.execute();
-		
-		super.onActivityCreated(savedInstanceState);
 	}
 }
