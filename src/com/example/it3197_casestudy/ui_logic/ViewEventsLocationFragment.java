@@ -21,7 +21,7 @@ public class ViewEventsLocationFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(
-				R.layout.fragment_view_events_details, container, false);
+				R.layout.fragment_view_events_location, container, false);
 		return rootView;
 	}
 }

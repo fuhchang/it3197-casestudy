@@ -115,7 +115,6 @@ public class ViewEventsDetailsFragment extends Fragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
-
 		
 		tvEventID = (TextView) getActivity().findViewById(R.id.tv_event_id);
 		tvEventName = (TextView) getActivity().findViewById(R.id.tv_event_name);
