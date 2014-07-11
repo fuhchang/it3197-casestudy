@@ -135,41 +135,51 @@ public class CreateEventStep2Activity extends Activity implements Settings{
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return false;
+		getMenuInflater().inflate(R.menu.create_event_step_2_menu, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
+		Intent intent = null;
+		int id = item.getItemId();
+		switch(id){
+		case R.id.create_event:
+			/*String fromDate = btnDateFrom.getText().toString() + btnTimeFrom.getText().toString(); 
+			String toDate = btnDateTo.getText().toString() + btnTimeTo.getText().toString();*/
+			Calendar calendarFrom = Calendar.getInstance();
+			calendarFrom.set(Calendar.DAY_OF_MONTH,dayFrom);
+			calendarFrom.set(Calendar.MONTH,monthFrom);
+			calendarFrom.set(Calendar.YEAR,yearFrom);
+			calendarFrom.set(Calendar.HOUR_OF_DAY,hourFrom);
+			calendarFrom.set(Calendar.MINUTE,minuteFrom);
+			
+			Calendar calendarTo = Calendar.getInstance();
+			calendarTo.set(Calendar.DAY_OF_MONTH,dayTo);
+			calendarTo.set(Calendar.MONTH,monthTo);
+			calendarTo.set(Calendar.YEAR,yearTo);
+			calendarTo.set(Calendar.HOUR_OF_DAY,hourTo);
+			calendarTo.set(Calendar.MINUTE,minuteTo);
+			
+			System.out.println("From Date: " + sqlDateTimeFormatter.format(calendarFrom.getTime()));
+			System.out.println("To Date: " + sqlDateTimeFormatter.format(calendarTo.getTime()));
+			
+			CreateEventStep2ValidationController controller = new CreateEventStep2ValidationController(CreateEventStep2Activity.this,typeOfEvent);
+			controller.validateForm(intent,calendarFrom,calendarTo,event,spinnerRepeats.getSelectedItem().toString());
+			break;
+		case R.id.previous:
+			onBackPressed();
+			break;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	public void onClick(View view) {
-		Intent intent = null;
+		//Intent intent = null;
 		Log.i("Type of event: ",typeOfEvent);
 		try {
 			switch (view.getId()) {
-			case R.id.btn_create_event:
-				/*String fromDate = btnDateFrom.getText().toString() + btnTimeFrom.getText().toString(); 
-				String toDate = btnDateTo.getText().toString() + btnTimeTo.getText().toString();*/
-				Calendar calendarFrom = Calendar.getInstance();
-				calendarFrom.set(Calendar.DAY_OF_MONTH,dayFrom);
-				calendarFrom.set(Calendar.MONTH,monthFrom);
-				calendarFrom.set(Calendar.YEAR,yearFrom);
-				calendarFrom.set(Calendar.HOUR_OF_DAY,hourFrom);
-				calendarFrom.set(Calendar.MINUTE,minuteFrom);
-				
-				Calendar calendarTo = Calendar.getInstance();
-				calendarTo.set(Calendar.DAY_OF_MONTH,dayTo);
-				calendarTo.set(Calendar.MONTH,monthTo);
-				calendarTo.set(Calendar.YEAR,yearTo);
-				calendarTo.set(Calendar.HOUR_OF_DAY,hourTo);
-				calendarTo.set(Calendar.MINUTE,minuteTo);
-				
-				System.out.println("From Date: " + sqlDateTimeFormatter.format(calendarFrom.getTime()));
-				System.out.println("To Date: " + sqlDateTimeFormatter.format(calendarTo.getTime()));
-				
-				CreateEventStep2ValidationController controller = new CreateEventStep2ValidationController(CreateEventStep2Activity.this,typeOfEvent);
-				controller.validateForm(intent,calendarFrom,calendarTo,event,spinnerRepeats.getSelectedItem().toString());
-				break;
-			case R.id.btn_previous:
-				onBackPressed();
-				break;
 			case R.id.btn_date_from:
 				showDialog(DATE_DIALOG_ID);
 				break;

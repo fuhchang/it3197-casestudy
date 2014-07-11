@@ -9,6 +9,7 @@ import android.support.v4.app.NavUtils;
 import android.transition.Visibility;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -154,45 +155,59 @@ public class CreateEventStep1Activity extends Activity implements Settings{
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return false;
+		getMenuInflater().inflate(R.menu.create_event_step_1_menu, menu);
+		return true;
 	}
 	
-	public void onClick(View view){
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
 		Intent intent = null;
+		int id = item.getItemId();
+		switch(id){
+		case R.id.next:
+			Form mForm = new Form();
+			
+			Validate eventNameField = new Validate(etEventName);
+			eventNameField.addValidator(new NotEmptyValidator(this));
+			Validate eventDescriptionField = new Validate(etDescription);
+			eventDescriptionField.addValidator(new NotEmptyValidator(this));
+			Validate eventLocationField = new Validate(etLocation);
+			eventLocationField.addValidator(new NotEmptyValidator(this));
+			
+			mForm.addValidates(eventNameField);
+			mForm.addValidates(eventDescriptionField);
+			
+			ArrayList<Validate> validatorsArrList = new ArrayList<Validate>();
+			validatorsArrList.add(eventNameField);
+			validatorsArrList.add(eventDescriptionField);
+			if(!typeOfEvent.equals("Big Event")){
+				mForm.addValidates(eventLocationField);
+				validatorsArrList.add(eventLocationField);
+			}
+			
+			CreateEventStep1ValidationController validationController = new CreateEventStep1ValidationController(CreateEventStep1Activity.this,typeOfEvent);
+			validationController.validateForm(intent, mForm, validatorsArrList);
+			break;
+
+		case R.id.cancel:
+			onBackPressed();
+			break;
+		default:
+			CreateEventStep1Activity.this.finish();
+			break;	
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	public void onClick(View view){
+		//Intent intent = null;
 		try {
 			switch (view.getId()) {
 			case R.id.btn_suggest_location:{
 				Intent i = new Intent(CreateEventStep1Activity.this,SuggestLocationActivity.class);
 				startActivity(i);
 			}
-			case R.id.btn_next:
-				Form mForm = new Form();
-				
-				Validate eventNameField = new Validate(etEventName);
-				eventNameField.addValidator(new NotEmptyValidator(this));
-				Validate eventDescriptionField = new Validate(etDescription);
-				eventDescriptionField.addValidator(new NotEmptyValidator(this));
-				Validate eventLocationField = new Validate(etLocation);
-				eventLocationField.addValidator(new NotEmptyValidator(this));
-				
-				mForm.addValidates(eventNameField);
-				mForm.addValidates(eventDescriptionField);
-				
-				ArrayList<Validate> validatorsArrList = new ArrayList<Validate>();
-				validatorsArrList.add(eventNameField);
-				validatorsArrList.add(eventDescriptionField);
-				if(!typeOfEvent.equals("Big Event")){
-					mForm.addValidates(eventLocationField);
-					validatorsArrList.add(eventLocationField);
-				}
-				
-				CreateEventStep1ValidationController validationController = new CreateEventStep1ValidationController(CreateEventStep1Activity.this,typeOfEvent);
-				validationController.validateForm(intent, mForm, validatorsArrList);
-				break;
-			case R.id.btn_cancel:
-				onBackPressed();
-				break;
 			default:
 				CreateEventStep1Activity.this.finish();
 				break;

@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 public interface Settings {
 	String DROPBOX_API_KEY = "cqvf3nim3klslqb";
 	//Put your ip address
-	String API_URL = "http://192.168.1.10:8080/CommunityOutreach/";
+	String API_URL = "http://192.168.1.7:8080/CommunityOutreach/";
 	SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy");
 	SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm a");
 	SimpleDateFormat dateTimeFormatter = new SimpleDateFormat("dd MMM yyyy h:mm:ss a");

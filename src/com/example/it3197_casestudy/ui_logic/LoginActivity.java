@@ -32,16 +32,17 @@ import android.widget.Toast;
 
 /**
  * This is the UI logic activity class for the Login Page
+ * 
  * @author Lee Zhuo Xun
  */
 public class LoginActivity extends FragmentActivity {
 	private ActionBar loginActionBar;
 	private UiLifecycleHelper uiHelper;
-	
-	public LoginActivity(){
-		
+
+	public LoginActivity() {
+
 	}
-	
+
 	/**
 	 * Login activity is created
 	 */
@@ -49,9 +50,9 @@ public class LoginActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		uiHelper = new UiLifecycleHelper(LoginActivity.this, callback);
-	    uiHelper.onCreate(savedInstanceState);
+		uiHelper.onCreate(savedInstanceState);
 		loginActionBar = getActionBar();
-		//Hide the action bar
+		// Hide the action bar
 		loginActionBar.hide();
 		setContentView(R.layout.activity_login);
 	}
@@ -63,28 +64,26 @@ public class LoginActivity extends FragmentActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		//Remove the icon
+		// Remove the icon
 		loginActionBar.setDisplayShowHomeEnabled(false);
-		//Remove the title
+		// Remove the title
 		/*
-		actionBar.setDisplayShowTitleEnabled(false);
-		*/
+		 * actionBar.setDisplayShowTitleEnabled(false);
+		 */
 		return true;
 	}
-	
+
 	public void onClick(View view) {
 		try {
 			switch (view.getId()) {
 			case R.id.btn_login:
-				Intent intent = new Intent(LoginActivity.this, MainLinkPage.class);
+				Intent intent = new Intent(LoginActivity.this,
+						MainLinkPage.class);
 				startActivity(intent);
 				this.finish();
 				break;
 			case R.id.btn_login_facebook:
-				LoginButton authButton = (LoginButton)findViewById(R.id.btn_login_facebook);
 				Session.openActiveSession(LoginActivity.this, true, callback);
-				//authButton.setFragment(this);
-				//authButton.setReadPermissions(Arrays.asList("user_likes", "user_status"));
 				break;
 			default:
 				LoginActivity.this.finish();
@@ -94,67 +93,77 @@ public class LoginActivity extends FragmentActivity {
 			e.printStackTrace();
 		}
 	}
-	
-	private void onSessionStateChange(Session session, SessionState state, Exception exception) {
-	    if (state.isOpened()) {
-	        Log.i("Login via Facebook status: ", "Logged in...");
-	    } else if (state.isClosed()) {
-	        Log.i("Login via Facebook status: ", "Logged out...");
-	    }
-	}
-	
-	private Session.StatusCallback callback = new Session.StatusCallback() {
-	    @Override
-	    public void call(Session session, SessionState state, Exception exception) {
-	        onSessionStateChange(session, state, exception);
-	     // make request to the /me API
-	          Request.newMeRequest(session, new Request.GraphUserCallback() {
 
-	            // callback after Graph API response with user object
-	            @Override
-	            public void onCompleted(GraphUser user, Response response) {
-	              if (user != null) {
-	                TextView userNameOrEmailTextField = (TextView) findViewById(R.id.tv_user_name);
-	                userNameOrEmailTextField.setText(user.getName());
-	              }
-	            }
-	          }).executeAsync();
-	    }
+	private void onSessionStateChange(Session session, SessionState state,
+			Exception exception) {
+		if (state.isOpened()) {
+			Log.i("Login via Facebook status: ", "Logged in...");
+		} else if (state.isClosed()) {
+			Log.i("Login via Facebook status: ", "Logged out...");
+		}
+	}
+
+	private Session.StatusCallback callback = new Session.StatusCallback() {
+		@Override
+		public void call(Session session, SessionState state, Exception exception) {
+			onSessionStateChange(session, state, exception);
+			// make request to the /me API
+			Request.newMeRequest(session, new Request.GraphUserCallback() {
+
+				// callback after Graph API response with user object
+				@Override
+				public void onCompleted(GraphUser user, Response response) {
+					if (user != null) {
+						TextView userNameOrEmailTextField = (TextView) findViewById(R.id.tv_user_name);
+						userNameOrEmailTextField.setText(user.getName());
+					}
+				}
+			}).executeAsync();
+		}
 	};
-	
+
 	@Override
 	public void onResume() {
-	    super.onResume();
-	    Session session = Session.getActiveSession();
-	    if (session != null &&
-	           (session.isOpened() || session.isClosed()) ) {
-	        onSessionStateChange(session, session.getState(), null);
-	    }
+		super.onResume();
+		Session session = Session.getActiveSession();
+		if (session != null && (session.isOpened() || session.isClosed())) {
+			onSessionStateChange(session, session.getState(), null);
+			Request.newMeRequest(session, new Request.GraphUserCallback() {
+				// callback after Graph API response with user object
+				@Override
+				public void onCompleted(GraphUser user, Response response) {
+					if (user != null) {
+						TextView userNameOrEmailTextField = (TextView) findViewById(R.id.tv_user_name);
+						userNameOrEmailTextField.setText(user.getName());
+					}
+				}
+			}).executeAsync();
+		}
 
-	    uiHelper.onResume();
+		uiHelper.onResume();
 	}
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-	    super.onActivityResult(requestCode, resultCode, data);
-	    uiHelper.onActivityResult(requestCode, resultCode, data);
+		super.onActivityResult(requestCode, resultCode, data);
+		uiHelper.onActivityResult(requestCode, resultCode, data);
 	}
 
 	@Override
 	public void onPause() {
-	    super.onPause();
-	    uiHelper.onPause();
+		super.onPause();
+		uiHelper.onPause();
 	}
 
 	@Override
 	public void onDestroy() {
-	    super.onDestroy();
-	    uiHelper.onDestroy();
+		super.onDestroy();
+		uiHelper.onDestroy();
 	}
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
-	    super.onSaveInstanceState(outState);
-	    uiHelper.onSaveInstanceState(outState);
+		super.onSaveInstanceState(outState);
+		uiHelper.onSaveInstanceState(outState);
 	}
 }

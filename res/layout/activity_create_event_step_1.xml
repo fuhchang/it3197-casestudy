@@ -172,38 +172,5 @@
 	            android:text="@string/upload_event_poster" />	
 	            
 	    </LinearLayout>	    
-	    <LinearLayout
-	        android:id="@+id/layout_inner_layout"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_alignParentBottom="true"
-	        android:layout_centerHorizontal="true"
-	        android:layout_below="@+id/linear_layout"
-	        android:orientation="horizontal" >
-
-	        
-		    <Button
-		        android:id="@+id/btn_cancel"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_marginTop="15dp"
-		        android:layout_weight="0.5"
-		        android:onClick="onClick"
-		        android:fontFamily="sans-serif-light"
-		        android:textSize="@dimen/normal_font_size"
-		        android:text="@string/cancel" />
-	        	    	        
-			<Button
-			    android:id="@+id/btn_next"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_weight="0.5"
-			    android:layout_marginTop="15dp"
-			    android:onClick="onClick"
-			    android:fontFamily="sans-serif-light"
-			    android:textSize="@dimen/normal_font_size"
-			    android:text="@string/next" />
-			
-		</LinearLayout>
 	</RelativeLayout>
 </ScrollView>
