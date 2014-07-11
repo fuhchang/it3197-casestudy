@@ -18,6 +18,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
@@ -106,19 +107,7 @@ public class LoginActivity extends FragmentActivity {
 	private Session.StatusCallback callback = new Session.StatusCallback() {
 		@Override
 		public void call(Session session, SessionState state, Exception exception) {
-			onSessionStateChange(session, state, exception);
-			// make request to the /me API
-			Request.newMeRequest(session, new Request.GraphUserCallback() {
-
-				// callback after Graph API response with user object
-				@Override
-				public void onCompleted(GraphUser user, Response response) {
-					if (user != null) {
-						TextView userNameOrEmailTextField = (TextView) findViewById(R.id.tv_user_name);
-						userNameOrEmailTextField.setText(user.getName());
-					}
-				}
-			}).executeAsync();
+			loginViaFB(session);
 		}
 	};
 
@@ -127,21 +116,31 @@ public class LoginActivity extends FragmentActivity {
 		super.onResume();
 		Session session = Session.getActiveSession();
 		if (session != null && (session.isOpened() || session.isClosed())) {
-			onSessionStateChange(session, session.getState(), null);
-			Request.newMeRequest(session, new Request.GraphUserCallback() {
-				// callback after Graph API response with user object
-				@Override
-				public void onCompleted(GraphUser user, Response response) {
-					if (user != null) {
-						TextView userNameOrEmailTextField = (TextView) findViewById(R.id.tv_user_name);
-						userNameOrEmailTextField.setText(user.getName());
-					}
-				}
-			}).executeAsync();
+			loginViaFB(session);
 		}
 
 		uiHelper.onResume();
 	}
+	
+	private void loginViaFB(Session session){
+		onSessionStateChange(session, session.getState(), null);
+		final ProgressDialog dialog = ProgressDialog.show(this, "Logging in...", "Please Wait. ");
+		Request.newMeRequest(session, new Request.GraphUserCallback() {
+			// callback after Graph API response with user object
+			@Override
+			public void onCompleted(GraphUser user, Response response) {
+				if (user != null) {
+					TextView userNameOrEmailTextField = (TextView) findViewById(R.id.tv_user_name);
+					userNameOrEmailTextField.setText(user.getName());
+					Intent intent = new Intent(LoginActivity.this,MainLinkPage.class);
+					dialog.dismiss();
+					startActivity(intent);
+					LoginActivity.this.finish();
+				}
+			}
+		}).executeAsync();
+	}
+	
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
