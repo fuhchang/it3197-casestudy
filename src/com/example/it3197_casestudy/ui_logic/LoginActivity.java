@@ -1,6 +1,15 @@
 package com.example.it3197_casestudy.ui_logic;
 
+import java.util.Arrays;
+
 import com.example.it3197_casestudy.R;
+import com.facebook.Request;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.SessionState;
+import com.facebook.UiLifecycleHelper;
+import com.facebook.model.GraphUser;
+import com.facebook.widget.LoginButton;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -11,19 +20,23 @@ import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
  * This is the UI logic activity class for the Login Page
  * @author Lee Zhuo Xun
  */
-public class LoginActivity extends Activity {
+public class LoginActivity extends FragmentActivity {
 	private ActionBar loginActionBar;
+	private UiLifecycleHelper uiHelper;
 	
 	public LoginActivity(){
 		
@@ -35,6 +48,8 @@ public class LoginActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		uiHelper = new UiLifecycleHelper(LoginActivity.this, callback);
+	    uiHelper.onCreate(savedInstanceState);
 		loginActionBar = getActionBar();
 		//Hide the action bar
 		loginActionBar.hide();
@@ -65,6 +80,12 @@ public class LoginActivity extends Activity {
 				startActivity(intent);
 				this.finish();
 				break;
+			case R.id.btn_login_facebook:
+				LoginButton authButton = (LoginButton)findViewById(R.id.btn_login_facebook);
+				Session.openActiveSession(LoginActivity.this, true, callback);
+				//authButton.setFragment(this);
+				//authButton.setReadPermissions(Arrays.asList("user_likes", "user_status"));
+				break;
 			default:
 				LoginActivity.this.finish();
 				break;
@@ -72,5 +93,68 @@ public class LoginActivity extends Activity {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private void onSessionStateChange(Session session, SessionState state, Exception exception) {
+	    if (state.isOpened()) {
+	        Log.i("Login via Facebook status: ", "Logged in...");
+	    } else if (state.isClosed()) {
+	        Log.i("Login via Facebook status: ", "Logged out...");
+	    }
+	}
+	
+	private Session.StatusCallback callback = new Session.StatusCallback() {
+	    @Override
+	    public void call(Session session, SessionState state, Exception exception) {
+	        onSessionStateChange(session, state, exception);
+	     // make request to the /me API
+	          Request.newMeRequest(session, new Request.GraphUserCallback() {
+
+	            // callback after Graph API response with user object
+	            @Override
+	            public void onCompleted(GraphUser user, Response response) {
+	              if (user != null) {
+	                TextView userNameOrEmailTextField = (TextView) findViewById(R.id.tv_user_name);
+	                userNameOrEmailTextField.setText(user.getName());
+	              }
+	            }
+	          }).executeAsync();
+	    }
+	};
+	
+	@Override
+	public void onResume() {
+	    super.onResume();
+	    Session session = Session.getActiveSession();
+	    if (session != null &&
+	           (session.isOpened() || session.isClosed()) ) {
+	        onSessionStateChange(session, session.getState(), null);
+	    }
+
+	    uiHelper.onResume();
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+	    super.onActivityResult(requestCode, resultCode, data);
+	    uiHelper.onActivityResult(requestCode, resultCode, data);
+	}
+
+	@Override
+	public void onPause() {
+	    super.onPause();
+	    uiHelper.onPause();
+	}
+
+	@Override
+	public void onDestroy() {
+	    super.onDestroy();
+	    uiHelper.onDestroy();
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+	    super.onSaveInstanceState(outState);
+	    uiHelper.onSaveInstanceState(outState);
 	}
 }
