@@ -1,6 +1,7 @@
 package com.example.it3197_casestudy.controller;
 
 import java.io.IOException;
+
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
@@ -23,7 +24,7 @@ import android.widget.Toast;
 
 import com.example.it3197_casestudy.model.Hobby;
 import com.example.it3197_casestudy.ui_logic.CreateGroupActivityStep4;
-import com.example.it3197_casestudy.ui_logic.hobbyList;
+import com.example.it3197_casestudy.ui_logic.ViewHobbiesMain;
 import com.example.it3197_casestudy.util.Settings;
 
 public class CreatehobbyGroup extends AsyncTask<Object, Object, Object>
@@ -60,13 +61,13 @@ public class CreatehobbyGroup extends AsyncTask<Object, Object, Object>
 	public String createHobby(){
 		String responseBody= "";
 		HttpClient httpclient = new DefaultHttpClient();
-		HttpPost httppost = new HttpPost(API_URL + "createHobby");
+		HttpPost httppost = new HttpPost(API_URL + "CreateHobbyServlet");
 		ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
 		
-		postParameters.add(new BasicNameValuePair("hobbyName", hobby.getGroupName()));
-		postParameters.add(new BasicNameValuePair("hobbyCategory", hobby.getCategory()));
-		postParameters.add(new BasicNameValuePair("hobbyDesc", hobby.getDescription()));
-		postParameters.add(new BasicNameValuePair("hobbyLoc", hobby.getLocation()));
+		postParameters.add(new BasicNameValuePair("gtitle", hobby.getGroupName()));
+		postParameters.add(new BasicNameValuePair("gType", hobby.getCategory()));
+		postParameters.add(new BasicNameValuePair("gDesc", hobby.getDescription()));
+		postParameters.add(new BasicNameValuePair("gLoc", hobby.getLocation()));
 		
 		try {
 			httppost.setEntity(new UrlEncodedFormEntity(postParameters));
@@ -88,15 +89,14 @@ public class CreatehobbyGroup extends AsyncTask<Object, Object, Object>
 	
 	private void parseJSONResponse(String responseBody){
 		JSONObject json;
-		
+		System.out.println(responseBody);
 		try {
 			json = new JSONObject(responseBody);
 			boolean success = json.getBoolean("success");
 			if(success){
 				dialog.dismiss();
 				Toast.makeText(activity, "Hobby Group Created", Toast.LENGTH_LONG).show();
-				Intent intent = new Intent(activity, hobbyList.class);
-				activity.startActivity(intent);
+				Intent intent = new Intent(activity, ViewHobbiesMain.class);
 				activity.finish();
 			}
 		} catch (JSONException e) {

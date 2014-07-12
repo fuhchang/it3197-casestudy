@@ -46,9 +46,10 @@ public class CreateGroupActivityStep4 extends Activity implements LocationListen
 	String Address;
 	String City;
 	String locToBeStored = "";
-
+	double finallLat;
+	double finalLng;
 	
-	
+	private LatLng newPosition = null;
 	Location location;
 	private boolean gps_enabled=false;
 	private boolean network_enabled=false;
@@ -66,7 +67,7 @@ public class CreateGroupActivityStep4 extends Activity implements LocationListen
 		
 		MarkerOptions mp = new MarkerOptions();
 		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.gMap)).getMap();
-		map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+		map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 		
 		map.setOnMarkerDragListener(this);
 		
@@ -100,8 +101,29 @@ public class CreateGroupActivityStep4 extends Activity implements LocationListen
 	}
 
 	@Override
-	public void onMarkerDragEnd(Marker arg0) {
+	public void onMarkerDragEnd(Marker mp) {
 		// TODO Auto-generated method stub
+		newPosition = mp.getPosition();
+		try{
+		Geocoder geocoder;  
+	      List<Address> addresses;
+	      geocoder = new Geocoder(this, Locale.getDefault());
+	      addresses = geocoder.getFromLocation(newPosition.latitude, newPosition.longitude,1);
+	      Address = addresses.get(0).getAddressLine(0);
+	       City = addresses.get(0).getAddressLine(1);
+	       mp.setTitle(addresses.get(0).getAddressLine(0) + ", " + addresses.get(0).getAddressLine(1));
+	       mp.setSnippet("(Co-ordinates: " + newPosition.latitude + ", " + newPosition.longitude + ").");
+	       mp.showInfoWindow();
+	       mp.setTitle(addresses.get(0).getAddressLine(0) + ", " + addresses.get(0).getAddressLine(1));
+	       mp.showInfoWindow();
+	       
+	       locToBeStored = Address + "\n" + City ;  
+	   	   addressTV.setText("Estimated location: \n" + locToBeStored);
+	       lat = newPosition.latitude;
+	       Lng = newPosition.longitude;
+		}catch(Exception e){
+			 e.printStackTrace();
+		}
 		
 	}
 
@@ -189,8 +211,6 @@ public class CreateGroupActivityStep4 extends Activity implements LocationListen
 	       }
 
 	      if (Address != null && !Address.isEmpty()) {
-	    //	  mp.position(new LatLng(location.getLatitude(), location.getLongitude()));
-	    	 // mp.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
 		   	   try
 		   	      {
 		   	  	   
@@ -204,7 +224,6 @@ public class CreateGroupActivityStep4 extends Activity implements LocationListen
 		   	       
 		   	    marker.position(new LatLng(lat, Lng));
 				 marker.title(Address + ", " + City);
-				 marker.snippet("(Co-ordinates: " + lat +", " + Lng + ").");
 				 marker.draggable(true);
 				 map.addMarker(marker).showInfoWindow();
 				 map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, Lng), 16));
@@ -220,7 +239,7 @@ public class CreateGroupActivityStep4 extends Activity implements LocationListen
 		   	   locToBeStored=Address + "\n" + City;
 		   	  
 		   	   
-		   	   addressTV.setText("Estimated location: \n" + locToBeStored + "\n(Coordinates: " + lat + ", " +Lng + ")");
+		   	   addressTV.setText("Estimated location: \n" + locToBeStored);
 		   	   
 
 	      }
@@ -280,11 +299,10 @@ public class CreateGroupActivityStep4 extends Activity implements LocationListen
 			 
 			 marker.position(new LatLng(lat, lng));
 			 marker.title(Address + ", " + City);
-			 marker.snippet("(Co-ordinates: " + address.getLatitude() +", " + address.getLongitude() + ").");
 			 marker.draggable(true);
 			 map.addMarker(marker).showInfoWindow();
 			 map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(address.getLatitude(), address.getLongitude()), 16));
-			 addressTV.setText( Address + "\n" + City + "\n(Coordinates: " + lat + ", " + lng + ")");
+			 addressTV.setText( Address + "\n" + City);
 			 this.lat=lat;
 			 this.Lng=lng;
   		  }else{
@@ -305,9 +323,11 @@ public class CreateGroupActivityStep4 extends Activity implements LocationListen
 		hobby.setGroupName(intentValue.getStringExtra("eventName"));
 		hobby.setCategory(intentValue.getStringExtra("category"));
 		hobby.setDescription(intentValue.getStringExtra("eventDesc"));
-		CreatehobbyGroup createHobby = new CreatehobbyGroup(this, hobby);
-		createHobby.createHobby();
+		CreatehobbyGroup createHobby = new CreatehobbyGroup(CreateGroupActivityStep4.this, hobby);
+		createHobby.execute();
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	
 }

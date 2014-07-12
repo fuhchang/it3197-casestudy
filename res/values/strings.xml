@@ -253,7 +253,8 @@
     <string name="title_activity_create_group_activity_step3">CreateGroupActivityStep3</string>
     <string name="title_activity_suggest_location">Suggest Location</string>
     <string name="title_facebook_login">Login via Facebook</string>
-
+	<string name="title_activity_view_single_hobby">ViewSingleHobby</string>
+    
     <!-- Facebook -->
     <string name="app_id">1448892845363751</string>
     

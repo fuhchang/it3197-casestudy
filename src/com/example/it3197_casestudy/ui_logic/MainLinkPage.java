@@ -27,14 +27,23 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 public class MainLinkPage extends Activity {
 	GridView gv;
+	ViewFlipper page;
+	 Animation animFlipInForeward;
+	 Animation animFlipOutForeward;
+	 Animation animFlipInBackward;
+	 Animation animFlipOutBackward;
 	String[] title = { "EVENTS", "HOBBIES", "ARTICLE", "RIDDLES", "PROFILE",
 			"SETTING" };
 
@@ -46,7 +55,11 @@ public class MainLinkPage extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main_link_page);
-		startService();
+		
+		page = (ViewFlipper) findViewById(R.id.flipper);
+		//animFlipInForeward = AnimationUtils.loadAnimation(this, R.anim.f)
+		
+		//startService();
 		GridImageList adapter = new GridImageList(MainLinkPage.this, title,
 				imageID);
 		GridView gv = (GridView) findViewById(R.id.gridview);
@@ -124,4 +137,7 @@ public class MainLinkPage extends Activity {
 		}
 		super.onDestroy();
 	}
+	
+
+	
 }

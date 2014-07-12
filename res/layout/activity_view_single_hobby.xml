@@ -1,0 +1,42 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+	<ImageView 
+	    android:id="@+id/grpImg"
+	    android:layout_width="fill_parent"
+	    android:layout_height="150dp"
+	    android:layout_alignParentLeft="true"
+	    android:background="@drawable/test"/>
+	<TextView 
+	    android:id="@+id/grpTile"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:paddingTop="50dp"
+	    android:gravity="center"
+	    android:text="texting"/>
+	<View
+	    android:id="@+id/hr"
+	    android:layout_width="fill_parent"
+	    android:layout_height="2dp"
+	    android:layout_below="@+id/grpImg"/>
+	<LinearLayout 
+	    android:layout_width="fill_parent"
+    	android:layout_height="fill_parent"
+    	android:layout_below="@+id/hr">
+	        <ListView 
+	            android:id="@+id/grpList"
+        		android:layout_width="fill_parent"
+        		android:layout_height="fill_parent"
+       			android:layout_marginBottom="10dp"
+        		android:layout_marginTop="5dp"
+        		android:cacheColorHint="@android:color/transparent"
+        		android:divider="@android:color/transparent"
+  				android:dividerHeight="15dp"
+        		android:paddingLeft="10dp"
+        		android:paddingTop="10dp"
+        		android:paddingRight="10dp">
+	            
+	        </ListView>
+
+	</LinearLayout>
+</RelativeLayout>

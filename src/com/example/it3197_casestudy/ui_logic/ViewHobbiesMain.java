@@ -81,6 +81,7 @@ public class ViewHobbiesMain extends FragmentActivity implements
 		// When the given tab is selected, switch to the corresponding page in
 		// the ViewPager.
 		ViewPager.setCurrentItem(tab.getPosition());
+		
 	}
 
 	@Override
@@ -89,8 +90,7 @@ public class ViewHobbiesMain extends FragmentActivity implements
 	}
 
 	@Override
-	public void onTabReselected(ActionBar.Tab tab,
-			FragmentTransaction fragmentTransaction) {
+	public void onTabReselected(ActionBar.Tab tab,FragmentTransaction fragmentTransaction) {
 	}
 
 }

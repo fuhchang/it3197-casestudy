@@ -122,7 +122,12 @@
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyBm1w2P3qipVFeAhjSi3F6eQx2M3KmMB18" />
-
+		<!-- fuhchang -->
+        <!-- <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyDVor5BS2mdSm_sxCIOBtQTYS2uBDuNpJg" />
+             -->
+        <!-- fuhchang -->
         <activity
             android:name="com.example.it3197_casestudy.ui_logic.ViewAllEventsActivity"
             android:label="@string/title_activity_view_all_events" >
@@ -154,6 +159,10 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.it3197_casestudy.ui_logic.CreateEventStep1Activity" />
+        </activity>
+        <activity
+            android:name="com.example.it3197_casestudy.ui_logic.ViewSingleHobby"
+            android:label="@string/title_activity_view_single_hobby" >
         </activity>
     </application>
 
