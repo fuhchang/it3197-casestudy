@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/iv_login_pic"
+        android:layout_alignRight="@+id/iv_login_pic"
+        android:layout_below="@+id/iv_login_pic"
+        android:layout_marginTop="20dp"
+        android:fontFamily="sans-serif-light"
+        android:onClick="onClick"
+        android:text="@string/login" />
+
+    <TextView
+        android:id="@+id/tv_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_login"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:fontFamily="sans-serif-light"
+        android:text="@string/or_login_with" />
+
+    <TextView
+        android:id="@+id/tv_app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/iv_login_pic"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="19dp"
+        android:fontFamily="sans-serif-bold"
+        android:text="@string/app_name"
+        android:textSize="@dimen/normal_font_size" />
+
+    <ImageView
+        android:id="@+id/iv_login_pic"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="35dp"
+        android:fontFamily="sans-serif-light"
+        android:src="@drawable/ic_login_page" />
+
+    <com.facebook.widget.LoginButton
+        android:id="@+id/btn_login_facebook"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/tv_login"
+        android:layout_marginTop="14dp"
+        android:fontFamily="sans-serif-light"
+        android:text="@string/login_with_facebook" />
+
+</RelativeLayout>

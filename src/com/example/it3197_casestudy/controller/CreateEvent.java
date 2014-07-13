@@ -15,14 +15,19 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.it3197_casestudy.model.Event;
 import com.example.it3197_casestudy.ui_logic.CreateEventStep2Activity;
+import com.example.it3197_casestudy.ui_logic.MainLinkPage;
 import com.example.it3197_casestudy.ui_logic.ViewAllEventsActivity;
 import com.example.it3197_casestudy.util.EventListAdapter;
 import com.example.it3197_casestudy.util.Settings;
@@ -75,7 +80,7 @@ public class CreateEvent extends AsyncTask<Object, Object, Object> implements Se
 			ResponseHandler<String> responseHandler = new BasicResponseHandler();
 			responseBody = httpclient.execute(httppost, responseHandler);
 		} catch (Exception e) {
-			e.printStackTrace();
+			errorOnExecuting();
 		}
 		System.out.println(responseBody);
 		return responseBody;
@@ -94,11 +99,30 @@ public class CreateEvent extends AsyncTask<Object, Object, Object> implements Se
 				activity.finish();
 			}
 			else{
-				Toast.makeText(activity, json.getString("message"), Toast.LENGTH_LONG).show();
+				errorOnExecuting();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			errorOnExecuting();
 		}
+	}
+	
+	private void errorOnExecuting(){
+		new Handler(Looper.getMainLooper()).post(new Runnable() {
+	        public void run() {
+	            dialog.dismiss();
+	            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+	            builder.setTitle("Error in creating event ");
+	            builder.setMessage("Unable to create event. Please try again.");
+	            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+			            cancel(true);
+					}
+				});
+	            builder.create().show();
+	        }
+	    });
 	}
 
 }

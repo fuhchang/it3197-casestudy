@@ -15,14 +15,20 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.it3197_casestudy.model.Event;
+import com.example.it3197_casestudy.ui_logic.MainLinkPage;
 import com.example.it3197_casestudy.ui_logic.ViewAllEventsActivity;
 import com.example.it3197_casestudy.ui_logic.ViewEventsActivity;
 import com.example.it3197_casestudy.ui_logic.ViewEventsDetailsFragment;
@@ -80,7 +86,7 @@ public class GetEvent extends AsyncTask<Object, Object, Object> implements Setti
 			ResponseHandler<String> responseHandler = new BasicResponseHandler();
 			responseBody = httpclient.execute(httppost, responseHandler);
 		} catch (Exception e) {
-			e.printStackTrace();
+			errorOnExecuting();
 		}
 		System.out.println(responseBody);
 		return responseBody;
@@ -106,10 +112,29 @@ public class GetEvent extends AsyncTask<Object, Object, Object> implements Setti
 				event.setActive(json_object.getInt("active"));
 			}
 			else{
-				Toast.makeText(activity.getActivity(), "Unable to retrieve events.", Toast.LENGTH_LONG).show();
+				errorOnExecuting();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			errorOnExecuting();
 		}
+	}
+	
+	private void errorOnExecuting(){
+		new Handler(Looper.getMainLooper()).post(new Runnable() {
+	        public void run() {
+	            dialog.dismiss();
+	            AlertDialog.Builder builder = new AlertDialog.Builder(activity.getActivity());
+	            builder.setTitle("Error in retrieving event ");
+	            builder.setMessage("Unable to retrieve event. Please try again.");
+	            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+			            cancel(true);
+					}
+				});
+	            builder.create().show();
+	        }
+	    });
 	}
 }
