@@ -103,11 +103,8 @@ public class LoginSelectionActivity extends FragmentActivity {
 		super.onResume();
 		Session session = Session.getActiveSession();
 		if (session != null && (session.isOpened() || session.isClosed())) {
-			if(!session.getState().isClosed()){
-				loginViaFB(session);
-			}
+			loginViaFB(session);
 		}
-
 		uiHelper.onResume();
 	}
 	

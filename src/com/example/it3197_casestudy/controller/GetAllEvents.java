@@ -96,6 +96,7 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 			responseBody = httpclient.execute(httppost, responseHandler);
 		} catch (Exception e) {
 			errorOnExecuting();
+			e.printStackTrace();
 		}
 		System.out.println(responseBody);
 		return responseBody;
@@ -108,31 +109,27 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 		try {
 			json = new JSONObject(responseBody);
 			System.out.println(responseBody);
-			if(json.getBoolean("success")){
-				data_array = json.getJSONArray("eventInfo");
-				for (int i = 0; i < data_array.length(); i++) {
-					JSONObject dataJob = new JSONObject(data_array.getString(i));
-					
-					int active = dataJob.getInt("active");
-					event = new Event();
-					event.setEventID(dataJob.getInt("eventID"));
-					event.setEventName(dataJob.getString("eventName"));
-					event.setEventDateTimeFrom(sqlDateTimeFormatter.parse(dataJob.getString("eventDateTimeFrom")));
-					event.setEventDateTimeTo(sqlDateTimeFormatter.parse(dataJob.getString("eventDateTimeTo")));
-					if(active == 1){
-						eventArrList.add(event);
-					}
+			data_array = json.getJSONArray("eventInfo");
+			for (int i = 0; i < data_array.length(); i++) {
+				JSONObject dataJob = new JSONObject(data_array.getString(i));
+				int active = dataJob.getInt("active");
+				event = new Event();
+				event.setEventID(dataJob.getInt("eventID"));
+				event.setEventName(dataJob.getString("eventName"));
+				event.setEventDateTimeFrom(sqlDateTimeFormatter.parse(dataJob.getString("eventDateTimeFrom")));
+				event.setEventDateTimeTo(sqlDateTimeFormatter.parse(dataJob.getString("eventDateTimeTo")));
+				if(active == 1){
+					eventArrList.add(event);
 				}
-			}
-			else{
-				errorOnExecuting();
 			}
 		} catch (Exception e) {
 			errorOnExecuting();
+			e.printStackTrace();
 		}
 	}
 	
 	private void errorOnExecuting(){
+        this.cancel(true);
 		new Handler(Looper.getMainLooper()).post(new Runnable() {
 	        public void run() {
 	            dialog.dismiss();
@@ -143,7 +140,6 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						// TODO Auto-generated method stub
-			            cancel(true);
 					}
 				});
 	            builder.create().show();

@@ -107,6 +107,7 @@ public class CreateEvent extends AsyncTask<Object, Object, Object> implements Se
 	}
 	
 	private void errorOnExecuting(){
+		this.cancel(true);
 		new Handler(Looper.getMainLooper()).post(new Runnable() {
 	        public void run() {
 	            dialog.dismiss();

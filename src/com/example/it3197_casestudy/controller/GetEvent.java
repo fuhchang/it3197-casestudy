@@ -60,15 +60,20 @@ public class GetEvent extends AsyncTask<Object, Object, Object> implements Setti
 	@Override
 	protected void onPostExecute(Object result) {
 		parseJSONResponse((String) result);
-		
-		activity.getTvEventID().setText("Event No: #" + event.getEventID());
-		activity.getTvEventName().setText(event.getEventName());
-		activity.getTvEventCategory().setText("Category: \n" + event.getEventCategory());
-		activity.getTvEventDescription().setText("Description: \n" + event.getEventDescription());
-		activity.getTvEventDateTimeFrom().setText("From: \n" + sqlDateTimeFormatter.format(event.getEventDateTimeFrom()));
-		activity.getTvEventDateTimeTo().setText("To: \n" + sqlDateTimeFormatter.format(event.getEventDateTimeTo()));
-		activity.getTvEventOccur().setText("Occurs: \n" + event.getOccurence());
-		activity.getTvEventNoOfParticipants().setText("No of participants allowed: \n" + event.getNoOfParticipantsAllowed());
+		try{
+			activity.getTvEventID().setText("Event No: #" + event.getEventID());
+			activity.getTvEventName().setText(event.getEventName());
+			activity.getTvEventCategory().setText("Category: \n" + event.getEventCategory());
+			activity.getTvEventDescription().setText("Description: \n" + event.getEventDescription());
+			activity.getTvEventDateTimeFrom().setText("From: \n" + sqlDateTimeFormatter.format(event.getEventDateTimeFrom()));
+			activity.getTvEventDateTimeTo().setText("To: \n" + sqlDateTimeFormatter.format(event.getEventDateTimeTo()));
+			activity.getTvEventOccur().setText("Occurs: \n" + event.getOccurence());
+			activity.getTvEventNoOfParticipants().setText("No of participants allowed: \n" + event.getNoOfParticipantsAllowed());
+		}
+		catch(Exception e){
+			errorOnExecuting();
+			e.printStackTrace();
+		}
 		
 		dialog.dismiss();
 	}
@@ -87,6 +92,7 @@ public class GetEvent extends AsyncTask<Object, Object, Object> implements Setti
 			responseBody = httpclient.execute(httppost, responseHandler);
 		} catch (Exception e) {
 			errorOnExecuting();
+			e.printStackTrace();
 		}
 		System.out.println(responseBody);
 		return responseBody;
@@ -97,29 +103,26 @@ public class GetEvent extends AsyncTask<Object, Object, Object> implements Setti
 		try {
 			json = new JSONObject(responseBody);
 			System.out.println(responseBody);
-			if(json.getBoolean("success")){
-				json_object = json.getJSONObject("eventInfo");
-				event.setEventAdminNRIC(json_object.getString("eventAdminNRIC"));
-				event.setEventName(json_object.getString("eventName"));
-				event.setEventCategory(json_object.getString("eventCategory"));
-				event.setEventDescription(json_object.getString("eventDescription"));
-				event.setEventType(json_object.getString("eventType"));
-				event.setEventDateTimeFrom(sqlDateTimeFormatter.parse(json_object.getString("eventDateTimeFrom")));
-				event.setEventDateTimeTo(sqlDateTimeFormatter.parse(json_object.getString("eventDateTimeTo")));
-				event.setOccurence(json_object.getString("occurence"));
-				event.setEventLocation(json_object.getString("eventLocation"));
-				event.setNoOfParticipantsAllowed(json_object.getInt("noOfParticipantsAllowed"));
-				event.setActive(json_object.getInt("active"));
-			}
-			else{
-				errorOnExecuting();
-			}
+			json_object = json.getJSONObject("eventInfo");
+			event.setEventAdminNRIC(json_object.getString("eventAdminNRIC"));
+			event.setEventName(json_object.getString("eventName"));
+			event.setEventCategory(json_object.getString("eventCategory"));
+			event.setEventDescription(json_object.getString("eventDescription"));
+			event.setEventType(json_object.getString("eventType"));
+			event.setEventDateTimeFrom(sqlDateTimeFormatter.parse(json_object.getString("eventDateTimeFrom")));
+			event.setEventDateTimeTo(sqlDateTimeFormatter.parse(json_object.getString("eventDateTimeTo")));
+			event.setOccurence(json_object.getString("occurence"));
+			event.setEventLocation(json_object.getString("eventLocation"));
+			event.setNoOfParticipantsAllowed(json_object.getInt("noOfParticipantsAllowed"));
+			event.setActive(json_object.getInt("active"));
 		} catch (Exception e) {
 			errorOnExecuting();
+			e.printStackTrace();
 		}
 	}
 	
 	private void errorOnExecuting(){
+		this.cancel(true);
 		new Handler(Looper.getMainLooper()).post(new Runnable() {
 	        public void run() {
 	            dialog.dismiss();
