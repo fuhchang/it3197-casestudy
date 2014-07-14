@@ -40,11 +40,12 @@ public class CreateGroupActivityStep3 extends Activity {
 	String[] mUploadImg;
 	static int selected;
 	Button btnNext;
-	String uriOfImage , title, type, desc;
+	String uriOfImage , title, type, gDesc;
 	ImageView imgView;
 	byte[] blobImg;
 	Hobby hobby;
 	hobbySQL con;
+	
 	private static Bitmap Image = null;
 	private static final int PICK_IMAGE = 1;
 
@@ -57,6 +58,9 @@ public class CreateGroupActivityStep3 extends Activity {
 		imgView = (ImageView) findViewById(R.id.gImg);
 		btnNext = (Button) findViewById(R.id.btnNext);
 		btnNext.setVisibility(View.INVISIBLE);
+		title = getIntent().getStringExtra("eventName");
+		type = getIntent().getStringExtra("category");
+		gDesc = getIntent().getStringExtra("eventDesc");
 		imgUpload.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -80,6 +84,9 @@ public class CreateGroupActivityStep3 extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(CreateGroupActivityStep3.this, CreateGroupActivityStep4.class);
+				intent.putExtra("eventName", title);
+				intent.putExtra("category", type);
+				intent.putExtra("eventDesc", gDesc);
 				startActivity(intent);
 			}
 			
@@ -137,30 +144,6 @@ public class CreateGroupActivityStep3 extends Activity {
 
 	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// TODO Auto-generated method stub
-		switch (item.getItemId()) {
-		case R.id.createGrp:
-			
-			if (!Image.toString().equals("")) {
-				try {
-					blobImg = convertImage(Image.toString());
-					Log.d("Grp Name", getIntent().getExtras().getString(title));
-					hobby.setGroupName(getIntent().getExtras().getString(title));
-					hobby.setCategory( getIntent().getExtras().getString(type));
-					hobby.setDescription(getIntent().getExtras().getString(desc));
-					hobby.setGrpImg(blobImg);
-					con.insertGrp(hobby);
-					
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			break;
-		}
-		return super.onOptionsItemSelected(item);
-	}
+	
 
 }

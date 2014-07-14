@@ -11,10 +11,13 @@ import com.example.it3197_casestudy.model.Hobby;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ViewSingleHobby extends Activity {
 	TextView grpTitle;
@@ -47,4 +50,21 @@ public class ViewSingleHobby extends Activity {
 		return true;
 	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
+		switch(item.getItemId()){
+		case R.id.action_new:
+			Intent newPost = new Intent(this, CreateHobbyPost.class);
+			startActivity(newPost);
+			break;
+		case R.id.action_update_group:
+			Intent updateIntent = new Intent(this, UpdateGroupActivity.class);
+			startActivity(updateIntent);
+			break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+	
+	
 }

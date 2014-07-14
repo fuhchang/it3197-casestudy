@@ -53,6 +53,9 @@
     <string name="SelectImg">Please Select An ImageFor Your Group </string>
     <string name="uploadImg">Select An Image From gallery</string>
     <string name="createGrp">Create Group</string>
+    <string name="action_new">new post</string>
+    <string name="action_new_post">create post</string>
+    <string name="action_update_group">Edit Group</string>
 
     <string-array name="imgBy">
         <item>Gallery</item>
@@ -253,9 +256,12 @@
     <string name="title_activity_create_group_activity_step3">CreateGroupActivityStep3</string>
     <string name="title_activity_suggest_location">Suggest Location</string>
     <string name="title_facebook_login">Login via Facebook</string>
-	<string name="title_activity_view_single_hobby">ViewSingleHobby</string>
-    
+    <string name="title_activity_view_single_hobby">ViewSingleHobby</string>
+
     <!-- Facebook -->
     <string name="app_id">1448892845363751</string>
-    
+    <string name="title_activity_create_hobby_post">CreateHobbyPost</string>
+    <string name="title_activity_update_group">UpdateGroupActivity</string>
+    <string name="title_activity_hobby_lo_selection">HobbyLoSelection</string>
+
 </resources>

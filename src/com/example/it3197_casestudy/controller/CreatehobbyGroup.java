@@ -42,7 +42,7 @@ public class CreatehobbyGroup extends AsyncTask<Object, Object, Object>
 	protected void onPreExecute() {
 		// TODO Auto-generated method stub
 		dialog = ProgressDialog.show(activity, "Creating Hobby Group",
-				"Createing....", true);
+				"Creatng....", true);
 	}
 
 	@Override

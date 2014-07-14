@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.it3197_casestudy.crouton.Crouton;
 import com.example.it3197_casestudy.crouton.Style;
@@ -17,9 +18,12 @@ import com.example.it3197_casestudy.validation.Validate;
 
 public class CreateGrpStep2ValidationController implements Settings{
 	private CreateGroupActivityStep2 activity;
+	private String gTitle, category;
 
-	public CreateGrpStep2ValidationController(CreateGroupActivityStep2 activity) {
+	public CreateGrpStep2ValidationController(CreateGroupActivityStep2 activity, String gTitle, String category) {
 		this.activity = activity;
+		this.gTitle = gTitle;
+		this.category = category;
 	}
 	
 	
@@ -28,6 +32,9 @@ public class CreateGrpStep2ValidationController implements Settings{
 		if(mForm.validate()){
 			intent = new Intent(activity, CreateGroupActivityStep3.class);
 			intent.putExtra("eventDesc", activity.getGrpDesc().toString());
+			intent.putExtra("eventName", gTitle);
+			intent.putExtra("category", category);
+			
 			activity.startActivity(intent);
 			activity.finish();
 		}

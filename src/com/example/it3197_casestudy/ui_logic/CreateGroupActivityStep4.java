@@ -48,7 +48,7 @@ public class CreateGroupActivityStep4 extends Activity implements LocationListen
 	String locToBeStored = "";
 	double finallLat;
 	double finalLng;
-	
+	String title, gDesc, type;
 	private LatLng newPosition = null;
 	Location location;
 	private boolean gps_enabled=false;
@@ -61,6 +61,9 @@ public class CreateGroupActivityStep4 extends Activity implements LocationListen
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_group_activity_step4);
+		title = getIntent().getStringExtra("eventName");
+		type = getIntent().getStringExtra("category");
+		gDesc = getIntent().getStringExtra("eventDesc");
 		addressTV = (TextView) findViewById(R.id.LocAddress);
 		findAddress = (EditText) findViewById(R.id.addressET);
 		findLoc = (Button) findViewById(R.id.btnFind);
@@ -319,10 +322,15 @@ public class CreateGroupActivityStep4 extends Activity implements LocationListen
 		switch(item.getItemId()){
 		case R.id.createGrp:
 		Intent intentValue = getIntent();
+		Toast.makeText(getApplicationContext(), title, Toast.LENGTH_LONG).show();
+		Toast.makeText(getApplicationContext(), type, Toast.LENGTH_LONG).show();
+		Toast.makeText(getApplicationContext(), gDesc, Toast.LENGTH_LONG).show();
+		Toast.makeText(getApplicationContext(), locToBeStored, Toast.LENGTH_LONG).show();
 		Hobby hobby = new Hobby();
-		hobby.setGroupName(intentValue.getStringExtra("eventName"));
-		hobby.setCategory(intentValue.getStringExtra("category"));
-		hobby.setDescription(intentValue.getStringExtra("eventDesc"));
+		hobby.setGroupName(title);
+		hobby.setCategory(type);
+		hobby.setDescription(gDesc);
+		hobby.setLocation(locToBeStored);
 		CreatehobbyGroup createHobby = new CreatehobbyGroup(CreateGroupActivityStep4.this, hobby);
 		createHobby.execute();
 		}

@@ -19,16 +19,20 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class CreateGroupActivityStep2 extends Activity {
 	Button btnNext;
 	private EditText grpDesc;
+	String title, category;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_group_activity_step2); 
 		grpDesc = (EditText) findViewById(R.id.etDesc);
 		btnNext = (Button) findViewById(R.id.btnNext);
+		title = getIntent().getStringExtra("eventName");
+		category = getIntent().getStringExtra("category");
 		btnNext.setOnClickListener(new OnClickListener(){
 			
 			@Override
@@ -43,7 +47,9 @@ public class CreateGroupActivityStep2 extends Activity {
 				ArrayList<Validate> validList2 = new ArrayList<Validate>();
 				validList2.add(validDesc);
 				Intent intent = new Intent();
-				CreateGrpStep2ValidationController validationController = new CreateGrpStep2ValidationController(CreateGroupActivityStep2.this);
+				
+				
+				CreateGrpStep2ValidationController validationController = new CreateGrpStep2ValidationController(CreateGroupActivityStep2.this,title,category);
 				 validationController.validateForm(intent, mForm, validList2);
 			}
 			

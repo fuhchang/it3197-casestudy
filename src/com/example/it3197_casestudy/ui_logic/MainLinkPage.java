@@ -2,6 +2,7 @@ package com.example.it3197_casestudy.ui_logic;
 
 import java.util.ArrayList;
 
+
 import java.util.List;
 
 import com.example.it3197_casestudy.R;
@@ -22,9 +23,6 @@ import android.content.IntentFilter;
 import android.location.Location;
 import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.View;
 import android.view.animation.Animation;

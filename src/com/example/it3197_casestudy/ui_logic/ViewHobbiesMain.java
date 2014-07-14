@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.Toast;
 
 
 public class ViewHobbiesMain extends FragmentActivity implements
@@ -71,6 +72,10 @@ public class ViewHobbiesMain extends FragmentActivity implements
 			Intent intentNewGrp = new Intent(this, CreateGroupActivityStep1.class);
 			startActivity(intentNewGrp);
 			break;
+		default:
+			Intent intentNewGrp1 = new Intent(this, CreateGroupActivityStep1.class);
+			startActivity(intentNewGrp1);
+			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -92,5 +97,5 @@ public class ViewHobbiesMain extends FragmentActivity implements
 	@Override
 	public void onTabReselected(ActionBar.Tab tab,FragmentTransaction fragmentTransaction) {
 	}
-
+	
 }
