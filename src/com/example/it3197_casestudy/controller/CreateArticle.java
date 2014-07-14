@@ -64,7 +64,7 @@ public class CreateArticle extends AsyncTask<Object, Object, Object> implements 
 		HttpPost httppost = new HttpPost(API_URL + "ArticleSubmissionServlet");
 		ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
 		
-		postParameters.add(new BasicNameValuePair("articleTitle", article.getTitle()));
+		postParameters.add(new BasicNameValuePair("title", article.getTitle()));
 		//postParameters.add(new BasicNameValuePair("gType", article.getCategory()));
 		//postParameters.add(new BasicNameValuePair("gDesc", article.getDescription()));
 		//postParameters.add(new BasicNameValuePair("gLoc", article.getLocation()));
