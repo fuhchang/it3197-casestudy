@@ -159,6 +159,22 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.it3197_casestudy.ui_logic.CreateEventStep1Activity" />
         </activity>
+        <activity
+            android:name="com.example.it3197_casestudy.ui_logic.ViewSingleHobby"
+            android:label="@string/title_activity_view_single_hobby" >
+        </activity>
+        <activity
+            android:name="com.example.it3197_casestudy.ui_logic.CreateHobbyPost"
+            android:label="@string/title_activity_create_hobby_post" >
+        </activity>
+        <activity
+            android:name="com.example.it3197_casestudy.ui_logic.UpdateGroupActivity"
+            android:label="@string/title_activity_update_group" >
+        </activity>
+        <activity
+            android:name="com.example.it3197_casestudy.ui_logic.HobbyLoSelection"
+            android:label="@string/title_activity_hobby_lo_selection" >
+        </activity>
     </application>
 
 </manifest>
