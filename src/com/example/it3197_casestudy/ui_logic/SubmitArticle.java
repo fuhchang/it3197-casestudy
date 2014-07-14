@@ -1,9 +1,16 @@
 package com.example.it3197_casestudy.ui_logic;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import com.example.it3197_casestudy.controller.CreateArticle;
+import com.example.it3197_casestudy.model.Article;
 import com.example.it3197_casestudy.ui_logic.ArticleLocSelection;
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.R.array;
@@ -36,6 +43,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -49,6 +57,9 @@ import android.widget.Toast;
 
 
 public class SubmitArticle extends Activity {
+
+
+
 	GoogleMap map;
 	Spinner spCat;
 	ArrayAdapter<CharSequence> adapter;
@@ -111,7 +122,7 @@ public class SubmitArticle extends Activity {
 			}			
 		});
 		
-storingLoc = (TextView)findViewById(R.id.storingLoc);
+		storingLoc = (TextView)findViewById(R.id.storingLoc);
 		
 		
 		/*
@@ -174,6 +185,38 @@ storingLoc = (TextView)findViewById(R.id.storingLoc);
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.submit_article, menu);
 		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
+		
+		int id = item.getItemId();
+		
+		DateFormat dateFormat = new SimpleDateFormat("dd/MMMM/yyyy HH:mm a");
+		Calendar cal = Calendar.getInstance();
+		String now = dateFormat.format(cal.getTime());
+		
+		
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMMM/yyyy HH:mm a");
+
+            Date currentTime = null;
+			try {
+				currentTime = simpleDateFormat.parse(now);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+		
+		if(id==R.id.submit){
+			Article article = new Article(0, "Hi", "Hi", currentTime,"Hi", "Hi", "Hi", 1, "Hi", 1.3, 54.6);
+			CreateArticle c = new CreateArticle(SubmitArticle.this,article);
+			c.execute();
+		
+		}
+		
+		return super.onOptionsItemSelected(item);
 	}
 
 /*
