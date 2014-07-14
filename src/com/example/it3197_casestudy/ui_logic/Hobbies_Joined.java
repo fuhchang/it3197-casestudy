@@ -8,8 +8,9 @@ import com.example.it3197_casestudy.model.Hobby;
 
 import android.os.Bundle;
 
-import android.app.ListFragment;
+
 import android.graphics.Color;
+
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 

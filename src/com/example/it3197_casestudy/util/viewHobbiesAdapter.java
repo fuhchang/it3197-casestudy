@@ -1,12 +1,12 @@
 package com.example.it3197_casestudy.util;
-
-import com.example.it3197_casestudy.ui_logic.Hobbies_All;
-
-import com.example.it3197_casestudy.ui_logic.Hobbies_Joined;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+
+import com.example.it3197_casestudy.ui_logic.Hobbies_All;
+import com.example.it3197_casestudy.ui_logic.Hobbies_Joined;
+
+
 
 public class viewHobbiesAdapter extends FragmentPagerAdapter {
 

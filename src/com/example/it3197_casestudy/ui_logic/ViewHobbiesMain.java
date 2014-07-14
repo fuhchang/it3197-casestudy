@@ -1,6 +1,7 @@
 package com.example.it3197_casestudy.ui_logic;
 
 import com.example.it3197_casestudy.R;
+
 import com.example.it3197_casestudy.util.viewHobbiesAdapter;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
