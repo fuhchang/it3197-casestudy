@@ -33,11 +33,13 @@ public class CreateGroupActivityStep2 extends Activity {
 		btnNext = (Button) findViewById(R.id.btnNext);
 		title = getIntent().getStringExtra("eventName");
 		category = getIntent().getStringExtra("category");
+		grpDesc = (EditText) findViewById(R.id.etDesc);
 		btnNext.setOnClickListener(new OnClickListener(){
 			
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
+				
 				Form mForm = new Form();
 				Validate validDesc = new Validate(grpDesc);
 				validDesc.addValidator(new NotEmptyValidator(CreateGroupActivityStep2.this));
@@ -49,7 +51,7 @@ public class CreateGroupActivityStep2 extends Activity {
 				Intent intent = new Intent();
 				
 				
-				CreateGrpStep2ValidationController validationController = new CreateGrpStep2ValidationController(CreateGroupActivityStep2.this,title,category);
+				CreateGrpStep2ValidationController validationController = new CreateGrpStep2ValidationController(CreateGroupActivityStep2.this,title,category,grpDesc.getText().toString());
 				 validationController.validateForm(intent, mForm, validList2);
 			}
 			
@@ -62,14 +64,6 @@ public class CreateGroupActivityStep2 extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.create_group_activity_step2, menu);
 		return true;
-	}
-
-	public EditText getGrpDesc() {
-		return grpDesc;
-	}
-
-	public void setGrpDesc(EditText grpDesc) {
-		this.grpDesc = grpDesc;
 	}
 	
 }

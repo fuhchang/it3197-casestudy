@@ -18,20 +18,22 @@ import com.example.it3197_casestudy.validation.Validate;
 
 public class CreateGrpStep2ValidationController implements Settings{
 	private CreateGroupActivityStep2 activity;
-	private String gTitle, category;
+	private String gTitle, category, grpDesc;
 
-	public CreateGrpStep2ValidationController(CreateGroupActivityStep2 activity, String gTitle, String category) {
+	public CreateGrpStep2ValidationController(CreateGroupActivityStep2 activity, String gTitle, String category, String grpDesc) {
 		this.activity = activity;
 		this.gTitle = gTitle;
 		this.category = category;
+		this.grpDesc = grpDesc;
 	}
 	
 	
 	public void validateForm(Intent intent,Form mForm,ArrayList<Validate> validatorsArrList){
 		// Launch Validation
 		if(mForm.validate()){
+			Toast.makeText(activity, "get value from Desc " + grpDesc, Toast.LENGTH_SHORT).show();
 			intent = new Intent(activity, CreateGroupActivityStep3.class);
-			intent.putExtra("eventDesc", activity.getGrpDesc().toString());
+			intent.putExtra("eventDesc", grpDesc);
 			intent.putExtra("eventName", gTitle);
 			intent.putExtra("category", category);
 			
