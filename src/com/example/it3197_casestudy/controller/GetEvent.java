@@ -65,8 +65,8 @@ public class GetEvent extends AsyncTask<Object, Object, Object> implements Setti
 			activity.getTvEventName().setText(event.getEventName());
 			activity.getTvEventCategory().setText("Category: \n" + event.getEventCategory());
 			activity.getTvEventDescription().setText("Description: \n" + event.getEventDescription());
-			activity.getTvEventDateTimeFrom().setText("From: \n" + sqlDateTimeFormatter.format(event.getEventDateTimeFrom()));
-			activity.getTvEventDateTimeTo().setText("To: \n" + sqlDateTimeFormatter.format(event.getEventDateTimeTo()));
+			activity.getTvEventDateTimeFrom().setText("From: \n" + dateTimeFormatter.format(event.getEventDateTimeFrom()));
+			activity.getTvEventDateTimeTo().setText("To: \n" + dateTimeFormatter.format(event.getEventDateTimeTo()));
 			activity.getTvEventOccur().setText("Occurs: \n" + event.getOccurence());
 			activity.getTvEventNoOfParticipants().setText("No of participants allowed: \n" + event.getNoOfParticipantsAllowed());
 		}

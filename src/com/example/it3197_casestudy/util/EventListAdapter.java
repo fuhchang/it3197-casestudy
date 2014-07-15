@@ -34,7 +34,7 @@ public class EventListAdapter extends ArrayAdapter<Event> implements Settings{
 		TextView tvEventName = (TextView) rowView.findViewById(R.id.tv_event_name);
 		TextView tvDateTime = (TextView) rowView.findViewById(R.id.tv_event_date_time);
 		tvEventName.setText(eventList[position].getEventName().toString());
-		tvDateTime.setText(sqlDateTimeFormatter.format(eventList[position].getEventDateTimeFrom()) + " -- " + sqlDateTimeFormatter.format(eventList[position].getEventDateTimeTo()));
+		tvDateTime.setText(dateTimeFormatter.format(eventList[position].getEventDateTimeFrom()));
 		return rowView;
 	}
 }

@@ -1,6 +1,7 @@
 package com.example.it3197_casestudy.controller;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.http.NameValuePair;
@@ -118,6 +119,7 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 				event.setEventName(dataJob.getString("eventName"));
 				event.setEventDateTimeFrom(sqlDateTimeFormatter.parse(dataJob.getString("eventDateTimeFrom")));
 				event.setEventDateTimeTo(sqlDateTimeFormatter.parse(dataJob.getString("eventDateTimeTo")));
+				System.out.println(event.getEventDateTimeFrom());
 				if(active == 1){
 					eventArrList.add(event);
 				}
