@@ -79,12 +79,15 @@ public class SubmitArticle extends Activity {
 	private boolean network_enabled=false;
 	LocationManager lm;
 	
-	EditText et;
+	EditText articleTitle, articleContent;
 	TextView storingLoc;
 	
 	String locToBeStored = "";
 
 	Button chooseLoc;
+	
+	
+	String categorySelected;
 	
 	final int CHOOSE_LOC=1;
 	
@@ -115,6 +118,8 @@ public class SubmitArticle extends Activity {
 				// TODO Auto-generated method stub
 				/**GET SELECTED VALUE**/
 				//categorySelected.setText(arg0.getItemAtPosition(arg2).toString());
+				categorySelected = arg0.getItemAtPosition(arg2).toString();
+			//	Toast.makeText(getApplicationContext(), categorySelected, Toast.LENGTH_LONG).show();
 			}
 			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {
@@ -123,8 +128,8 @@ public class SubmitArticle extends Activity {
 		});
 		
 		storingLoc = (TextView)findViewById(R.id.storingLoc);
-		
-		
+		articleTitle = (EditText) findViewById(R.id.articleTitle);
+		articleContent =(EditText) findViewById(R.id.articleContent);
 		/*
 		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();		
 		map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(1.3667, 103.8), 10));
@@ -210,7 +215,20 @@ public class SubmitArticle extends Activity {
 		
 		
 		if(id==R.id.submit){
-			Article article = new Article(0, "Hi", "Hi", currentTime,"Hi", "Hi", "Hi", 1, "Hi", 1.3, 54.6);
+			Article article = new Article();
+			article.setArticleID(0);
+			article.setTitle(articleTitle.getText().toString());
+			article.setContent(articleContent.getText().toString());
+			article.setDateTime(currentTime);
+			article.setCategory(categorySelected);
+			article.setLocation(locToBeStored);
+			article.setUserNRIC("S9512233X");
+			article.setActive(1);
+			article.setApproved("Pending");
+			article.setDbLat(lat);
+			article.setDbLon(lon);
+			
+			//(0, "Hi", "Hi", currentTime,categorySelected, "Hi", "S9512233X", 1, "Hi", 1.3, 54.6);
 			CreateArticle c = new CreateArticle(SubmitArticle.this,article);
 			c.execute();
 		
@@ -375,10 +393,11 @@ public class SubmitArticle extends Activity {
 	//	   	   mp.title(Address + ", " + City);
 		   	   
 		   	   
-		   	   locToBeStored=Address + "\n" + City;
+		   	   locToBeStored=Address + ", " + City;
 		   	  // updateLoc(locToBeStored);
+		   	 //  Toast.makeText(getApplicationContext(), locToBeStored, Toast.LENGTH_SHORT).show();
 		   	   
-		   	   storingLoc.setText("Estimated location: \n" + locToBeStored + "\n(Coordinates: " + lat + ", " + lon + ")");
+		   	   storingLoc.setText(Address + "\n" + City + "\n(Coordinates: " + lat + ", " + lon + ")");
 		   	   
 	//	   	   mp.snippet("(Co-ordinates: " + lat +", " + lon + ").");
 	//	   	   mp.draggable(true);
@@ -401,8 +420,9 @@ public class SubmitArticle extends Activity {
 	           
 	           lat=1.3667;
 	           lon=103.8;
-	           
-	           storingLoc.setText("Default Location: \n601 Island Club Rd \nSingapore \n(Coordinates: " + lat + ", " + lon +")");
+	           locToBeStored = "601 Island Club Rd, Singapore"; 
+	         //  Toast.makeText(getApplicationContext(), locToBeStored, Toast.LENGTH_SHORT).show();
+	           storingLoc.setText("601 Island Club Rd \nSingapore \n(Coordinates: " + lat + ", " + lon +")");
 	           
 	       /*    mp.position(new LatLng(1.3667, 103.8));
 		     //  mp.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
@@ -487,8 +507,11 @@ public class SubmitArticle extends Activity {
 				String selectedAdd = data.getStringExtra("selectedAdd");
 				 String selectedLat = data.getStringExtra("selectedLat");
 				 String selectedLon = data.getStringExtra("selectedLon");
+				 String locToMain = data.getStringExtra("locToMain");
+				 locToBeStored = locToMain;
+				// Toast.makeText(getApplicationContext(), locToBeStored, Toast.LENGTH_SHORT).show();
 				 
-				 storingLoc.setText("Location: \n" +selectedAdd);
+				 storingLoc.setText(selectedAdd);
 				 lat=Double.parseDouble(selectedLat);
 				 lon = Double.parseDouble(selectedLon);
 				 

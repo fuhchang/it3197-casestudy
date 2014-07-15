@@ -23,6 +23,7 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 
 import com.example.it3197_casestudy.model.Article;
+import com.example.it3197_casestudy.ui_logic.MainLinkPage;
 import com.example.it3197_casestudy.ui_logic.SubmitArticle;
 import com.example.it3197_casestudy.ui_logic.ViewHobbiesMain;
 import com.example.it3197_casestudy.util.Settings;
@@ -65,9 +66,12 @@ public class CreateArticle extends AsyncTask<Object, Object, Object> implements 
 		ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
 		
 		postParameters.add(new BasicNameValuePair("title", article.getTitle()));
-		//postParameters.add(new BasicNameValuePair("gType", article.getCategory()));
-		//postParameters.add(new BasicNameValuePair("gDesc", article.getDescription()));
-		//postParameters.add(new BasicNameValuePair("gLoc", article.getLocation()));
+		postParameters.add(new BasicNameValuePair("category", article.getCategory()));
+		postParameters.add(new BasicNameValuePair("content", article.getContent()));
+		postParameters.add(new BasicNameValuePair("address", article.getLocation()));
+		postParameters.add(new BasicNameValuePair("storingLat", String.valueOf(article.getDbLat())));
+		postParameters.add(new BasicNameValuePair("storingLon", String.valueOf(article.getDbLon())));
+		
 		
 		try {
 			httppost.setEntity(new UrlEncodedFormEntity(postParameters));
@@ -96,7 +100,8 @@ public class CreateArticle extends AsyncTask<Object, Object, Object> implements 
 			if(success){
 				dialog.dismiss();
 				Toast.makeText(activity, "Article Created", Toast.LENGTH_LONG).show();
-				Intent intent = new Intent(activity, ViewHobbiesMain.class);
+				Intent intent = new Intent(activity, MainLinkPage.class);
+				activity.startActivity(intent);
 				activity.finish();
 			}
 		} catch (JSONException e) {

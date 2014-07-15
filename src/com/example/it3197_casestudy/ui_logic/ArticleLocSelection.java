@@ -57,6 +57,7 @@ public class ArticleLocSelection extends Activity implements LocationListener, O
 	TextView storingLoc;
 	
 	String locToBeStored = "";
+	String locToMain="";
 
     MarkerOptions mp = new MarkerOptions();
     
@@ -118,15 +119,11 @@ public class ArticleLocSelection extends Activity implements LocationListener, O
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 					Intent output = new Intent();
+					   output.putExtra("locToMain", locToMain);
 					   output.putExtra("selectedAdd", locToBeStored);
 					   output.putExtra("selectedLat", String.valueOf(finalizedLat));
 					   output.putExtra("selectedLon", String.valueOf(finalizedLon));
 					   setResult(RESULT_OK, output);
-				/*	Intent myIntent = new Intent(ArticleLocSelection.this, SubmitArticle.class);
-					myIntent.putExtra("selectAdd", locToBeStored);
-					myIntent.putExtra("selectedLat",String.valueOf(finalizedLat));
-					myIntent.putExtra("selectedLon", String.valueOf(finalizedLon));
-					startActivityForResult(myIntent, 1);*/
 					 finish();
 				}
 				  
@@ -195,7 +192,7 @@ public class ArticleLocSelection extends Activity implements LocationListener, O
 		   	   
 		   	   mp.title(Address + ", " + City);
 		   	   
-		   	   
+		   		locToMain=Address + ", " + City;
 		   	   locToBeStored=Address + "\n" + City + "\n(Coordinates: " + Double.parseDouble(mainSubmitLat) + ", " + Double.parseDouble(mainSubmitLon) + ")";
 		   	   updateLoc(locToBeStored);
 		   	   
@@ -206,7 +203,7 @@ public class ArticleLocSelection extends Activity implements LocationListener, O
 		   	   mp.draggable(true);
 		   	   map.addMarker(mp).showInfoWindow();
 	
-		   	   map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(Double.parseDouble(mainSubmitLat), Double.parseDouble(mainSubmitLon)), 16));
+		   	   map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(Double.parseDouble(mainSubmitLat), Double.parseDouble(mainSubmitLon)), 17));
 	      }
     }
     
@@ -254,6 +251,7 @@ public class ArticleLocSelection extends Activity implements LocationListener, O
 		    	   mp.setTitle(addresses.get(0).getAddressLine(0) + ", " + addresses.get(0).getAddressLine(1));
 			       mp.setSnippet("(Co-ordinates: " + toPosition.latitude + ", " + toPosition.longitude + ").");
 			       mp.showInfoWindow();
+			       locToMain = Address + ", " + City;
 		       locToBeStored=Address + "\n" + City + "\n(Coordinates: " + toPosition.latitude + ", " + toPosition.longitude + ")";
 		   	   updateLoc(locToBeStored);
 		   	   finalizedLat = toPosition.latitude;
@@ -475,9 +473,9 @@ public class ArticleLocSelection extends Activity implements LocationListener, O
 				    mp.snippet("(Co-ordinates: " + address.getLatitude() +", " + address.getLongitude() + ").");
 				    mp.draggable(true);
 				   	map.addMarker(mp).showInfoWindow();
-					map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(address.getLatitude(), address.getLongitude()), 16));
+					map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(address.getLatitude(), address.getLongitude()), 17));
 				
-				
+					locToMain = Address + ", " + City;
 				locToBeStored = Address + "\n" + City + "\n(Coordinates: " + lat + ", " + lng + ")";
 				updateLoc(locToBeStored);
 				finalizedLat=lat;
