@@ -2,6 +2,7 @@ package com.example.it3197_casestudy.validation_controller;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import com.example.it3197_casestudy.ui_logic.CreateEventStep1Activity;
 import com.example.it3197_casestudy.ui_logic.CreateEventStep2Activity;
 import com.example.it3197_casestudy.ui_logic.ViewAllEventsActivity;
 import com.example.it3197_casestudy.util.Settings;
+import com.example.it3197_casestudy.util.TimeIgnoringComparator;
 import com.example.it3197_casestudy.validation.Form;
 import com.example.it3197_casestudy.validation.Validate;
 import com.example.it3197_casestudy.validation.validator.NotEmptyValidator;
@@ -30,15 +32,24 @@ public class CreateEventStep2ValidationController implements Settings{
 	
 	public void validateForm(Intent intent, Calendar calendarFrom, Calendar calendarTo, Event event, String occurence){
 		Calendar calendarCurrentDate = Calendar.getInstance();
-		System.out.println(calendarFrom.before(calendarCurrentDate));
+		TimeIgnoringComparator t = new TimeIgnoringComparator();
+		int differenceInDays = (int) Math.floor((calendarFrom.getTimeInMillis()-calendarTo.getTimeInMillis())/-86400000);
+		int days = -86400000 * differenceInDays;
+		double compare = (calendarFrom.getTimeInMillis()-calendarTo.getTimeInMillis()) - days;
+		System.out.println(compare);
 		event.setEventType(typeOfEvent);
-		if(calendarFrom.before(calendarCurrentDate) || (calendarTo.before(calendarCurrentDate))){
+		if((calendarFrom.before(calendarCurrentDate) || (calendarTo.before(calendarCurrentDate) || (t.compare(calendarFrom, calendarCurrentDate) == 0 ) || (t.compare(calendarTo, calendarCurrentDate) == 0 )))){
 			Crouton crouton = Crouton.makeText(activity,"Please choose another date after today.",Style.ALERT);
 			crouton.show();
 			return;
 		}
+		if(compare > -1800000){
+			Crouton crouton = Crouton.makeText(activity,"Please select a ending time 30 min before the starting time.",Style.ALERT);
+			crouton.show();
+			return;
+		}
 		if(typeOfEvent.equals("Big Event")){
-			if(calendarFrom.after(calendarTo)){
+			if((calendarFrom.after(calendarTo)) || (t.compare(calendarFrom, calendarTo) >= 0) || ((t.compare(calendarFrom, calendarCurrentDate) == 0))){
 				Crouton crouton = Crouton.makeText(activity,"Please choose another date after the starting date.",Style.ALERT);
 				crouton.show();
 				return;

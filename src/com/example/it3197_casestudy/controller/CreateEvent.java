@@ -74,6 +74,7 @@ public class CreateEvent extends AsyncTask<Object, Object, Object> implements Se
 		postParameters.add(new BasicNameValuePair("occurence", event.getOccurence()));
 		postParameters.add(new BasicNameValuePair("eventLocation", event.getEventLocation()));
 		postParameters.add(new BasicNameValuePair("noOfParticipants", String.valueOf(event.getNoOfParticipantsAllowed())));
+		postParameters.add(new BasicNameValuePair("web", "false"));
 		// Instantiate a POST HTTP method
 		try {
 			httppost.setEntity(new UrlEncodedFormEntity(postParameters));

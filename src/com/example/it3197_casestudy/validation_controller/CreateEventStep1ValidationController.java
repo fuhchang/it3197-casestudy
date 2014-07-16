@@ -40,10 +40,12 @@ public class CreateEventStep1ValidationController implements Settings{
 			if(!validatorsArrList.get(0).isValid()){
 				Crouton crouton = Crouton.makeText(activity,"Please enter a event name.",Style.ALERT);
 				crouton.show();
+				return;
 			}
 			if(!validatorsArrList.get(1).isValid()){
 				Crouton crouton = Crouton.makeText(activity,"Please enter a event description.",Style.ALERT);
 				crouton.show();
+				return;
 			}
 			if(typeOfEvent.equals("Big Event")){
 			}
@@ -51,6 +53,7 @@ public class CreateEventStep1ValidationController implements Settings{
 				if(!validatorsArrList.get(2).isValid()){
 					Crouton crouton = Crouton.makeText(activity,"Please enter a event location.",Style.ALERT);
 					crouton.show();
+					return;
 				}
 			}
 		}
