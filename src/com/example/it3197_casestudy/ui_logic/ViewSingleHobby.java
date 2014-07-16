@@ -6,6 +6,7 @@ import com.dropbox.chooser.android.R.color;
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.R.layout;
 import com.example.it3197_casestudy.R.menu;
+import com.example.it3197_casestudy.controller.getPostController;
 import com.example.it3197_casestudy.listview.HobbyListView;
 import com.example.it3197_casestudy.model.Hobby;
 
@@ -27,20 +28,15 @@ public class ViewSingleHobby extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_view_single_hobby);
+		String grpName = getIntent().getExtras().getString("grpName");
+		int id = getIntent().getExtras().getInt("grpID");
 		grpTitle = (TextView) findViewById(R.id.grpTile);
 		grpTitle.setTextSize(40);
+		grpTitle.setText(grpName);
 		itemList = (ListView) findViewById(R.id.grpList);
 		itemList.setBackgroundColor(Color.GRAY);
-		ArrayList<Hobby> allHobbyList = new ArrayList<Hobby>();
-		for(int i=0; i<3; i++){
-			Hobby h = new Hobby();
-			h.setGroupName(i+ " abc" + i *15);
-			h.setCategory("type" +i);
-			h.setDescription("asdasjhdkjbasdhbsdhfbasbdfhsbadf");
-			allHobbyList.add(h);
-		}
-		hobbyList = new HobbyListView(this, allHobbyList);
-		itemList.setAdapter(hobbyList);
+		getPostController getPostList = new getPostController(this, id,itemList);
+		getPostList.execute();
 	}
 
 	@Override
@@ -55,7 +51,10 @@ public class ViewSingleHobby extends Activity {
 		// TODO Auto-generated method stub
 		switch(item.getItemId()){
 		case R.id.action_new:
+			String grpID = getIntent().getExtras().get("grpID").toString();
+			
 			Intent newPost = new Intent(this, CreateHobbyPost.class);
+			newPost.putExtra("grpID", grpID);
 			startActivity(newPost);
 			break;
 		case R.id.action_update_group:

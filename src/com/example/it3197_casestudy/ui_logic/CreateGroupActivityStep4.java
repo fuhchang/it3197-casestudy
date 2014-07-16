@@ -322,10 +322,6 @@ public class CreateGroupActivityStep4 extends Activity implements LocationListen
 		switch(item.getItemId()){
 		case R.id.createGrp:
 		Intent intentValue = getIntent();
-		Toast.makeText(getApplicationContext(), title, Toast.LENGTH_LONG).show();
-		Toast.makeText(getApplicationContext(), type, Toast.LENGTH_LONG).show();
-		Toast.makeText(getApplicationContext(), gDesc, Toast.LENGTH_LONG).show();
-		Toast.makeText(getApplicationContext(), locToBeStored, Toast.LENGTH_LONG).show();
 		Hobby hobby = new Hobby();
 		hobby.setGroupName(title);
 		hobby.setCategory(type);

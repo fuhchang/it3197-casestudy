@@ -67,10 +67,12 @@ public class GetAllHobbyGroup extends AsyncTask<Object, Object, Object>
 		allList.setOnItemClickListener(new OnItemClickListener(){
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 					long arg3) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(activity.getActivity(), ViewSingleHobby.class);
+				intent.putExtra("grpID", hobbyList.get(position).getGroupID());
+				intent.putExtra("grpName", hobbyList.get(position).getGroupName());
 				activity.startActivity(intent);
 			}
 			

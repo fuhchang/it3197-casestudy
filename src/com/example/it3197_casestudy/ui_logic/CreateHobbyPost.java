@@ -6,12 +6,18 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.R.layout;
 import com.example.it3197_casestudy.R.menu;
+import com.example.it3197_casestudy.model.HobbyPost;
+import com.example.it3197_casestudy.validation.Form;
+import com.example.it3197_casestudy.validation.Validate;
+import com.example.it3197_casestudy.validation.validator.NotEmptyValidator;
+import com.example.it3197_casestudy.validation_controller.CreatePostValidationController;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
@@ -44,6 +50,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
@@ -52,6 +59,7 @@ import android.widget.Toast;
 
 public class CreateHobbyPost extends Activity {
 	LinearLayout view1, view2, view3, view4;
+	private EditText etName, etContent;
 	ImageView imgView;
 	TextView imgTv, LocAddress, newAddress;
 	Button imgUpload;
@@ -81,6 +89,8 @@ public class CreateHobbyPost extends Activity {
 		view3.setBackgroundColor(Color.LTGRAY);
 		imgView = (ImageView) findViewById(R.id.gImg);
 		imgTv = (TextView) findViewById(R.id.imgLink);
+		etName = (EditText) findViewById(R.id.postNameET);
+		etContent = (EditText) findViewById(R.id.etPContent);
 		view3.setVisibility(View.INVISIBLE);
 		LocAddress = (TextView) findViewById(R.id.LocAddress);
 		getMyCurrentLocation();
@@ -124,6 +134,23 @@ public class CreateHobbyPost extends Activity {
 		case R.id.addCapture:
 			Intent intentPicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 			startActivityForResult(intentPicture, CAPTURE_PHOTO);
+			break;
+		case R.id.action_new_post:
+			String grpID = getIntent().getExtras().get("grpID").toString();
+			Form mForm = new Form();
+			Validate validName = new Validate(etName);
+			validName.addValidator(new NotEmptyValidator(CreateHobbyPost.this));
+			mForm.addValidates(validName);
+			Validate validContent = new Validate(etContent);
+			validContent.addValidator(new NotEmptyValidator(CreateHobbyPost.this));
+			mForm.addValidates(validContent);
+			ArrayList<Validate> validList = new ArrayList<Validate>();
+			validList.add(validName);
+			validList.add(validContent);
+			Intent intentValid = new Intent();
+			intentValid.putExtra("grpID", grpID);
+			CreatePostValidationController validController = new CreatePostValidationController(this);
+			validController.validateForm(intentValid, mForm, validList);
 			break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -402,4 +429,38 @@ public class CreateHobbyPost extends Activity {
 			LocAddress.setText("opps please check you gps.");
 		}
 	}
+
+	public EditText getEtName() {
+		return etName;
+	}
+
+	public void setEtName(EditText etName) {
+		this.etName = etName;
+	}
+
+	public EditText getEtContent() {
+		return etContent;
+	}
+
+	public void setEtContent(EditText etContent) {
+		this.etContent = etContent;
+	}
+
+	public double getLat() {
+		return lat;
+	}
+
+	public void setLat(double lat) {
+		this.lat = lat;
+	}
+
+	public double getLng() {
+		return Lng;
+	}
+
+	public void setLng(double lng) {
+		Lng = lng;
+	}
+	
+	
 }

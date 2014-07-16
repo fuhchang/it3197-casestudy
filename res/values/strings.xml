@@ -264,7 +264,7 @@
     <string name="title_activity_suggest_location">Suggest Location</string>
     <string name="title_facebook_login">Login via Facebook</string>
     <string name="title_activity_view_single_hobby">ViewSingleHobby</string>
-
+	<string name="title_activity_post_list_view">PostListView</string>
     <!-- Facebook -->
     <string name="app_id">1448892845363751</string>
     <string name="title_activity_create_hobby_post">CreateHobbyPost</string>

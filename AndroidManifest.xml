@@ -201,6 +201,10 @@
             android:name="com.example.it3197_casestudy.ui_logic.HobbyLoSelection"
             android:label="@string/title_activity_hobby_lo_selection" >
         </activity>
+        <activity
+            android:name="com.example.it3197_casestudy.listview.PostListView"
+            android:label="@string/title_activity_post_list_view" >
+        </activity>
     </application>
 
 </manifest>
