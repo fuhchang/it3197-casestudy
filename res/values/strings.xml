@@ -116,6 +116,7 @@
         <item>Location Usage</item>
     </string-array>
 
+    <!-- TITLES -->
     <string name="title_activity_main_link_page">MainLinkPage</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_view_hobbies_main">ViewHobbiesMain</string>
@@ -126,6 +127,10 @@
     <string name="title_activity_create_group_activity_step4">CreateGroup</string>
     <string name="title_activity_profile">Profile</string>
     <string name="title_activity_riddle">Riddle</string>
+    <string name="title_activity_create_riddle">Create Riddle</string>
+    
+    <!-- MENU ITEMS -->
+    <string name="action_create_riddle">Create Riddle</string>
     
     <!-- Location -->
 

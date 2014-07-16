@@ -86,7 +86,6 @@ public class MainLinkPage extends Activity {
 					Toast.makeText(getApplicationContext(), "Please choose 1 of options.", Toast.LENGTH_LONG).show();
 				}
 				startActivity(intent);
-				MainLinkPage.this.finish();
 			}
 		});		
 	}

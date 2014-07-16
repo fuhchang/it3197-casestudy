@@ -120,6 +120,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.it3197_casestudy.ui_logic.MainPageActivity" />
         </activity>
+        <activity
+            android:name="com.example.it3197_casestudy.ui_logic.CreateRiddleActivity"
+            android:label="@string/title_activity_create_riddle"
+            android:parentActivityName="com.example.it3197_casestudy.ui_logic.RiddleActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.it3197_casestudy.ui_logic.RiddleActivity" />
+        </activity>
 
         <service
             android:name="com.example.it3197_casestudy.geofencing.ReceiveTransitionsIntentService"
