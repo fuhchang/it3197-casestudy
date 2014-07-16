@@ -13,6 +13,7 @@ import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 
 public class ViewEventsActivity extends FragmentActivity implements ActionBar.TabListener {
 
@@ -72,13 +73,6 @@ public class ViewEventsActivity extends FragmentActivity implements ActionBar.Ta
 		actionBar.addTab(actionBar.newTab().setText("Gallery").setTabListener(this));
 		actionBar.addTab(actionBar.newTab().setText("Location").setTabListener(this));
 		
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		//getMenuInflater().inflate(R.menu.view_events, menu);
-		return false;
 	}
 
 	@Override
