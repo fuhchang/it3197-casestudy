@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+	<RelativeLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" >
+        
+	    <TextView
+	        android:id="@+id/tv_create_riddle_title"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:textSize="18sp"
+	        android:text="@string/tv_create_riddle_title" />
+	    
+	    <EditText
+	        android:id="@+id/et_create_riddle_title"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/tv_create_riddle_title"
+	        android:hint="@string/et_create_riddle_title" />
+	    
+	    <TextView
+	        android:id="@+id/tv_create_riddle_content"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/et_create_riddle_title"
+	        android:textSize="18sp"
+	        android:text="@string/tv_create_riddle_content" />
+	    
+	    <EditText
+	        android:id="@+id/et_create_riddle_content"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:lines="2"
+	        android:inputType="textMultiLine"
+	        android:scrollHorizontally="false"
+	        android:layout_below="@+id/tv_create_riddle_content"
+	        android:hint="@string/et_create_riddle_content" />
+	    
+	    <TextView
+	        android:id="@+id/tv_create_riddle_answer"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/et_create_riddle_content"
+	        android:textSize="18sp"
+	        android:text="@string/tv_create_riddle_answer" />
+	    
+	    <EditText
+	        android:id="@+id/et_create_riddle_answer"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/tv_create_riddle_answer"
+	        android:hint="@string/et_create_riddle_answer" />
+	    
+	    <Button
+	        android:id="@+id/btn_create_riddle"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="20dp"
+	        android:layout_below="@+id/et_create_riddle_answer"
+	        android:layout_alignParentRight="true"
+	        android:text="@string/btn_create_riddle" />
+    </RelativeLayout>
+</LinearLayout>

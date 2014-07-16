@@ -2,7 +2,6 @@ package com.example.it3197_casestudy.model;
 
 public class Riddle {
 	private int riddleID;
-	private RiddleAnswer riddleAnswerObj;
 	private User user;
 	private String riddleTitle;
 	private String riddleContent;
@@ -11,9 +10,8 @@ public class Riddle {
 	
 	public Riddle(){}
 	
-	public Riddle(int riddleID, RiddleAnswer riddleAnswerObj, User user, String riddleTitle, String riddleContent, String riddleStatus, int riddlePoint){
+	public Riddle(int riddleID, User user, String riddleTitle, String riddleContent, String riddleStatus, int riddlePoint){
 		this.riddleID = riddleID;
-		this.riddleAnswerObj = riddleAnswerObj;
 		this.user = user;
 		this.riddleTitle = riddleTitle;
 		this.riddleContent = riddleContent;
@@ -21,17 +19,18 @@ public class Riddle {
 		this.riddlePoint = riddlePoint;
 	}
 	
+	//For testing purposes
+	public Riddle(int riddleID, String riddleTitle, String riddleContent){
+		this.riddleID = riddleID;
+		this.riddleTitle = riddleTitle;
+		this.riddleContent = riddleContent;
+	}
+	
 	public int getRiddleID() {
 		return riddleID;
 	}
 	public void setRiddleID(int riddleID) {
 		this.riddleID = riddleID;
-	}
-	public RiddleAnswer getriddleAnswerObj() {
-		return riddleAnswerObj;
-	}
-	public void setriddleAnswerObj(RiddleAnswer riddleAnswerObj) {
-		this.riddleAnswerObj = riddleAnswerObj;
 	}
 	public User getUser() {
 		return user;
