@@ -23,7 +23,8 @@ public class hobbySQL {
 		ContentValues cv = new ContentValues();
 		cv.put("groupID", hobby.getGroupID());
 		cv.put("category", hobby.getCategory());
-		cv.put("location", hobby.getLocation());
+		cv.put("Lat", hobby.getLat());
+		cv.put("Lng", hobby.getLng());
 		cv.put("description", hobby.getDescription());
 		cv.put("active", hobby.getActive());
 		cv.put("grpImg", hobby.getGrpImg());

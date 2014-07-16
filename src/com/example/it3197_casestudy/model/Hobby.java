@@ -4,7 +4,8 @@ public class Hobby {
 	private int groupID;
 	private String groupName;
 	private String category;
-	private String location;
+	private double Lat;
+	private double Lng;
 	private String description;
 	private int active;
 	private byte[] GrpImg;
@@ -32,15 +33,6 @@ public class Hobby {
 	public void setCategory(String category) {
 		this.category = category;
 	}
-
-	public String getLocation() {
-		return location;
-	}
-
-	public void setLocation(String location) {
-		this.location = location;
-	}
-
 	public String getDescription() {
 		return description;
 	}
@@ -56,19 +48,28 @@ public class Hobby {
 	public void setActive(int active) {
 		this.active = active;
 	}
-
-	/**
-	 * @return the grpImg
-	 */
 	public byte[] getGrpImg() {
 		return GrpImg;
 	}
 
-	/**
-	 * @param grpImg
-	 *            the grpImg to set
-	 */
 	public void setGrpImg(byte[] grpImg) {
 		GrpImg = grpImg;
 	}
+
+	public double getLat() {
+		return Lat;
+	}
+
+	public void setLat(double lat) {
+		Lat = lat;
+	}
+
+	public double getLng() {
+		return Lng;
+	}
+
+	public void setLng(double lng) {
+		Lng = lng;
+	}
+	
 }

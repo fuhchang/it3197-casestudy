@@ -2,6 +2,7 @@ package com.example.it3197_casestudy.controller;
 
 import java.io.IOException;
 
+
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
@@ -56,6 +57,8 @@ public class CreatehobbyGroup extends AsyncTask<Object, Object, Object>
 	protected void onPostExecute(Object result) {
 		// TODO Auto-generated method stub
 		parseJSONResponse((String)result);
+		Toast.makeText(activity, "Create successful", Toast.LENGTH_SHORT).show();
+		
 	}
 
 	public String createHobby(){
@@ -67,8 +70,8 @@ public class CreatehobbyGroup extends AsyncTask<Object, Object, Object>
 		postParameters.add(new BasicNameValuePair("gtitle", hobby.getGroupName()));
 		postParameters.add(new BasicNameValuePair("gType", hobby.getCategory()));
 		postParameters.add(new BasicNameValuePair("gDesc", hobby.getDescription()));
-		postParameters.add(new BasicNameValuePair("gLoc", hobby.getLocation()));
-		
+		postParameters.add(new BasicNameValuePair("gLat", Double.toString(hobby.getLat())));
+		postParameters.add(new BasicNameValuePair("gLng", Double.toString(hobby.getLng())));
 		try {
 			httppost.setEntity(new UrlEncodedFormEntity(postParameters));
 			ResponseHandler<String> responseHandler = new BasicResponseHandler();

@@ -3,6 +3,7 @@ package com.example.it3197_casestudy.ui_logic;
 import java.util.ArrayList;
 
 import com.example.it3197_casestudy.R;
+import com.example.it3197_casestudy.controller.GetAllHobbyGroup;
 import com.example.it3197_casestudy.listview.HobbyListView;
 import com.example.it3197_casestudy.model.Hobby;
 
@@ -19,11 +20,13 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Hobbies_All extends Fragment {
 	
 	ListView allList;
 	HobbyListView hobbyList;
+	ArrayList<Hobby> allHobbyList;
 	public Hobbies_All() {
 
 	}
@@ -34,30 +37,10 @@ public class Hobbies_All extends Fragment {
 		// TODO Auto-generated method stub
 		View rootView = inflater.inflate(R.layout.activity_hobbies__all,
 				container, false);
-		ArrayList<Hobby> allHobbyList = new ArrayList<Hobby>();
-		for(int i=0; i<3; i++){
-			Hobby h = new Hobby();
-			h.setGroupName(i+ " abc" + i *15);
-			h.setCategory("type" +i);
-			h.setDescription("asdasjhdkjbasdhbsdhfbasbdfhsbadf");
-			allHobbyList.add(h);
-		}
 		allList = (ListView) rootView.findViewById(R.id.hobbyAllList);
-		allList.setBackgroundColor(Color.GRAY);
-		hobbyList = new HobbyListView(getActivity(), allHobbyList);
-		allList.setAdapter(hobbyList);
-		allList.setOnItemClickListener(new OnItemClickListener(){
-
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
-					long arg3) {
-				// TODO Auto-generated method stub
-				Log.d("position", Integer.toString(position));
-				Intent intent = new Intent(getActivity(), ViewSingleHobby.class);
-				startActivity(intent);
-			}
-			
-		});
+		allList.setBackgroundColor(Color.LTGRAY);
+		GetAllHobbyGroup getAll = new GetAllHobbyGroup(this, allList);
+		getAll.execute();
 		return rootView;
 	}
 

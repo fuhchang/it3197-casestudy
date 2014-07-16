@@ -70,7 +70,7 @@ public class CreateGroupActivityStep4 extends Activity implements LocationListen
 		
 		MarkerOptions mp = new MarkerOptions();
 		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.gMap)).getMap();
-		map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+		map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 		
 		map.setOnMarkerDragListener(this);
 		
@@ -330,7 +330,8 @@ public class CreateGroupActivityStep4 extends Activity implements LocationListen
 		hobby.setGroupName(title);
 		hobby.setCategory(type);
 		hobby.setDescription(gDesc);
-		hobby.setLocation(locToBeStored);
+		hobby.setLat(finallLat);
+		hobby.setLng(finalLng);
 		CreatehobbyGroup createHobby = new CreatehobbyGroup(CreateGroupActivityStep4.this, hobby);
 		createHobby.execute();
 		}
