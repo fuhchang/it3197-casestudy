@@ -114,7 +114,7 @@
         </activity>
         <activity
             android:name="com.example.it3197_casestudy.ui_logic.RiddleActivity"
-            android:label="@string/title_activity_profile"
+            android:label="@string/title_activity_riddle"
             android:parentActivityName="com.example.it3197_casestudy.ui_logic.MainPageActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

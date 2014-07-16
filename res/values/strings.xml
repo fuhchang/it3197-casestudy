@@ -124,8 +124,10 @@
     <string name="title_activity_submit_article">SubmitArticle</string>
     <string name="title_activity_article_loc_selection">ArticleLocSelection</string>
     <string name="title_activity_create_group_activity_step4">CreateGroup</string>
-    <!-- Location -->
     <string name="title_activity_profile">Profile</string>
+    <string name="title_activity_riddle">Riddle</string>
+    
+    <!-- Location -->
 
     <!-- User interface labels and strings -->
 
