@@ -57,7 +57,7 @@ public class MainLinkPage extends Activity {
 		page = (ViewFlipper) findViewById(R.id.flipper);
 		//animFlipInForeward = AnimationUtils.loadAnimation(this, R.anim.f)
 		
-		//startService();
+		startService();
 		GridImageList adapter = new GridImageList(MainLinkPage.this, title,
 				imageID);
 		GridView gv = (GridView) findViewById(R.id.gridview);
@@ -77,7 +77,7 @@ public class MainLinkPage extends Activity {
 					Toast.makeText(getApplicationContext(), "ARTICLE", Toast.LENGTH_LONG).show();
 					intent = new Intent(MainLinkPage.this, SubmitArticle.class);
 				}else if (position == 3){
-					Toast.makeText(getApplicationContext(), "RIDDLES", Toast.LENGTH_LONG).show();
+					intent = new Intent(MainLinkPage.this, RiddleActivity.class);
 				}else if (position == 4){
 					intent = new Intent(MainLinkPage.this, ProfileActivity.class);
 				}else if(position == 5){
@@ -89,6 +89,15 @@ public class MainLinkPage extends Activity {
 				MainLinkPage.this.finish();
 			}
 		});		
+	}
+
+	@Override
+	public void onBackPressed() {
+		if(intent!=null){
+			unregisterReceiver(broadcastReceiver);
+			stopService(intent);
+		}
+		super.onBackPressed();
 	}
 
 	@Override
@@ -125,17 +134,4 @@ public class MainLinkPage extends Activity {
 		startService(intent);
 		registerReceiver(broadcastReceiver, new IntentFilter(LocationService.BROADCAST_ACTION));
 	}
-	@Override
-	protected void onDestroy() {
-		// TODO Auto-generated method stub
-		super.onPause();
-		if(intent!=null){
-			unregisterReceiver(broadcastReceiver);
-			stopService(intent);
-		}
-		super.onDestroy();
-	}
-	
-
-	
 }
