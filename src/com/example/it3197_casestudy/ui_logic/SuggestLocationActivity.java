@@ -42,7 +42,7 @@ public class SuggestLocationActivity extends Activity{
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.suggest_location, menu);
+		getMenuInflater().inflate(R.menu.suggest_location_menu, menu);
 		return true;
 	}
 
