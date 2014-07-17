@@ -205,6 +205,23 @@
             android:name="com.example.it3197_casestudy.listview.PostListView"
             android:label="@string/title_activity_post_list_view" >
         </activity>
+        <activity
+            android:name="com.example.it3197_casestudy.ui_logic.ArticleMainActivity"
+            android:label="@string/title_activity_article_main" >
+        </activity>
+        <activity
+            android:name="com.example.it3197_casestudy.ui_logic.SingleArticleActivity"
+            android:label="@string/title_activity_single_article" >
+        </activity>
+        <activity
+            android:name="com.example.it3197_casestudy.ui_logic.ArticleSelectedActivityActivity"
+            android:label="@string/title_activity_article_selected_activity" >
+        </activity>
+        <activity
+            android:name="com.example.it3197_casestudy.ui_logic.ArticleLatestMoreDetailActivity"
+            android:label="@string/title_activity_article_latest_more_detail" >
+        </activity>
+        
     </application>
 
 </manifest>

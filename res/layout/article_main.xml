@@ -1,0 +1,69 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" 
+    >
+    
+    
+    <LinearLayout
+         android:layout_width="fill_parent"
+    	 android:layout_height="fill_parent"
+         android:orientation="vertical" 
+    	 android:background="#2B547E">
+   <!--  
+    <TextView
+        android:id="@+id/tv"
+      	android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        android:text="Latest News"
+        android:background="#2B547E"
+        android:textColor="#FFFFFF"
+	/>    -->
+    
+    
+   
+        
+<!--  
+	<ListView
+        android:id="@+id/articleListView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="5dp"
+        android:background="@android:color/transparent"
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="#CCCCCC"
+        android:dividerHeight="1dp"
+        android:paddingLeft="2dp" >
+        
+     
+        
+    </ListView>-->
+    
+    <!--   <ListView
+        android:id="@+id/articleListView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:divider="#FFFFFF"
+        android:dividerHeight="1dp"
+        android:listSelector="@drawable/article_style" />
+        
+        -->
+        
+        <ListView
+		    android:id="@+id/articleListView"
+		    android:layout_width="fill_parent"
+		    android:layout_height="fill_parent"
+		    android:divider="#2B547E"
+		    
+		    android:dividerHeight="7dp"
+		    android:listSelector="@drawable/article_style" />
+        
+        </LinearLayout>
+        
+        
+</LinearLayout>

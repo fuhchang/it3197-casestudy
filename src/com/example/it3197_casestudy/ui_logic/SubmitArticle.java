@@ -231,7 +231,12 @@ public class SubmitArticle extends Activity {
 			//(0, "Hi", "Hi", currentTime,categorySelected, "Hi", "S9512233X", 1, "Hi", 1.3, 54.6);
 			CreateArticle c = new CreateArticle(SubmitArticle.this,article);
 			c.execute();
-		
+			
+		}
+		if(id==R.id.backToMain){
+			//Intent intent = new Intent(SubmitArticle.this, ArticleMainActivity.class);
+			//startActivity(intent);
+			SubmitArticle.this.finish();
 		}
 		
 		return super.onOptionsItemSelected(item);
@@ -527,6 +532,17 @@ public class SubmitArticle extends Activity {
 		myIntent.putExtra("mainSubmitLat", String.valueOf(lat));
 		myIntent.putExtra("mainSubmitLon", String.valueOf(lon));
 		startActivityForResult(myIntent, CHOOSE_LOC);
+	}
+
+
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		
+		//Intent intent = new Intent(SubmitArticle.this, ArticleMainActivity.class);
+		//startActivity(intent);
+		SubmitArticle.this.finish();
+		super.onBackPressed();
 	}
 
 }

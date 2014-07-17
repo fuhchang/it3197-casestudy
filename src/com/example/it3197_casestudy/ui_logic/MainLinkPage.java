@@ -74,7 +74,6 @@ public class MainLinkPage extends Activity {
 				}else if(position == 1){
 					intent = new Intent(MainLinkPage.this, ViewHobbiesMain.class);
 				}else if(position == 2){
-					Toast.makeText(getApplicationContext(), "ARTICLE", Toast.LENGTH_LONG).show();
 					intent = new Intent(MainLinkPage.this, SubmitArticle.class);
 				}else if (position == 3){
 					intent = new Intent(MainLinkPage.this, RiddleActivity.class);

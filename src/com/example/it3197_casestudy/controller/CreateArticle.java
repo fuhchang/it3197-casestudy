@@ -25,7 +25,6 @@ import android.widget.Toast;
 import com.example.it3197_casestudy.model.Article;
 import com.example.it3197_casestudy.ui_logic.MainLinkPage;
 import com.example.it3197_casestudy.ui_logic.SubmitArticle;
-import com.example.it3197_casestudy.ui_logic.ViewHobbiesMain;
 import com.example.it3197_casestudy.util.Settings;
 
 
@@ -62,7 +61,7 @@ public class CreateArticle extends AsyncTask<Object, Object, Object> implements 
 	public String createArticle(){
 		String responseBody= "";
 		HttpClient httpclient = new DefaultHttpClient();
-		HttpPost httppost = new HttpPost(API_URL + "ArticleSubmissionServlet");
+		HttpPost httppost = new HttpPost(API_URL + "ArticleSubmissionServletCS");
 		ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
 		
 		postParameters.add(new BasicNameValuePair("title", article.getTitle()));
