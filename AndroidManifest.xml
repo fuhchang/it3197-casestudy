@@ -112,22 +112,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.it3197_casestudy.ui_logic.MainPageActivity" />
         </activity>
-        <activity
-            android:name="com.example.it3197_casestudy.ui_logic.RiddleActivity"
-            android:label="@string/title_activity_riddle"
-            android:parentActivityName="com.example.it3197_casestudy.ui_logic.MainPageActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.it3197_casestudy.ui_logic.MainPageActivity" />
-        </activity>
-        <activity
-            android:name="com.example.it3197_casestudy.ui_logic.CreateRiddleActivity"
-            android:label="@string/title_activity_create_riddle"
-            android:parentActivityName="com.example.it3197_casestudy.ui_logic.RiddleActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.it3197_casestudy.ui_logic.RiddleActivity" />
-        </activity>
 
         <service
             android:name="com.example.it3197_casestudy.geofencing.ReceiveTransitionsIntentService"
@@ -146,13 +130,15 @@
              -->
 		<!-- fuhchang -->
        
-             <meta-data
+        <!-- <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyDVor5BS2mdSm_sxCIOBtQTYS2uBDuNpJg" />
-
-
-       
-        <!-- fuhchang -->
+            android:value="AIzaSyDVor5BS2mdSm_sxCIOBtQTYS2uBDuNpJg" /> -->     
+		
+		<!-- Joseph lee -->
+		<meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyCpTBz_uJRG9Wm5UWupZsZ2yMz9R3cbERk" />
+		
         <activity
             android:name="com.example.it3197_casestudy.ui_logic.ViewAllEventsActivity"
             android:label="@string/title_activity_view_all_events" >
@@ -201,27 +187,6 @@
             android:name="com.example.it3197_casestudy.ui_logic.HobbyLoSelection"
             android:label="@string/title_activity_hobby_lo_selection" >
         </activity>
-        <activity
-            android:name="com.example.it3197_casestudy.listview.PostListView"
-            android:label="@string/title_activity_post_list_view" >
-        </activity>
-        <activity
-            android:name="com.example.it3197_casestudy.ui_logic.ArticleMainActivity"
-            android:label="@string/title_activity_article_main" >
-        </activity>
-        <activity
-            android:name="com.example.it3197_casestudy.ui_logic.SingleArticleActivity"
-            android:label="@string/title_activity_single_article" >
-        </activity>
-        <activity
-            android:name="com.example.it3197_casestudy.ui_logic.ArticleSelectedActivityActivity"
-            android:label="@string/title_activity_article_selected_activity" >
-        </activity>
-        <activity
-            android:name="com.example.it3197_casestudy.ui_logic.ArticleLatestMoreDetailActivity"
-            android:label="@string/title_activity_article_latest_more_detail" >
-        </activity>
-        
     </application>
 
 </manifest>
