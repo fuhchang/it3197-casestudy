@@ -123,11 +123,11 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
         <!-- DO NOT EDIT -->
-        <!-- 
+         
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyBm1w2P3qipVFeAhjSi3F6eQx2M3KmMB18" />
-             -->
+             
 		<!-- fuhchang -->
        
         <!-- <meta-data
@@ -135,9 +135,9 @@
             android:value="AIzaSyDVor5BS2mdSm_sxCIOBtQTYS2uBDuNpJg" /> -->     
 		
 		<!-- Joseph lee -->
-		<meta-data
+		<!--<meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyCpTBz_uJRG9Wm5UWupZsZ2yMz9R3cbERk" />
+            android:value="AIzaSyCpTBz_uJRG9Wm5UWupZsZ2yMz9R3cbERk" />-->
 		
         <activity
             android:name="com.example.it3197_casestudy.ui_logic.ViewAllEventsActivity"

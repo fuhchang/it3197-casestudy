@@ -54,7 +54,8 @@ public class MainLinkPage extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main_link_page);
 		
-		page = (ViewFlipper) findViewById(R.id.flipper);
+		getActionBar().setTitle("Home");
+		//page = (ViewFlipper) findViewById(R.id.flipper);
 		//animFlipInForeward = AnimationUtils.loadAnimation(this, R.anim.f)
 		
 		//startService();

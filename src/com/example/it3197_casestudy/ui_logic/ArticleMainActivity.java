@@ -36,8 +36,8 @@ public class ArticleMainActivity extends Activity {
 		setContentView(R.layout.article_main);
 		
 		getActionBar().setTitle("Latest News");
-		ActionBar bar = getActionBar();
-		bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#000000")));
+		//ActionBar bar = getActionBar();
+		//bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#000000")));
 		
 		
 	//	TextView tv = (TextView) findViewById(R.id.tv);

@@ -5,4 +5,5 @@
     <color name="White">#FFFFFF</color>
     <color name="Black">#000000</color>
     <color name="hexE1E1E1">#E1E1E1</color>
+    <color name="actionBarColor">#0B173B</color>
 </resources>
