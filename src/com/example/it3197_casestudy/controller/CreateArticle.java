@@ -23,6 +23,7 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 
 import com.example.it3197_casestudy.model.Article;
+import com.example.it3197_casestudy.ui_logic.ArticleMainActivity;
 import com.example.it3197_casestudy.ui_logic.MainLinkPage;
 import com.example.it3197_casestudy.ui_logic.SubmitArticle;
 import com.example.it3197_casestudy.util.Settings;
@@ -99,8 +100,8 @@ public class CreateArticle extends AsyncTask<Object, Object, Object> implements 
 			if(success){
 				dialog.dismiss();
 				Toast.makeText(activity, "Article Created", Toast.LENGTH_LONG).show();
-				Intent intent = new Intent(activity, MainLinkPage.class);
-				activity.startActivity(intent);
+				//Intent intent = new Intent(activity, ArticleMainActivity.class);
+				//activity.startActivity(intent);
 				activity.finish();
 			}
 		} catch (JSONException e) {

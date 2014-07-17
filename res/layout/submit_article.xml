@@ -6,7 +6,7 @@
     android:orientation="vertical"
     tools:context=".SubmitArticle" >
 
-    <TextView
+  <!--   <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -14,19 +14,19 @@
         android:textSize="32sp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_marginTop="5dp" />
-
-    <LinearLayout
+-->
+    <!--  <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        >
-	    <TextView
+        >-->
+	  <!--   <TextView
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:text="Title: "
 	        android:textSize="20sp"
 	        android:layout_marginTop="5dp"
-	        android:layout_marginLeft="5dp" />
+	        android:layout_marginLeft="5dp" />-->
 	    
 	    <EditText
 	        android:id="@+id/articleTitle"
@@ -34,10 +34,20 @@
 	        android:layout_height="wrap_content"
 	        android:background="@drawable/article_styling"
 	        android:layout_marginTop="5dp"
-	        android:textSize="20sp"
+	        android:layout_marginLeft="5dp"
+	        android:textSize="32sp"
 	        android:singleLine="true"
+	        android:hint="Title"
 	        />
-	</LinearLayout>
+	    
+	    
+	     <TextView
+	        android:id="@+id/currentTime"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:textColor="#C35817"
+	        android:layout_marginLeft="5dp" />
+	<!--  </LinearLayout>-->
 	
    	<View 
 	   	android:layout_marginTop="5dp"
@@ -83,13 +93,13 @@
     <EditText
 	    android:id="@+id/articleContent"
 	    android:layout_width="fill_parent"
-	    android:layout_height="230dp"
+	    android:layout_height="300dp"
 	    android:layout_marginLeft="5dp"
 	    android:layout_marginTop="5dp"
 	    android:background="@drawable/article_styling"
 	    android:gravity="top"
 	    android:textSize="20sp"
-	    android:hint="Content"
+	    android:hint="Short description"
 	    android:inputType="textMultiLine" />
     
     <!--  
@@ -125,48 +135,81 @@
 		     
     </LinearLayout>-->
     
+    
+    <RelativeLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent" 
+	    android:layout_gravity="bottom">
+
+<!-- <TextView  
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:text="@string/ContentView"
+android:layout_gravity="bottom" android:layout_alignParentBottom="true"/>
+-->
+
+    
     <View 
+        android:layout_above="@+id/icon"
 	   	android:layout_marginTop="5dp"
 	  	android:layout_width="fill_parent"
 	    android:layout_height="2dp"      
 	    android:background="#000"/>
     
     
-    <LinearLayout
+  <!--    <LinearLayout
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
-        android:orientation="horizontal">
+        android:orientation="horizontal">-->
+        
+       
     <Button
          android:id="@+id/icon"
+         android:layout_marginTop="5dp"
          android:layout_width="40dp"
          android:layout_height="40dp"
+         android:layout_above="@+id/storingLoc"
+		 android:layout_marginBottom="5dp"
          android:background="@drawable/location2"
          />
     
     <TextView
          android:id="@+id/chooseLoc"
+         android:layout_toRightOf="@+id/icon"
          android:layout_width="fill_parent"
          android:layout_height="40dp"
          android:textSize="20sp"
          android:onClick="changeLoc"
 		 android:clickable="true"
 		 android:textColor="#0000ff"
+		 android:layout_above="@+id/storingLoc"
+		 android:layout_marginTop="10dp"
 		 android:text="@string/articleLocSelection"
          />
+    
      
-        </LinearLayout>
+      <!--    </LinearLayout>-->
         
     <TextView
         android:id="@+id/storingLoc"
 		android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-        android:textSize="20sp"/>
+        android:textSize="20sp"
+        android:layout_above="@+id/bottom"
+        android:layout_marginLeft="5dp"
+        />
 		    
 		   
 		    
-		   
+		   <View 
+        android:id="@+id/bottom"
+	   	android:layout_marginTop="5dp"
+	   	android:layout_height="2dp"
+	  	android:layout_width="fill_parent"
+	  	android:layout_gravity="bottom"     
+	    android:layout_alignParentBottom="true"/>
 		     
-    
+    </RelativeLayout>
     
      
      

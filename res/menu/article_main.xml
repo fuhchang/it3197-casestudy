@@ -19,7 +19,7 @@
         android:id="@+id/submitArt"
         android:orderInCategory="100"
         android:showAsAction="always"
-        android:title="Submit"/>
+        android:title="Post New"/>
      
      
 

@@ -80,7 +80,7 @@ public class SubmitArticle extends Activity {
 	LocationManager lm;
 	
 	EditText articleTitle, articleContent;
-	TextView storingLoc;
+	TextView storingLoc, currentTime;
 	
 	String locToBeStored = "";
 
@@ -99,7 +99,7 @@ public class SubmitArticle extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.submit_article);
 		
-		getActionBar().setTitle("");
+		getActionBar().setTitle("Submit Article");
 		
 		/***Category Selection***/
 		spCat = (Spinner) findViewById(R.id.spCat);
@@ -126,6 +126,15 @@ public class SubmitArticle extends Activity {
 				// TODO Auto-generated method stub				
 			}			
 		});
+		
+		 /**Get current time*/		
+		currentTime = (TextView)findViewById(R.id.currentTime);
+		Calendar c = Calendar.getInstance();
+      	SimpleDateFormat sdf = new SimpleDateFormat("E, dd MMMM yyyy - hh:mm a");
+      	String strDate = sdf.format(c.getTime());
+      	currentTime.setText(strDate);
+		
+		
 		
 		storingLoc = (TextView)findViewById(R.id.storingLoc);
 		articleTitle = (EditText) findViewById(R.id.articleTitle);
@@ -215,23 +224,28 @@ public class SubmitArticle extends Activity {
 		
 		
 		if(id==R.id.submit){
-			Article article = new Article();
-			article.setArticleID(0);
-			article.setTitle(articleTitle.getText().toString());
-			article.setContent(articleContent.getText().toString());
-			article.setDateTime(currentTime);
-			article.setCategory(categorySelected);
-			article.setLocation(locToBeStored);
-			article.setUserNRIC("S9512233X");
-			article.setActive(1);
-			article.setApproved("Pending");
-			article.setDbLat(lat);
-			article.setDbLon(lon);
 			
-			//(0, "Hi", "Hi", currentTime,categorySelected, "Hi", "S9512233X", 1, "Hi", 1.3, 54.6);
-			CreateArticle c = new CreateArticle(SubmitArticle.this,article);
-			c.execute();
-			
+			if((articleTitle.getText().toString().equals(""))||(articleContent.getText().toString().equals(""))){
+				Toast.makeText(getApplicationContext(), "Please provide a title and description", Toast.LENGTH_LONG).show();
+			}
+			else{
+				Article article = new Article();
+				article.setArticleID(0);
+				article.setTitle(articleTitle.getText().toString());
+				article.setContent(articleContent.getText().toString());
+				article.setDateTime(currentTime);
+				article.setCategory(categorySelected);
+				article.setLocation(locToBeStored);
+				article.setUserNRIC("S9512233X");
+				article.setActive(1);
+				article.setApproved("Pending");
+				article.setDbLat(lat);
+				article.setDbLon(lon);
+				
+				//(0, "Hi", "Hi", currentTime,categorySelected, "Hi", "S9512233X", 1, "Hi", 1.3, 54.6);
+				CreateArticle c = new CreateArticle(SubmitArticle.this,article);
+				c.execute();
+			}
 		}
 		if(id==R.id.backToMain){
 			//Intent intent = new Intent(SubmitArticle.this, ArticleMainActivity.class);
@@ -402,7 +416,8 @@ public class SubmitArticle extends Activity {
 		   	  // updateLoc(locToBeStored);
 		   	 //  Toast.makeText(getApplicationContext(), locToBeStored, Toast.LENGTH_SHORT).show();
 		   	   
-		   	   storingLoc.setText(Address + "\n" + City + "\n(Coordinates: " + lat + ", " + lon + ")");
+		   	  // storingLoc.setText(Address + "\n" + City + "\n(Coordinates: " + lat + ", " + lon + ")");
+		   	storingLoc.setText(Address + ",\n" + City);
 		   	   
 	//	   	   mp.snippet("(Co-ordinates: " + lat +", " + lon + ").");
 	//	   	   mp.draggable(true);
@@ -427,8 +442,8 @@ public class SubmitArticle extends Activity {
 	           lon=103.8;
 	           locToBeStored = "601 Island Club Rd, Singapore"; 
 	         //  Toast.makeText(getApplicationContext(), locToBeStored, Toast.LENGTH_SHORT).show();
-	           storingLoc.setText("601 Island Club Rd \nSingapore \n(Coordinates: " + lat + ", " + lon +")");
-	           
+	          // storingLoc.setText("601 Island Club Rd \nSingapore \n(Coordinates: " + lat + ", " + lon +")");
+	           storingLoc.setText("601 Island Club Rd ,\nSingapore");
 	       /*    mp.position(new LatLng(1.3667, 103.8));
 		     //  mp.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
 		       mp.title("Singapore, Singapore");

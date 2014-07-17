@@ -30,6 +30,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -112,7 +113,7 @@ public class ArticleLocSelection extends Activity implements LocationListener, O
 			  });
 			  
 			  
-			  done = (Button) findViewById(R.id.done);
+	/*		  done = (Button) findViewById(R.id.done);
 			  done.setOnClickListener(new OnClickListener(){
 
 				@Override
@@ -138,7 +139,7 @@ public class ArticleLocSelection extends Activity implements LocationListener, O
 					finish();
 				}
 				  
-			  });
+			  });*/
 			  
 			  /****For constant updating of location****/
 			//		 lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -193,7 +194,8 @@ public class ArticleLocSelection extends Activity implements LocationListener, O
 		   	   mp.title(Address + ", " + City);
 		   	   
 		   		locToMain=Address + ", " + City;
-		   	   locToBeStored=Address + "\n" + City + "\n(Coordinates: " + Double.parseDouble(mainSubmitLat) + ", " + Double.parseDouble(mainSubmitLon) + ")";
+		   	  // locToBeStored=Address + "\n" + City + "\n(Coordinates: " + Double.parseDouble(mainSubmitLat) + ", " + Double.parseDouble(mainSubmitLon) + ")";
+		   		locToBeStored=Address + ",\n" + City;
 		   	   updateLoc(locToBeStored);
 		   	   
 		   	   finalizedLat=Double.parseDouble(mainSubmitLat);
@@ -208,16 +210,36 @@ public class ArticleLocSelection extends Activity implements LocationListener, O
     }
     
     
-    /*
+    
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.article_loc_selection, menu);
 		return true;
 	}
-	*/
 	
 	
+	
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		// TODO Auto-generated method stub
+		
+		int id = item.getItemId();
+		
+		if(id==R.id.done){
+			Intent output = new Intent();
+			output.putExtra("locToMain", locToMain);
+			output.putExtra("selectedAdd", locToBeStored);
+			output.putExtra("selectedLat", String.valueOf(finalizedLat));
+			output.putExtra("selectedLon", String.valueOf(finalizedLon));
+			setResult(RESULT_OK, output);
+			finish();
+		}
+		
+		
+		return super.onMenuItemSelected(featureId, item);
+	}
+
 	@Override
 	public void onMarkerDrag(Marker mp) {
 		// TODO Auto-generated method stub
@@ -252,10 +274,11 @@ public class ArticleLocSelection extends Activity implements LocationListener, O
 			       mp.setSnippet("(Co-ordinates: " + toPosition.latitude + ", " + toPosition.longitude + ").");
 			       mp.showInfoWindow();
 			       locToMain = Address + ", " + City;
-		       locToBeStored=Address + "\n" + City + "\n(Coordinates: " + toPosition.latitude + ", " + toPosition.longitude + ")";
-		   	   updateLoc(locToBeStored);
-		   	   finalizedLat = toPosition.latitude;
-		   	   finalizedLon=toPosition.longitude;
+		     //  locToBeStored=Address + "\n" + City + "\n(Coordinates: " + toPosition.latitude + ", " + toPosition.longitude + ")";
+			       locToBeStored=Address + ",\n" + City;
+				   updateLoc(locToBeStored);
+			   	   finalizedLat = toPosition.latitude;
+			   	   finalizedLon=toPosition.longitude;
 		    /*   }
 		       else{
 		    	   AlertDialog.Builder builder1 = new AlertDialog.Builder(ArticleLocSelection.this);
@@ -476,7 +499,8 @@ public class ArticleLocSelection extends Activity implements LocationListener, O
 					map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(address.getLatitude(), address.getLongitude()), 17));
 				
 					locToMain = Address + ", " + City;
-				locToBeStored = Address + "\n" + City + "\n(Coordinates: " + lat + ", " + lng + ")";
+				//locToBeStored = Address + "\n" + City + "\n(Coordinates: " + lat + ", " + lng + ")";
+					locToBeStored = Address + ",\n" + City;
 				updateLoc(locToBeStored);
 				finalizedLat=lat;
 			    finalizedLon=lng;
