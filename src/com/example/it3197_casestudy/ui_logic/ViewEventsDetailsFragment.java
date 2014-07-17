@@ -6,11 +6,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.controller.GetEvent;
@@ -114,6 +116,18 @@ public class ViewEventsDetailsFragment extends Fragment {
 		// TODO Auto-generated method stub
 		super.onCreateOptionsMenu(menu, inflater);
 		inflater.inflate(R.menu.view_events_details_fragment_menu, menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
+		switch(item.getItemId()){
+		case R.id.join : 
+			break;
+		case R.id.unjoin:
+			break;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
