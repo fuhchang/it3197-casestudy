@@ -3,6 +3,7 @@ package com.example.it3197_casestudy.ui_logic;
 import java.util.ArrayList;
 
 import com.example.it3197_casestudy.R;
+import com.example.it3197_casestudy.controller.RetrieveAllRiddle;
 import com.example.it3197_casestudy.model.Riddle;
 import com.example.it3197_casestudy.util.RiddleListAdapter;
 
@@ -15,19 +16,17 @@ import android.widget.ListView;
 
 public class RiddleActivity extends FragmentActivity {
 	ListView lv_riddle;
-	ArrayList<Riddle> riddleList = new ArrayList<Riddle>();
+	RiddleListAdapter riddleAdapter;
+	ArrayList<Riddle> riddleList;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_riddle);
 		
-		riddleList.add(new Riddle(1, "Riddle 1", "First riddle"));
-		riddleList.add(new Riddle(2, "Riddle 2", "Second riddle"));
-		
 		lv_riddle = (ListView) findViewById(R.id.lv_riddle);
-		RiddleListAdapter adapter = new RiddleListAdapter(RiddleActivity.this, riddleList);
-		lv_riddle.setAdapter(adapter);
+		RetrieveAllRiddle retrieveAllRiddle = new RetrieveAllRiddle(this, lv_riddle);
+		retrieveAllRiddle.execute();
 	}
 
 	@Override

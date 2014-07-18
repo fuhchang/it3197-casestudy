@@ -36,6 +36,11 @@ public class CreateRiddle extends AsyncTask<Object, Object, Object> implements S
 		this.riddle = riddle;
 		this.riddleAns = riddleAns;
 	}
+
+	@Override
+	protected Object doInBackground(Object... arg0) {
+		return createRiddle();
+	}
 	
 	@Override
 	protected void onPreExecute() {
@@ -45,12 +50,7 @@ public class CreateRiddle extends AsyncTask<Object, Object, Object> implements S
 	@Override
 	protected void onPostExecute(Object result) {
 		parseJSONResponse((String) result);
-		//Toast.makeText(activity, "Create successful", Toast.LENGTH_SHORT).show();
-	}
-
-	@Override
-	protected Object doInBackground(Object... arg0) {
-		return createRiddle();
+		Toast.makeText(activity, "Create successful", Toast.LENGTH_SHORT).show();
 	}
 	
 	private void parseJSONResponse(String responseBody){
@@ -77,7 +77,6 @@ public class CreateRiddle extends AsyncTask<Object, Object, Object> implements S
 		
 		//postParameters.add(new BasicNameValuePair("riddleID", Integer.toString(riddle.getRiddleID()));
 		postParameters.add(new BasicNameValuePair("riddleTitle", riddle.getRiddleTitle()));
-		System.out.println("createriddle:" + riddle.getRiddleTitle());
 		postParameters.add(new BasicNameValuePair("riddleContent", riddle.getRiddleContent()));
 		postParameters.add(new BasicNameValuePair("riddleStatus", riddle.getRiddleStatus()));
 		postParameters.add(new BasicNameValuePair("riddlePoint", Integer.toString(riddle.getRiddlePoint())));
