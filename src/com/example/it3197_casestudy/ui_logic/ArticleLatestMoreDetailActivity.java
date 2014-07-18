@@ -56,22 +56,33 @@ public class ArticleLatestMoreDetailActivity extends Activity {
 		
 		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();		
 		//map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(1.3667, 103.8), 10));
-		map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+		//map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 		//map.setMapType(GoogleMap.MAP_TYPE_NONE);
 		//map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 		//map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-		//map.setMapType(GoogleMap.MAP_TYPE_TERRAIN);		  
+		map.setMapType(GoogleMap.MAP_TYPE_TERRAIN);		  
 		  
 		//map.setTrafficEnabled(true);
 		  
 		//map.setMyLocationEnabled(true);	  
-		  getMyCurrentLocation();
+	//	  getMyCurrentLocation();
 		  
 		  addTv = (TextView) findViewById(R.id.add);
 		  
 		  Bundle extras = this.getIntent().getExtras();
 		  String address = extras.getString("articleLoc");
 		  addTv.setText(address);
+		  
+		  
+		  
+		 
+		   double dbLat = extras.getDouble("dbLat");
+		   double dbLon = extras.getDouble("dbLon");
+		   artLoc.position(new LatLng(dbLat, dbLon));
+		   artLoc.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+		   artLoc.title("Place of occurrence");
+		   map.addMarker(artLoc).showInfoWindow();
+		   map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(dbLat, dbLon), 18));
 		  //convertToAddress();
 		
 		
@@ -159,7 +170,7 @@ public class ArticleLatestMoreDetailActivity extends Activity {
 		   	   //map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(1.3667, 103.8), 10));
 	      }
 	      else{ 
-	         AlertDialog.Builder builder1 = new AlertDialog.Builder(ArticleLatestMoreDetailActivity.this);
+	      /*   AlertDialog.Builder builder1 = new AlertDialog.Builder(ArticleLatestMoreDetailActivity.this);
 	         builder1.setTitle("Service Unavailable");
 	   		 builder1.setMessage("Unable to get your location, check if your GPS and Network are turned on.");
 	   		 builder1.setCancelable(true);
@@ -172,7 +183,7 @@ public class ArticleLatestMoreDetailActivity extends Activity {
 	           alert11.show();
 	           
 	           lat=1.3667;
-	           lon=103.8;      
+	           lon=103.8;     */ 
 	         //  mp.position(new LatLng(1.3667, 103.8));
 		     //  mp.draggable(true);
 		   	  // map.addMarker(mp).showInfoWindow();

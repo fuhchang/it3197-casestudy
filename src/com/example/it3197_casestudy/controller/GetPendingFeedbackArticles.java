@@ -1,9 +1,6 @@
 package com.example.it3197_casestudy.controller;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -19,7 +16,6 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
@@ -27,53 +23,56 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Toast;
 
 import com.example.it3197_casestudy.model.Article;
 import com.example.it3197_casestudy.ui_logic.ArticleMainActivity;
 import com.example.it3197_casestudy.ui_logic.ArticleSelectedActivityActivity;
+import com.example.it3197_casestudy.ui_logic.ArticleSelectedFeedbackActivity;
+import com.example.it3197_casestudy.ui_logic.FeedbackArticleActivity;
+import com.example.it3197_casestudy.ui_logic.FeedbackListRow;
+import com.example.it3197_casestudy.ui_logic.MainLinkPage;
 import com.example.it3197_casestudy.ui_logic.SingleArticleActivity;
-import com.example.it3197_casestudy.ui_logic.SubmitArticle;
 import com.example.it3197_casestudy.util.Settings;
 
-public class GetApprovedLatestArticles extends AsyncTask<Object, Object, Object> implements Settings{
-	private ArrayList<Article> articleList;
-	private ArticleMainActivity activity;
-	private ListView artListView;
-	SingleArticleActivity saa;
+public class GetPendingFeedbackArticles extends AsyncTask<Object, Object, Object> implements Settings{
 
-	private double currentLatitude;
-	private double currentLongitude;
-	private int distanceSelected;
-	
-	private ProgressDialog dialog;
-	
-	public GetApprovedLatestArticles(ArticleMainActivity activity, ListView listView , Double Latitude, Double Longitude, int dist){
+	private ArrayList<Article> articleList;
+	private FeedbackArticleActivity activity;
+	private ListView artListView;
+	FeedbackListRow flr;
+
+    private ProgressDialog dialog;
+    
+    public GetPendingFeedbackArticles(FeedbackArticleActivity activity, ListView listView){
 		this.activity = activity;
 		this.artListView = listView;
-		this.currentLatitude = Latitude;
-		this.currentLongitude=Longitude;
-		this.distanceSelected=dist;
 	}
-	
+    
+    
+    
+
 	@Override
 	protected void onPreExecute() {
+		// TODO Auto-generated method stub
 		articleList = new ArrayList<Article>(); 
-		dialog = ProgressDialog.show(activity,
-				"Retrieving Latest Articles", "Please wait...", true);
+		dialog = ProgressDialog.show(activity, "Retrieving Pending Feebacks", "Please wait...", true);
 	}
+
+
+
 
 	@Override
-	protected String doInBackground(Object... arg0) {
-		return retrieveApprovedLatestArticles();
+	protected Object doInBackground(Object... arg0) {
+		// TODO Auto-generated method stub
+		return retrievePendingFeedbackArticles();
 	}
-
+	
+	
 	@Override
 	protected void onPostExecute(Object result) {
 		parseJSONResponse((String) result);
-		
-		saa = new SingleArticleActivity(activity,articleList);
-		artListView.setAdapter(saa);
+		flr = new FeedbackListRow(activity,articleList);
+		artListView.setAdapter(flr);
 		artListView.setOnItemClickListener(new OnItemClickListener(){
 
 			@Override
@@ -82,7 +81,8 @@ public class GetApprovedLatestArticles extends AsyncTask<Object, Object, Object>
 				// TODO Auto-generated method stub
 				Article a = new Article();
 				
-				Intent intent = new Intent(activity, ArticleSelectedActivityActivity.class);
+				Intent intent = new Intent(activity, ArticleSelectedFeedbackActivity.class);
+				intent.putExtra("articleID", articleList.get(pos).getArticleID());
 				intent.putExtra("title", articleList.get(pos).getTitle());
 				intent.putExtra("author", articleList.get(pos).getArticleUser());
 				intent.putExtra("articleDate", articleList.get(pos).getArticleDate());
@@ -91,23 +91,20 @@ public class GetApprovedLatestArticles extends AsyncTask<Object, Object, Object>
 				intent.putExtra("dbLat", articleList.get(pos).getDbLat());
 				intent.putExtra("dbLon", articleList.get(pos).getDbLon());
 				activity.startActivity(intent);
+				activity.finish();
 				
-				//activity.finish();
-			//	activity.startActivity(intent);
-				//Toast.makeText(activity, Integer.toString(arg2), Toast.LENGTH_SHORT).show();
-				
-				//Toast.makeText(activity, articleList.get(arg2).getTitle(), Toast.LENGTH_SHORT).show();
 			}
 			
 		});
 		dialog.dismiss();
 	}
-
-	public String retrieveApprovedLatestArticles() {
+	
+	
+	public String retrievePendingFeedbackArticles() {
 		String responseBody = "";
 		// Instantiate an HttpClient
 		HttpClient httpclient = new DefaultHttpClient();
-		HttpPost httppost = new HttpPost(API_URL + "DisplayArticleMainServletCS");
+		HttpPost httppost = new HttpPost(API_URL + "DisplayPendingFeedbackServletCS");
 		ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
 		// Instantiate a POST HTTP method
 		try {
@@ -121,7 +118,8 @@ public class GetApprovedLatestArticles extends AsyncTask<Object, Object, Object>
 		System.out.println(responseBody);
 		return responseBody;
 	}
-
+	
+	
 	public void parseJSONResponse(String responseBody) {
 		JSONArray data_array;
 		JSONObject json;
@@ -150,33 +148,8 @@ public class GetApprovedLatestArticles extends AsyncTask<Object, Object, Object>
 				article.setDbLon(dataJob.getDouble("dbLon"));
 				article.setArticleUser(dataJob.getString("articleUser"));
 				
-				if(currentLatitude == 0 && currentLongitude==0){
-					articleList.add(article);
-				}
-				else if(distanceSelected==0){
-					articleList.add(article);
-				}
-				else{
-					Location loc1 = new Location("");
-					loc1.setLatitude(currentLatitude);
-					loc1.setLongitude(currentLongitude);
-	
-					Location loc2 = new Location("");
-					loc2.setLatitude(dataJob.getDouble("dbLat"));
-					loc2.setLongitude(dataJob.getDouble("dbLon"));
-	
-					//returns dist in m
-					float dist = loc1.distanceTo(loc2)/1000;
-					//dist in km
-					//String dist = Float.toString(distanceInMeters);
-					if(dist<=distanceSelected){
-						
-						articleList.add(article);
-					
-					
-					//Toast.makeText(getApplicationContext(), "Distance (" + dist+ ") is between 5km!!!",Toast.LENGTH_LONG).show();
-					}
-				}
+				
+				articleList.add(article);
 				
 			}
 		} catch (Exception e) {
@@ -196,8 +169,11 @@ public class GetApprovedLatestArticles extends AsyncTask<Object, Object, Object>
 	            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						// TODO Auto-generated method stu
+						// TODO Auto-generated method stub
+						
 						//activity.finish();
+						//Intent intent = new Intent(activity, MainLinkPage.class);
+						//activity.startActivity(intent);
 					}
 				});
 	            builder.create().show();

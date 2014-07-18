@@ -8,11 +8,11 @@
         android:showAsAction="always"
         android:title="Submit"/>
     
-    
+   <!--   
     <item
         android:id="@+id/backToMain"
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="Back"/>
-
+-->
 </menu>

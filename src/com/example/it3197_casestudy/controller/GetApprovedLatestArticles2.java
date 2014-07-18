@@ -30,13 +30,14 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 
 import com.example.it3197_casestudy.model.Article;
+import com.example.it3197_casestudy.ui_logic.ArticleDisplayMainStatsActivity;
 import com.example.it3197_casestudy.ui_logic.ArticleMainActivity;
 import com.example.it3197_casestudy.ui_logic.ArticleSelectedActivityActivity;
 import com.example.it3197_casestudy.ui_logic.SingleArticleActivity;
 import com.example.it3197_casestudy.ui_logic.SubmitArticle;
 import com.example.it3197_casestudy.util.Settings;
 
-public class GetApprovedLatestArticles extends AsyncTask<Object, Object, Object> implements Settings{
+public class GetApprovedLatestArticles2 extends AsyncTask<Object, Object, Object> implements Settings{
 	private ArrayList<Article> articleList;
 	private ArticleMainActivity activity;
 	private ListView artListView;
@@ -46,9 +47,13 @@ public class GetApprovedLatestArticles extends AsyncTask<Object, Object, Object>
 	private double currentLongitude;
 	private int distanceSelected;
 	
+	
+	private ArrayList<Double> artLatitude = new ArrayList<Double>();
+	private ArrayList<Double> artLongitude = new ArrayList<Double>();
+	
 	private ProgressDialog dialog;
 	
-	public GetApprovedLatestArticles(ArticleMainActivity activity, ListView listView , Double Latitude, Double Longitude, int dist){
+	public GetApprovedLatestArticles2(ArticleMainActivity activity, ListView listView , Double Latitude, Double Longitude, int dist){
 		this.activity = activity;
 		this.artListView = listView;
 		this.currentLatitude = Latitude;
@@ -72,7 +77,31 @@ public class GetApprovedLatestArticles extends AsyncTask<Object, Object, Object>
 	protected void onPostExecute(Object result) {
 		parseJSONResponse((String) result);
 		
-		saa = new SingleArticleActivity(activity,articleList);
+		
+		for(int q=0; q<articleList.size();q++){
+			//articleList.get(q).getDbLat();
+			artLatitude.add(articleList.get(q).getDbLat());
+			artLongitude.add(articleList.get(q).getDbLon());
+			//Toast.makeText(activity, articleList.get(q).getTitle(),Toast.LENGTH_SHORT).show();
+		}
+
+		Intent intent = new Intent(activity, ArticleDisplayMainStatsActivity.class);
+		intent.putExtra("noOfArticles", articleList.size());
+		intent.putExtra("distanceSelected", distanceSelected);
+		intent.putExtra("currentLatitude", currentLatitude);
+		intent.putExtra("currentLongitude", currentLongitude);
+		intent.putExtra("artLatitude", artLatitude);
+		intent.putExtra("artLongitude", artLongitude);
+		activity.startActivity(intent);
+		
+		//Toast.makeText(activity, String.valueOf(artLatitude.size()), Toast.LENGTH_LONG).show();
+		//for (int i = 0; i <artLatitude.size();i++){
+			//Toast.makeText(activity, String.valueOf(artLatitude.get(i)), Toast.LENGTH_LONG).show();
+		//}
+		
+		
+		
+		/*saa = new SingleArticleActivity(activity,articleList);
 		artListView.setAdapter(saa);
 		artListView.setOnItemClickListener(new OnItemClickListener(){
 
@@ -99,7 +128,7 @@ public class GetApprovedLatestArticles extends AsyncTask<Object, Object, Object>
 				//Toast.makeText(activity, articleList.get(arg2).getTitle(), Toast.LENGTH_SHORT).show();
 			}
 			
-		});
+		});*/
 		dialog.dismiss();
 	}
 
@@ -172,7 +201,9 @@ public class GetApprovedLatestArticles extends AsyncTask<Object, Object, Object>
 					if(dist<=distanceSelected){
 						
 						articleList.add(article);
-					
+						
+						
+						
 					
 					//Toast.makeText(getApplicationContext(), "Distance (" + dist+ ") is between 5km!!!",Toast.LENGTH_LONG).show();
 					}

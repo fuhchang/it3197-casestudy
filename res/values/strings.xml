@@ -285,6 +285,9 @@
     <string name="title_activity_single_article">MainActivity</string>
     <string name="title_activity_article_selected_activity">MainActivity</string>
     <string name="title_activity_article_latest_more_detail">ArticleLatestMoreDetailActivity</string>
+    <string name="title_activity_feedback_article">FeedbackArticleActivity</string>
+    <string name="title_activity_article_selected_feedback">ArticleSelectedFeedbackActivity</string>
+    <string name="title_activity_article_display_main_stats">ArticleDisplayMainStatsActivity</string>
     
 
 </resources>

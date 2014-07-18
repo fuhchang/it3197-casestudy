@@ -247,11 +247,11 @@ public class SubmitArticle extends Activity {
 				c.execute();
 			}
 		}
-		if(id==R.id.backToMain){
+		/*if(id==R.id.backToMain){
 			//Intent intent = new Intent(SubmitArticle.this, ArticleMainActivity.class);
 			//startActivity(intent);
 			SubmitArticle.this.finish();
-		}
+		}*/
 		
 		return super.onOptionsItemSelected(item);
 	}

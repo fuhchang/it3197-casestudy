@@ -220,6 +220,18 @@
             android:name="com.example.it3197_casestudy.ui_logic.ArticleLatestMoreDetailActivity"
             android:label="@string/title_activity_article_latest_more_detail" >
         </activity>
+        <activity
+            android:name="com.example.it3197_casestudy.ui_logic.FeedbackArticleActivity"
+            android:label="@string/title_activity_feedback_article" >
+        </activity>
+        <activity
+            android:name="com.example.it3197_casestudy.ui_logic.ArticleSelectedFeedbackActivity"
+            android:label="@string/title_activity_article_selected_feedback" >
+        </activity>
+        <activity
+            android:name="com.example.it3197_casestudy.ui_logic.ArticleDisplayMainStatsActivity"
+            android:label="@string/title_activity_article_display_main_stats" >
+        </activity>
         
     </application>
 

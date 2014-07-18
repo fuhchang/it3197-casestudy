@@ -4,19 +4,17 @@ import java.util.List;
 import java.util.Locale;
 
 import com.example.it3197_casestudy.R;
+import com.example.it3197_casestudy.R.id;
 import com.example.it3197_casestudy.R.layout;
 import com.example.it3197_casestudy.R.menu;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.example.it3197_casestudy.controller.ArticleUpdateFeedbackStatus;
+import com.example.it3197_casestudy.model.Article;
 
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -28,15 +26,29 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ArticleSelectedActivityActivity extends Activity {
+public class ArticleSelectedFeedbackActivity extends Activity {
 
 	TextView titleTv, authorTv, articleDateTv, contentTv, addTv;
+	double currentLat;
+	double currentLon;
+	double lat;
+	double lon;
 	
+	String Address;
+	String City;
+	
+	
+	int articleIDForUpdate;
+	
+	Location location; 
+    private boolean gps_enabled=false;
+	private boolean network_enabled=false;
+	LocationManager lm;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.article_selected_activity);
+		setContentView(R.layout.activity_article_selected_feedback);
 		
 		getActionBar().setTitle("");
 		
@@ -44,7 +56,6 @@ public class ArticleSelectedActivityActivity extends Activity {
 		authorTv = (TextView)findViewById(R.id.author);
 		articleDateTv = (TextView) findViewById(R.id.date);
 		contentTv = (TextView)findViewById(R.id.content);
-	//	addTv = (TextView) findViewById(R.id.add);
 		
 		Bundle extras = this.getIntent().getExtras();
 		String title = extras.getString("title");
@@ -52,46 +63,92 @@ public class ArticleSelectedActivityActivity extends Activity {
 		String date = extras.getString("articleDate");
 		String content = extras.getString("content");
 		String address = extras.getString("address");
-		//String mainSubmitLon = extras.getString("mainSubmitLon");
+		String articleId = String.valueOf(extras.getInt("articleID"));
+		articleIDForUpdate = extras.getInt("articleID");
 		
-		//Toast.makeText(getApplicationContext(), title, Toast.LENGTH_SHORT).show();
+	//	Toast.makeText(getApplicationContext(), articleId, Toast.LENGTH_SHORT).show();
+		
 		titleTv.setText(title);
 		authorTv.setText("Author: " + author);
 		articleDateTv.setText(date);
 		contentTv.setText(content);
-		//addTv.setText(address);
 		
 		
-		
-		
-	//		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();		
-			//map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(1.3667, 103.8), 10));
-	//		map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-			//map.setMapType(GoogleMap.MAP_TYPE_NONE);
-			//map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-			//map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-			//map.setMapType(GoogleMap.MAP_TYPE_TERRAIN);		  
-			  
-			//map.setTrafficEnabled(true);
-			  
-			//map.setMyLocationEnabled(true);	  
-	//		  getMyCurrentLocation();
-			  //convertToAddress();
+		getMyCurrentLocation();
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.article_selected_activity, menu);
+		getMenuInflater().inflate(R.menu.article_selected_feedback, menu);
 		return true;
 	}
+
+	
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		// TODO Auto-generated method stub
+		
+		int id = item.getItemId();
+		
+		   Bundle extras = this.getIntent().getExtras();
+		   String address = extras.getString("address");
+		   double dbLat = extras.getDouble("dbLat");
+		   double dbLon = extras.getDouble("dbLon");
+		   
+		   
+		   if(id==R.id.navigate){
+			/*	Intent intent = new Intent(ArticleSelectedFeedbackActivity.this, ArticleLatestMoreDetailActivity.class);
+				intent.putExtra("articleLoc", address);
+				intent.putExtra("dbLat", dbLat);
+				intent.putExtra("dbLon", dbLon);
+				startActivity(intent);
+				*/
+			   
+			   Intent intent = new Intent(android.content.Intent.ACTION_VIEW, 
+			   Uri.parse("http://maps.google.com/maps?saddr= " + currentLat + ","  + currentLon + "&daddr=" + dbLat + "," + dbLon));
+			   //Uri.parse("http://maps.google.com/maps?saddr=1.3792222033267854, 103.84977746969753&daddr=1.3728403867740486,103.84756732946926+to:1.3748461023871494, 103.8455932236343"));
+			   startActivity(intent);
+			}
+		
+		   if(id == R.id.confirm){
+			  
+			   
+			   	Article article = new Article();
+				article.setArticleID(articleIDForUpdate);
+				article.setApproved("Confirmed");
+				ArticleUpdateFeedbackStatus aufs = new ArticleUpdateFeedbackStatus(ArticleSelectedFeedbackActivity.this,article);
+				aufs.execute();
+			   
+		   }
+		   
+		   if(id == R.id.discard){
+			   Article article = new Article();
+				article.setArticleID(articleIDForUpdate);
+				article.setApproved("Discard");
+
+				ArticleUpdateFeedbackStatus aufs = new ArticleUpdateFeedbackStatus(ArticleSelectedFeedbackActivity.this,article);
+				aufs.execute();
+			   
+		   }
+		return super.onMenuItemSelected(featureId, item);
+	}
+
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		//Intent intent = new Intent(ArticleSelectedActivityActivity.this, ArticleMainActivity.class);
+		//startActivity(intent);
+		Intent intent = new Intent(ArticleSelectedFeedbackActivity.this, FeedbackArticleActivity.class);
+		startActivity(intent);
+		ArticleSelectedFeedbackActivity.this.finish();
+		super.onBackPressed();
+	}  
 	
 	
 	/** Check the type of GPS Provider available at that instance and  collect the location informations**/
-	/*   void getMyCurrentLocation() {    
-		   
-		   
-	   	  // map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lon), 16));
+	   void getMyCurrentLocation() {    
+		   		   
 		   
 	       LocationManager locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 	       try{
@@ -149,18 +206,18 @@ public class ArticleSelectedActivityActivity extends Activity {
 		   	
 		   	       Address = addresses.get(0).getAddressLine(0);
 		   	       City = addresses.get(0).getAddressLine(1);
+		   	       
+		   	       currentLat = lat;
+		   	       currentLon = lon;
 		   	      }
 		   	      catch (Exception e)
 		   	      {
 		   	          e.printStackTrace();
 		   	      }
-		   	   mp.position(new LatLng(location.getLatitude(), location.getLongitude()));
-		   	   mp.title("You are here");		   	 
-		   	   map.addMarker(mp).showInfoWindow();	
-		   	   map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(1.3667, 103.8), 10));
+
 	      }
 	      else{ 
-	         AlertDialog.Builder builder1 = new AlertDialog.Builder(ArticleSelectedActivityActivity.this);
+	         AlertDialog.Builder builder1 = new AlertDialog.Builder(ArticleSelectedFeedbackActivity.this);
 	         builder1.setTitle("Service Unavailable");
 	   		 builder1.setMessage("Unable to get your location, check if your GPS and Network are turned on.");
 	   		 builder1.setCancelable(true);
@@ -173,71 +230,16 @@ public class ArticleSelectedActivityActivity extends Activity {
 	           alert11.show();
 	           
 	           lat=1.3667;
-	           lon=103.8;      
-	           mp.position(new LatLng(1.3667, 103.8));
-		       mp.draggable(true);
-		   	   map.addMarker(mp).showInfoWindow();
-		   	   
-		   	 map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(1.3667, 103.8), 10));
+	           lon=103.8;    
+	           currentLat = lat;
+		   	   currentLon = lon;  
 	      }
 	      
 	      
-	      
-	       Bundle extras = this.getIntent().getExtras();
-		   double dbLat = extras.getDouble("dbLat");
-		   double dbLon = extras.getDouble("dbLon");
-		   artLoc.position(new LatLng(dbLat, dbLon));
-		   artLoc.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-		   artLoc.title("Place of occurrence");
-		   map.addMarker(artLoc).showInfoWindow();
-	      
-	      
-	      
-	      
-	   }*/
 
-	@Override
-	public boolean onMenuItemSelected(int featureId, MenuItem item) {
-		// TODO Auto-generated method stub
-		
-		int id = item.getItemId();
-		
-		   Bundle extras = this.getIntent().getExtras();
-		   String address = extras.getString("address");
-		   double dbLat = extras.getDouble("dbLat");
-		   double dbLon = extras.getDouble("dbLon");
-		   //artLoc.position(new LatLng(dbLat, dbLon));
-		
-		if(id==R.id.viewMap){
-			Intent intent = new Intent(ArticleSelectedActivityActivity.this, ArticleLatestMoreDetailActivity.class);
-			intent.putExtra("articleLoc", address);
-			intent.putExtra("dbLat", dbLat);
-			intent.putExtra("dbLon", dbLon);
-			startActivity(intent);
-			//ArticleSelectedActivityActivity.this.finish();
-		}
-	/*	if(id==R.id.back){
-			//Intent intent = new Intent(ArticleSelectedActivityActivity.this, ArticleMainActivity.class);
-			//startActivity(intent);
-			ArticleSelectedActivityActivity.this.finish();
-		}
-		*/
-		
-		return super.onMenuItemSelected(featureId, item);
-		
-		
-	}
-
-	@Override
-	public void onBackPressed() {
-		// TODO Auto-generated method stub
-		//Intent intent = new Intent(ArticleSelectedActivityActivity.this, ArticleMainActivity.class);
-		//startActivity(intent);
-		ArticleSelectedActivityActivity.this.finish();
-		super.onBackPressed();
-	}  
-	
-	
-	
-
+	      
+	      
+	      
+	      
+	   }
 }

@@ -6,9 +6,9 @@
         android:showAsAction="always"
         android:title="View Map"/>
     
-    <item
+  <!--    <item
         android:id="@+id/back"
         android:orderInCategory="100"
 		android:showAsAction="never"
-        android:title="Back"/>
+        android:title="Back"/>-->
 </menu>
