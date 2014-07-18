@@ -235,13 +235,7 @@ public class CreateGroupActivityStep4 extends Activity implements LocationListen
 		   	      {
 		   	          e.printStackTrace();
 		   	      }
-		   	   
-	
-		   	   
-		   	   
 		   	   locToBeStored=Address + "\n" + City;
-		   	  
-		   	   
 		   	   addressTV.setText("Estimated location: \n" + locToBeStored);
 		   	   
 
@@ -326,8 +320,8 @@ public class CreateGroupActivityStep4 extends Activity implements LocationListen
 		hobby.setGroupName(title);
 		hobby.setCategory(type);
 		hobby.setDescription(gDesc);
-		hobby.setLat(finallLat);
-		hobby.setLng(finalLng);
+		hobby.setLat(lat);
+		hobby.setLng(Lng);
 		CreatehobbyGroup createHobby = new CreatehobbyGroup(CreateGroupActivityStep4.this, hobby);
 		createHobby.execute();
 		}

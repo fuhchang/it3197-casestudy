@@ -28,6 +28,10 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.AbsListView.MultiChoiceModeListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -74,6 +78,40 @@ public class getPostController extends AsyncTask<Object, Object, Object>
 		dialog.dismiss();
 		postListView = new PostListView(activity,getList);
 		itemList.setAdapter(postListView);
+		itemList.setMultiChoiceModeListener(new MultiChoiceModeListener(){
+
+			@Override
+			public boolean onActionItemClicked(ActionMode arg0, MenuItem arg1) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+
+			@Override
+			public boolean onCreateActionMode(ActionMode arg0, Menu arg1) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+
+			@Override
+			public void onDestroyActionMode(ActionMode arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public boolean onPrepareActionMode(ActionMode arg0, Menu arg1) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+
+			@Override
+			public void onItemCheckedStateChanged(ActionMode arg0, int arg1,
+					long arg2, boolean arg3) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
 	}
 	
 	public String retrievePost(int id){

@@ -58,7 +58,7 @@
     <string name="action_update_group">Edit Group</string>
 	<string name="join_event">Join event</string>
 	<string name="unjoin_event">Unjoin event</string>
-
+	 <string name="action_update">Update</string>
     <string-array name="imgBy">
         <item>Gallery</item>
         <item>Camera</item>

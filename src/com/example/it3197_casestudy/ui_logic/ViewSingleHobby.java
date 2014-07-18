@@ -58,7 +58,14 @@ public class ViewSingleHobby extends Activity {
 			startActivity(newPost);
 			break;
 		case R.id.action_update_group:
-			Intent updateIntent = new Intent(this, UpdateGroupActivity.class);
+			Intent updateIntent = new Intent(this, EditHobbyGrp.class);
+			updateIntent.putExtra("grpID", getIntent().getExtras().getInt("grpID"));
+			updateIntent.putExtra("grpName", getIntent().getExtras().getString("grpName"));
+			Toast.makeText(getApplicationContext(),	getIntent().getExtras().getString("grpType"), Toast.LENGTH_LONG).show();
+			updateIntent.putExtra("grpType", getIntent().getExtras().getString("grpType"));
+			updateIntent.putExtra("grpContent", getIntent().getExtras().getString("grpContent"));
+			updateIntent.putExtra("Lat", getIntent().getExtras().getDouble("Lat"));
+			updateIntent.putExtra("Lng", getIntent().getExtras().getDouble("Lng"));
 			startActivity(updateIntent);
 			break;
 		}

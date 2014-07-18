@@ -3,13 +3,7 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <LinearLayout
-        android:id="@+id/view1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:orientation="vertical"
-        android:padding="5dp" >
+
 
         <EditText
             android:id="@+id/postNameET"
@@ -19,26 +13,17 @@
 
             <requestFocus />
         </EditText>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/view2"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/view1"
-        android:layout_marginBottom="10dp"
-        android:orientation="vertical"
-        android:padding="5dp" >
+    
 
         <TextView
             android:id="@+id/pContent"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/hr"
+            android:layout_below="@+id/postNameET"
             android:text="Content:" />
 
         <EditText
-            android:id="@+id/etPContent"
+            android:id="@+id/etContent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/pContent"
@@ -46,22 +31,15 @@
             android:inputType="textMultiLine"
             android:lines="5"
             android:scrollHorizontally="false" />
-    </LinearLayout>
+   
 
-    <LinearLayout
-        android:id="@+id/view3"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/view2"
-        android:layout_marginBottom="10dp"
-        android:orientation="vertical"
-        android:padding="5dp" >
+   
 
         <TextView
             android:id="@+id/imgTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/view2"
+            android:layout_below="@+id/etContent"
             android:text="@string/SelectImg" />
 
         <TextView
@@ -74,30 +52,22 @@
             android:id="@+id/gImg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/uploadImg"
+            android:layout_below="@+id/imgLink"
             android:paddingTop="10dp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/view4"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/view2"
-        android:layout_marginBottom="10dp"
-        android:orientation="vertical"
-        android:padding="5dp" >
-
-        <fragment
-            android:id="@+id/gMap"
-            android:name="com.google.android.gms.maps.MapFragment"
-            android:layout_width="match_parent"
-            android:layout_height="280dp" />
-
+  
+		 <TextView
+            android:id="@+id/HintText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+             android:layout_below="@+id/gImg"
+            android:textSize="20sp" />
+  
         <TextView
             android:id="@+id/LocAddress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+             android:layout_below="@+id/HintText"
             android:textSize="20sp" />
-    </LinearLayout>
+   
 
 </LinearLayout>

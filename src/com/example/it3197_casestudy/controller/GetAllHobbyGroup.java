@@ -30,6 +30,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
@@ -72,7 +73,12 @@ public class GetAllHobbyGroup extends AsyncTask<Object, Object, Object>
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(activity.getActivity(), ViewSingleHobby.class);
 				intent.putExtra("grpID", hobbyList.get(position).getGroupID());
+				Toast.makeText(activity.getActivity(),	hobbyList.get(position).getCategory(), Toast.LENGTH_LONG).show();
+				intent.putExtra("grpType", hobbyList.get(position).getCategory());
 				intent.putExtra("grpName", hobbyList.get(position).getGroupName());
+				intent.putExtra("grpContent", hobbyList.get(position).getDescription());
+				intent.putExtra("Lat", hobbyList.get(position).getLat());
+				intent.putExtra("Lng", hobbyList.get(position).getLng());
 				activity.startActivity(intent);
 			}
 			
@@ -112,8 +118,9 @@ public class GetAllHobbyGroup extends AsyncTask<Object, Object, Object>
 				hobby.setGroupID(dataJob.getInt("grpID"));
 				hobby.setGroupName(dataJob.getString("grpName"));
 				hobby.setCategory(dataJob.getString("category"));
-				hobby.setLat(dataJob.getInt("Lat"));
-				hobby.setLng(dataJob.getInt("Lng"));
+				hobby.setDescription(dataJob.getString("grpDesc"));
+				hobby.setLat(dataJob.getDouble("Lat"));
+				hobby.setLng(dataJob.getDouble("Lng"));
 				hobbyList.add(hobby);
 			}
 		} catch (Exception e) {

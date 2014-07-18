@@ -3,6 +3,8 @@ package com.example.it3197_casestudy.ui_logic;
 import java.util.Arrays;
 
 import com.example.it3197_casestudy.R;
+import com.example.it3197_casestudy.controller.GetUser;
+import com.example.it3197_casestudy.model.User;
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
@@ -59,6 +61,8 @@ public class LoginActivity extends FragmentActivity {
 		// Hide the action bar
 		loginActionBar.hide();
 		setContentView(R.layout.activity_login);
+		etUserName = (EditText) findViewById(R.id.et_user_name);
+		etPassword = (EditText) findViewById(R.id.et_password);
 		
 	}
 
@@ -82,9 +86,13 @@ public class LoginActivity extends FragmentActivity {
 		try {
 			switch (view.getId()) {
 			case R.id.btn_login:
-				Intent intent = new Intent(LoginActivity.this,MainLinkPage.class);
-				startActivity(intent);
-				this.finish();
+				String userNric = etUserName.getText().toString();
+				String password = etPassword.getText().toString();
+				User user = new User();
+				user.setNric(userNric);
+				user.setPassword(password);
+				GetUser checkUser = new GetUser(this, user);
+				checkUser.execute();
 				break;
 			case R.id.btn_login_facebook:
 				//Session.openActiveSession(LoginActivity.this, true, callback);

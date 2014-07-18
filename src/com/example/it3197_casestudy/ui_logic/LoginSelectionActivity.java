@@ -24,6 +24,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class LoginSelectionActivity extends FragmentActivity {
 	private ActionBar loginActionBar;
@@ -93,7 +94,7 @@ public class LoginSelectionActivity extends FragmentActivity {
 		@Override
 		public void call(Session session, SessionState state, Exception exception) {
 			if(!state.isClosed()){
-				loginViaFB(session);
+				//loginViaFB(session);
 			}
 		}
 	};
@@ -103,7 +104,7 @@ public class LoginSelectionActivity extends FragmentActivity {
 		super.onResume();
 		Session session = Session.getActiveSession();
 		if (session != null && (session.isOpened() || session.isClosed())) {
-			loginViaFB(session);
+			//loginViaFB(session);
 		}
 		uiHelper.onResume();
 	}
@@ -116,8 +117,10 @@ public class LoginSelectionActivity extends FragmentActivity {
 			@Override
 			public void onCompleted(GraphUser user, Response response) {
 				if (user != null) {
+					
 					Intent intent = new Intent(LoginSelectionActivity.this,MainLinkPage.class);
 					dialog.dismiss();
+					intent.putExtra("userName", user.getName());
 					startActivity(intent);
 					LoginSelectionActivity.this.finish();
 				}
