@@ -28,13 +28,13 @@ import android.widget.Toast;
 public class CreateRiddle extends AsyncTask<Object, Object, Object> implements Settings	{
 	private CreateRiddleActivity activity;
 	private Riddle riddle;
-	private RiddleAnswer riddleAns;
+	private RiddleAnswer[] riddleChoices;
 	private ProgressDialog dialog;
 	
-	public CreateRiddle(CreateRiddleActivity activity, Riddle riddle, RiddleAnswer riddleAns){
+	public CreateRiddle(CreateRiddleActivity activity, Riddle riddle, RiddleAnswer[] riddleChoices){
 		this.activity = activity;
 		this.riddle = riddle;
-		this.riddleAns = riddleAns;
+		this.riddleChoices = riddleChoices;
 	}
 
 	@Override
@@ -75,15 +75,15 @@ public class CreateRiddle extends AsyncTask<Object, Object, Object> implements S
 
 		postParameters.add(new BasicNameValuePair("userNRIC", riddle.getUser().getNric()));
 		
-		//postParameters.add(new BasicNameValuePair("riddleID", Integer.toString(riddle.getRiddleID()));
 		postParameters.add(new BasicNameValuePair("riddleTitle", riddle.getRiddleTitle()));
 		postParameters.add(new BasicNameValuePair("riddleContent", riddle.getRiddleContent()));
 		postParameters.add(new BasicNameValuePair("riddleStatus", riddle.getRiddleStatus()));
 		postParameters.add(new BasicNameValuePair("riddlePoint", Integer.toString(riddle.getRiddlePoint())));
 		
-		//postParameters.add(new BasicNameValuePair("riddleAnswerID", Integer.toString(riddleAns.getRiddleAnswerID())));
-		postParameters.add(new BasicNameValuePair("riddleAnswer", riddleAns.getRiddleAnswer()));
-		postParameters.add(new BasicNameValuePair("riddleAnswerStatus", riddleAns.getRiddleAnswerStatus()));
+		for(int i = 0; i < riddleChoices.length; i++) {
+			postParameters.add(new BasicNameValuePair("riddleAnswer"+i, riddleChoices[i].getRiddleAnswer()));
+			postParameters.add(new BasicNameValuePair("riddleAnswerStatus"+i, riddleChoices[i].getRiddleAnswerStatus()));
+		}
 		
 		try {
 			httpPost.setEntity(new UrlEncodedFormEntity(postParameters));

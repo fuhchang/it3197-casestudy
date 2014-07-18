@@ -1,6 +1,9 @@
 package com.example.it3197_casestudy.model;
 
-public class Riddle {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Riddle implements Parcelable {
 	private int riddleID;
 	private User user;
 	private String riddleTitle;
@@ -8,6 +11,7 @@ public class Riddle {
 	private String riddleStatus;
 	private int riddlePoint;
 	
+	// Constructor
 	public Riddle(){}
 	
 	public Riddle(int riddleID, User user, String riddleTitle, String riddleContent, String riddleStatus, int riddlePoint){
@@ -19,13 +23,14 @@ public class Riddle {
 		this.riddlePoint = riddlePoint;
 	}
 	
-	//For testing purposes
+	// For testing purposes
 	public Riddle(int riddleID, String riddleTitle, String riddleContent){
 		this.riddleID = riddleID;
 		this.riddleTitle = riddleTitle;
 		this.riddleContent = riddleContent;
 	}
 	
+	// Getter and Setter
 	public int getRiddleID() {
 		return riddleID;
 	}
@@ -62,4 +67,40 @@ public class Riddle {
 	public void setRiddlePoint(int riddlePoint) {
 		this.riddlePoint = riddlePoint;
 	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeInt(riddleID);
+		dest.writeParcelable(this.user, flags);
+		dest.writeString(riddleTitle);
+		dest.writeString(riddleContent);
+		dest.writeString(riddleStatus);
+		dest.writeInt(riddlePoint);
+	}
+	
+	private Riddle(Parcel in) {
+		riddleID = in.readInt();
+		user = in.readParcelable(User.class.getClassLoader());
+		riddleTitle = in.readString();
+		riddleContent = in.readString();
+		riddleStatus = in.readString();
+		riddlePoint = in.readInt();
+	}
+	
+	public static final Parcelable.Creator<Riddle> CREATOR = new Parcelable.Creator<Riddle>() {
+		@Override
+		public Riddle createFromParcel(Parcel source) {
+			return new Riddle(source);
+		}
+
+		@Override
+		public Riddle[] newArray(int size) {
+			return new Riddle[size];
+		}
+	};
 }

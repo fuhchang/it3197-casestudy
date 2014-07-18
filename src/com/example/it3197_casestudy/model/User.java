@@ -1,6 +1,9 @@
 package com.example.it3197_casestudy.model;
 
-public class User {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class User implements Parcelable {
 	private String nric;
 	private String name;
 	private String type;
@@ -93,4 +96,47 @@ public class User {
 	public void setPoints(int points) {
 		this.points = points;
 	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeString(nric);
+		dest.writeString(name);
+		dest.writeString(type);
+		dest.writeString(password);
+		dest.writeString(contactNo);
+		dest.writeString(address);
+		dest.writeString(email);
+		dest.writeInt(active);
+		dest.writeInt(points);
+	}
+	
+	private User(Parcel in) {
+		nric = in.readString();
+		name = in.readString();
+		type = in.readString();
+		password = in.readString();
+		contactNo = in.readString();
+		address = in.readString();
+		email = in.readString();
+		active = in.readInt();
+		points = in.readInt();
+	}
+	
+	public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+		@Override
+		public User createFromParcel(Parcel source) {
+			return new User(source);
+		}
+
+		@Override
+		public User[] newArray(int size) {
+			return new User[size];
+		}
+		
+	};
 }

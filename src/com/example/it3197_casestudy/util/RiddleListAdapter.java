@@ -14,7 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 public class RiddleListAdapter extends ArrayAdapter<Riddle>{
-	
+	TextView tv_riddleTitle, tv_riddleContent, tv_riddleUser;
 	private Activity context;
 	private ArrayList<Riddle> riddleList;
 	
@@ -30,11 +30,17 @@ public class RiddleListAdapter extends ArrayAdapter<Riddle>{
 		View rowView = inflater.inflate(R.layout.riddle_row, null, true);
 		rowView.setBackgroundColor(Color.WHITE);
 		
-		TextView tv_riddle_title = (TextView) rowView.findViewById(R.id.tv_riddle_title);
-		TextView tv_riddle_content = (TextView) rowView.findViewById(R.id.tv_riddle_content);
+		tv_riddleTitle = (TextView) rowView.findViewById(R.id.tv_riddle_title);
+		tv_riddleContent = (TextView) rowView.findViewById(R.id.tv_riddle_content);
+		tv_riddleUser = (TextView) rowView.findViewById(R.id.tv_riddle_user);
 		
-		tv_riddle_title.setText(riddleList.get(position).getRiddleTitle());
-		tv_riddle_content.setText(riddleList.get(position).getRiddleContent());
+		tv_riddleTitle.setText(riddleList.get(position).getRiddleTitle());
+		if(riddleList.get(position).getRiddleContent().length() > 40){
+			tv_riddleContent.setText(riddleList.get(position).getRiddleContent().substring(0, 39) + " ..");
+		}
+		else
+			tv_riddleContent.setText(riddleList.get(position).getRiddleContent());
+		tv_riddleUser.setText(riddleList.get(position).getUser().getName());
 		
 		return rowView;
 	}

@@ -15,6 +15,7 @@ import org.json.JSONObject;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
@@ -26,6 +27,7 @@ import android.widget.ListView;
 import com.example.it3197_casestudy.model.Riddle;
 import com.example.it3197_casestudy.model.User;
 import com.example.it3197_casestudy.ui_logic.RiddleActivity;
+import com.example.it3197_casestudy.ui_logic.ViewRiddleActivity;
 import com.example.it3197_casestudy.util.RiddleListAdapter;
 import com.example.it3197_casestudy.util.Settings;
 
@@ -56,17 +58,17 @@ public class RetrieveAllRiddle extends AsyncTask<Object, Object, Object> impleme
 	@Override
 	protected void onPostExecute(Object result) {
 		parseJSONResponse((String) result);
-		dialog.dismiss();
 		riddleAdapter = new RiddleListAdapter(activity, riddleList);
 		riddleListView.setAdapter(riddleAdapter);
 		riddleListView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				//Intent intent = new Intent(activity, ViewRiddleActivity.class);
-				//activity.startActivity(intent);
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+				Intent intent = new Intent(activity, ViewRiddleActivity.class);
+				intent.putExtra("riddle", riddleList.get(position));
+				activity.startActivity(intent);
 			}
-			
 		});
+		dialog.dismiss();
 	}
 	
 	public void parseJSONResponse(String responseBody) {

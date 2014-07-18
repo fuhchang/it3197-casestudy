@@ -94,7 +94,7 @@ public class LoginSelectionActivity extends FragmentActivity {
 		@Override
 		public void call(Session session, SessionState state, Exception exception) {
 			if(!state.isClosed()){
-				//loginViaFB(session);
+				loginViaFB(session);
 			}
 		}
 	};
@@ -104,7 +104,7 @@ public class LoginSelectionActivity extends FragmentActivity {
 		super.onResume();
 		Session session = Session.getActiveSession();
 		if (session != null && (session.isOpened() || session.isClosed())) {
-			//loginViaFB(session);
+			loginViaFB(session);
 		}
 		uiHelper.onResume();
 	}

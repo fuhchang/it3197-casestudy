@@ -139,7 +139,11 @@
     <string name="et_create_riddle_title">Enter title</string>
     <string name="tv_create_riddle_content">Content:</string>
     <string name="et_create_riddle_content">Enter riddle</string>
-    <string name="tv_create_riddle_answer">Answer:</string>
+    <string name="tv_create_riddle_choice">Choices:</string>
+    <string name="rbtn_create_riddle_answer_1">Choice 1: </string>
+    <string name="rbtn_create_riddle_answer_2">Choice 2: </string>
+    <string name="rbtn_create_riddle_answer_3">Choice 3: </string>
+    <string name="rbtn_create_riddle_answer_4">Choice 4: </string>
     <string name="et_create_riddle_answer">Enter answer</string>
     <string name="btn_create_riddle">CREATE</string>
     
