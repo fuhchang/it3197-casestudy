@@ -345,6 +345,8 @@ public class ArticleMainActivity extends Activity {
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		// TODO Auto-generated method stub
 		
+		menu.removeItem(R.id.backToMainLink);
+		
 			if (lat==0 && lon == 0){
 				//menu.removeItem(R.id.backToMainLink);
 				menu.removeItem(R.id.distanceSelection);

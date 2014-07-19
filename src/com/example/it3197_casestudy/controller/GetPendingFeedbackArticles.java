@@ -16,6 +16,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
@@ -41,11 +42,19 @@ public class GetPendingFeedbackArticles extends AsyncTask<Object, Object, Object
 	private ListView artListView;
 	FeedbackListRow flr;
 
+	private double currentLatitude;
+	private double currentLongitude;
+	private int distanceSelected;
+	
+	
     private ProgressDialog dialog;
     
-    public GetPendingFeedbackArticles(FeedbackArticleActivity activity, ListView listView){
+    public GetPendingFeedbackArticles(FeedbackArticleActivity activity, ListView listView ,Double Latitude, Double Longitude, int dist){
 		this.activity = activity;
 		this.artListView = listView;
+		this.currentLatitude = Latitude;
+		this.currentLongitude=Longitude;
+		this.distanceSelected=dist;
 	}
     
     
@@ -55,7 +64,7 @@ public class GetPendingFeedbackArticles extends AsyncTask<Object, Object, Object
 	protected void onPreExecute() {
 		// TODO Auto-generated method stub
 		articleList = new ArrayList<Article>(); 
-		dialog = ProgressDialog.show(activity, "Retrieving Pending Feebacks", "Please wait...", true);
+		dialog = ProgressDialog.show(activity, "Retrieving Pending Articles", "Please wait...", true);
 	}
 
 
@@ -84,6 +93,7 @@ public class GetPendingFeedbackArticles extends AsyncTask<Object, Object, Object
 				Intent intent = new Intent(activity, ArticleSelectedFeedbackActivity.class);
 				intent.putExtra("articleID", articleList.get(pos).getArticleID());
 				intent.putExtra("title", articleList.get(pos).getTitle());
+				intent.putExtra("cat", articleList.get(pos).getCategory());
 				intent.putExtra("author", articleList.get(pos).getArticleUser());
 				intent.putExtra("articleDate", articleList.get(pos).getArticleDate());
 				intent.putExtra("content", articleList.get(pos).getContent());
@@ -149,7 +159,33 @@ public class GetPendingFeedbackArticles extends AsyncTask<Object, Object, Object
 				article.setArticleUser(dataJob.getString("articleUser"));
 				
 				
-				articleList.add(article);
+				if(currentLatitude == 0 && currentLongitude==0){
+					articleList.add(article);
+				}
+				else if(distanceSelected==0){
+					articleList.add(article);
+				}
+				else{
+					Location loc1 = new Location("");
+					loc1.setLatitude(currentLatitude);
+					loc1.setLongitude(currentLongitude);
+	
+					Location loc2 = new Location("");
+					loc2.setLatitude(dataJob.getDouble("dbLat"));
+					loc2.setLongitude(dataJob.getDouble("dbLon"));
+	
+					//returns dist in m
+					float dist = loc1.distanceTo(loc2)/1000;
+					//dist in km
+					//String dist = Float.toString(distanceInMeters);
+					if(dist<=distanceSelected){
+						
+						articleList.add(article);
+					
+					
+					//Toast.makeText(getApplicationContext(), "Distance (" + dist+ ") is between 5km!!!",Toast.LENGTH_LONG).show();
+					}
+				}
 				
 			}
 		} catch (Exception e) {

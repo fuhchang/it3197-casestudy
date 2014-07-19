@@ -28,7 +28,7 @@ import android.widget.Toast;
 
 public class ArticleSelectedFeedbackActivity extends Activity {
 
-	TextView titleTv, authorTv, articleDateTv, contentTv, addTv;
+	TextView titleTv, authorTv, articleDateTv, contentTv, addTv, cat;
 	double currentLat;
 	double currentLon;
 	double lat;
@@ -56,6 +56,7 @@ public class ArticleSelectedFeedbackActivity extends Activity {
 		authorTv = (TextView)findViewById(R.id.author);
 		articleDateTv = (TextView) findViewById(R.id.date);
 		contentTv = (TextView)findViewById(R.id.content);
+		cat = (TextView)findViewById(R.id.cat);
 		
 		Bundle extras = this.getIntent().getExtras();
 		String title = extras.getString("title");
@@ -64,6 +65,7 @@ public class ArticleSelectedFeedbackActivity extends Activity {
 		String content = extras.getString("content");
 		String address = extras.getString("address");
 		String articleId = String.valueOf(extras.getInt("articleID"));
+		String catRetrieved = extras.getString("cat");
 		articleIDForUpdate = extras.getInt("articleID");
 		
 	//	Toast.makeText(getApplicationContext(), articleId, Toast.LENGTH_SHORT).show();
@@ -72,7 +74,7 @@ public class ArticleSelectedFeedbackActivity extends Activity {
 		authorTv.setText("Author: " + author);
 		articleDateTv.setText(date);
 		contentTv.setText(content);
-		
+		cat.setText("Category: " + catRetrieved);
 		
 		getMyCurrentLocation();
 	}

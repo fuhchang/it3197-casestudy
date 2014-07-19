@@ -240,6 +240,14 @@
             android:name="com.example.it3197_casestudy.ui_logic.ArticleDisplayMainStatsActivity"
             android:label="@string/title_activity_article_display_main_stats" >
         </activity>
+        <activity
+            android:name="com.example.it3197_casestudy.ui_logic.OfficerMainActivity"
+            android:label="@string/title_activity_officer_main" >
+        </activity>
+        <activity
+            android:name="com.example.it3197_casestudy.FeedbackArticleStatsActivity"
+            android:label="@string/title_activity_feedback_article_stats" >
+        </activity>
         
     </application>
 

@@ -58,6 +58,9 @@ public class ArticleUpdateFeedbackStatus extends AsyncTask<Object, Object, Objec
 	protected void onPostExecute(Object result) {
 		// TODO Auto-generated method stub
 		parseJSONResponse((String)result);
+		
+		//Intent intent = new Intent(activity, FeedbackArticleActivity.class);
+		//activity.startActivity(intent);
 	}
 	
 	public String updateFeedbackArticleStatus(){

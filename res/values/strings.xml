@@ -292,6 +292,7 @@
     <string name="title_activity_feedback_article">FeedbackArticleActivity</string>
     <string name="title_activity_article_selected_feedback">ArticleSelectedFeedbackActivity</string>
     <string name="title_activity_article_display_main_stats">ArticleDisplayMainStatsActivity</string>
-    
+    <string name="title_activity_officer_main">OfficerMainActivity</string>
+    <string name="title_activity_feedback_article_stats">FeedbackArticleStatsActivity</string>
 
 </resources>

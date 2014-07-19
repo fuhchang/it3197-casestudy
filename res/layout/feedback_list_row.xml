@@ -44,6 +44,14 @@
 		</LinearLayout>
 		
 		<TextView 
+			    android:id="@+id/cat"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_marginLeft="5dp"
+			    android:textColor="#8A0829"
+			    />
+		
+		<TextView 
 			    android:id="@+id/location"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
