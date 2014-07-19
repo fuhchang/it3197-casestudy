@@ -114,7 +114,6 @@ public class EditHobbyGrp extends Activity {
 		// TODO Auto-generated method stub
 		switch(item.getItemId()){
 		case R.id.action_update:
-			Toast.makeText(getApplicationContext(),	getIntent().getExtras().getString("grpType"), Toast.LENGTH_LONG).show();
 			Hobby hobby = new Hobby();
 			hobby.setGroupID(getIntent().getExtras().getInt("grpID"));
 			hobby.setGroupName(postNameEt.getText().toString());

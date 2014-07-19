@@ -109,8 +109,8 @@ implements Settings{
 			public void run() {
 				dialog.dismiss();
 				AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-				builder.setTitle("Error in retrieving hobby ");
-				builder.setMessage("Unable to retrieve hobby. Please try again.");
+				builder.setTitle("Error in retrieving user ");
+				builder.setMessage("Please check our username and password");
 				builder.setPositiveButton("Ok",
 						new DialogInterface.OnClickListener() {
 							@Override

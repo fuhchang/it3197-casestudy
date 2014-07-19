@@ -23,14 +23,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class Hobbies_All extends Fragment {
-	
+	private String nric;
 	ListView allList;
 	HobbyListView hobbyList;
 	ArrayList<Hobby> allHobbyList;
-	public Hobbies_All() {
-
+		
+	public Hobbies_All(){
+		
 	}
-
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -39,9 +40,16 @@ public class Hobbies_All extends Fragment {
 				container, false);
 		allList = (ListView) rootView.findViewById(R.id.hobbyAllList);
 		allList.setBackgroundColor(Color.LTGRAY);
-		GetAllHobbyGroup getAll = new GetAllHobbyGroup(this, allList);
+		GetAllHobbyGroup getAll = new GetAllHobbyGroup(this, allList, nric);
 		getAll.execute();
 		return rootView;
 	}
-
+	
+	public String getNric(){
+		return nric;
+	}
+	
+	public void setNric(String nric){
+		this.nric = nric;
+	}
 }

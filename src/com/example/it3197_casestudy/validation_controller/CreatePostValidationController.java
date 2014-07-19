@@ -29,10 +29,12 @@ public class CreatePostValidationController implements Settings {
 		if (mForm.validate()) {
 			post = new HobbyPost();
 			String grpID = intent.getStringExtra("grpID");
+			post.setPostTitle(activity.getEtName().getText().toString());
 			post.setGrpID(Integer.parseInt(grpID));
 			post.setContent(activity.getEtContent().getText().toString());
 			post.setLat(activity.getLat());
 			post.setLng(activity.getLng());
+			post.setPosterNric(activity.getUserNric());
 			CreateHobbyPostController con = new CreateHobbyPostController(
 					activity, post);
 			con.execute();

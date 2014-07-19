@@ -25,6 +25,7 @@ public class CreateGroupActivityStep2 extends Activity {
 	Button btnNext;
 	private EditText grpDesc;
 	String title, category;
+	private String nric;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -34,6 +35,7 @@ public class CreateGroupActivityStep2 extends Activity {
 		title = getIntent().getStringExtra("eventName");
 		category = getIntent().getStringExtra("category");
 		grpDesc = (EditText) findViewById(R.id.etDesc);
+		nric = getIntent().getExtras().getString("nric");
 		btnNext.setOnClickListener(new OnClickListener(){
 			
 			@Override
@@ -64,6 +66,20 @@ public class CreateGroupActivityStep2 extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.create_group_activity_step2, menu);
 		return true;
+	}
+
+	/**
+	 * @return the nric
+	 */
+	public String getNric() {
+		return nric;
+	}
+
+	/**
+	 * @param nric the nric to set
+	 */
+	public void setNric(String nric) {
+		this.nric = nric;
 	}
 	
 }

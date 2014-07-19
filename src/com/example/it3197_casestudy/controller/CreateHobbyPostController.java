@@ -53,7 +53,7 @@ public class CreateHobbyPostController extends
 	@Override
 	protected void onPreExecute() {
 		// TODO Auto-generated method stub
-		dialog = ProgressDialog.show(activity, "Creating Post", "Creating...",
+		dialog = ProgressDialog.show(activity, "Creating Post", "Creating...Please Wait",
 				true);
 
 	}
@@ -66,12 +66,18 @@ public class CreateHobbyPostController extends
 
 		postParameters.add(new BasicNameValuePair("grpID", Integer
 				.toString(hobbypost.getGrpID())));
+		
+		postParameters.add(new BasicNameValuePair("postTitle", hobbypost.getPostTitle()));
 		postParameters.add(new BasicNameValuePair("postContent", hobbypost
 				.getContent()));
 		postParameters.add(new BasicNameValuePair("postLat", Double
 				.toString(hobbypost.getLat())));
 		postParameters.add(new BasicNameValuePair("postLng", Double
 				.toString(hobbypost.getLng())));
+		postParameters.add(new BasicNameValuePair("postLng", Double
+				.toString(hobbypost.getLng())));
+		
+		postParameters.add(new BasicNameValuePair("posterNric", hobbypost.getPosterNric()));
 		try {
 			httppost.setEntity(new UrlEncodedFormEntity(postParameters));
 			ResponseHandler<String> responseHandler = new BasicResponseHandler();

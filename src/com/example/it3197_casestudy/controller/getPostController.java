@@ -6,6 +6,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -50,11 +52,14 @@ public class getPostController extends AsyncTask<Object, Object, Object>
 	ArrayList<HobbyPost> getList;
 	PostListView postListView;
 	private ProgressDialog dialog;
-	
-	public getPostController(ViewSingleHobby activity, int id, ListView itemList){
+	private int adminRight;
+	private String userNric;
+	public getPostController(ViewSingleHobby activity, int id, ListView itemList, int adminRight, String nric){
 		this.activity = activity;
 		this.id = id;
 		this.itemList = itemList;
+		this.adminRight = adminRight;
+		this.userNric = nric;
 	}
 	
 	@Override
@@ -76,42 +81,8 @@ public class getPostController extends AsyncTask<Object, Object, Object>
 		// TODO Auto-generated method stub
 		parseJSONResponse((String)result);
 		dialog.dismiss();
-		postListView = new PostListView(activity,getList);
+		postListView = new PostListView(activity,getList, adminRight, userNric);
 		itemList.setAdapter(postListView);
-		itemList.setMultiChoiceModeListener(new MultiChoiceModeListener(){
-
-			@Override
-			public boolean onActionItemClicked(ActionMode arg0, MenuItem arg1) {
-				// TODO Auto-generated method stub
-				return false;
-			}
-
-			@Override
-			public boolean onCreateActionMode(ActionMode arg0, Menu arg1) {
-				// TODO Auto-generated method stub
-				return false;
-			}
-
-			@Override
-			public void onDestroyActionMode(ActionMode arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public boolean onPrepareActionMode(ActionMode arg0, Menu arg1) {
-				// TODO Auto-generated method stub
-				return false;
-			}
-
-			@Override
-			public void onItemCheckedStateChanged(ActionMode arg0, int arg1,
-					long arg2, boolean arg3) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-		});
 	}
 	
 	public String retrievePost(int id){
@@ -154,18 +125,22 @@ public class getPostController extends AsyncTask<Object, Object, Object>
 					hobbyPost = new HobbyPost();
 					hobbyPost.setGrpID(dataJob.getInt("grpID"));
 					hobbyPost.setPostID(dataJob.getInt("postID"));
-					//DateFormat df = new SimpleDateFormat("MM/dd/yyyy"); 
-					
-					//hobbyPost.setDatetime(df.parse(dataJob.getString("dateTime")));
+					Date date = new SimpleDateFormat("MMM dd, yyyy").parse(dataJob.getString("datetime"));
+					hobbyPost.setDatetime(date);
 					hobbyPost.setContent(dataJob.getString("content"));
 					hobbyPost.setLat(dataJob.getDouble("Lat"));
 					hobbyPost.setLng(dataJob.getDouble("Lng"));
+					hobbyPost.setPosterNric(dataJob.getString("nric"));
+					hobbyPost.setPostTitle(dataJob.getString("postTitle"));
 					getList.add(hobbyPost);
 				}
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			errorOnExecuting();
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 		

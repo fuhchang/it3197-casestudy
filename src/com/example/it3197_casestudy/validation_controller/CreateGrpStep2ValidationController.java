@@ -36,7 +36,7 @@ public class CreateGrpStep2ValidationController implements Settings{
 			intent.putExtra("eventDesc", grpDesc);
 			intent.putExtra("eventName", gTitle);
 			intent.putExtra("category", category);
-			
+			intent.putExtra("nric", activity.getNric());
 			activity.startActivity(intent);
 			activity.finish();
 		}

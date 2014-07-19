@@ -11,4 +11,9 @@
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/action_update_group"/>
+	<item
+        android:id="@+id/action_join_group"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="Join Group"/>
 </menu>

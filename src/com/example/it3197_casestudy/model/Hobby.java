@@ -8,6 +8,7 @@ public class Hobby {
 	private double Lng;
 	private String description;
 	private int active;
+	private String adminNric;
 	private byte[] GrpImg;
 
 	public int getGroupID() {
@@ -70,6 +71,20 @@ public class Hobby {
 
 	public void setLng(double lng) {
 		Lng = lng;
+	}
+
+	/**
+	 * @return the adminNric
+	 */
+	public String getAdminNric() {
+		return adminNric;
+	}
+
+	/**
+	 * @param adminNric the adminNric to set
+	 */
+	public void setAdminNric(String adminNric) {
+		this.adminNric = adminNric;
 	}
 	
 }

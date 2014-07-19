@@ -9,7 +9,8 @@ public class HobbyPost {
 	private Double Lat;
 	private Double Lng;
 	private int grpID;
-
+	private String posterNric;
+	private String postTitle;
 	public int getPostID() {
 		return postID;
 	}
@@ -58,6 +59,34 @@ public class HobbyPost {
 
 	public void setGrpID(int grpID) {
 		this.grpID = grpID;
+	}
+
+	/**
+	 * @return the posterNric
+	 */
+	public String getPosterNric() {
+		return posterNric;
+	}
+
+	/**
+	 * @param posterNric the posterNric to set
+	 */
+	public void setPosterNric(String posterNric) {
+		this.posterNric = posterNric;
+	}
+
+	/**
+	 * @return the postTitle
+	 */
+	public String getPostTitle() {
+		return postTitle;
+	}
+
+	/**
+	 * @param postTitle the postTitle to set
+	 */
+	public void setPostTitle(String postTitle) {
+		this.postTitle = postTitle;
 	}
 
 }

@@ -1,4 +1,5 @@
 package com.example.it3197_casestudy.util;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -9,10 +10,10 @@ import com.example.it3197_casestudy.ui_logic.Hobbies_Joined;
 
 
 public class viewHobbiesAdapter extends FragmentPagerAdapter {
-
-	public viewHobbiesAdapter(FragmentManager fm) {
+	String nric;
+	public viewHobbiesAdapter(FragmentManager fm, String nric) {
 		super(fm);
-		// TODO Auto-generated constructor stub
+		this.nric = nric;
 	}
 
 	@Override
@@ -22,9 +23,11 @@ public class viewHobbiesAdapter extends FragmentPagerAdapter {
 		switch(arg0){
 		case 0 : 
 			fragment = new Hobbies_Joined();
+			((Hobbies_Joined) fragment).setNric(nric);
 			break;
 		case 1 :
 			fragment = new Hobbies_All();
+			((Hobbies_All) fragment).setNric(nric);
 			break;
 		}
 		return fragment;

@@ -43,15 +43,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/app_id"/>
-		<activity
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/app_id" />
+
+        <activity
             android:name="com.example.it3197_casestudy.ui_logic.LoginActivity"
             android:label="@string/app_name" >
         </activity>
-		<activity
-    		android:name="com.facebook.LoginActivity"
-    		android:label="@string/title_facebook_login" >
-		</activity>
+        <activity
+            android:name="com.facebook.LoginActivity"
+            android:label="@string/title_facebook_login" >
+        </activity>
         <activity
             android:name="com.example.it3197_casestudy.ui_logic.MainPageActivity"
             android:label="@string/title_activity_main_page" >
@@ -147,22 +151,28 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
         <!-- DO NOT EDIT -->
-         
+
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyBm1w2P3qipVFeAhjSi3F6eQx2M3KmMB18" />
-             
-		<!-- fuhchang -->
-       
-        <!-- <meta-data
+
+        <!-- fuhchang -->
+
+
+        <!--
+             <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyDVor5BS2mdSm_sxCIOBtQTYS2uBDuNpJg" /> -->     
-		
-		<!-- Joseph lee -->
-		<!--<meta-data
+            android:value="AIzaSyDVor5BS2mdSm_sxCIOBtQTYS2uBDuNpJg" />
+        -->
+
+
+        <!-- Joseph lee -->
+        <!--
+            <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyCpTBz_uJRG9Wm5UWupZsZ2yMz9R3cbERk" />-->
-		
+            android:value="AIzaSyCpTBz_uJRG9Wm5UWupZsZ2yMz9R3cbERk" />
+        -->
+
         <activity
             android:name="com.example.it3197_casestudy.ui_logic.ViewAllEventsActivity"
             android:label="@string/title_activity_view_all_events" >
@@ -211,7 +221,6 @@
             android:name="com.example.it3197_casestudy.ui_logic.HobbyLoSelection"
             android:label="@string/title_activity_hobby_lo_selection" >
         </activity>
-        
         <activity
             android:name="com.example.it3197_casestudy.ui_logic.ArticleMainActivity"
             android:label="@string/title_activity_article_main" >
@@ -248,7 +257,10 @@
             android:name="com.example.it3197_casestudy.FeedbackArticleStatsActivity"
             android:label="@string/title_activity_feedback_article_stats" >
         </activity>
-        
+        <activity android:name=".ui_logic.EditHobbyGrp" >
+        </activity>
+        <activity android:name=".ui_logic.SelectPostLocation" >
+        </activity>
     </application>
 
 </manifest>

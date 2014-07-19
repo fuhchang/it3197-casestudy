@@ -322,6 +322,7 @@ public class CreateGroupActivityStep4 extends Activity implements LocationListen
 		hobby.setDescription(gDesc);
 		hobby.setLat(lat);
 		hobby.setLng(Lng);
+		hobby.setAdminNric(getIntent().getExtras().getString("nric"));
 		CreatehobbyGroup createHobby = new CreatehobbyGroup(CreateGroupActivityStep4.this, hobby);
 		createHobby.execute();
 		}

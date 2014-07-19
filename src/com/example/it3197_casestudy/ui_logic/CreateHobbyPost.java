@@ -71,6 +71,7 @@ public class CreateHobbyPost extends Activity {
 	double Lng;
 	String Address;
 	String City;
+	String userNric;
 	private boolean gps_enabled = false;
 	private boolean network_enabled = false;
 	private static final int CAPTURE_PHOTO = 2;
@@ -81,6 +82,7 @@ public class CreateHobbyPost extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_hobby_post);
+		userNric = getIntent().getExtras().getString("userNric");
 		view1 = (LinearLayout) findViewById(R.id.view1);
 		view1.setBackgroundColor(Color.LTGRAY);
 		view2 = (LinearLayout) findViewById(R.id.view2);
@@ -109,6 +111,14 @@ public class CreateHobbyPost extends Activity {
 			
 		});
 		
+	}
+
+	public String getUserNric() {
+		return userNric;
+	}
+
+	public void setUserNric(String userNric) {
+		this.userNric = userNric;
 	}
 
 	@Override
@@ -149,6 +159,7 @@ public class CreateHobbyPost extends Activity {
 			validList.add(validContent);
 			Intent intentValid = new Intent();
 			intentValid.putExtra("grpID", grpID);
+			
 			CreatePostValidationController validController = new CreatePostValidationController(this);
 			validController.validateForm(intentValid, mForm, validList);
 			break;
@@ -239,6 +250,8 @@ public class CreateHobbyPost extends Activity {
 				String selectedAdd = data.getStringExtra("selectedAdd");
 				 String selectedLat = data.getStringExtra("selectedLat");
 				 String selectedLon = data.getStringExtra("selectedLon");
+				 lat = Double.parseDouble(selectedLat);
+				 Lng = Double.parseDouble(selectedLon);
 				 LocAddress.setText(selectedAdd);
 				break;
 			}

@@ -3,6 +3,7 @@ package com.example.it3197_casestudy.ui_logic;
 import java.util.ArrayList;
 
 import com.example.it3197_casestudy.R;
+import com.example.it3197_casestudy.controller.GetAllJoinedHobbyGroup;
 import com.example.it3197_casestudy.listview.HobbyListView;
 import com.example.it3197_casestudy.model.Hobby;
 
@@ -20,8 +21,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class Hobbies_Joined extends Fragment {
+	private String nric;
 	ListView joinedList;
 	HobbyListView hobbyList;
+	ArrayList<Hobby> allHobbyList;
 	public Hobbies_Joined() {
 		
 	}
@@ -32,19 +35,21 @@ public class Hobbies_Joined extends Fragment {
 		// TODO Auto-generated method stub
 		View rootView = inflater.inflate(R.layout.activity_hobbies__joined,
 				container, false);
-		ArrayList<Hobby> allHobbyList = new ArrayList<Hobby>();
-		for(int i=0; i<3; i++){
-			Hobby h = new Hobby();
-			h.setGroupName(i+ " abc" + i *15);
-			h.setCategory("type" +i);
-			h.setDescription("asdasjhdkjbasdhbsdhfbasbdfhsbadf");
-			allHobbyList.add(h);
-		}
+		
+		
 		joinedList = (ListView) rootView.findViewById(R.id.hobbyJoinedList);
 		joinedList.setBackgroundColor(Color.GRAY);
-		hobbyList = new HobbyListView(getActivity(), allHobbyList);
-		joinedList.setAdapter(hobbyList);
+		GetAllJoinedHobbyGroup getJoined = new GetAllJoinedHobbyGroup(this, joinedList, nric);
+		getJoined.execute();
 		return rootView;
 	}
 
+	public String getNric() {
+		return nric;
+	}
+
+	public void setNric(String nric) {
+		this.nric = nric;
+	}
+	
 }

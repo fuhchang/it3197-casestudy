@@ -23,19 +23,20 @@ public class ViewHobbiesMain extends FragmentActivity implements
 	ViewPager ViewPager;
 	viewHobbiesAdapter viewHobbies;
 	Button btnNewGrp;
+	String nric;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_view_events);
-
+		nric = getIntent().getExtras().getString("nric");
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		// Show the Up button in the action bar.
 		//actionBar.setDisplayHomeAsUpEnabled(true);
 
-		viewHobbies = new viewHobbiesAdapter(getSupportFragmentManager());
+		viewHobbies = new viewHobbiesAdapter(getSupportFragmentManager(), nric);
 
 		// Set up the ViewPager with the sections adapter.
 		ViewPager = (ViewPager) findViewById(R.id.pager);
@@ -71,10 +72,12 @@ public class ViewHobbiesMain extends FragmentActivity implements
 		switch (item.getItemId()) {
 		case R.id.new_group:
 			Intent intentNewGrp = new Intent(this, CreateGroupActivityStep1.class);
+			intentNewGrp.putExtra("nric", nric);
 			startActivity(intentNewGrp);
 			break;
 		default:
 			Intent intentNewGrp1 = new Intent(this, CreateGroupActivityStep1.class);
+			intentNewGrp1.putExtra("nric", nric);
 			startActivity(intentNewGrp1);
 			break;
 		}

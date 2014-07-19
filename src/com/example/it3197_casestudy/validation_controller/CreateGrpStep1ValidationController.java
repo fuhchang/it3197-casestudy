@@ -27,6 +27,7 @@ public class CreateGrpStep1ValidationController implements Settings {
 			intent = new Intent(activity, CreateGroupActivityStep2.class);
 			intent.putExtra("eventName", activity.getgTitle().getText().toString());
 			intent.putExtra("category", activity.getCate().getSelectedItem().toString());
+			intent.putExtra("nric", activity.getNric());
 			activity.startActivity(intent);
 			activity.finish();
 		}

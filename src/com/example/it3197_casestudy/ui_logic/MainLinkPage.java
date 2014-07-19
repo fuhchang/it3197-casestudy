@@ -55,6 +55,7 @@ public class MainLinkPage extends Activity {
 		setContentView(R.layout.activity_main_link_page);
 		
 		getActionBar().setTitle("Home");
+		
 		//page = (ViewFlipper) findViewById(R.id.flipper);
 		//animFlipInForeward = AnimationUtils.loadAnimation(this, R.anim.f)
 		
@@ -70,16 +71,22 @@ public class MainLinkPage extends Activity {
 					long arg3) {
 				// TODO Auto-generated method stub
 				Intent intent = null;
+				String nric = getIntent().getExtras().getString("nric");
 				if(position == 0){
 					intent = new Intent(MainLinkPage.this,ViewAllEventsActivity.class);
+					intent.putExtra("nric", nric);
 				}else if(position == 1){
 					intent = new Intent(MainLinkPage.this, ViewHobbiesMain.class);
+					intent.putExtra("nric", nric);
 				}else if(position == 2){
 					intent = new Intent(MainLinkPage.this, SubmitArticle.class);
+					intent.putExtra("nric", nric);
 				}else if (position == 3){
 					intent = new Intent(MainLinkPage.this, RiddleActivity.class);
+					intent.putExtra("nric", nric);
 				}else if (position == 4){
 					intent = new Intent(MainLinkPage.this, ProfileActivity.class);
+					intent.putExtra("nric", nric);
 				}else if(position == 5){
 					Toast.makeText(getApplicationContext(), "SETTING", Toast.LENGTH_LONG).show();
 				}else{

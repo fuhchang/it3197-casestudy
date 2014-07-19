@@ -26,6 +26,7 @@ public class CreateGroupActivityStep1 extends Activity {
 	Button btnNext;
 	private EditText gTitle;
 	private Spinner cate;
+	private String nric;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -33,6 +34,7 @@ public class CreateGroupActivityStep1 extends Activity {
 		btnNext = (Button) findViewById(R.id.btnNext);
 		gTitle = (EditText) findViewById(R.id.gTitle);
 		setCate((Spinner) findViewById(R.id.sType));
+		nric = getIntent().getExtras().getString("nric");
 		btnNext.setOnClickListener(new OnClickListener(){
 
 			@Override
@@ -81,6 +83,20 @@ public class CreateGroupActivityStep1 extends Activity {
 
 	public void setgTitle(EditText gTitle) {
 		this.gTitle = gTitle;
+	}
+
+	/**
+	 * @return the nric
+	 */
+	public String getNric() {
+		return nric;
+	}
+
+	/**
+	 * @param nric the nric to set
+	 */
+	public void setNric(String nric) {
+		this.nric = nric;
 	}
 	
 }

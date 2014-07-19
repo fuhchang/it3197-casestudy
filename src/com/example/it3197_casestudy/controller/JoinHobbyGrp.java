@@ -1,8 +1,6 @@
 package com.example.it3197_casestudy.controller;
 
 import java.io.IOException;
-
-
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
@@ -19,57 +17,46 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-import com.example.it3197_casestudy.model.Hobby;
-import com.example.it3197_casestudy.ui_logic.CreateGroupActivityStep4;
-import com.example.it3197_casestudy.ui_logic.ViewHobbiesMain;
+import com.example.it3197_casestudy.model.HobbyMembers;
+import com.example.it3197_casestudy.ui_logic.ViewSingleHobby;
 import com.example.it3197_casestudy.util.Settings;
 
-public class CreatehobbyGroup extends AsyncTask<Object, Object, Object>
-		implements Settings {
-	private CreateGroupActivityStep4 activity;
-	private Hobby hobby;
+public class JoinHobbyGrp extends AsyncTask<Object, Object, Object> implements Settings {
+	private ViewSingleHobby activity;
+	private HobbyMembers members;
 	private ProgressDialog dialog;
-
-	public CreatehobbyGroup(CreateGroupActivityStep4 activity, Hobby hobby) {
+	public JoinHobbyGrp(ViewSingleHobby activity, HobbyMembers member){
 		this.activity = activity;
-		this.hobby = hobby;
+		this.members = member;
 	}
-
-	@Override
-	protected void onPreExecute() {
-		dialog = ProgressDialog.show(activity, "Creating Hobby Group",
-				"Creatng....", true);
-	}
-
 	@Override
 	protected Object doInBackground(Object... arg0) {
 		// TODO Auto-generated method stub
-		return createHobby();
+		return joinHobby();
 	}
-	
-	
 	@Override
 	protected void onPostExecute(Object result) {
 		// TODO Auto-generated method stub
 		parseJSONResponse((String)result);
+		
 	}
-
-	public String createHobby(){
+	@Override
+	protected void onPreExecute() {
+		// TODO Auto-generated method stub
+		dialog = ProgressDialog.show(activity, "Joining Hobby Group",
+				"Please wait......", true);
+	}
+	
+	public String joinHobby(){
 		String responseBody= "";
 		HttpClient httpclient = new DefaultHttpClient();
-		HttpPost httppost = new HttpPost(API_URL + "CreateHobbyServlet");
+		HttpPost httppost = new HttpPost(API_URL + "JoinHobbyGrpServlet");
 		ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
-		
-		postParameters.add(new BasicNameValuePair("nric", hobby.getAdminNric()));
-		postParameters.add(new BasicNameValuePair("gtitle", hobby.getGroupName()));
-		postParameters.add(new BasicNameValuePair("gType", hobby.getCategory()));
-		postParameters.add(new BasicNameValuePair("gDesc", hobby.getDescription()));
-		postParameters.add(new BasicNameValuePair("gLat", Double.toString(hobby.getLat())));
-		postParameters.add(new BasicNameValuePair("gLng", Double.toString(hobby.getLng())));
+		postParameters.add(new BasicNameValuePair("grpID", Integer.toString(members.getGroupID())));
+		postParameters.add(new BasicNameValuePair("userNric",members.getUserNric()));
 		try {
 			httppost.setEntity(new UrlEncodedFormEntity(postParameters));
 			ResponseHandler<String> responseHandler = new BasicResponseHandler();
@@ -85,7 +72,6 @@ public class CreatehobbyGroup extends AsyncTask<Object, Object, Object>
 			e.printStackTrace();
 		}
 		return responseBody;
-		
 	}
 	
 	private void parseJSONResponse(String responseBody){
@@ -96,7 +82,7 @@ public class CreatehobbyGroup extends AsyncTask<Object, Object, Object>
 			boolean success = json.getBoolean("success");
 			if(success){
 				dialog.dismiss();
-				Toast.makeText(activity, "Hobby Group Created", Toast.LENGTH_LONG).show();
+				Toast.makeText(activity, "Hobby Group Joined", Toast.LENGTH_LONG).show();
 				activity.finish();
 			}
 		} catch (JSONException e) {
@@ -105,4 +91,5 @@ public class CreatehobbyGroup extends AsyncTask<Object, Object, Object>
 		}
 		
 	}
+	
 }

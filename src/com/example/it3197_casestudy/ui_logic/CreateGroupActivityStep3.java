@@ -87,6 +87,7 @@ public class CreateGroupActivityStep3 extends Activity {
 				intent.putExtra("eventName", title);
 				intent.putExtra("category", type);
 				intent.putExtra("eventDesc", gDesc);
+				intent.putExtra("nric", getIntent().getExtras().getString("nric"));
 				startActivity(intent);
 			}
 			
