@@ -77,12 +77,12 @@
             android:label="@string/title_activity_create_event" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.CreateEventStep3Activity"
-            android:label="@string/title_activity_create_event" >
+            android:name="com.example.it3197_casestudy.ui_logic.UpdateEventStep1Activity"
+            android:label="@string/title_activity_update_event" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.CreateEventStep4Activity"
-            android:label="@string/title_activity_create_event" >
+            android:name="com.example.it3197_casestudy.ui_logic.UpdateEventStep2Activity"
+            android:label="@string/title_activity_update_event" >
         </activity>
         <activity
             android:name="com.example.it3197_casestudy.ui_logic.MainLinkPage"

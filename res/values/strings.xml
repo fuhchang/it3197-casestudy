@@ -17,6 +17,7 @@
     <string name="upcoming_events">Upcoming Events</string>
     <string name="title_view_events">View Events</string>
     <string name="title_activity_create_event">Create Event</string>
+    <string name="title_activity_update_event">Update Event</string>
     <string name="create_event_instructions">Please fill in the event details</string>
     <string name="create_event_instructions_1">Please fill in the schedule</string>
     <string name="event_poster">Poster: </string>
