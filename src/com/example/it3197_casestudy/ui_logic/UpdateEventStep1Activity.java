@@ -31,7 +31,7 @@ import com.example.it3197_casestudy.validation_controller.CreateEventStep1Valida
 import com.example.it3197_casestudy.validation_controller.UpdateEventStep1ValidationController;
 
 public class UpdateEventStep1Activity extends Activity implements Settings{
-	String typeOfEvent,eventName,eventCategory,eventDescription,eventDateTimeFrom,eventDateTimeTo,occurence,eventLocation,noOfParticipants;
+	String typeOfEvent,eventID,eventName,eventCategory,eventDescription,eventDateTimeFrom,eventDateTimeTo,occurence,eventLocation,noOfParticipants;
 	
 	EditText etEventName,etDescription,etLocation;
 	Spinner spinnerCategory,spinnerNoOfParticipants;
@@ -98,6 +98,7 @@ public class UpdateEventStep1Activity extends Activity implements Settings{
 		Bundle bundle = getIntent().getExtras();
 		if(bundle != null){
 			typeOfEvent = bundle.getString("typeOfEvent","Small Event");
+			eventID = bundle.getString("eventID","0");
 			eventName = bundle.getString("eventName", "");
 			eventCategory = bundle.getString("eventCategory", "");
 			eventDescription = bundle.getString("eventDescription", "");
@@ -223,7 +224,7 @@ public class UpdateEventStep1Activity extends Activity implements Settings{
 			}
 			
 			UpdateEventStep1ValidationController validationController = new UpdateEventStep1ValidationController(UpdateEventStep1Activity.this,typeOfEvent);
-			validationController.validateForm(intent, mForm, validatorsArrList, eventDateTimeFrom, eventDateTimeTo, occurence);
+			validationController.validateForm(eventID, intent, mForm, validatorsArrList, eventDateTimeFrom, eventDateTimeTo, occurence);
 			break;
 
 		case R.id.cancel:

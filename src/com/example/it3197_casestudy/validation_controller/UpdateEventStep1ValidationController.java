@@ -25,10 +25,11 @@ public class UpdateEventStep1ValidationController implements Settings{
 		this.typeOfEvent = typeOfEvent;
 	}
 	
-	public void validateForm(Intent intent,Form mForm,ArrayList<Validate> validatorsArrList, String eventDateTimeFrom, String eventDateTimeTo, String occurence){
+	public void validateForm(String eventID, Intent intent,Form mForm,ArrayList<Validate> validatorsArrList, String eventDateTimeFrom, String eventDateTimeTo, String occurence){
 		// Launch Validation
 		if(mForm.validate()){
 			intent = new Intent(activity, UpdateEventStep2Activity.class);
+			intent.putExtra("eventID", eventID);
 			intent.putExtra("eventName", activity.getEtEventName().getText().toString());
 			intent.putExtra("eventCategory", activity.getSpinnerCategory().getSelectedItem().toString());
 			intent.putExtra("eventDescription", activity.getEtDescription().getText().toString());

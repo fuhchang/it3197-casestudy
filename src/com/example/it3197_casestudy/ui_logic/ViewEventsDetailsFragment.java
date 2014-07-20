@@ -156,6 +156,7 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 		case R.id.update:
 			Intent i = new Intent(ViewEventsDetailsFragment.this.getActivity(), UpdateEventStep1Activity.class);
 			i.putExtra("typeOfEvent", typeOfEvent);
+			i.putExtra("eventID", String.valueOf(event.getEventID()));
 			i.putExtra("eventName", event.getEventName());
 			i.putExtra("eventCategory", event.getEventCategory());
 			i.putExtra("eventDescription", event.getEventDescription());

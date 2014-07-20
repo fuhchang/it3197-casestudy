@@ -67,6 +67,7 @@ public class UpdateEventStep2Activity extends Activity implements Settings{
 		setContentView(R.layout.activity_update_event_step_2);
 		Bundle bundle = getIntent().getExtras();
 		if(bundle != null){
+			String eventID = bundle.getString("eventID","0");
 			String eventName = bundle.getString("eventName", "");
 			String eventCategory = bundle.getString("eventCategory","");
 			String eventDescription = bundle.getString("eventDescription", "");
@@ -77,6 +78,7 @@ public class UpdateEventStep2Activity extends Activity implements Settings{
 			String eventDateTimeTo = bundle.getString("eventDateTimeTo","");
 			String occurence = bundle.getString("occurence","");
 			event = new Event();
+			event.setEventID(Integer.parseInt(eventID));
 			event.setEventName(eventName);
 			event.setEventCategory(eventCategory);
 			event.setEventDescription(eventDescription);
@@ -160,7 +162,7 @@ public class UpdateEventStep2Activity extends Activity implements Settings{
 		Intent intent = null;
 		int id = item.getItemId();
 		switch(id){
-		case R.id.create_event:
+		case R.id.update_event:
 			/*String fromDate = btnDateFrom.getText().toString() + btnTimeFrom.getText().toString(); 
 			String toDate = btnDateTo.getText().toString() + btnTimeTo.getText().toString();*/
 			Calendar calendarFrom = Calendar.getInstance();
