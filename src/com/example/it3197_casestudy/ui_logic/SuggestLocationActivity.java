@@ -1,14 +1,17 @@
 package com.example.it3197_casestudy.ui_logic;
 
 import com.example.it3197_casestudy.R;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
-import com.google.android.gms.maps.*;
-import com.google.android.gms.maps.model.*;
 
 public class SuggestLocationActivity extends Activity{
 
@@ -17,8 +20,7 @@ public class SuggestLocationActivity extends Activity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_suggest_location);
 		// Get a handle to the Map Fragment
-		GoogleMap map = ((MapFragment) getFragmentManager()
-                .findFragmentById(R.id.map)).getMap();
+		GoogleMap map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
 
         LatLng sydney = new LatLng(-33.867, 151.206);
 

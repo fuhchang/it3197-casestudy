@@ -1,5 +1,7 @@
 package com.example.it3197_casestudy.ui_logic;
 
+import java.util.Calendar;
+
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,7 +18,9 @@ import android.widget.Toast;
 
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.controller.GetEvent;
+import com.example.it3197_casestudy.controller.JoinEvent;
 import com.example.it3197_casestudy.model.Event;
+import com.example.it3197_casestudy.model.EventParticipants;
 
 /**
  * A dummy fragment representing a section of the app, but that simply
@@ -123,6 +127,10 @@ public class ViewEventsDetailsFragment extends Fragment {
 		// TODO Auto-generated method stub
 		switch(item.getItemId()){
 		case R.id.join : 
+			Calendar todayDate = Calendar.getInstance();
+			EventParticipants eventParticipants = new EventParticipants(eventID,"S9523803D",todayDate.getTime(),0);
+			JoinEvent joinEvent = new JoinEvent(ViewEventsDetailsFragment.this,eventParticipants);
+			joinEvent.execute();
 			break;
 		case R.id.unjoin:
 			break;
