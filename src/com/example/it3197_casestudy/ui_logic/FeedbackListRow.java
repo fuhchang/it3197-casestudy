@@ -39,13 +39,14 @@ public class FeedbackListRow extends ArrayAdapter<Article>{
 				TextView txtDate = (TextView) rowView.findViewById(R.id.date);
 				TextView txtLoc = (TextView) rowView.findViewById(R.id.location);
 				TextView txtCat = (TextView) rowView.findViewById(R.id.cat);
-				
+				TextView txtdist = (TextView) rowView.findViewById(R.id.distances);
 				
 				txtTitle.setText(resultArray.get(position).getTitle());
 				txtAuthor.setText("Posted By: " + resultArray.get(position).getArticleUser());
 				txtDate.setText(resultArray.get(position).getArticleDate());
 				txtCat.setText("Category: " + resultArray.get(position).getCategory());
 				txtLoc.setText(resultArray.get(position).getLocation());
+				txtdist.setText("Distance: " + resultArray.get(position).getDist()+"km");
 				
 				return rowView;
 	}

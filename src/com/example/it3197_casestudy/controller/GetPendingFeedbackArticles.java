@@ -1,6 +1,8 @@
 package com.example.it3197_casestudy.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -80,6 +82,11 @@ public class GetPendingFeedbackArticles extends AsyncTask<Object, Object, Object
 	@Override
 	protected void onPostExecute(Object result) {
 		parseJSONResponse((String) result);
+		
+		if(0<distanceSelected){
+			Collections.sort(articleList,new DistAscComparator());
+		}
+		
 		flr = new FeedbackListRow(activity,articleList);
 		artListView.setAdapter(flr);
 		artListView.setOnItemClickListener(new OnItemClickListener(){
@@ -100,6 +107,8 @@ public class GetPendingFeedbackArticles extends AsyncTask<Object, Object, Object
 				intent.putExtra("address", articleList.get(pos).getLocation());
 				intent.putExtra("dbLat", articleList.get(pos).getDbLat());
 				intent.putExtra("dbLon", articleList.get(pos).getDbLon());
+				
+				intent.putExtra("dist", articleList.get(pos).getDist());
 				activity.startActivity(intent);
 				activity.finish();
 				
@@ -159,27 +168,35 @@ public class GetPendingFeedbackArticles extends AsyncTask<Object, Object, Object
 				article.setArticleUser(dataJob.getString("articleUser"));
 				
 				
+				Location loc1 = new Location("");
+				loc1.setLatitude(currentLatitude);
+				loc1.setLongitude(currentLongitude);
+
+				Location loc2 = new Location("");
+				loc2.setLatitude(dataJob.getDouble("dbLat"));
+				loc2.setLongitude(dataJob.getDouble("dbLon"));
+
+				//returns dist in m
+				double dist = loc1.distanceTo(loc2)/1000;
+				//dist in km
+				//String dist = Float.toString(distanceInMeters);
+				double roundedDist = Math.floor(dist * 1000) / 1000.0;
+				
+				
 				if(currentLatitude == 0 && currentLongitude==0){
+					article.setDist("-");
 					articleList.add(article);
 				}
 				else if(distanceSelected==0){
+					article.setDist(Double.toString(roundedDist));
+					article.setDistToSort(roundedDist);
 					articleList.add(article);
 				}
 				else{
-					Location loc1 = new Location("");
-					loc1.setLatitude(currentLatitude);
-					loc1.setLongitude(currentLongitude);
-	
-					Location loc2 = new Location("");
-					loc2.setLatitude(dataJob.getDouble("dbLat"));
-					loc2.setLongitude(dataJob.getDouble("dbLon"));
-	
-					//returns dist in m
-					float dist = loc1.distanceTo(loc2)/1000;
-					//dist in km
-					//String dist = Float.toString(distanceInMeters);
+					
 					if(dist<=distanceSelected){
-						
+						article.setDist(Double.toString(roundedDist));
+						article.setDistToSort(roundedDist);
 						articleList.add(article);
 					
 					
@@ -215,5 +232,19 @@ public class GetPendingFeedbackArticles extends AsyncTask<Object, Object, Object
 	            builder.create().show();
 	        }
 	    });
+	}
+	
+	
+	/*
+	 * sort distance in ascending order
+	 */
+	private class DistAscComparator implements Comparator<Article> {
+
+		@Override
+		public int compare(Article arg0, Article arg1) {
+			// TODO Auto-generated method stub
+			return Double.compare(arg0.getDistToSort(), arg1.getDistToSort());
+		}
+
 	}
 }

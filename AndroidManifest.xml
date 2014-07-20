@@ -254,7 +254,7 @@
             android:label="@string/title_activity_officer_main" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.FeedbackArticleStatsActivity"
+            android:name="com.example.it3197_casestudy.ui_logic.FeedbackArticleStatsActivity"
             android:label="@string/title_activity_feedback_article_stats" >
         </activity>
         <activity android:name=".ui_logic.EditHobbyGrp" >

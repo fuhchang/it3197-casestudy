@@ -168,6 +168,16 @@ public class ArticleMainActivity extends Activity {
 			//Toast.makeText(getApplicationContext(), "CANNOT", Toast.LENGTH_SHORT).show();
 		}
 		
+	/*	if(id==R.id.sortByNearestDist){
+			GetApprovedLatestArticles gala = new GetApprovedLatestArticles(ArticleMainActivity.this, list, lat, lon,selectedDist,"nearDist");
+    		gala.execute();
+		}
+		
+		if(id==R.id.sortByLatest){
+			GetApprovedLatestArticles gala = new GetApprovedLatestArticles(this, list, lat, lon,selectedDist, "normal");
+			gala.execute();
+		}
+		*/
 		if(id==R.id.distanceSelection){
 			
 
@@ -352,6 +362,9 @@ public class ArticleMainActivity extends Activity {
 				menu.removeItem(R.id.distanceSelection);
 					
 				menu.removeItem(R.id.showArticlesLocation);
+				
+				//menu.removeItem(R.id.sortByLatest);
+				//menu.removeItem(R.id.sortByNearestDist);
 
 			}
 		return super.onPrepareOptionsMenu(menu);

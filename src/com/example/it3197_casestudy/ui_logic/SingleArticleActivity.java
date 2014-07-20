@@ -45,12 +45,13 @@ public class SingleArticleActivity extends ArrayAdapter<Article>{
 					TextView txtAuthor = (TextView) rowView.findViewById(R.id.author);
 					TextView txtDate = (TextView) rowView.findViewById(R.id.date);
 					TextView txtLoc = (TextView) rowView.findViewById(R.id.location);
-					
+					TextView txtdist = (TextView) rowView.findViewById(R.id.distances);
 					
 					txtTitle.setText(resultArray.get(position).getTitle());
 					txtAuthor.setText("Posted By: " + resultArray.get(position).getArticleUser());
 					txtDate.setText(resultArray.get(position).getArticleDate());
 					txtLoc.setText(resultArray.get(position).getLocation());
+					txtdist.setText("Distance: " + resultArray.get(position).getDist()+"km");
 					
 					return rowView;
 		}

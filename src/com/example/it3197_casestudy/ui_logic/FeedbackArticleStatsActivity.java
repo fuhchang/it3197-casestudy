@@ -1,7 +1,10 @@
-package com.example.it3197_casestudy;
+package com.example.it3197_casestudy.ui_logic;
 
 import java.util.ArrayList;
 
+import com.example.it3197_casestudy.R;
+import com.example.it3197_casestudy.R.id;
+import com.example.it3197_casestudy.R.layout;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;

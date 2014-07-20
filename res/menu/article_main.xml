@@ -22,7 +22,19 @@
         android:showAsAction="always"
         android:title="Post New"/>
      
+   <!--    
+     <item
+        android:id="@+id/sortByNearestDist"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="Sort By Nearest Distance"/>
      
+     <item
+        android:id="@+id/sortByLatest"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="Sort By Latest News(default)"/>
+     -->
      <item
         android:id="@+id/distanceSelection"
         android:orderInCategory="100"

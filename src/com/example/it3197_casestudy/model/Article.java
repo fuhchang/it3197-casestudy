@@ -2,7 +2,7 @@ package com.example.it3197_casestudy.model;
 
 import java.util.Date;
 
-public class Article {
+public class Article{
 	private int articleID;
 	private String title;
 	private String content;
@@ -16,6 +16,10 @@ public class Article {
 	private double dbLon;
 	private String articleUser;
 	private String articleDate;
+	
+	private String dist;
+	
+	private double distToSort;
 	
 	
 	/**
@@ -153,4 +157,21 @@ public class Article {
 	public void setArticleUser(String articleUser) {
 		this.articleUser = articleUser;
 	}
+
+	public String getDist() {
+		return dist;
+	}
+
+	public void setDist(String dist) {
+		this.dist = dist;
+	}
+
+	public double getDistToSort() {
+		return distToSort;
+	}
+
+	public void setDistToSort(double distToSort) {
+		this.distToSort = distToSort;
+	}
+
 }

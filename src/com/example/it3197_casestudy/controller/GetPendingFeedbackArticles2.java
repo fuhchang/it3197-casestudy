@@ -25,13 +25,13 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
-import com.example.it3197_casestudy.FeedbackArticleStatsActivity;
 import com.example.it3197_casestudy.model.Article;
 import com.example.it3197_casestudy.ui_logic.ArticleDisplayMainStatsActivity;
 import com.example.it3197_casestudy.ui_logic.ArticleMainActivity;
 import com.example.it3197_casestudy.ui_logic.ArticleSelectedActivityActivity;
 import com.example.it3197_casestudy.ui_logic.ArticleSelectedFeedbackActivity;
 import com.example.it3197_casestudy.ui_logic.FeedbackArticleActivity;
+import com.example.it3197_casestudy.ui_logic.FeedbackArticleStatsActivity;
 import com.example.it3197_casestudy.ui_logic.FeedbackListRow;
 import com.example.it3197_casestudy.ui_logic.MainLinkPage;
 import com.example.it3197_casestudy.ui_logic.SingleArticleActivity;
