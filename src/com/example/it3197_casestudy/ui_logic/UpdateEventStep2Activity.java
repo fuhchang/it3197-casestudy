@@ -1,5 +1,6 @@
 package com.example.it3197_casestudy.ui_logic;
 
+import java.text.ParseException;
 import java.util.Calendar;
 
 import com.example.it3197_casestudy.R;
@@ -25,6 +26,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup.MarginLayoutParams;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.RelativeLayout;
@@ -71,17 +73,25 @@ public class UpdateEventStep2Activity extends Activity implements Settings{
 			typeOfEvent = bundle.getString("typeOfEvent","Small Event");
 			String eventLocation = bundle.getString("eventLocation", "");
 			String noOfParticipants = bundle.getString("noOfParticipants", "");
+			String eventDateTimeFrom = bundle.getString("eventDateTimeFrom","");
+			String eventDateTimeTo = bundle.getString("eventDateTimeTo","");
+			String occurence = bundle.getString("occurence","");
 			event = new Event();
 			event.setEventName(eventName);
 			event.setEventCategory(eventCategory);
 			event.setEventDescription(eventDescription);
 			event.setEventType(typeOfEvent);
 			event.setEventLocation(eventLocation);
+			try {
+				event.setEventDateTimeFrom(sqlDateTimeFormatter.parse(eventDateTimeFrom));
+				event.setEventDateTimeTo(sqlDateTimeFormatter.parse(eventDateTimeTo));
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			event.setOccurence(occurence);
 			if(noOfParticipants.equals("0 - 99")){
 				event.setNoOfParticipantsAllowed(99);
-			}
-			else if(noOfParticipants.equals("100 - 499")){
-				event.setNoOfParticipantsAllowed(499);
 			}
 			else if(noOfParticipants.equals("100 - 499")){
 				event.setNoOfParticipantsAllowed(499);
@@ -102,9 +112,12 @@ public class UpdateEventStep2Activity extends Activity implements Settings{
 		btnTimeFrom = (Button) findViewById(R.id.btn_time_from);
 		btnTimeTo = (Button) findViewById(R.id.btn_time_to);
 		spinnerRepeats = (Spinner) findViewById(R.id.spinner_repeats);
+		spinnerRepeats.setSelection(((ArrayAdapter<CharSequence>)spinnerRepeats.getAdapter()).getPosition(event.getOccurence()));
+		
 		tvRepeats = (TextView) findViewById(R.id.tv_repeats);
 		
 		Calendar calendarFrom = Calendar.getInstance();
+		calendarFrom.setTime(event.getEventDateTimeFrom());
 		dayFrom = calendarFrom.get(Calendar.DAY_OF_MONTH);
 		monthFrom = calendarFrom.get(Calendar.MONTH);
 		yearFrom = calendarFrom.get(Calendar.YEAR);
@@ -112,11 +125,12 @@ public class UpdateEventStep2Activity extends Activity implements Settings{
 		minuteFrom = calendarFrom.get(Calendar.MINUTE);
 		
 		Calendar calendarTo = Calendar.getInstance();
+		calendarTo.setTime(event.getEventDateTimeTo());
 		dayTo = calendarTo.get(Calendar.DAY_OF_MONTH);
 		monthTo = calendarTo.get(Calendar.MONTH);
 		yearTo = calendarTo.get(Calendar.YEAR);
 		hourTo = calendarTo.get(Calendar.HOUR_OF_DAY);
-		minuteTo = calendarTo.get(Calendar.MINUTE) + 1;
+		minuteTo = calendarTo.get(Calendar.MINUTE);
 		
 		btnDateFrom.setText(new StringBuilder().append(dayFrom).append("/").append(monthFrom + 1).append("/").append(yearFrom).append(" "));
 		btnDateTo.setText(new StringBuilder().append(dayTo).append("/").append(monthTo + 1).append("/").append(yearTo).append(" "));		
@@ -211,8 +225,15 @@ public class UpdateEventStep2Activity extends Activity implements Settings{
 	@Override
 	public void onBackPressed() {
 		Intent intent = new Intent(UpdateEventStep2Activity.this,UpdateEventStep1Activity.class);
-
 		intent.putExtra("typeOfEvent", typeOfEvent);
+		intent.putExtra("eventName", event.getEventName());
+		intent.putExtra("eventCategory", event.getEventCategory());
+		intent.putExtra("eventDescription", event.getEventDescription());
+		intent.putExtra("eventDateTimeFrom", sqlDateTimeFormatter.format(event.getEventDateTimeFrom()));
+		intent.putExtra("eventDateTimeTo", sqlDateTimeFormatter.format(event.getEventDateTimeTo()));
+		intent.putExtra("occurence", event.getOccurence());
+		intent.putExtra("eventLocation", event.getEventLocation());
+		intent.putExtra("noOfParticipants", String.valueOf(event.getNoOfParticipantsAllowed()));
 		startActivity(intent);
 		this.finish();
 	}

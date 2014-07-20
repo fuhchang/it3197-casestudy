@@ -71,6 +71,7 @@ public class GetEvent extends AsyncTask<Object, Object, Object> implements Setti
 			activity.getTvEventNoOfParticipants().setText("No of participants allowed: \n" + event.getNoOfParticipantsAllowed());
 			activity.setTypeOfEvent(event.getEventType());
 			activity.setLocation(event.getEventLocation());
+			activity.setEvent(event);
 		}
 		catch(Exception e){
 			errorOnExecuting();

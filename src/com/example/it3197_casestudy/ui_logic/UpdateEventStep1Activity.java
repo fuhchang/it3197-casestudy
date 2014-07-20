@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -30,7 +31,7 @@ import com.example.it3197_casestudy.validation_controller.CreateEventStep1Valida
 import com.example.it3197_casestudy.validation_controller.UpdateEventStep1ValidationController;
 
 public class UpdateEventStep1Activity extends Activity implements Settings{
-	String typeOfEvent;
+	String typeOfEvent,eventName,eventCategory,eventDescription,eventDateTimeFrom,eventDateTimeTo,occurence,eventLocation,noOfParticipants;
 	
 	EditText etEventName,etDescription,etLocation;
 	Spinner spinnerCategory,spinnerNoOfParticipants;
@@ -89,6 +90,7 @@ public class UpdateEventStep1Activity extends Activity implements Settings{
 		this.ivPoster = ivPoster;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -96,12 +98,45 @@ public class UpdateEventStep1Activity extends Activity implements Settings{
 		Bundle bundle = getIntent().getExtras();
 		if(bundle != null){
 			typeOfEvent = bundle.getString("typeOfEvent","Small Event");
+			eventName = bundle.getString("eventName", "");
+			eventCategory = bundle.getString("eventCategory", "");
+			eventDescription = bundle.getString("eventDescription", "");
+			eventDateTimeFrom = bundle.getString("eventDateTimeFrom", "");
+			eventDateTimeTo = bundle.getString("eventDateTimeTo", "");
+			occurence = bundle.getString("occurence", "");
+			eventLocation = bundle.getString("eventLocation", "");
+			noOfParticipants = bundle.getString("noOfParticipants", "0");
+			System.out.println(noOfParticipants);
 		}
 		etEventName = (EditText) findViewById(R.id.et_name);
+		etEventName.setText(eventName);
+		
 		spinnerCategory = (Spinner) findViewById(R.id.spinner_category);
+		spinnerCategory.setSelection(((ArrayAdapter<CharSequence>)spinnerCategory.getAdapter()).getPosition(eventCategory));
+		
 		etDescription = (EditText) findViewById(R.id.et_description);
+		etDescription.setText(eventDescription);
+		
 		etLocation = (EditText) findViewById(R.id.et_location);
+		etLocation.setText(eventLocation);
+		
 		spinnerNoOfParticipants = (Spinner) findViewById(R.id.spinner_no_of_participants);
+		if(noOfParticipants.equals("99")){
+			spinnerNoOfParticipants.setSelection(0);
+		}
+		else if(noOfParticipants.equals("499")){
+			spinnerNoOfParticipants.setSelection(1);
+		}
+		else if(noOfParticipants.equals("999")){
+			spinnerNoOfParticipants.setSelection(2);
+		}
+		else if(noOfParticipants.equals("9999")){
+			spinnerNoOfParticipants.setSelection(3);
+		}
+		else if(noOfParticipants.equals("99999")){
+			spinnerNoOfParticipants.setSelection(4);
+		}
+		
 		btnUploadEventPoster = (Button) findViewById(R.id.btn_upload_event_poster);
 		btnSuggestLocation = (Button) findViewById(R.id.btn_suggest_location);
 		ivPoster = (ImageView) findViewById(R.id.iv_event_poster);
@@ -188,7 +223,7 @@ public class UpdateEventStep1Activity extends Activity implements Settings{
 			}
 			
 			UpdateEventStep1ValidationController validationController = new UpdateEventStep1ValidationController(UpdateEventStep1Activity.this,typeOfEvent);
-			validationController.validateForm(intent, mForm, validatorsArrList);
+			validationController.validateForm(intent, mForm, validatorsArrList, eventDateTimeFrom, eventDateTimeTo, occurence);
 			break;
 
 		case R.id.cancel:

@@ -82,9 +82,6 @@ public class CreateEventStep2Activity extends Activity implements Settings{
 			else if(noOfParticipants.equals("100 - 499")){
 				event.setNoOfParticipantsAllowed(499);
 			}
-			else if(noOfParticipants.equals("100 - 499")){
-				event.setNoOfParticipantsAllowed(499);
-			}
 			else if(noOfParticipants.equals("500 - 999")){
 				event.setNoOfParticipantsAllowed(999);
 			}

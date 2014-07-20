@@ -22,6 +22,7 @@ import com.example.it3197_casestudy.controller.GetEvent;
 import com.example.it3197_casestudy.controller.JoinEvent;
 import com.example.it3197_casestudy.model.Event;
 import com.example.it3197_casestudy.model.EventParticipants;
+import com.example.it3197_casestudy.util.Settings;
 
 /**
  * A dummy fragment representing a section of the app, but that simply
@@ -29,13 +30,14 @@ import com.example.it3197_casestudy.model.EventParticipants;
  * 
  * @author Lee Zhuo Xun
  */
-public class ViewEventsDetailsFragment extends Fragment {
+public class ViewEventsDetailsFragment extends Fragment implements Settings{
 	private int eventID;
 	private String typeOfEvent,location;
 	private TextView tvEventID, tvEventName, tvEventCategory, tvEventDescription, tvEventDateTimeFrom,
 					 tvEventDateTimeTo, tvEventOccur, tvEventNoOfParticipants;
 	private ImageView ivEventPoster;
 	private Button btnCheckIn;
+	private Event event;
 	
 	public TextView getTvEventID() {
 		return tvEventID;
@@ -125,6 +127,14 @@ public class ViewEventsDetailsFragment extends Fragment {
 		this.location = location;
 	}
 
+	public Event getEvent() {
+		return event;
+	}
+
+	public void setEvent(Event event) {
+		this.event = event;
+	}
+
 	public ViewEventsDetailsFragment(){}
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -146,6 +156,14 @@ public class ViewEventsDetailsFragment extends Fragment {
 		case R.id.update:
 			Intent i = new Intent(ViewEventsDetailsFragment.this.getActivity(), UpdateEventStep1Activity.class);
 			i.putExtra("typeOfEvent", typeOfEvent);
+			i.putExtra("eventName", event.getEventName());
+			i.putExtra("eventCategory", event.getEventCategory());
+			i.putExtra("eventDescription", event.getEventDescription());
+			i.putExtra("eventDateTimeFrom", sqlDateTimeFormatter.format(event.getEventDateTimeFrom()));
+			i.putExtra("eventDateTimeTo", sqlDateTimeFormatter.format(event.getEventDateTimeTo()));
+			i.putExtra("occurence", event.getOccurence());
+			i.putExtra("eventLocation", location);
+			i.putExtra("noOfParticipants", String.valueOf(event.getNoOfParticipantsAllowed()));
 			startActivity(i);
 			ViewEventsDetailsFragment.this.getActivity().finish();
 			break;
@@ -193,3 +211,4 @@ public class ViewEventsDetailsFragment extends Fragment {
 		getEvent.execute();
 	}
 }
+
