@@ -2,6 +2,7 @@ package com.example.it3197_casestudy.ui_logic;
 
 import java.util.Calendar;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -30,7 +31,7 @@ import com.example.it3197_casestudy.model.EventParticipants;
  */
 public class ViewEventsDetailsFragment extends Fragment {
 	private int eventID;
-	
+	private String typeOfEvent,location;
 	private TextView tvEventID, tvEventName, tvEventCategory, tvEventDescription, tvEventDateTimeFrom,
 					 tvEventDateTimeTo, tvEventOccur, tvEventNoOfParticipants;
 	private ImageView ivEventPoster;
@@ -107,6 +108,22 @@ public class ViewEventsDetailsFragment extends Fragment {
 	public void setIvEventPoster(ImageView ivEventPoster) {
 		this.ivEventPoster = ivEventPoster;
 	}
+	
+	public String getTypeOfEvent() {
+		return typeOfEvent;
+	}
+
+	public void setTypeOfEvent(String typeOfEvent) {
+		this.typeOfEvent = typeOfEvent;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
 
 	public ViewEventsDetailsFragment(){}
 	@Override
@@ -126,6 +143,12 @@ public class ViewEventsDetailsFragment extends Fragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// TODO Auto-generated method stub
 		switch(item.getItemId()){
+		case R.id.update:
+			Intent i = new Intent(ViewEventsDetailsFragment.this.getActivity(), UpdateEventStep1Activity.class);
+			i.putExtra("typeOfEvent", typeOfEvent);
+			startActivity(i);
+			ViewEventsDetailsFragment.this.getActivity().finish();
+			break;
 		case R.id.join : 
 			Calendar todayDate = Calendar.getInstance();
 			EventParticipants eventParticipants = new EventParticipants(eventID,"S9523803D",todayDate.getTime(),0);
@@ -133,6 +156,7 @@ public class ViewEventsDetailsFragment extends Fragment {
 			joinEvent.execute();
 			break;
 		case R.id.unjoin:
+			System.out.println("Event Type: " + typeOfEvent);
 			break;
 		}
 		return super.onOptionsItemSelected(item);

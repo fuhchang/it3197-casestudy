@@ -69,6 +69,8 @@ public class GetEvent extends AsyncTask<Object, Object, Object> implements Setti
 			activity.getTvEventDateTimeTo().setText("To: \n" + dateTimeFormatter.format(event.getEventDateTimeTo()));
 			activity.getTvEventOccur().setText("Occurs: \n" + event.getOccurence());
 			activity.getTvEventNoOfParticipants().setText("No of participants allowed: \n" + event.getNoOfParticipantsAllowed());
+			activity.setTypeOfEvent(event.getEventType());
+			activity.setLocation(event.getEventLocation());
 		}
 		catch(Exception e){
 			errorOnExecuting();

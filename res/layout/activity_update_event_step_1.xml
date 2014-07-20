@@ -1,0 +1,175 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" 
+    android:layout_height="match_parent">
+
+	<RelativeLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:gravity="bottom">
+	
+	    <TextView
+	        android:id="@+id/tv_create_event_instructions"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:fontFamily="sans-serif-bold"
+	        android:textSize="@dimen/normal_font_size"
+	        android:text="@string/create_event_instructions" />
+
+	    <LinearLayout
+	        android:id="@+id/linear_layout"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_below="@+id/tv_create_event_instructions"
+	        android:orientation="vertical" >
+
+	        <TextView
+	            android:id="@+id/tv_event_poster"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="10dp"
+	            android:fontFamily="sans-serif-light"
+	            android:textSize="@dimen/normal_font_size"
+	            android:text="@string/event_poster" />
+	        	
+	        <ImageView
+	            android:id="@+id/iv_event_poster"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="10dp"
+	            android:fontFamily="sans-serif-light"
+	            android:textSize="@dimen/normal_font_size"
+	            android:contentDescription="@string/event_poster_desc"/>
+	        
+	        <TextView
+	            android:id="@+id/tv_name"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="10dp"
+	            android:fontFamily="sans-serif-light"
+	            android:textSize="@dimen/normal_font_size"
+	            android:text="@string/event_name" />
+
+	        <EditText
+	            android:id="@+id/et_name"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="5dp"
+	            android:ems="10"
+	            android:fontFamily="sans-serif-light"
+	            android:textSize="@dimen/normal_font_size"
+	            android:hint="@string/hint_event_name" >
+
+	        </EditText>
+
+	        <TextView
+	            android:id="@+id/tv_category"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="10dp"
+	            android:fontFamily="sans-serif-light"
+	            android:textSize="@dimen/normal_font_size"
+	            android:text="@string/category" />
+
+	        <Spinner
+	            android:id="@+id/spinner_category"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="5dp" 
+	            android:fontFamily="sans-serif-light"
+	            android:textSize="@dimen/normal_font_size"
+	            android:entries="@array/categorys"/>
+
+	        <TextView
+	            android:id="@+id/tv_description"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="10dp"
+	            android:fontFamily="sans-serif-light"
+	            android:textSize="@dimen/normal_font_size"
+	            android:text="@string/description" />
+
+	        <EditText
+	            android:id="@+id/et_description"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:fontFamily="sans-serif-light"
+	            android:textSize="@dimen/normal_font_size"
+	            android:ems="10"
+	            android:inputType="textMultiLine"
+	            android:lines="4"
+	            android:maxLines="4" 
+	            android:hint="@string/hint_event_description"/>
+	        
+	        
+	        <TextView
+	            android:id="@+id/tv_location"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="10dp"
+	            android:fontFamily="sans-serif-light"
+	            android:textSize="@dimen/normal_font_size"
+	            android:text="@string/location" />
+
+	        <TextView
+	            android:id="@+id/tv_location_alt"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="10dp"
+	            android:fontFamily="sans-serif-bold"
+	            android:textSize="@dimen/normal_font_size"
+	            android:text="@string/location_alt" />
+	        
+	        <EditText
+	            android:id="@+id/et_location"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:ems="10"
+				android:inputType="textMultiLine"
+	            android:lines="4"
+	            android:maxLines="4" 
+	            android:fontFamily="sans-serif-light"
+	            android:textSize="@dimen/normal_font_size"
+	            android:hint="@string/hint_event_location"/>
+
+	        <Button
+	            android:id="@+id/btn_suggest_location"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="10dp"
+	            android:onClick="onClick"
+	            android:fontFamily="sans-serif-light"
+	            android:textSize="@dimen/normal_font_size"
+	            android:text="@string/suggest_location" />	  
+	            
+	        <TextView
+	            android:id="@+id/tv_number_of_participants"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="10dp"
+	            android:fontFamily="sans-serif-light"
+	            android:textSize="@dimen/normal_font_size"
+	            android:text="@string/number_of_participants" />
+	        
+			<Spinner
+	            android:id="@+id/spinner_no_of_participants"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="5dp" 
+	            android:fontFamily="sans-serif-light"
+	            android:textSize="@dimen/normal_font_size"
+	            android:entries="@array/noOfParticipants"/>
+	        	        
+	        <Button
+	            android:id="@+id/btn_upload_event_poster"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="10dp"
+	            android:fontFamily="sans-serif-light"
+	            android:textSize="@dimen/normal_font_size"
+	            android:text="@string/upload_event_poster" />	
+	            
+	    </LinearLayout>	    
+	</RelativeLayout>
+</ScrollView>
