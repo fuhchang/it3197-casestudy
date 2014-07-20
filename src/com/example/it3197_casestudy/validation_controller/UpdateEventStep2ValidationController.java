@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.widget.Toast;
 
 import com.example.it3197_casestudy.controller.CreateEvent;
+import com.example.it3197_casestudy.controller.UpdateEvent;
 import com.example.it3197_casestudy.crouton.Crouton;
 import com.example.it3197_casestudy.crouton.Style;
 import com.example.it3197_casestudy.model.Event;
@@ -64,16 +65,16 @@ public class UpdateEventStep2ValidationController implements Settings{
 				System.out.println("Event Description: " + event.getEventDescription());
 				System.out.println("Event Location: " + event.getEventLocation());
 				System.out.println("No of participants: " + event.getNoOfParticipantsAllowed());
-				/*CreateEvent createEvent = new CreateEvent(activity,event);
-				createEvent.execute();*/
+				UpdateEvent updateEvent = new UpdateEvent(activity,event);
+				updateEvent.execute();
 			}
 		}
 		else{
 			event.setEventDateTimeFrom(calendarFrom.getTime());
 			event.setEventDateTimeTo(calendarTo.getTime());
-			event.setOccurence("Once");
-			/*CreateEvent createEvent = new CreateEvent(activity,event);
-			createEvent.execute();*/
+			event.setOccurence(occurence);
+			UpdateEvent updateEvent = new UpdateEvent(activity,event);
+			updateEvent.execute();
 		}
 	}
 }

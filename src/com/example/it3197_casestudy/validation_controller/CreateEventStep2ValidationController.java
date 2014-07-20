@@ -70,7 +70,7 @@ public class CreateEventStep2ValidationController implements Settings{
 		else{
 			event.setEventDateTimeFrom(calendarFrom.getTime());
 			event.setEventDateTimeTo(calendarTo.getTime());
-			event.setOccurence("Once");
+			event.setOccurence(occurence);
 			CreateEvent createEvent = new CreateEvent(activity,event);
 			createEvent.execute();
 		}
