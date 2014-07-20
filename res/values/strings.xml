@@ -56,6 +56,7 @@
     <string name="action_new">new post</string>
     <string name="action_new_post">create post</string>
     <string name="action_update_group">Edit Group</string>
+    <string name="update_event">Update event</string>
 	<string name="join_event">Join event</string>
 	<string name="unjoin_event">Unjoin event</string>
 	 <string name="action_update">Update</string>
