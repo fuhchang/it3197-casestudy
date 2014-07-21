@@ -7,6 +7,7 @@
         android:id="@+id/gName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
         android:text="@string/gName" />
     <EditText 
         android:id="@+id/gTitle"
@@ -20,7 +21,8 @@
         android:id="@+id/gType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/gName"
+        android:layout_below="@+id/gTitle"
+        android:layout_marginTop="30dp"
         android:paddingTop="20dp"
         android:text="@string/gType"/>
     
@@ -34,11 +36,5 @@
         android:entries="@array/country_arrays"
         android:prompt="@string/country_prompt" />
 	 
-	 <Button 
-	     android:id="@+id/btnNext"
-	    android:layout_height="wrap_content"
-	    android:layout_width="wrap_content"
-	    android:paddingTop="20dp"
-	    android:layout_below="@+id/sType"
-	    android:text="NEXT"/>
+	
 </LinearLayout>

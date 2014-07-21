@@ -296,5 +296,7 @@
     <string name="title_activity_article_display_main_stats">ArticleDisplayMainStatsActivity</string>
     <string name="title_activity_officer_main">OfficerMainActivity</string>
     <string name="title_activity_feedback_article_stats">FeedbackArticleStatsActivity</string>
-
+	<string name="title_activity_hobby_search_by_map">HobbySearchByMap</string>
+    <string name="title_activity_search_hobby_by_map">SearchHobbyByMap</string>
+    <string name="title_activity_geolocation">GeolocationActivity</string>
 </resources>

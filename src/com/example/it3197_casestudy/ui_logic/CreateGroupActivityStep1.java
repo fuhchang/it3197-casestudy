@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -31,29 +32,11 @@ public class CreateGroupActivityStep1 extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_group_activity_step1);
-		btnNext = (Button) findViewById(R.id.btnNext);
+		
 		gTitle = (EditText) findViewById(R.id.gTitle);
 		setCate((Spinner) findViewById(R.id.sType));
 		nric = getIntent().getExtras().getString("nric");
-		btnNext.setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				Form mForm = new Form();
-				Validate validTitle = new Validate(gTitle);
-				validTitle.addValidator(new NotEmptyValidator(CreateGroupActivityStep1.this));
-				
-				mForm.addValidates(validTitle);
-				
-				ArrayList<Validate> validList = new ArrayList<Validate>();
-				validList.add(validTitle);
-				Intent intent = new Intent();
-				CreateGrpStep1ValidationController validationController = new CreateGrpStep1ValidationController(CreateGroupActivityStep1.this);
-				 validationController.validateForm(intent, mForm, validList);
-			}
-			
-		});
+		
 	}
 
 	@Override
@@ -97,6 +80,27 @@ public class CreateGroupActivityStep1 extends Activity {
 	 */
 	public void setNric(String nric) {
 		this.nric = nric;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
+		switch(item.getItemId()){
+		case R.id.action_next:
+			Form mForm = new Form();
+			Validate validTitle = new Validate(gTitle);
+			validTitle.addValidator(new NotEmptyValidator(CreateGroupActivityStep1.this));
+			
+			mForm.addValidates(validTitle);
+			
+			ArrayList<Validate> validList = new ArrayList<Validate>();
+			validList.add(validTitle);
+			Intent intent = new Intent();
+			CreateGrpStep1ValidationController validationController = new CreateGrpStep1ValidationController(CreateGroupActivityStep1.this);
+			 validationController.validateForm(intent, mForm, validList);
+			break;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 	
 }

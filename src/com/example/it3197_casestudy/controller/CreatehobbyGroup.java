@@ -56,6 +56,10 @@ public class CreatehobbyGroup extends AsyncTask<Object, Object, Object>
 	protected void onPostExecute(Object result) {
 		// TODO Auto-generated method stub
 		parseJSONResponse((String)result);
+		Intent intent = new Intent(activity, ViewHobbiesMain.class);
+		activity.startActivity(intent);
+		activity.finish();
+		
 	}
 
 	public String createHobby(){

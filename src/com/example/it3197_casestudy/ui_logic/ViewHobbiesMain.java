@@ -2,6 +2,7 @@ package com.example.it3197_casestudy.ui_logic;
 
 import com.example.it3197_casestudy.R;
 
+import com.example.it3197_casestudy.controller.GetHobbyForMap;
 import com.example.it3197_casestudy.util.viewHobbiesAdapter;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
@@ -70,15 +71,17 @@ public class ViewHobbiesMain extends FragmentActivity implements
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+		case R.id.action_searchByGeoFencing:
+			GetHobbyForMap getHobby = new GetHobbyForMap(this);
+			getHobby.execute();
+			break;
 		case R.id.new_group:
 			Intent intentNewGrp = new Intent(this, CreateGroupActivityStep1.class);
 			intentNewGrp.putExtra("nric", nric);
 			startActivity(intentNewGrp);
 			break;
 		default:
-			Intent intentNewGrp1 = new Intent(this, CreateGroupActivityStep1.class);
-			intentNewGrp1.putExtra("nric", nric);
-			startActivity(intentNewGrp1);
+			
 			break;
 		}
 		return super.onOptionsItemSelected(item);

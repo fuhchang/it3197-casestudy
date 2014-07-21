@@ -56,6 +56,8 @@ public class GeofenceRequester
      * flag before attempting to start a new request.
      */
     private boolean mInProgress;
+    
+    private String mContentTitle,mContentText;
 
     public GeofenceRequester(Activity activityContext) {
         // Save the context
@@ -92,8 +94,8 @@ public class GeofenceRequester
      *
      * @return The PendingIntent used to create the current set of geofences
      */
-    public PendingIntent getRequestPendingIntent() {
-        return createRequestPendingIntent();
+    public PendingIntent getRequestPendingIntent(String contentTitle, String contentText) {
+        return createRequestPendingIntent(contentTitle,contentText);
     }
 
     /**
@@ -102,14 +104,15 @@ public class GeofenceRequester
      *
      * @param geofences A List of one or more geofences to add
      */
-    public void addGeofences(List<Geofence> geofences) throws UnsupportedOperationException {
+    public void addGeofences(List<Geofence> geofences, String contentTitle, String contentText) throws UnsupportedOperationException {
 
         /*
          * Save the geofences so that they can be sent to Location Services once the
          * connection is available.
          */
         mCurrentGeofences = (ArrayList<Geofence>) geofences;
-
+        mContentTitle = contentTitle;
+        mContentText = contentText;
         // If a request is not already in progress
         if (!mInProgress) {
 
@@ -151,10 +154,10 @@ public class GeofenceRequester
     /**
      * Once the connection is available, send a request to add the Geofences
      */
-    private void continueAddGeofences() {
+    private void continueAddGeofences(String contentTitle, String contentText) {
 
         // Get a PendingIntent that Location Services issues when a geofence transition occurs
-        mGeofencePendingIntent = createRequestPendingIntent();
+        mGeofencePendingIntent = createRequestPendingIntent(contentTitle,contentText);
 
         // Send a request to add the current geofences
         mLocationClient.addGeofences(mCurrentGeofences, mGeofencePendingIntent, this);
@@ -238,7 +241,7 @@ public class GeofenceRequester
         Log.d(GeofenceUtils.APPTAG, mActivity.getString(R.string.connected));
 
         // Continue adding the geofences
-        continueAddGeofences();
+        continueAddGeofences(mContentTitle,mContentText);
     }
 
     /*
@@ -265,7 +268,7 @@ public class GeofenceRequester
      *
      * @return A PendingIntent for the IntentService that handles geofence transitions.
      */
-    private PendingIntent createRequestPendingIntent() {
+    private PendingIntent createRequestPendingIntent(String contentTitle, String contentText) {
 
         // If the PendingIntent already exists
         if (null != mGeofencePendingIntent) {
@@ -278,6 +281,8 @@ public class GeofenceRequester
 
             // Create an Intent pointing to the IntentService
             Intent intent = new Intent(mActivity, ReceiveTransitionsIntentService.class);
+            intent.putExtra("contentTitle", contentTitle);
+            intent.putExtra("contentText", contentText);
             /*
              * Return a PendingIntent to start the IntentService.
              * Always create a PendingIntent sent to Location Services

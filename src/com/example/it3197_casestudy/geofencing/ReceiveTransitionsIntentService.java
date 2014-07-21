@@ -14,6 +14,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.example.it3197_casestudy.R;
+import com.example.it3197_casestudy.ui_logic.ViewAllEventsActivity;
 import com.example.it3197_casestudy.ui_logic.ViewEventsActivity;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.LocationClient;
@@ -88,8 +89,10 @@ public class ReceiveTransitionsIntentService extends IntentService {
                 }
                 String ids = TextUtils.join(GeofenceUtils.GEOFENCE_ID_DELIMITER,geofenceIds);
                 String transitionType = getTransitionString(transition);
-
-                sendNotification(transitionType, ids);
+                
+                String contentTitle = intent.getExtras().getString("contentTitle");
+                String contentText = intent.getExtras().getString("contentText");
+                sendNotification(transitionType, ids, contentTitle,contentText);
 
                 // Log the transition type and a message
                 Log.d(GeofenceUtils.APPTAG,
@@ -115,31 +118,15 @@ public class ReceiveTransitionsIntentService extends IntentService {
      * @param transitionType The type of transition that occurred.
      *
      */
-    private void sendNotification(String transitionType, String ids) {
+    private void sendNotification(String transitionType, String ids, String contentTitle, String contentText) {
 
-        // Create an explicit content Intent that starts the main Activity
-        Intent notificationIntent =
-                new Intent(getApplicationContext(),ViewEventsActivity.class);
-
-        // Construct a task stack
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-
-        // Adds the main Activity to the task stack as the parent
-        stackBuilder.addParentStack(ViewEventsActivity.class);
-
-        // Push the content Intent onto the stack
-        stackBuilder.addNextIntent(notificationIntent);
-
-        // Get a PendingIntent containing the entire back stack
-        PendingIntent notificationPendingIntent =
-                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
         // Get a notification builder that's compatible with platform versions >= 4
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
 
         // Set the notification contents
-        builder.setSmallIcon(R.drawable.ic_launcher).setContentTitle("There is an event near you.").setContentText("Click to view the event.")
-               .setContentIntent(notificationPendingIntent);
+        builder.setSmallIcon(R.drawable.ic_launcher).setContentTitle(contentTitle).setContentText(contentText);
+               //.setContentIntent(notificationPendingIntent);
 
         // Get an instance of the Notification manager
         NotificationManager mNotificationManager =

@@ -77,12 +77,12 @@
             android:label="@string/title_activity_create_event" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.UpdateEventStep1Activity"
-            android:label="@string/title_activity_update_event" >
+            android:name="com.example.it3197_casestudy.ui_logic.CreateEventStep3Activity"
+            android:label="@string/title_activity_create_event" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.UpdateEventStep2Activity"
-            android:label="@string/title_activity_update_event" >
+            android:name="com.example.it3197_casestudy.ui_logic.CreateEventStep4Activity"
+            android:label="@string/title_activity_create_event" >
         </activity>
         <activity
             android:name="com.example.it3197_casestudy.ui_logic.MainLinkPage"
@@ -151,26 +151,24 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
         <!-- DO NOT EDIT -->
-
+ <!--
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyBm1w2P3qipVFeAhjSi3F6eQx2M3KmMB18" />
-
+  -->		
         <!-- fuhchang -->
-
-
-        <!--
              <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyDVor5BS2mdSm_sxCIOBtQTYS2uBDuNpJg" />
-        -->
-
 
         <!-- Joseph lee -->
         <!--
             <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyCpTBz_uJRG9Wm5UWupZsZ2yMz9R3cbERk" />
+
+
+
         -->
 
         <activity
@@ -254,12 +252,28 @@
             android:label="@string/title_activity_officer_main" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.FeedbackArticleStatsActivity"
+            android:name="com.example.it3197_casestudy.FeedbackArticleStatsActivity"
             android:label="@string/title_activity_feedback_article_stats" >
         </activity>
-        <activity android:name=".ui_logic.EditHobbyGrp" >
+        <activity android:name="com.example.it3197_casestudy.ui_logic.EditHobbyGrp" >
         </activity>
-        <activity android:name=".ui_logic.SelectPostLocation" >
+        <activity android:name="com.example.it3197_casestudy.ui_logic.SelectPostLocation" >
+        </activity>
+        <activity
+            android:name="com.example.it3197_casestudy.ui_logic.HobbySearchByMap"
+            android:label="@string/title_activity_hobby_search_by_map" >
+        </activity>
+        <activity
+            android:name="com.example.it3197_casestudy.ui_logic.SearchHobbyByMap"
+            android:label="@string/title_activity_search_hobby_by_map" >
+        </activity>
+        <activity
+            android:name="com.example.it3197_casestudy.GeolocationActivity"
+            android:label="@string/title_activity_geolocation" >
+        </activity>
+   		 <activity
+            android:name="com.example.it3197_casestudy.controller.GetHobbyForMap"
+            android:label="@string/title_activity_geolocation" >
         </activity>
     </application>
 

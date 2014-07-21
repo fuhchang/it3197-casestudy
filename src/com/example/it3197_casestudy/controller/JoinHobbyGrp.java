@@ -17,10 +17,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
 import com.example.it3197_casestudy.model.HobbyMembers;
+import com.example.it3197_casestudy.ui_logic.ViewHobbiesMain;
 import com.example.it3197_casestudy.ui_logic.ViewSingleHobby;
 import com.example.it3197_casestudy.util.Settings;
 
@@ -41,6 +43,9 @@ public class JoinHobbyGrp extends AsyncTask<Object, Object, Object> implements S
 	protected void onPostExecute(Object result) {
 		// TODO Auto-generated method stub
 		parseJSONResponse((String)result);
+		Intent intent = new Intent(activity, ViewHobbiesMain.class);
+		activity.startActivity(intent);
+		activity.finish();
 		
 	}
 	@Override
