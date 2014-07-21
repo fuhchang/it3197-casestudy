@@ -56,11 +56,13 @@ public class ArticleLatestMoreDetailActivity extends Activity {
 		
 		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();		
 		//map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(1.3667, 103.8), 10));
-		//map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+		map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 		//map.setMapType(GoogleMap.MAP_TYPE_NONE);
 		//map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 		//map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-		map.setMapType(GoogleMap.MAP_TYPE_TERRAIN);		  
+		//map.setMapType(GoogleMap.MAP_TYPE_TERRAIN);	
+		
+		map.setTrafficEnabled(true);
 		  
 		//map.setTrafficEnabled(true);
 		  
