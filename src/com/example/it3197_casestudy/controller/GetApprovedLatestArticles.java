@@ -218,7 +218,7 @@ public class GetApprovedLatestArticles extends AsyncTask<Object, Object, Object>
 	            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						// TODO Auto-generated method stu
+						// TODO Auto-generated method stub
 						//activity.finish();
 					}
 				});
