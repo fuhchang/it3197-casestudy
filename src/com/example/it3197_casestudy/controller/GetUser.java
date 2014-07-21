@@ -16,9 +16,11 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
+import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import com.example.it3197_casestudy.model.Hobby;
@@ -50,6 +52,13 @@ implements Settings{
 		dialog.dismiss();
 		for(int i=0; i<userList.size();i++){
 			if(userList.get(i).getNric().equals(user.getNric()) && userList.get(i).getPassword().equals(user.getPassword())){
+				SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
+				SharedPreferences.Editor editor = preferences.edit();
+				editor.putString("nric",user.getNric());
+				editor.putString("password",user.getPassword());
+				editor.apply();
+				/*String nric = preferences.getString("nric","");
+				String password = preferences.getString("password","");*/
 				Intent intent = new Intent(activity, MainLinkPage.class);
 				intent.putExtra("nric", user.getNric());
 				activity.startActivity(intent);

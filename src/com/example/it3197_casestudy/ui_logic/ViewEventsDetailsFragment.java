@@ -3,8 +3,10 @@ package com.example.it3197_casestudy.ui_logic;
 import java.util.Calendar;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -38,7 +40,7 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 	private ImageView ivEventPoster;
 	private Button btnCheckIn;
 	private Event event;
-	
+	private String nric,password;
 	public TextView getTvEventID() {
 		return tvEventID;
 	}
@@ -170,12 +172,12 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 			break;
 		case R.id.join : 
 			Calendar todayDate = Calendar.getInstance();
-			EventParticipants eventParticipants = new EventParticipants(eventID,"S9523803D",todayDate.getTime(),0);
+			EventParticipants eventParticipants = new EventParticipants(eventID,nric,todayDate.getTime(),0);
 			JoinEvent joinEvent = new JoinEvent(ViewEventsDetailsFragment.this,eventParticipants);
 			joinEvent.execute();
 			break;
 		case R.id.unjoin:
-			System.out.println("Event Type: " + typeOfEvent);
+			
 			break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -186,7 +188,8 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_view_events_details, container, false);
 		eventID = getArguments().getInt("eventID");
-
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+		nric = preferences.getString("nric","");
 		return rootView;
 	}
 
