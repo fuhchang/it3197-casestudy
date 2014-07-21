@@ -18,7 +18,6 @@ public class CreateRiddleActivity extends FragmentActivity {
 	RadioButton rbtn_riddleAns1, rbtn_riddleAns2, rbtn_riddleAns3, rbtn_riddleAns4;
 	EditText et_riddleTitle, et_riddleContent, et_riddleAns1, et_riddleAns2, et_riddleAns3, et_riddleAns4;
 	Button btn_createRiddle;
-	String riddleAns1, riddleAns2, riddleAns3, riddleAns4, riddleAnsStatus;
 	int checked = 1;
 	User user = new User("S9876543A", "Mr Loi", "User", "Password", "99999999", "AMK", "mr_loi@email.com", 1, 100);
 	
@@ -27,16 +26,16 @@ public class CreateRiddleActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_riddle);
 		
-		et_riddleTitle = (EditText) findViewById(R.id.et_create_riddle_title);
-		et_riddleContent = (EditText) findViewById(R.id.et_create_riddle_content);
-		rbtn_riddleAns1 = (RadioButton) findViewById(R.id.rbtn_create_riddle_answer_1);
-		rbtn_riddleAns2 = (RadioButton) findViewById(R.id.rbtn_create_riddle_answer_2);
-		rbtn_riddleAns3 = (RadioButton) findViewById(R.id.rbtn_create_riddle_answer_3);
-		rbtn_riddleAns4 = (RadioButton) findViewById(R.id.rbtn_create_riddle_answer_4);
-		et_riddleAns1 = (EditText) findViewById(R.id.et_create_riddle_answer_1);
-		et_riddleAns2 = (EditText) findViewById(R.id.et_create_riddle_answer_2);
-		et_riddleAns3 = (EditText) findViewById(R.id.et_create_riddle_answer_3);
-		et_riddleAns4 = (EditText) findViewById(R.id.et_create_riddle_answer_4);
+		et_riddleTitle = (EditText) findViewById(R.id.et_riddle_title);
+		et_riddleContent = (EditText) findViewById(R.id.et_riddle_content);
+		rbtn_riddleAns1 = (RadioButton) findViewById(R.id.rbtn_riddle_answer_1);
+		rbtn_riddleAns2 = (RadioButton) findViewById(R.id.rbtn_riddle_answer_2);
+		rbtn_riddleAns3 = (RadioButton) findViewById(R.id.rbtn_riddle_answer_3);
+		rbtn_riddleAns4 = (RadioButton) findViewById(R.id.rbtn_riddle_answer_4);
+		et_riddleAns1 = (EditText) findViewById(R.id.et_riddle_answer_1);
+		et_riddleAns2 = (EditText) findViewById(R.id.et_riddle_answer_2);
+		et_riddleAns3 = (EditText) findViewById(R.id.et_riddle_answer_3);
+		et_riddleAns4 = (EditText) findViewById(R.id.et_riddle_answer_4);
 		btn_createRiddle = (Button) findViewById(R.id.btn_create_riddle);
 		
 		rbtn_riddleAns1.setOnClickListener(new OnClickListener() {

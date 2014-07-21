@@ -6,7 +6,7 @@
        android:paddingRight="10dp" >
        
     <TextView
-        android:id="@+id/tv_create_riddle_title"
+        android:id="@+id/tv_update_riddle_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18sp"
@@ -16,14 +16,14 @@
         android:id="@+id/et_riddle_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_create_riddle_title"
+        android:layout_below="@+id/tv_update_riddle_title"
         android:singleLine="true"
         android:imeOptions="actionNext"
         android:scrollHorizontally="false"
         android:hint="@string/et_hint_riddle_title" />
     
     <TextView
-        android:id="@+id/tv_create_riddle_content"
+        android:id="@+id/tv_update_riddle_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/et_riddle_title"
@@ -38,11 +38,11 @@
         android:lines="2"
         android:inputType="textMultiLine"
         android:scrollHorizontally="false"
-        android:layout_below="@+id/tv_create_riddle_content"
+        android:layout_below="@+id/tv_update_riddle_content"
         android:hint="@string/et_hint_riddle_content" />
     
     <TextView
-        android:id="@+id/tv_create_riddle_choice"
+        android:id="@+id/tv_update_riddle_choice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/et_riddle_content"
@@ -54,7 +54,7 @@
         android:id="@+id/ll_riddle_answer_1"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_below="@+id/tv_create_riddle_choice"
+		android:layout_below="@+id/tv_update_riddle_choice"
 		android:orientation="horizontal" >
   
 	     <RadioButton
@@ -144,11 +144,11 @@
     </LinearLayout>
     
     <Button
-        android:id="@+id/btn_create_riddle"
+        android:id="@+id/btn_update_riddle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_below="@+id/ll_riddle_answer_4"
         android:layout_alignParentRight="true"
-        android:text="@string/btn_create_riddle" />
+        android:text="@string/btn_update_riddle" />
 </RelativeLayout>

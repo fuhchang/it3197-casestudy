@@ -10,7 +10,7 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.example.it3197_casestudy.R;
-import com.example.it3197_casestudy.controller.RetrieveAllRiddle;
+import com.example.it3197_casestudy.controller.RetrieveAllRiddleWithAnswers;
 import com.example.it3197_casestudy.model.Riddle;
 import com.example.it3197_casestudy.util.RiddleListAdapter;
 
@@ -25,8 +25,8 @@ public class RiddleActivity extends FragmentActivity {
 		setContentView(R.layout.activity_riddle);
 		
 		lv_riddle = (ListView) findViewById(R.id.lv_riddle);
-		RetrieveAllRiddle retrieveAllRiddle = new RetrieveAllRiddle(this, lv_riddle);
-		retrieveAllRiddle.execute();
+		RetrieveAllRiddleWithAnswers retrieveAllRiddleWithAnswers = new RetrieveAllRiddleWithAnswers(this, lv_riddle);
+		retrieveAllRiddleWithAnswers.execute();
 	}
 
 	@Override

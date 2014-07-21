@@ -32,15 +32,18 @@ import com.example.it3197_casestudy.ui_logic.ViewRiddleActivity;
 import com.example.it3197_casestudy.util.RiddleListAdapter;
 import com.example.it3197_casestudy.util.Settings;
 
-public class RetrieveAllRiddleWithAnswers extends AsyncTask<Object, Object, Object> implements Settings{
-	private RiddleActivity activity;
-	private ArrayList<Riddle> riddleList;
-	private ArrayList<RiddleAnswer[]> riddleAnsList;
-	private ArrayList<RiddleAnswer> riddleAnswerList;
-	private ProgressDialog dialog;
+public class RetrieveAllRiddleWithAnswers  extends AsyncTask<Object, Object, Object> implements Settings {
+	RiddleActivity activity;
+	ArrayList<Riddle> riddleList;
+	ArrayList<RiddleAnswer> riddleAnsList;
+	ArrayList<RiddleAnswer> riddleAnswerList;
+	Riddle riddle;
 	
 	RiddleListAdapter riddleAdapter;
 	ListView riddleListView;
+
+	ProgressDialog dialog;
+	String[] responses;
 	
 	public RetrieveAllRiddleWithAnswers(RiddleActivity activity, ListView riddleListView) {
 		this.activity = activity;
@@ -48,77 +51,61 @@ public class RetrieveAllRiddleWithAnswers extends AsyncTask<Object, Object, Obje
 	}
 	
 	@Override
-	protected Object doInBackground(Object... params) {
+	protected Object doInBackground(Object... arg0) {
 		return retrieveAllRiddleWithAnswers();
 	}
 
 	@Override
 	protected void onPreExecute() {
+		responses = new String[2];
 		riddleList = new ArrayList<Riddle>();
-		riddleAnsList = new ArrayList<RiddleAnswer[]>();
+		riddleAnsList = new ArrayList<RiddleAnswer>();
 		riddleAnswerList = new ArrayList<RiddleAnswer>();
-		
+
 		dialog = ProgressDialog.show(activity, null, "Retrieving...", true);
 	}
 
 	@Override
 	protected void onPostExecute(Object result) {
-		parseJSONResponse((String) result);
+		parseJSONResponse((String[]) result);
 		riddleAdapter = new RiddleListAdapter(activity, riddleList);
 		riddleListView.setAdapter(riddleAdapter);
 		riddleListView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-				//Intent intent = new Intent(activity, ViewRiddleActivity.class);
-				//intent.putExtra("riddle", riddleList.get(position));
-				//activity.startActivity(intent);
+				Intent intent = new Intent(activity, ViewRiddleActivity.class);
+				intent.putExtra("riddle", riddleList.get(position));
+				for(int i = 0; i < riddleAnsList.size(); i++) {
+					if(riddleList.get(position).getRiddleID() == riddleAnsList.get(i).getRiddle().getRiddleID()) {
+						riddleAnswerList.add(riddleAnsList.get(i));
+					}
+				}
+				intent.putParcelableArrayListExtra("riddleAnswerList", riddleAnswerList);
+				activity.startActivity(intent);
 			}
 		});
 		dialog.dismiss();
 	}
 	
-	public void parseJSONResponse(String responseBody) {
+	public String[] retrieveAllRiddleWithAnswers() {
+		String riddleResponseBody = retrieveAllRiddle();
+		String answersResponseBody = retrieveAllRiddleAnswer();
+		responses[0] = riddleResponseBody;
+		responses[1] = answersResponseBody;
+		
+		return responses;
+	}
+	
+	public void parseJSONResponse(String[] responseBody) {
 		JSONArray dataArray;
 		JSONObject jsonObj;
 		Riddle riddle;
 		RiddleAnswer riddleAns;
-		RiddleAnswer[] riddleAnsArr;
+		
 		try {
-			jsonObj = new JSONObject(responseBody);
-			dataArray = jsonObj.getJSONArray("list");
-			System.out.println(responseBody);
-
-			for(int i = 0; i < dataArray.length(); i++) {
-				JSONObject data = new JSONObject(dataArray.getString(i));
-				riddle = new Riddle();
-				riddle.setRiddleID(data.getInt("riddleID"));
-				JSONObject userObj = data.getJSONObject("user");
-				User user = new User(userObj.getString("nric"), userObj.getString("name"), userObj.getString("type"), userObj.getString("password"), userObj.getString("contactNo"), userObj.getString("address"), userObj.getString("email"), userObj.getInt("active"), userObj.getInt("points"));
-				riddle.setUser(user);
-				riddle.setRiddleTitle(data.getString("riddleTitle"));
-				riddle.setRiddleContent(data.getString("riddleContent"));
-				riddle.setRiddleStatus(data.getString("riddleStatus"));
-				riddle.setRiddlePoint(data.getInt("riddlePoint"));
-				
-				/*
-				riddleAnsArr = new RiddleAnswer[4];
-				for(int ii = 0; ii < riddleAnsArr.length; ii++) {
-					riddleAns = new RiddleAnswer();
-					riddleAns.setRiddleAnswerID(data.getInt("riddleAnswerID"));
-					riddleAns.setRiddle(riddle);
-					riddleAns.setUser(user);
-					riddleAns.setRiddleAnswer(data.getString("riddleAnswer"));
-					riddleAns.setRiddleAnswerStatus(data.getString("riddleAnswerStatus"));
-					riddleAnsArr[ii] = riddleAns;
-				}
-				
-				riddleAnsList.add(riddleAnsArr);
-				*/
-			}
+			jsonObj = new JSONObject(responseBody[0]);
+			dataArray = jsonObj.getJSONArray("riddleList");
 			
-			/*jsonObj = new JSONObject(responseBody);
-			dataArray = jsonObj.getJSONArray("list");
-			System.out.println(responseBody);
 			for(int i = 0; i < dataArray.length(); i++) {
 				JSONObject data = new JSONObject(dataArray.getString(i));
 				riddle = new Riddle();
@@ -131,26 +118,25 @@ public class RetrieveAllRiddleWithAnswers extends AsyncTask<Object, Object, Obje
 				riddle.setRiddlePoint(data.getInt("riddlePoint"));
 				riddleList.add(riddle);
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			errorOnExecuting();
+		}
+		
+		try {
+			jsonObj = new JSONObject(responseBody[1]);
+			dataArray = jsonObj.getJSONArray("riddleAnsList");
 			
-			jsonObj = new JSONObject(responseBody);
-			dataArray = jsonObj.getJSONArray("list");
 			for(int i = 0; i < dataArray.length(); i++) {
-				riddleAnsArr = new RiddleAnswer[4];
-				for(int ii = 0; ii < riddleAnsArr.length; ii++) {
-					JSONObject data = new JSONObject(dataArray.getString(i));
-					riddleAns = new RiddleAnswer();
-					riddleAns.setRiddleAnswerID(data.getInt("riddleAnsID"));
-					JSONObject riddleObj = data.getJSONObject("riddle");
-					JSONObject userObj = data.getJSONObject("user");
-					User user = new User(userObj.getString("nric"), userObj.getString("name"), userObj.getString("type"), userObj.getString("password"), userObj.getString("contactNo"), userObj.getString("address"), userObj.getString("email"), userObj.getInt("active"), userObj.getInt("points"));
-					riddleAns.setRiddle(new Riddle(riddleObj.getInt("riddleID"), user, riddleObj.getString("riddleTitle"), riddleObj.getString("riddleContent"), riddleObj.getString("riddleStatus"), riddleObj.getInt("riddlePoint")));
-					riddleAns.setRiddleAnswer(data.getString("riddleAnswer"));
-					riddleAns.setRiddleAnswerStatus(data.getString("riddleAnswerStatus"));
-					System.out.println(riddleAns.getRiddleAnswerID());
-					riddleAnsArr[ii] = riddleAns;
-				}
-				riddleAnsList.add(riddleAnsArr);
-			}*/
+				JSONObject data = new JSONObject(dataArray.getString(i));
+				riddleAns = new RiddleAnswer();
+				riddleAns.setRiddleAnswerID(data.getInt("riddleAnswerID"));
+				JSONObject riddleObj = data.getJSONObject("riddle");
+				riddleAns.setRiddle(new Riddle(riddleObj.getInt("riddleID")));
+				riddleAns.setRiddleAnswer(data.getString("riddleAnswer"));
+				riddleAns.setRiddleAnswerStatus(data.getString("riddleAnswerStatus"));
+				riddleAnsList.add(riddleAns);
+			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -158,10 +144,26 @@ public class RetrieveAllRiddleWithAnswers extends AsyncTask<Object, Object, Obje
 		}
 	}
 	
-	public String retrieveAllRiddleWithAnswers() {
+	public String retrieveAllRiddle() {
 		String responseBody = "";
 		HttpClient httpClient = new DefaultHttpClient();
-		HttpPost httpPost = new HttpPost(API_URL + "RetrieveAllRiddleWithAnswersServlet");
+		HttpPost httpPost = new HttpPost(API_URL + "RetrieveAllRiddleServlet");
+		ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+		
+		try {
+			httpPost.setEntity(new UrlEncodedFormEntity(postParameters));
+			ResponseHandler<String> responseHandler = new BasicResponseHandler();
+			responseBody = httpClient.execute(httpPost, responseHandler);			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return responseBody;
+	}
+	
+	public String retrieveAllRiddleAnswer() {
+		String responseBody = "";
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpPost httpPost = new HttpPost(API_URL + "RetrieveAllRiddleAnswerServlet");
 		ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
 		
 		try {
@@ -181,7 +183,7 @@ public class RetrieveAllRiddleWithAnswers extends AsyncTask<Object, Object, Obje
 			public void run() {
 				dialog.dismiss();
 				AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-				builder.setTitle("Error").setMessage("Unable to retrieve riddle. Please try again.");
+				builder.setTitle("Error").setMessage("Unable to retrieve riddle answers. Please try again.");
 				builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {

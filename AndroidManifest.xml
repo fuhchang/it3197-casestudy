@@ -140,6 +140,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.it3197_casestudy.ui_logic.RiddleActivity" />
         </activity>
+        <activity
+            android:name="com.example.it3197_casestudy.ui_logic.UpdateRiddleActivity"
+            android:label="@string/title_activity_riddle"
+            android:parentActivityName="com.example.it3197_casestudy.ui_logic.ViewRiddleActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.it3197_casestudy.ui_logic.ViewRiddleActivity" />
+        </activity>
 
         <service
             android:name="com.example.it3197_casestudy.geofencing.ReceiveTransitionsIntentService"
