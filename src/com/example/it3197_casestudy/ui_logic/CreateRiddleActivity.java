@@ -94,7 +94,6 @@ public class CreateRiddleActivity extends FragmentActivity {
 				for(int i = 1; i < riddleChoices.length+1; i++) {
 					RiddleAnswer answer = new RiddleAnswer();
 					answer.setRiddle(riddle);
-					answer.setUser(user);
 					switch(i) {
 						case 1 :
 							answer.setRiddleAnswer(et_riddleAns1.getText().toString());

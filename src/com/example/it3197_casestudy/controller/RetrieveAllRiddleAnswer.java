@@ -1,6 +1,8 @@
 package com.example.it3197_casestudy.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -9,49 +11,49 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 
 import com.example.it3197_casestudy.model.Riddle;
-import com.example.it3197_casestudy.model.User;
-import com.example.it3197_casestudy.ui_logic.RiddleActivity;
+import com.example.it3197_casestudy.model.RiddleAnswer;
 import com.example.it3197_casestudy.ui_logic.ViewRiddleActivity;
-import com.example.it3197_casestudy.util.RiddleListAdapter;
 import com.example.it3197_casestudy.util.Settings;
 
-public class RetrieveAllRiddle extends AsyncTask<Object, Object, Object> implements Settings {
-	private RiddleActivity activity;
-	private ArrayList<Riddle> riddleList;
-	private ProgressDialog dialog;
+public class RetrieveAllRiddleAnswer extends AsyncTask<Object, Object, Object> implements Settings  {
+	private ViewRiddleActivity activity;
+	private Riddle riddle; 
+	private RiddleAnswer[] riddleAnsList;
 	
-	RiddleListAdapter riddleAdapter;
-	ListView riddleListView;
+	ProgressDialog dialog;
 	
-	public RetrieveAllRiddle(RiddleActivity activity, ListView riddleListView) {
+	private Button btn_riddleAns1, btn_riddleAns2, btn_riddleAns3, btn_riddleAns4;
+	
+	public RetrieveAllRiddleAnswer(ViewRiddleActivity activity, Riddle riddle, Button btn_riddleAns1, Button btn_riddleAns2, Button btn_riddleAns3, Button btn_riddleAns4) {
 		this.activity = activity;
-		this.riddleListView = riddleListView;
+		this.riddle = riddle;
+		this.btn_riddleAns1 = btn_riddleAns1;
+		this.btn_riddleAns2 = btn_riddleAns2;
+		this.btn_riddleAns3 = btn_riddleAns3;
+		this.btn_riddleAns4 = btn_riddleAns4;
 	}
 	
 	@Override
 	protected Object doInBackground(Object... params) {
-		return retrieveAllRiddle();
+		return retrieveAllRiddleAnswer();
 	}
 
 	@Override
 	protected void onPreExecute() {
-		riddleList = new ArrayList<Riddle>();
+		riddleAnsList = new RiddleAnswer[4];
 
 		dialog = ProgressDialog.show(activity, null, "Retrieving...", true);
 	}
@@ -59,51 +61,48 @@ public class RetrieveAllRiddle extends AsyncTask<Object, Object, Object> impleme
 	@Override
 	protected void onPostExecute(Object result) {
 		parseJSONResponse((String) result);
-		riddleAdapter = new RiddleListAdapter(activity, riddleList);
-		riddleListView.setAdapter(riddleAdapter);
-		riddleListView.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-				Intent intent = new Intent(activity, ViewRiddleActivity.class);
-				intent.putExtra("riddle", riddleList.get(position));
-				activity.startActivity(intent);
-			}
-		});
+		Collections.shuffle(Arrays.asList(riddleAnsList));
+		btn_riddleAns1.setText(riddleAnsList[0].getRiddleAnswer());
+		btn_riddleAns2.setText(riddleAnsList[1].getRiddleAnswer());
+		btn_riddleAns3.setText(riddleAnsList[2].getRiddleAnswer());
+		btn_riddleAns4.setText(riddleAnsList[3].getRiddleAnswer());
+		
 		dialog.dismiss();
 	}
 	
 	public void parseJSONResponse(String responseBody) {
 		JSONArray dataArray;
 		JSONObject jsonObj;
-		Riddle riddle;
+		RiddleAnswer riddleAns;
 		
 		try {
 			jsonObj = new JSONObject(responseBody);
-			dataArray = jsonObj.getJSONArray("riddleList");
+			dataArray = jsonObj.getJSONArray("riddleAnsList");
 			
 			for(int i = 0; i < dataArray.length(); i++) {
 				JSONObject data = new JSONObject(dataArray.getString(i));
-				riddle = new Riddle();
-				riddle.setRiddleID(data.getInt("riddleID"));
-				JSONObject userObj = data.getJSONObject("user");
-				riddle.setUser(new User(userObj.getString("nric"), userObj.getString("name"), userObj.getString("type"), userObj.getString("password"), userObj.getString("contactNo"), userObj.getString("address"), userObj.getString("email"), userObj.getInt("active"), userObj.getInt("points")));
-				riddle.setRiddleTitle(data.getString("riddleTitle"));
-				riddle.setRiddleContent(data.getString("riddleContent"));
-				riddle.setRiddleStatus(data.getString("riddleStatus"));
-				riddle.setRiddlePoint(data.getInt("riddlePoint"));
-				riddleList.add(riddle);
+				riddleAnsList[i] = new RiddleAnswer();
+				riddleAns = new RiddleAnswer();
+				riddleAns.setRiddleAnswerID(data.getInt("riddleAnswerID"));
+				riddleAns.setRiddle(riddle);
+				riddleAns.setRiddleAnswer(data.getString("riddleAnswer"));
+				riddleAns.setRiddleAnswerStatus(data.getString("riddleAnswerStatus"));
+				riddleAnsList[i] = riddleAns;
 			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			errorOnExecuting();
 		}
 	}
 	
-	public String retrieveAllRiddle() {
+	public String retrieveAllRiddleAnswer() {
 		String responseBody = "";
 		HttpClient httpClient = new DefaultHttpClient();
-		HttpPost httpPost = new HttpPost(API_URL + "RetrieveAllRiddleServlet");
+		HttpPost httpPost = new HttpPost(API_URL + "RetrieveAllRiddleAnswerServlet");
 		ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+		
+		postParameters.add(new BasicNameValuePair("riddleID", Integer.toString(riddle.getRiddleID())));
 		
 		try {
 			httpPost.setEntity(new UrlEncodedFormEntity(postParameters));
@@ -122,7 +121,7 @@ public class RetrieveAllRiddle extends AsyncTask<Object, Object, Object> impleme
 			public void run() {
 				dialog.dismiss();
 				AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-				builder.setTitle("Error").setMessage("Unable to retrieve riddle. Please try again.");
+				builder.setTitle("Error").setMessage("Unable to retrieve riddle answers. Please try again.");
 				builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {

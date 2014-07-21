@@ -40,7 +40,7 @@ public class RiddleListAdapter extends ArrayAdapter<Riddle>{
 		}
 		else
 			tv_riddleContent.setText(riddleList.get(position).getRiddleContent());
-		tv_riddleUser.setText(riddleList.get(position).getUser().getName());
+			tv_riddleUser.setText("- " + riddleList.get(position).getUser().getName());
 		
 		return rowView;
 	}

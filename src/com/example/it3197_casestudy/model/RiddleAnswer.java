@@ -6,17 +6,15 @@ import android.os.Parcelable;
 public class RiddleAnswer implements Parcelable {
 	private int riddleAnswerID;
 	private Riddle riddle;
-	private User user;
 	private String riddleAnswer;
 	private String riddleAnswerStatus;
 	
 	// Constructor
 	public RiddleAnswer(){}
 	
-	public RiddleAnswer(int riddleAnswerID, Riddle riddle, User user, String riddleAnswer, String riddleAnswerStatus){
+	public RiddleAnswer(int riddleAnswerID, Riddle riddle, String riddleAnswer, String riddleAnswerStatus){
 		this.riddleAnswerID = riddleAnswerID;
 		this.riddle = riddle;
-		this.user = user;
 		this.riddleAnswer = riddleAnswer;
 		this.riddleAnswerStatus = riddleAnswerStatus;
 	}
@@ -33,12 +31,6 @@ public class RiddleAnswer implements Parcelable {
 	}
 	public void setRiddle(Riddle riddle) {
 		this.riddle = riddle;
-	}
-	public User getUser() {
-		return user;
-	}
-	public void setUser(User user) {
-		this.user = user;
 	}
 	public String getRiddleAnswer() {
 		return riddleAnswer;
@@ -62,14 +54,12 @@ public class RiddleAnswer implements Parcelable {
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeInt(riddleAnswerID);
 		dest.writeParcelable(this.riddle, flags);
-		dest.writeParcelable(this.user, flags);
 		dest.writeString(riddleAnswer);
 		dest.writeString(riddleAnswerStatus);
 	}
 	
 	private RiddleAnswer(Parcel in) {
 		riddleAnswerID = in.readInt();
-		user = in.readParcelable(User.class.getClassLoader());
 		riddle = in.readParcelable(Riddle.class.getClassLoader());
 		riddleAnswer = in.readString();
 		riddleAnswerStatus = in.readString();
