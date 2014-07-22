@@ -34,12 +34,14 @@ import android.location.LocationManager;
 import android.location.Address;
 
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.util.Log;
 import android.view.Menu;
@@ -134,7 +136,11 @@ public class SubmitArticle extends Activity {
       	String strDate = sdf.format(c.getTime());
       	currentTime.setText(strDate);
 		
-		
+      	
+      	
+      	SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+		String usernric = sp.getString("nric","");
+	//	Toast.makeText(getApplicationContext(), usernric, Toast.LENGTH_SHORT).show();
 		
 		storingLoc = (TextView)findViewById(R.id.storingLoc);
 		articleTitle = (EditText) findViewById(R.id.articleTitle);
@@ -236,7 +242,9 @@ public class SubmitArticle extends Activity {
 				article.setDateTime(currentTime);
 				article.setCategory(categorySelected);
 				article.setLocation(locToBeStored);
-				article.setUserNRIC("S9512233X");
+				SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+				String usernric = sp.getString("nric","");
+				article.setUserNRIC(usernric);
 				article.setActive(1);
 				article.setApproved("Pending");
 				article.setDbLat(lat);

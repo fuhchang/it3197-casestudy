@@ -71,6 +71,7 @@ public class CreateArticle extends AsyncTask<Object, Object, Object> implements 
 		postParameters.add(new BasicNameValuePair("address", article.getLocation()));
 		postParameters.add(new BasicNameValuePair("storingLat", String.valueOf(article.getDbLat())));
 		postParameters.add(new BasicNameValuePair("storingLon", String.valueOf(article.getDbLon())));
+		postParameters.add(new BasicNameValuePair("usernric",article.getUserNRIC()));
 		
 		
 		try {
