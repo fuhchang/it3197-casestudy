@@ -11,12 +11,14 @@
     
     
     <TextView 
+        android:id="@+id/userDetail"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="40dp"
         android:layout_gravity="center"
         android:gravity="center"
-        android:text="FUH CHANG BOY BOY"
+        android:textSize="35sp"
+        android:textColor="#8A0829"
         android:layout_marginTop="20dp"
         
         />
@@ -39,7 +41,7 @@
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:gravity="center"
-	        
+	        android:layout_gravity="center_vertical"
        		android:horizontalSpacing="10dp"
        	    android:numColumns="2"
        	    android:columnWidth="80dp"

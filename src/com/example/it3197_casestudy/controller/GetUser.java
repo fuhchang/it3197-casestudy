@@ -57,6 +57,7 @@ implements Settings{
 				MySharedPreferences preferences = new MySharedPreferences(activity);
 				preferences.addPreferences("nric", user.getNric());
 				preferences.addPreferences("password",user.getPassword());
+				preferences.addPreferences("username", userList.get(i).getName());
 				
 				if(userList.get(i).getType().equals("User")){
 					Intent intent = new Intent(activity, MainLinkPage.class);
@@ -66,6 +67,7 @@ implements Settings{
 				if(userList.get(i).getType().equals("Officer")){
 					Intent art = new Intent(activity, FeedbackArticleActivity.class);
 					activity.startActivity(art);
+					activity.finish();
 				}
 
 			
@@ -110,6 +112,7 @@ implements Settings{
 				user.setNric(dataJob.getString("nric"));
 				user.setPassword(dataJob.getString("password"));
 				user.setType(dataJob.getString("type"));
+				user.setName(dataJob.getString("name"));
 				userList.add(user);
 			}
 		} catch (Exception e) {

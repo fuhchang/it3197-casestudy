@@ -14,12 +14,14 @@ import com.example.it3197_casestudy.util.LocationService;
 import com.example.it3197_casestudy.ui_logic.SubmitArticle;
 
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -32,6 +34,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
@@ -55,6 +58,13 @@ public class MainLinkPage extends Activity {
 		setContentView(R.layout.activity_main_link_page);
 		
 		getActionBar().setTitle("Home");
+		
+		
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+		String username = sp.getString("username","");
+		
+		TextView userDetail = (TextView)findViewById(R.id.userDetail);
+		userDetail.setText("Welcome, " + username);
 		
 		//page = (ViewFlipper) findViewById(R.id.flipper);
 		//animFlipInForeward = AnimationUtils.loadAnimation(this, R.anim.f)
