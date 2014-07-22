@@ -27,6 +27,7 @@ import com.example.it3197_casestudy.model.Hobby;
 import com.example.it3197_casestudy.model.User;
 import com.example.it3197_casestudy.ui_logic.LoginActivity;
 import com.example.it3197_casestudy.ui_logic.MainLinkPage;
+import com.example.it3197_casestudy.util.MySharedPreferences;
 import com.example.it3197_casestudy.util.Settings;
 
 public class GetUser extends AsyncTask<Object, Object, Object>
@@ -52,13 +53,10 @@ implements Settings{
 		dialog.dismiss();
 		for(int i=0; i<userList.size();i++){
 			if(userList.get(i).getNric().equals(user.getNric()) && userList.get(i).getPassword().equals(user.getPassword())){
-				SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
-				SharedPreferences.Editor editor = preferences.edit();
-				editor.putString("nric",user.getNric());
-				editor.putString("password",user.getPassword());
-				editor.apply();
-				/*String nric = preferences.getString("nric","");
-				String password = preferences.getString("password","");*/
+				MySharedPreferences preferences = new MySharedPreferences(activity);
+				preferences.addPreferences("nric", user.getNric());
+				preferences.addPreferences("password",user.getPassword());
+				
 				Intent intent = new Intent(activity, MainLinkPage.class);
 				intent.putExtra("nric", user.getNric());
 				activity.startActivity(intent);

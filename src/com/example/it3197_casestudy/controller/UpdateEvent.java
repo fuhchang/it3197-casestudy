@@ -19,9 +19,11 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
+import android.preference.PreferenceManager;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -31,6 +33,7 @@ import com.example.it3197_casestudy.ui_logic.MainLinkPage;
 import com.example.it3197_casestudy.ui_logic.UpdateEventStep2Activity;
 import com.example.it3197_casestudy.ui_logic.ViewAllEventsActivity;
 import com.example.it3197_casestudy.util.EventListAdapter;
+import com.example.it3197_casestudy.util.MySharedPreferences;
 import com.example.it3197_casestudy.util.Settings;
 
 public class UpdateEvent extends AsyncTask<Object, Object, Object> implements Settings{
@@ -66,8 +69,12 @@ public class UpdateEvent extends AsyncTask<Object, Object, Object> implements Se
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpPost httppost = new HttpPost(API_URL + "editEvent");
 		ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+		MySharedPreferences preferences = new MySharedPreferences(activity);
+		String nric = preferences.getPreferences("nric","");
+		
 		postParameters.add(new BasicNameValuePair("eventID", String.valueOf(event.getEventID())));
 		postParameters.add(new BasicNameValuePair("eventName", event.getEventName()));
+		postParameters.add(new BasicNameValuePair("eventAdminNRIC", nric));
 		postParameters.add(new BasicNameValuePair("eventCategory", event.getEventCategory()));
 		postParameters.add(new BasicNameValuePair("eventDescription", event.getEventDescription()));
 		postParameters.add(new BasicNameValuePair("eventType", event.getEventType()));

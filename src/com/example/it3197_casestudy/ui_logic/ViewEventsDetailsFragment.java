@@ -2,6 +2,8 @@ package com.example.it3197_casestudy.ui_logic;
 
 import java.util.Calendar;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -24,6 +26,7 @@ import com.example.it3197_casestudy.controller.GetEvent;
 import com.example.it3197_casestudy.controller.JoinEvent;
 import com.example.it3197_casestudy.model.Event;
 import com.example.it3197_casestudy.model.EventParticipants;
+import com.example.it3197_casestudy.util.MySharedPreferences;
 import com.example.it3197_casestudy.util.Settings;
 
 /**
@@ -154,21 +157,37 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// TODO Auto-generated method stub
+		
 		switch(item.getItemId()){
 		case R.id.update:
-			Intent i = new Intent(ViewEventsDetailsFragment.this.getActivity(), UpdateEventStep1Activity.class);
-			i.putExtra("typeOfEvent", typeOfEvent);
-			i.putExtra("eventID", String.valueOf(event.getEventID()));
-			i.putExtra("eventName", event.getEventName());
-			i.putExtra("eventCategory", event.getEventCategory());
-			i.putExtra("eventDescription", event.getEventDescription());
-			i.putExtra("eventDateTimeFrom", sqlDateTimeFormatter.format(event.getEventDateTimeFrom()));
-			i.putExtra("eventDateTimeTo", sqlDateTimeFormatter.format(event.getEventDateTimeTo()));
-			i.putExtra("occurence", event.getOccurence());
-			i.putExtra("eventLocation", location);
-			i.putExtra("noOfParticipants", String.valueOf(event.getNoOfParticipantsAllowed()));
-			startActivity(i);
-			ViewEventsDetailsFragment.this.getActivity().finish();
+			if(!nric.equals(event.getEventAdminNRIC())){
+	            AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
+	            builder.setTitle("Access denied");
+	            builder.setMessage("You do not have the permissions to update the event");
+	            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+			            
+					}
+				});
+	            builder.create().show();
+			}
+			else{
+				Intent i = new Intent(ViewEventsDetailsFragment.this.getActivity(), UpdateEventStep1Activity.class);
+				i.putExtra("typeOfEvent", typeOfEvent);
+				i.putExtra("eventID", String.valueOf(event.getEventID()));
+				i.putExtra("eventName", event.getEventName());
+				i.putExtra("eventCategory", event.getEventCategory());
+				i.putExtra("eventDescription", event.getEventDescription());
+				i.putExtra("eventDateTimeFrom", sqlDateTimeFormatter.format(event.getEventDateTimeFrom()));
+				i.putExtra("eventDateTimeTo", sqlDateTimeFormatter.format(event.getEventDateTimeTo()));
+				i.putExtra("occurence", event.getOccurence());
+				i.putExtra("eventLocation", location);
+				i.putExtra("noOfParticipants", String.valueOf(event.getNoOfParticipantsAllowed()));
+				startActivity(i);
+				ViewEventsDetailsFragment.this.getActivity().finish();
+			}
 			break;
 		case R.id.join : 
 			Calendar todayDate = Calendar.getInstance();
@@ -188,8 +207,8 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_view_events_details, container, false);
 		eventID = getArguments().getInt("eventID");
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
-		nric = preferences.getString("nric","");
+		MySharedPreferences preferences = new MySharedPreferences(this.getActivity());
+		nric = preferences.getPreferences("nric","");
 		return rootView;
 	}
 
