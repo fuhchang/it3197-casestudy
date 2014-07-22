@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.example.it3197_casestudy.model.Hobby;
 import com.example.it3197_casestudy.model.User;
+import com.example.it3197_casestudy.ui_logic.FeedbackArticleActivity;
 import com.example.it3197_casestudy.ui_logic.LoginActivity;
 import com.example.it3197_casestudy.ui_logic.MainLinkPage;
 import com.example.it3197_casestudy.util.MySharedPreferences;
@@ -57,9 +58,16 @@ implements Settings{
 				preferences.addPreferences("nric", user.getNric());
 				preferences.addPreferences("password",user.getPassword());
 				
-				Intent intent = new Intent(activity, MainLinkPage.class);
-				intent.putExtra("nric", user.getNric());
-				activity.startActivity(intent);
+				if(userList.get(i).getType().equals("User")){
+					Intent intent = new Intent(activity, MainLinkPage.class);
+					intent.putExtra("nric", user.getNric());
+					activity.startActivity(intent);
+				}
+				if(userList.get(i).getType().equals("Officer")){
+					Intent art = new Intent(activity, FeedbackArticleActivity.class);
+					activity.startActivity(art);
+				}
+
 			
 			}
 		}
@@ -101,6 +109,7 @@ implements Settings{
 				User user = new User();
 				user.setNric(dataJob.getString("nric"));
 				user.setPassword(dataJob.getString("password"));
+				user.setType(dataJob.getString("type"));
 				userList.add(user);
 			}
 		} catch (Exception e) {
@@ -117,7 +126,7 @@ implements Settings{
 				dialog.dismiss();
 				AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 				builder.setTitle("Error in retrieving user ");
-				builder.setMessage("Please check our username and password");
+				builder.setMessage("Please check your username and password");
 				builder.setPositiveButton("Ok",
 						new DialogInterface.OnClickListener() {
 							@Override
