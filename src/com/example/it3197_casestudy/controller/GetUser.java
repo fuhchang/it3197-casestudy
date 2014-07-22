@@ -63,14 +63,15 @@ implements Settings{
 					Intent intent = new Intent(activity, MainLinkPage.class);
 					intent.putExtra("nric", user.getNric());
 					activity.startActivity(intent);
+					activity.finish();
+					break;
 				}
 				if(userList.get(i).getType().equals("Officer")){
 					Intent art = new Intent(activity, FeedbackArticleActivity.class);
 					activity.startActivity(art);
 					activity.finish();
+					break;
 				}
-
-			
 			}
 		}
 	}

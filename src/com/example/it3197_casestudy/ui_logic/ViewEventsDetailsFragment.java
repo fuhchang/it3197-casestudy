@@ -1,6 +1,7 @@
 package com.example.it3197_casestudy.ui_logic;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.app.AlertDialog;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.controller.GetEvent;
+import com.example.it3197_casestudy.controller.GetEventParticipants;
 import com.example.it3197_casestudy.controller.JoinEvent;
 import com.example.it3197_casestudy.model.Event;
 import com.example.it3197_casestudy.model.EventParticipants;
@@ -43,70 +45,8 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 	private Button btnCheckIn;
 	private Event event = new Event();
 	private String nric;
-	public TextView getTvEventID() {
-		return tvEventID;
-	}
-
-	public void setTvEventID(TextView tvEventID) {
-		this.tvEventID = tvEventID;
-	}
-
-	public TextView getTvEventName() {
-		return tvEventName;
-	}
-
-	public void setTvEventName(TextView tvEventName) {
-		this.tvEventName = tvEventName;
-	}
-
-	public TextView getTvEventCategory() {
-		return tvEventCategory;
-	}
-
-	public void setTvEventCategory(TextView tvEventCategory) {
-		this.tvEventCategory = tvEventCategory;
-	}
-
-	public TextView getTvEventDescription() {
-		return tvEventDescription;
-	}
-
-	public void setTvEventDescription(TextView tvEventDescription) {
-		this.tvEventDescription = tvEventDescription;
-	}
-
-	public TextView getTvEventDateTimeFrom() {
-		return tvEventDateTimeFrom;
-	}
-
-	public void setTvEventDateTimeFrom(TextView tvEventDateTimeFrom) {
-		this.tvEventDateTimeFrom = tvEventDateTimeFrom;
-	}
-
-	public TextView getTvEventDateTimeTo() {
-		return tvEventDateTimeTo;
-	}
-
-	public void setTvEventDateTimeTo(TextView tvEventDateTimeTo) {
-		this.tvEventDateTimeTo = tvEventDateTimeTo;
-	}
-
-	public TextView getTvEventOccur() {
-		return tvEventOccur;
-	}
-
-	public void setTvEventOccur(TextView tvEventOccur) {
-		this.tvEventOccur = tvEventOccur;
-	}
-
-	public TextView getTvEventNoOfParticipants() {
-		return tvEventNoOfParticipants;
-	}
-
-	public void setTvEventNoOfParticipants(TextView tvEventNoOfParticipants) {
-		this.tvEventNoOfParticipants = tvEventNoOfParticipants;
-	}
-
+	private ArrayList<EventParticipants> eventParticipantsArrList = new ArrayList<EventParticipants>();
+	
 	public ImageView getIvEventPoster() {
 		return ivEventPoster;
 	}
@@ -121,6 +61,14 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 
 	public void setEvent(Event event) {
 		this.event = event;
+	}
+
+	public ArrayList<EventParticipants> getEventParticipantsArrList() {
+		return eventParticipantsArrList;
+	}
+
+	public void setEventParticipantsArrList(ArrayList<EventParticipants> eventParticipantsArrList) {
+		this.eventParticipantsArrList = eventParticipantsArrList;
 	}
 
 	public ViewEventsDetailsFragment(){}
@@ -179,7 +127,22 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 			joinEvent.execute();
 			break;
 		case R.id.unjoin:
-			
+			if((eventParticipantsArrList.size() >= 3) && (nric.equals(event.getEventAdminNRIC()))){
+
+				String eventParticipantsList[] = new String[eventParticipantsArrList.size()];
+				eventParticipantsList = eventParticipantsArrList.toArray(eventParticipantsList);
+				AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
+			    builder.setTitle("Please select a new event admin: ");
+			    builder.setItems(eventParticipantsList, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
+			    //String eventParticipantsArr[] = eventParticipantsArrList.toArray();
+			    builder.create().show();
+			}
 			break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -208,6 +171,7 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 		event.setEventLocation(bundle.getString("eventLocation"));
 		event.setNoOfParticipantsAllowed(bundle.getInt("noOfParticipants"));
 		event.setActive(bundle.getInt("active"));
+		
 		MySharedPreferences preferences = new MySharedPreferences(this.getActivity());
 		nric = preferences.getPreferences("nric","");
 		return rootView;
@@ -239,6 +203,9 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 		tvEventDateTimeTo.setText("To: \n" + dateTimeFormatter.format(event.getEventDateTimeTo()));
 		tvEventOccur.setText("Occurs: \n" + event.getOccurence());
 		tvEventNoOfParticipants.setText("No of participants allowed: \n" + event.getNoOfParticipantsAllowed());
+
+		GetEventParticipants getEventParticipants = new GetEventParticipants(ViewEventsDetailsFragment.this,event.getEventID());
+		getEventParticipants.execute();
 	}
 }
 

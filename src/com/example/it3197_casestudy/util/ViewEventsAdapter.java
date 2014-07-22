@@ -1,11 +1,15 @@
 package com.example.it3197_casestudy.util;
 
+import java.util.ArrayList;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.example.it3197_casestudy.controller.GetEventParticipants;
 import com.example.it3197_casestudy.model.Event;
+import com.example.it3197_casestudy.model.EventParticipants;
 import com.example.it3197_casestudy.ui_logic.ViewEventsDetailsFragment;
 import com.example.it3197_casestudy.ui_logic.ViewEventsGalleryFragment;
 import com.example.it3197_casestudy.ui_logic.ViewEventsLocationFragment;
@@ -17,6 +21,7 @@ import com.example.it3197_casestudy.ui_logic.ViewEventsTimelineFragment;
  */
 public class ViewEventsAdapter extends FragmentPagerAdapter implements Settings{
 	private Event event = new Event();
+	
 	public ViewEventsAdapter(FragmentManager fm, Event event) {
 		super(fm);
 		this.event = event;

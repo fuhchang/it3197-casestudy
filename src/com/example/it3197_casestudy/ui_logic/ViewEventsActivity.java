@@ -42,7 +42,6 @@ public class ViewEventsActivity extends FragmentActivity implements ActionBar.Ta
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_view_events);
 		
-		
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
