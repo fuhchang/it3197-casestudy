@@ -1,8 +1,11 @@
 package com.example.it3197_casestudy.ui_logic;
 
+import java.text.ParseException;
+
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.controller.GetEvent;
 import com.example.it3197_casestudy.model.Event;
+import com.example.it3197_casestudy.util.Settings;
 import com.example.it3197_casestudy.util.ViewEventsAdapter;
 
 import android.app.ActionBar;
@@ -15,7 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 
-public class ViewEventsActivity extends FragmentActivity implements ActionBar.TabListener {
+public class ViewEventsActivity extends FragmentActivity implements ActionBar.TabListener,Settings {
 
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -32,17 +35,13 @@ public class ViewEventsActivity extends FragmentActivity implements ActionBar.Ta
 	 */
 	ViewPager mViewPager;
 
-	private int eventID;
+	private Event event = new Event();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_view_events);
 		
-		savedInstanceState = getIntent().getExtras();
-		if(savedInstanceState != null){
-			eventID = savedInstanceState.getInt("eventID");
-		}
 		
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
@@ -52,7 +51,27 @@ public class ViewEventsActivity extends FragmentActivity implements ActionBar.Ta
 
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the app.
-		mViewEventsPagerAdapter = new ViewEventsAdapter(getSupportFragmentManager(),eventID);
+		savedInstanceState = getIntent().getExtras();
+		if(savedInstanceState != null){
+			event.setEventID(savedInstanceState.getInt("eventID"));
+			event.setEventAdminNRIC(savedInstanceState.getString("eventAdminNRIC"));
+			event.setEventName(savedInstanceState.getString("eventName"));
+			event.setEventCategory(savedInstanceState.getString("eventCategory"));
+			event.setEventDescription(savedInstanceState.getString("eventDescription"));
+			event.setEventType(savedInstanceState.getString("eventType"));
+			try {
+				event.setEventDateTimeFrom(sqlDateTimeFormatter.parse(savedInstanceState.getString("eventDateTimeTo")));
+				event.setEventDateTimeTo(sqlDateTimeFormatter.parse(savedInstanceState.getString("eventDateTimeFrom")));
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			event.setOccurence(savedInstanceState.getString("occurence"));
+			event.setEventLocation(savedInstanceState.getString("eventLocation"));
+			event.setNoOfParticipantsAllowed(savedInstanceState.getInt("noOfParticipants"));
+			event.setActive(savedInstanceState.getInt("active"));
+		}
+		mViewEventsPagerAdapter = new ViewEventsAdapter(getSupportFragmentManager(),event);
 
 		// Set up the ViewPager with the sections adapter.
 		mViewPager = (ViewPager) findViewById(R.id.pager);
@@ -61,13 +80,12 @@ public class ViewEventsActivity extends FragmentActivity implements ActionBar.Ta
 		// When swiping between different sections, select the corresponding
 		// tab. We can also use ActionBar.Tab#select() to do this if we have
 		// a reference to the Tab.
-		mViewPager
-				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-					@Override
-					public void onPageSelected(int position) {
-						actionBar.setSelectedNavigationItem(position);
-					}
-				});
+		mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+			@Override
+			public void onPageSelected(int position) {
+				actionBar.setSelectedNavigationItem(position);
+			}
+		});
 		actionBar.addTab(actionBar.newTab().setText("Details").setTabListener(this));
 		actionBar.addTab(actionBar.newTab().setText("Timeline").setTabListener(this));
 		actionBar.addTab(actionBar.newTab().setText("Gallery").setTabListener(this));
@@ -98,6 +116,7 @@ public class ViewEventsActivity extends FragmentActivity implements ActionBar.Ta
 		// When the given tab is selected, switch to the corresponding page in
 		// the ViewPager.
 		mViewPager.setCurrentItem(tab.getPosition());
+
 	}
 
 	@Override

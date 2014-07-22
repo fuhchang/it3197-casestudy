@@ -1,5 +1,6 @@
 package com.example.it3197_casestudy.ui_logic;
 
+import java.text.ParseException;
 import java.util.Calendar;
 
 import android.app.AlertDialog;
@@ -36,14 +37,12 @@ import com.example.it3197_casestudy.util.Settings;
  * @author Lee Zhuo Xun
  */
 public class ViewEventsDetailsFragment extends Fragment implements Settings{
-	private int eventID;
-	private String typeOfEvent,location;
 	private TextView tvEventID, tvEventName, tvEventCategory, tvEventDescription, tvEventDateTimeFrom,
 					 tvEventDateTimeTo, tvEventOccur, tvEventNoOfParticipants;
 	private ImageView ivEventPoster;
 	private Button btnCheckIn;
-	private Event event;
-	private String nric,password;
+	private Event event = new Event();
+	private String nric;
 	public TextView getTvEventID() {
 		return tvEventID;
 	}
@@ -115,22 +114,6 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 	public void setIvEventPoster(ImageView ivEventPoster) {
 		this.ivEventPoster = ivEventPoster;
 	}
-	
-	public String getTypeOfEvent() {
-		return typeOfEvent;
-	}
-
-	public void setTypeOfEvent(String typeOfEvent) {
-		this.typeOfEvent = typeOfEvent;
-	}
-
-	public String getLocation() {
-		return location;
-	}
-
-	public void setLocation(String location) {
-		this.location = location;
-	}
 
 	public Event getEvent() {
 		return event;
@@ -175,7 +158,7 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 			}
 			else{
 				Intent i = new Intent(ViewEventsDetailsFragment.this.getActivity(), UpdateEventStep1Activity.class);
-				i.putExtra("typeOfEvent", typeOfEvent);
+				i.putExtra("typeOfEvent", event.getEventType());
 				i.putExtra("eventID", String.valueOf(event.getEventID()));
 				i.putExtra("eventName", event.getEventName());
 				i.putExtra("eventCategory", event.getEventCategory());
@@ -183,7 +166,7 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 				i.putExtra("eventDateTimeFrom", sqlDateTimeFormatter.format(event.getEventDateTimeFrom()));
 				i.putExtra("eventDateTimeTo", sqlDateTimeFormatter.format(event.getEventDateTimeTo()));
 				i.putExtra("occurence", event.getOccurence());
-				i.putExtra("eventLocation", location);
+				i.putExtra("eventLocation", event.getEventLocation());
 				i.putExtra("noOfParticipants", String.valueOf(event.getNoOfParticipantsAllowed()));
 				startActivity(i);
 				ViewEventsDetailsFragment.this.getActivity().finish();
@@ -191,7 +174,7 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 			break;
 		case R.id.join : 
 			Calendar todayDate = Calendar.getInstance();
-			EventParticipants eventParticipants = new EventParticipants(eventID,nric,todayDate.getTime(),0);
+			EventParticipants eventParticipants = new EventParticipants(event.getEventID(),nric,todayDate.getTime(),0);
 			JoinEvent joinEvent = new JoinEvent(ViewEventsDetailsFragment.this,eventParticipants);
 			joinEvent.execute();
 			break;
@@ -206,7 +189,25 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_view_events_details, container, false);
-		eventID = getArguments().getInt("eventID");
+		Bundle bundle = getArguments();
+		event.setEventID(bundle.getInt("eventID"));
+		event.setEventID(bundle.getInt("eventID"));
+		event.setEventAdminNRIC(bundle.getString("eventAdminNRIC"));
+		event.setEventName(bundle.getString("eventName"));
+		event.setEventCategory(bundle.getString("eventCategory"));
+		event.setEventDescription(bundle.getString("eventDescription"));
+		event.setEventType(bundle.getString("eventType"));
+		try {
+			event.setEventDateTimeFrom(sqlDateTimeFormatter.parse(bundle.getString("eventDateTimeTo")));
+			event.setEventDateTimeTo(sqlDateTimeFormatter.parse(bundle.getString("eventDateTimeFrom")));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		event.setOccurence(bundle.getString("occurence"));
+		event.setEventLocation(bundle.getString("eventLocation"));
+		event.setNoOfParticipantsAllowed(bundle.getInt("noOfParticipants"));
+		event.setActive(bundle.getInt("active"));
 		MySharedPreferences preferences = new MySharedPreferences(this.getActivity());
 		nric = preferences.getPreferences("nric","");
 		return rootView;
@@ -229,9 +230,15 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 		btnCheckIn = (Button) getActivity().findViewById(R.id.btn_check_in);
 		
 		//ivEventPoster.setVisibility(View.GONE);
-		
-		GetEvent getEvent = new GetEvent(ViewEventsDetailsFragment.this, eventID);
-		getEvent.execute();
+
+		tvEventID.setText("Event No: #" + event.getEventID());
+		tvEventName.setText(event.getEventName());
+		tvEventCategory.setText("Category: \n" + event.getEventCategory());
+		tvEventDescription.setText("Description: \n" + event.getEventDescription());
+		tvEventDateTimeFrom.setText("From: \n" + dateTimeFormatter.format(event.getEventDateTimeFrom()));
+		tvEventDateTimeTo.setText("To: \n" + dateTimeFormatter.format(event.getEventDateTimeTo()));
+		tvEventOccur.setText("Occurs: \n" + event.getOccurence());
+		tvEventNoOfParticipants.setText("No of participants allowed: \n" + event.getNoOfParticipantsAllowed());
 	}
 }
 

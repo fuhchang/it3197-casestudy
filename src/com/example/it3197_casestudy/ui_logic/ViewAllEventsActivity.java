@@ -73,5 +73,12 @@ public class ViewAllEventsActivity extends FragmentActivity {
 			return selectTypeOfEventDialog.create();
 		}
 	}
+	
+	@Override 
+	public void onBackPressed(){  
+		Intent intent = new Intent(ViewAllEventsActivity.this, MainLinkPage.class);
+		startActivity(intent);
+		this.finish();
+	}
 
 }

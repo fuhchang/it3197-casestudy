@@ -76,9 +76,26 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 		lvViewAllEvents.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position,long arg3) {
-		        Intent i = new Intent(activity,ViewEventsActivity.class);
-		        i.putExtra("eventID", view.getId());
-		        activity.startActivity(i);
+		        Intent intent = new Intent(activity,ViewEventsActivity.class);
+		        intent.putExtra("eventID", view.getId());
+		        Event event = new Event();
+		        for(int i=0;i<eventArrList.size();i++){
+		        	if(eventArrList.get(i).getEventID() == view.getId()){
+		        		event = eventArrList.get(i);
+		        	}
+		        }
+				intent.putExtra("eventAdminNRIC", event.getEventAdminNRIC());
+				intent.putExtra("eventName", event.getEventName());
+				intent.putExtra("eventCategory", event.getEventCategory());
+				intent.putExtra("eventDescription", event.getEventDescription());
+				intent.putExtra("eventType", event.getEventType());
+				intent.putExtra("eventDateTimeFrom", sqlDateTimeFormatter.format(event.getEventDateTimeFrom()));
+				intent.putExtra("eventDateTimeTo", sqlDateTimeFormatter.format(event.getEventDateTimeTo()));
+				intent.putExtra("occurence", event.getOccurence());
+				intent.putExtra("eventLocation", event.getEventLocation());
+				intent.putExtra("noOfParticipants", event.getNoOfParticipantsAllowed());
+				intent.putExtra("active", event.getActive());
+		        activity.startActivity(intent);
 			}
 		});
 		dialog.dismiss();
@@ -116,9 +133,17 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 				int active = dataJob.getInt("active");
 				event = new Event();
 				event.setEventID(dataJob.getInt("eventID"));
+				event.setEventAdminNRIC(dataJob.getString("eventAdminNRIC"));
 				event.setEventName(dataJob.getString("eventName"));
+				event.setEventCategory(dataJob.getString("eventCategory"));
+				event.setEventDescription(dataJob.getString("eventDescription"));
+				event.setEventType(dataJob.getString("eventType"));
 				event.setEventDateTimeFrom(sqlDateTimeFormatter.parse(dataJob.getString("eventDateTimeFrom")));
 				event.setEventDateTimeTo(sqlDateTimeFormatter.parse(dataJob.getString("eventDateTimeTo")));
+				event.setOccurence(dataJob.getString("occurence"));
+				event.setEventLocation(dataJob.getString("eventLocation"));
+				event.setNoOfParticipantsAllowed(dataJob.getInt("noOfParticipantsAllowed"));
+				event.setActive(dataJob.getInt("active"));
 				System.out.println(event.getEventDateTimeFrom());
 				if(active == 1){
 					eventArrList.add(event);

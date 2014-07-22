@@ -15,11 +15,11 @@ import com.example.it3197_casestudy.ui_logic.ViewEventsTimelineFragment;
  * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
  * one of the sections/tabs/pages.
  */
-public class ViewEventsAdapter extends FragmentPagerAdapter {
-	private int eventID;
-	public ViewEventsAdapter(FragmentManager fm, int eventID) {
+public class ViewEventsAdapter extends FragmentPagerAdapter implements Settings{
+	private Event event = new Event();
+	public ViewEventsAdapter(FragmentManager fm, Event event) {
 		super(fm);
-		this.eventID = eventID;
+		this.event = event;
 	}
 	
 	@Override
@@ -34,7 +34,18 @@ public class ViewEventsAdapter extends FragmentPagerAdapter {
 			fragment = new ViewEventsDetailsFragment();
 			//Add parameter into a bundle to transfer data to the fragment
 			Bundle args = new Bundle();
-			args.putInt("eventID", eventID);
+			args.putInt("eventID", event.getEventID());
+			args.putString("eventAdminNRIC", event.getEventAdminNRIC());
+			args.putString("eventName", event.getEventName());
+			args.putString("eventCategory", event.getEventCategory());
+			args.putString("eventDescription", event.getEventDescription());
+			args.putString("eventType", event.getEventType());
+			args.putString("eventDateTimeFrom", sqlDateTimeFormatter.format(event.getEventDateTimeFrom()));
+			args.putString("eventDateTimeTo", sqlDateTimeFormatter.format(event.getEventDateTimeTo()));
+			args.putString("occurence", event.getOccurence());
+			args.putString("eventLocation", event.getEventLocation());
+			args.putInt("noOfParticipants", event.getNoOfParticipantsAllowed());
+			args.putInt("active", event.getActive());
 			fragment.setArguments(args);
 			break;
 		case 1:

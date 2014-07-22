@@ -61,17 +61,6 @@ public class GetEvent extends AsyncTask<Object, Object, Object> implements Setti
 	protected void onPostExecute(Object result) {
 		parseJSONResponse((String) result);
 		try{
-			activity.getTvEventID().setText("Event No: #" + event.getEventID());
-			activity.getTvEventName().setText(event.getEventName());
-			activity.getTvEventCategory().setText("Category: \n" + event.getEventCategory());
-			activity.getTvEventDescription().setText("Description: \n" + event.getEventDescription());
-			activity.getTvEventDateTimeFrom().setText("From: \n" + dateTimeFormatter.format(event.getEventDateTimeFrom()));
-			activity.getTvEventDateTimeTo().setText("To: \n" + dateTimeFormatter.format(event.getEventDateTimeTo()));
-			activity.getTvEventOccur().setText("Occurs: \n" + event.getOccurence());
-			activity.getTvEventNoOfParticipants().setText("No of participants allowed: \n" + event.getNoOfParticipantsAllowed());
-			activity.setTypeOfEvent(event.getEventType());
-			activity.setLocation(event.getEventLocation());
-			activity.setEvent(event);
 		}
 		catch(Exception e){
 			errorOnExecuting();
