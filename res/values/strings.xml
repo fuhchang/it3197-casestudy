@@ -136,6 +136,7 @@
     <!-- MENU ITEMS -->
     <string name="action_create_riddle">Create Riddle</string>
     <string name="action_update_riddle">Update Riddle</string>
+    <string name="action_delete_riddle">Delete Riddle</string>
     
     <!-- RIDDLE -->
     <string name="tv_riddle_title">Title:</string>

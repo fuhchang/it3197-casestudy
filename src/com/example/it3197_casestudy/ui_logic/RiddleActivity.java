@@ -18,7 +18,7 @@ public class RiddleActivity extends FragmentActivity {
 	ListView lv_riddle;
 	RiddleListAdapter riddleAdapter;
 	ArrayList<Riddle> riddleList;
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

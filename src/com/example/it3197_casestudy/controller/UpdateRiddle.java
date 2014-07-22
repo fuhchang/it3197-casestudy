@@ -18,20 +18,23 @@ import org.json.JSONObject;
 
 import com.example.it3197_casestudy.model.Riddle;
 import com.example.it3197_casestudy.model.RiddleAnswer;
-import com.example.it3197_casestudy.ui_logic.CreateRiddleActivity;
+import com.example.it3197_casestudy.ui_logic.RiddleActivity;
+import com.example.it3197_casestudy.ui_logic.UpdateRiddleActivity;
 import com.example.it3197_casestudy.util.Settings;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-public class CreateRiddle extends AsyncTask<Object, Object, Object> implements Settings	{
-	CreateRiddleActivity activity;
+public class UpdateRiddle extends AsyncTask<Object, Object, Object> implements Settings	{
+	UpdateRiddleActivity activity;
 	Riddle riddle;
 	RiddleAnswer[] riddleChoices;
+	ArrayList<RiddleAnswer> riddleAnswerList;
 	ProgressDialog dialog;
 	
-	public CreateRiddle(CreateRiddleActivity activity, Riddle riddle, RiddleAnswer[] riddleChoices){
+	public UpdateRiddle(UpdateRiddleActivity activity, Riddle riddle, RiddleAnswer[] riddleChoices){
 		this.activity = activity;
 		this.riddle = riddle;
 		this.riddleChoices = riddleChoices;
@@ -39,18 +42,29 @@ public class CreateRiddle extends AsyncTask<Object, Object, Object> implements S
 
 	@Override
 	protected Object doInBackground(Object... arg0) {
-		return createRiddle();
+		return updateRiddle();
 	}
 	
 	@Override
 	protected void onPreExecute() {
-		dialog = ProgressDialog.show(activity, null, "Creating...", true);
+		riddleAnswerList = new ArrayList<RiddleAnswer>();
+		
+		dialog = ProgressDialog.show(activity, null, "Updating...", true);
 	}
 	
 	@Override
 	protected void onPostExecute(Object result) {
 		parseJSONResponse((String) result);
-		Toast.makeText(activity, "Create successful", Toast.LENGTH_SHORT).show();
+		Toast.makeText(activity, "Update successful", Toast.LENGTH_SHORT).show();
+		dialog.dismiss();
+		Intent intent = new Intent(activity, RiddleActivity.class);
+		intent.putExtra("riddle", riddle);
+		for(int i = 0; i < riddleChoices.length; i++) {
+			riddleAnswerList.add(riddleChoices[i]);
+		}
+		intent.putParcelableArrayListExtra("riddleAnswerList", riddleAnswerList);
+		activity.startActivity(intent);
+		activity.finish();
 	}
 	
 	private void parseJSONResponse(String responseBody){
@@ -67,12 +81,13 @@ public class CreateRiddle extends AsyncTask<Object, Object, Object> implements S
 		}
 	}
 	
-	public String createRiddle(){
+	public String updateRiddle() {
 		String responseBody = "";
 		HttpClient httpClient = new DefaultHttpClient();
-		HttpPost httpPost = new HttpPost(API_URL + "CreateRiddleServlet");
+		HttpPost httpPost = new HttpPost(API_URL + "UpdateRiddleServlet");
 		ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
 
+		postParameters.add(new BasicNameValuePair("riddleID", Integer.toString(riddle.getRiddleID())));
 		postParameters.add(new BasicNameValuePair("userNRIC", riddle.getUser().getNric()));
 		postParameters.add(new BasicNameValuePair("riddleTitle", riddle.getRiddleTitle()));
 		postParameters.add(new BasicNameValuePair("riddleContent", riddle.getRiddleContent()));
@@ -80,6 +95,7 @@ public class CreateRiddle extends AsyncTask<Object, Object, Object> implements S
 		postParameters.add(new BasicNameValuePair("riddlePoint", Integer.toString(riddle.getRiddlePoint())));
 		
 		for(int i = 0; i < riddleChoices.length; i++) {
+			postParameters.add(new BasicNameValuePair("riddleAnswerID"+i, Integer.toString(riddleChoices[i].getRiddleAnswerID())));
 			postParameters.add(new BasicNameValuePair("riddleAnswer"+i, riddleChoices[i].getRiddleAnswer()));
 			postParameters.add(new BasicNameValuePair("riddleAnswerStatus"+i, riddleChoices[i].getRiddleAnswerStatus()));
 		}

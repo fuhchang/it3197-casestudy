@@ -18,7 +18,7 @@ public class CreateRiddleActivity extends FragmentActivity {
 	RadioButton rbtn_riddleAns1, rbtn_riddleAns2, rbtn_riddleAns3, rbtn_riddleAns4;
 	EditText et_riddleTitle, et_riddleContent, et_riddleAns1, et_riddleAns2, et_riddleAns3, et_riddleAns4;
 	Button btn_createRiddle;
-	int checked = 1;
+	int checked = 0;
 	User user = new User("S9876543A", "Mr Loi", "User", "Password", "99999999", "AMK", "mr_loi@email.com", 1, 100);
 	
 	@Override
@@ -41,7 +41,7 @@ public class CreateRiddleActivity extends FragmentActivity {
 		rbtn_riddleAns1.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				checked = 1;
+				checked = 0;
 				rbtn_riddleAns2.setChecked(false);
 				rbtn_riddleAns3.setChecked(false);
 				rbtn_riddleAns4.setChecked(false);
@@ -51,7 +51,7 @@ public class CreateRiddleActivity extends FragmentActivity {
 		rbtn_riddleAns2.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				checked = 2;
+				checked = 1;
 				rbtn_riddleAns1.setChecked(false);
 				rbtn_riddleAns3.setChecked(false);
 				rbtn_riddleAns4.setChecked(false);
@@ -61,7 +61,7 @@ public class CreateRiddleActivity extends FragmentActivity {
 		rbtn_riddleAns3.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				checked = 3;
+				checked = 2;
 				rbtn_riddleAns1.setChecked(false);
 				rbtn_riddleAns2.setChecked(false);
 				rbtn_riddleAns4.setChecked(false);
@@ -71,7 +71,7 @@ public class CreateRiddleActivity extends FragmentActivity {
 		rbtn_riddleAns4.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				checked = 4;
+				checked = 3;
 				rbtn_riddleAns1.setChecked(false);
 				rbtn_riddleAns2.setChecked(false);
 				rbtn_riddleAns3.setChecked(false);
@@ -90,20 +90,20 @@ public class CreateRiddleActivity extends FragmentActivity {
 				riddle.setRiddlePoint(10);
 				
 				RiddleAnswer[] riddleChoices = new RiddleAnswer[4];
-				for(int i = 1; i < riddleChoices.length+1; i++) {
+				for(int i = 0; i < riddleChoices.length; i++) {
 					RiddleAnswer answer = new RiddleAnswer();
 					answer.setRiddle(riddle);
 					switch(i) {
-						case 1 :
+						case 0 :
 							answer.setRiddleAnswer(et_riddleAns1.getText().toString());
 							break;
-						case 2 :
+						case 1 :
 							answer.setRiddleAnswer(et_riddleAns2.getText().toString());
 							break;
-						case 3 :
+						case 2 :
 							answer.setRiddleAnswer(et_riddleAns3.getText().toString());
 							break;
-						case 4 :
+						case 3 :
 							answer.setRiddleAnswer(et_riddleAns4.getText().toString());
 							break;
 					}
@@ -112,7 +112,7 @@ public class CreateRiddleActivity extends FragmentActivity {
 					else
 						answer.setRiddleAnswerStatus("WRONG");
 					
-					riddleChoices[i-1] = answer;
+					riddleChoices[i] = answer;
 				}
 				
 				CreateRiddle createRiddle = new CreateRiddle(CreateRiddleActivity.this, riddle, riddleChoices);

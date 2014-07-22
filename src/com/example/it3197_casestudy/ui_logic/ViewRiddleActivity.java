@@ -2,6 +2,8 @@ package com.example.it3197_casestudy.ui_logic;
 
 import java.util.ArrayList;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -11,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.it3197_casestudy.R;
+import com.example.it3197_casestudy.controller.DeleteRiddle;
 import com.example.it3197_casestudy.model.Riddle;
 import com.example.it3197_casestudy.model.RiddleAnswer;
 
@@ -52,25 +55,36 @@ public class ViewRiddleActivity extends FragmentActivity {
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.update_riddle, menu);
+		getMenuInflater().inflate(R.menu.action_update_delete_riddle, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch(item.getItemId()){
-		case R.id.action_update_riddle:
+		case R.id.action_update_riddle :
 			Intent updateRiddleIntent = new Intent(ViewRiddleActivity.this, UpdateRiddleActivity.class);
 			updateRiddleIntent.putExtra("riddle", riddle);
 			updateRiddleIntent.putParcelableArrayListExtra("riddleAnswerList", riddleAnswerList);
 			startActivity(updateRiddleIntent);
+			
+		case R.id.action_delete_riddle :
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setTitle("Delete").setMessage("Are you sure you want to delete this riddle?");
+			builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {
+					DeleteRiddle deleteRiddle = new DeleteRiddle(ViewRiddleActivity.this, riddle);
+					deleteRiddle.execute();
+				}
+			});
+			builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {
+				}
+			});
+			builder.create().show();
 		}
 		return super.onOptionsItemSelected(item);
-	}
-
-	@Override
-	public void onBackPressed() {
-		this.finish();
-		super.onBackPressed();
 	}
 }

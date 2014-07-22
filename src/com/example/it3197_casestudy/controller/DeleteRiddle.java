@@ -16,41 +16,40 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.example.it3197_casestudy.model.Riddle;
-import com.example.it3197_casestudy.model.RiddleAnswer;
-import com.example.it3197_casestudy.ui_logic.CreateRiddleActivity;
-import com.example.it3197_casestudy.util.Settings;
-
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-public class CreateRiddle extends AsyncTask<Object, Object, Object> implements Settings	{
-	CreateRiddleActivity activity;
+import com.example.it3197_casestudy.model.Riddle;
+import com.example.it3197_casestudy.ui_logic.ViewRiddleActivity;
+import com.example.it3197_casestudy.util.Settings;
+
+public class DeleteRiddle extends AsyncTask<Object, Object, Object> implements Settings	{
+	ViewRiddleActivity activity;
 	Riddle riddle;
-	RiddleAnswer[] riddleChoices;
 	ProgressDialog dialog;
 	
-	public CreateRiddle(CreateRiddleActivity activity, Riddle riddle, RiddleAnswer[] riddleChoices){
+	public DeleteRiddle(ViewRiddleActivity activity, Riddle riddle) {
 		this.activity = activity;
 		this.riddle = riddle;
-		this.riddleChoices = riddleChoices;
+	}
+	
+	@Override
+	protected Object doInBackground(Object... arg0) {
+		return deleteRiddle();
 	}
 
 	@Override
-	protected Object doInBackground(Object... arg0) {
-		return createRiddle();
-	}
-	
-	@Override
 	protected void onPreExecute() {
-		dialog = ProgressDialog.show(activity, null, "Creating...", true);
+		dialog = ProgressDialog.show(activity, null, "Deleting...", true);
 	}
-	
+
 	@Override
 	protected void onPostExecute(Object result) {
 		parseJSONResponse((String) result);
-		Toast.makeText(activity, "Create successful", Toast.LENGTH_SHORT).show();
+		Toast.makeText(activity, "Delete successful", Toast.LENGTH_SHORT).show();
+		dialog.dismiss();
+		activity.finish();
 	}
 	
 	private void parseJSONResponse(String responseBody){
@@ -67,22 +66,13 @@ public class CreateRiddle extends AsyncTask<Object, Object, Object> implements S
 		}
 	}
 	
-	public String createRiddle(){
+	public String deleteRiddle() {
 		String responseBody = "";
 		HttpClient httpClient = new DefaultHttpClient();
-		HttpPost httpPost = new HttpPost(API_URL + "CreateRiddleServlet");
+		HttpPost httpPost = new HttpPost(API_URL + "DeleteRiddleServlet");
 		ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
-
-		postParameters.add(new BasicNameValuePair("userNRIC", riddle.getUser().getNric()));
-		postParameters.add(new BasicNameValuePair("riddleTitle", riddle.getRiddleTitle()));
-		postParameters.add(new BasicNameValuePair("riddleContent", riddle.getRiddleContent()));
-		postParameters.add(new BasicNameValuePair("riddleStatus", riddle.getRiddleStatus()));
-		postParameters.add(new BasicNameValuePair("riddlePoint", Integer.toString(riddle.getRiddlePoint())));
 		
-		for(int i = 0; i < riddleChoices.length; i++) {
-			postParameters.add(new BasicNameValuePair("riddleAnswer"+i, riddleChoices[i].getRiddleAnswer()));
-			postParameters.add(new BasicNameValuePair("riddleAnswerStatus"+i, riddleChoices[i].getRiddleAnswerStatus()));
-		}
+		postParameters.add(new BasicNameValuePair("riddleID", Integer.toString(riddle.getRiddleID())));
 		
 		try {
 			httpPost.setEntity(new UrlEncodedFormEntity(postParameters));
