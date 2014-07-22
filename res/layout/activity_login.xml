@@ -74,7 +74,7 @@
 	            android:layout_gravity="left"
 	            android:layout_weight="1.0"
 	            android:textColor="@color/White"
-	            android:background="@color/Red"
+	            android:background="@color/actionBarColor"
 	            android:fontFamily="sans-serif-light"
 	            android:text="@string/forget_password" />
 		    
@@ -84,7 +84,7 @@
 	            android:layout_height="wrap_content"
 	            android:layout_weight="1.0"
 	            android:textColor="@color/White"
-	            android:background="@color/Red"
+	            android:background="@color/actionBarColor"
 	            android:fontFamily="sans-serif-light"
 	            android:text="@string/sign_up" />
 	    </LinearLayout>
