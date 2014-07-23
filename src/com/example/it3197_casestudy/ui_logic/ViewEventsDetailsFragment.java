@@ -127,22 +127,18 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 			joinEvent.execute();
 			break;
 		case R.id.unjoin:
-			if((eventParticipantsArrList.size() >= 3) && (nric.equals(event.getEventAdminNRIC()))){
-
-				String eventParticipantsList[] = new String[eventParticipantsArrList.size()];
-				eventParticipantsList = eventParticipantsArrList.toArray(eventParticipantsList);
-				AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
-			    builder.setTitle("Please select a new event admin: ");
-			    builder.setItems(eventParticipantsList, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						// TODO Auto-generated method stub
-						
-					}
-				});
-			    //String eventParticipantsArr[] = eventParticipantsArrList.toArray();
-			    builder.create().show();
-			}
+			//if((eventParticipantsArrList.size() >= 3) && (nric.equals(event.getEventAdminNRIC()))){
+				Intent intent = new Intent(ViewEventsDetailsFragment.this.getActivity(), SelectNewEventAdminActivity.class);
+				String[] nricList = new String[eventParticipantsArrList.size()];
+				for(int i=0;i<eventParticipantsArrList.size();i++){
+					/*if(nric.equals(event.getEventAdminNRIC())){
+						nricList.
+					}*/
+					nricList[i] = eventParticipantsArrList.get(i).getUserNRIC();
+				}
+				intent.putExtra("nricList", nricList);
+				this.getActivity().startActivity(intent);
+			//}
 			break;
 		}
 		return super.onOptionsItemSelected(item);
