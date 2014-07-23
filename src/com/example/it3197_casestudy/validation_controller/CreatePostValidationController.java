@@ -3,6 +3,7 @@ package com.example.it3197_casestudy.validation_controller;
 import java.util.ArrayList;
 
 import android.content.Intent;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.it3197_casestudy.controller.CreateHobbyPostController;
@@ -10,6 +11,7 @@ import com.example.it3197_casestudy.crouton.Crouton;
 import com.example.it3197_casestudy.crouton.Style;
 import com.example.it3197_casestudy.model.HobbyPost;
 import com.example.it3197_casestudy.ui_logic.CreateHobbyPost;
+import com.example.it3197_casestudy.ui_logic.ViewSingleHobby;
 import com.example.it3197_casestudy.util.Settings;
 import com.example.it3197_casestudy.validation.Form;
 import com.example.it3197_casestudy.validation.Validate;
@@ -18,7 +20,6 @@ public class CreatePostValidationController implements Settings {
 
 	private CreateHobbyPost activity;
 	private HobbyPost post;
-
 	public CreatePostValidationController(CreateHobbyPost activity) {
 		this.activity = activity;
 	}
@@ -29,14 +30,14 @@ public class CreatePostValidationController implements Settings {
 		if (mForm.validate()) {
 			post = new HobbyPost();
 			String grpID = intent.getStringExtra("grpID");
+			int adminRight = intent.getIntExtra("adminRight", 0);
 			post.setPostTitle(activity.getEtName().getText().toString());
 			post.setGrpID(Integer.parseInt(grpID));
 			post.setContent(activity.getEtContent().getText().toString());
 			post.setLat(activity.getLat());
 			post.setLng(activity.getLng());
 			post.setPosterNric(activity.getUserNric());
-			CreateHobbyPostController con = new CreateHobbyPostController(
-					activity, post);
+			CreateHobbyPostController con = new CreateHobbyPostController(activity, post, adminRight);
 			con.execute();
 		} else {
 			if (!validatorsArrList.get(0).isValid()) {

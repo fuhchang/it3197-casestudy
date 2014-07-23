@@ -66,9 +66,8 @@ public class getPostController extends AsyncTask<Object, Object, Object>
 	protected void onPreExecute() {
 		// TODO Auto-generated method stub
 		getList = new ArrayList<HobbyPost>();
-		
-		dialog = ProgressDialog.show(activity, "Retrieving Post",
-				"Retrieving Post Please wait....", true);
+		dialog = ProgressDialog.show(activity, "Retrieving Post","Retrieving Post Please wait....", true);
+				
 	}
 
 	@Override

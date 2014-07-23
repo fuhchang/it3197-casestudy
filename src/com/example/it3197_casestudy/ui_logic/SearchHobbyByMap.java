@@ -25,6 +25,9 @@ import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -67,10 +70,20 @@ public class SearchHobbyByMap extends FragmentActivity implements LocationListen
 	private SimpleGeofenceStore mPrefs;
 	private GeofenceRequester mGeofenceRequester;
 	 List<Geofence> mCurrentGeofences;
+	
+	 BitmapDescriptor iconDance;
+	 BitmapDescriptor iconGardening;
+	 BitmapDescriptor iconCooking;
+	 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_search_hobby_by_map);
+		MapsInitializer.initialize(getApplicationContext());
+		iconDance = BitmapDescriptorFactory.fromResource(R.drawable.dance);
+		iconGardening = BitmapDescriptorFactory.fromResource(R.drawable.gardening);
+		iconCooking = BitmapDescriptorFactory.fromResource(R.drawable.cooking);
+		
 		mPrefs = new SimpleGeofenceStore(this);
 		mGeofenceRequester = new GeofenceRequester(this);
 		mCurrentGeofences = new ArrayList<Geofence>();
@@ -90,7 +103,15 @@ public class SearchHobbyByMap extends FragmentActivity implements LocationListen
 			marker.title(hobbyList.get(i).getGroupName());
 			marker.snippet(reverseGeoCoding(hobbyList.get(i).getLat(), hobbyList.get(i).getLng()));
 			marker.position(hobbyLoc);
-			
+			if(hobbyList.get(i).getCategory().equals("Dance")){
+				marker.icon(iconDance);
+			}else if(hobbyList.get(i).getCategory().equals("Cooking")){
+				marker.icon(iconCooking);
+			}else if(hobbyList.get(i).getCategory().equals("Gardening")){
+				marker.icon(iconGardening);
+			}else{
+				
+			}
 			CircleOptions co = new CircleOptions().center(new LatLng(hobbyList.get(i).getLat(), hobbyList.get(i).getLng())).radius(2000).fillColor(0x40ff0000).strokeColor(Color.TRANSPARENT).strokeWidth(2);
 			Circle circle = map.addCircle(co);
 			SimpleGeofence UiGeofence = new SimpleGeofence(hobbyList.get(i).getGroupName(), hobbyList.get(i).getLat(), hobbyList.get(i).getLng(), 1000,Geofence.NEVER_EXPIRE, Geofence.GEOFENCE_TRANSITION_ENTER);

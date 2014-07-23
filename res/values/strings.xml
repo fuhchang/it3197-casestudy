@@ -100,14 +100,10 @@
     <string name="country_prompt">Choose a country</string>
 
     <string-array name="country_arrays">
-        <item>Malaysia</item>
-        <item>United States</item>
-        <item>Indonesia</item>
-        <item>France</item>
-        <item>Italy</item>
-        <item>Singapore</item>
-        <item>New Zealand</item>
-        <item>India</item>
+        <item>Dance</item>
+        <item>Cooking</item>
+        <item>Gardening</item>
+        
     </string-array>
     <string-array name="navgigation_drawer_items_array">
         <item>Create</item>

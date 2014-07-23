@@ -54,12 +54,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class CreateHobbyPost extends Activity {
 	LinearLayout view1, view2, view3, view4;
 	private EditText etName, etContent;
+	private ViewSingleHobby vsh;
+	private ListView listview;
 	ImageView imgView;
 	TextView imgTv, LocAddress, newAddress;
 	Button imgUpload;
@@ -72,17 +75,27 @@ public class CreateHobbyPost extends Activity {
 	String Address;
 	String City;
 	String userNric;
+	int adminRight;
 	private boolean gps_enabled = false;
 	private boolean network_enabled = false;
 	private static final int CAPTURE_PHOTO = 2;
 	private static Bitmap Image = null;
 	private static final int PICK_IMAGE = 1;
 	private static final int selectedLoc = 3;
+	
+	public CreateHobbyPost(){
+		
+	}
+public CreateHobbyPost(ViewSingleHobby vsh, ListView listview){
+		this.vsh = vsh;
+		this.listview = listview;
+	}
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_hobby_post);
 		userNric = getIntent().getExtras().getString("userNric");
+		adminRight = getIntent().getExtras().getInt("adminRight");
 		view1 = (LinearLayout) findViewById(R.id.view1);
 		view1.setBackgroundColor(Color.LTGRAY);
 		view2 = (LinearLayout) findViewById(R.id.view2);
@@ -159,7 +172,7 @@ public class CreateHobbyPost extends Activity {
 			validList.add(validContent);
 			Intent intentValid = new Intent();
 			intentValid.putExtra("grpID", grpID);
-			
+			intentValid.putExtra("adminRight", adminRight);
 			CreatePostValidationController validController = new CreatePostValidationController(this);
 			validController.validateForm(intentValid, mForm, validList);
 			break;
@@ -474,6 +487,7 @@ public class CreateHobbyPost extends Activity {
 	public void setLng(double lng) {
 		Lng = lng;
 	}
-	
+
+
 	
 }

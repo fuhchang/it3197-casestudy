@@ -11,10 +11,12 @@ import com.example.it3197_casestudy.controller.getPostController;
 import com.example.it3197_casestudy.listview.HobbyListView;
 import com.example.it3197_casestudy.model.Hobby;
 import com.example.it3197_casestudy.model.HobbyMembers;
+import com.example.it3197_casestudy.util.MySharedPreferences;
 
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,6 +37,8 @@ public class ViewSingleHobby extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_view_single_hobby);
+
+		
 		String grpName = getIntent().getExtras().getString("grpName");
 		int id = getIntent().getExtras().getInt("grpID");
 		memberCheck = getIntent().getExtras().getString("member");
@@ -57,13 +61,15 @@ public class ViewSingleHobby extends Activity {
 		// TODO Auto-generated method stub
 		if(adminRight == 0){
 			menu.removeItem(R.id.action_update_group);
+			if(memberCheck.equals("none")){
+				menu.removeItem(R.id.action_new);
+			}else{
+				menu.removeItem(R.id.action_join_group);
+			}
+		}else{
+			
 		}
-		if(memberCheck.equals("none")){
-			menu.removeItem(R.id.action_new);
-		}
-		if(memberCheck.equals("member")){
-			menu.removeItem(R.id.action_join_group);
-		}
+		
 		return super.onPrepareOptionsMenu(menu);
 	}
 
@@ -86,14 +92,16 @@ public class ViewSingleHobby extends Activity {
 			Intent newPost = new Intent(this, CreateHobbyPost.class);
 			newPost.putExtra("grpID", grpID);
 			newPost.putExtra("userNric", userNric);
+			newPost.putExtra("adminRight", adminRight);
+			CreateHobbyPost createPost = new CreateHobbyPost(ViewSingleHobby.this,itemList);
 			startActivity(newPost);
 			break;
 		case R.id.action_update_group:
 			if(userNric.equals(adminNric)){
+			
 			Intent updateIntent = new Intent(this, EditHobbyGrp.class);
 			updateIntent.putExtra("grpID", getIntent().getExtras().getInt("grpID"));
 			updateIntent.putExtra("grpName", getIntent().getExtras().getString("grpName"));
-			Toast.makeText(getApplicationContext(),	getIntent().getExtras().getString("grpType"), Toast.LENGTH_LONG).show();
 			updateIntent.putExtra("grpType", getIntent().getExtras().getString("grpType"));
 			updateIntent.putExtra("grpContent", getIntent().getExtras().getString("grpContent"));
 			updateIntent.putExtra("Lat", getIntent().getExtras().getDouble("Lat"));

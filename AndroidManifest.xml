@@ -257,6 +257,10 @@
         </activity>
         <activity android:name=".ui_logic.SelectPostLocation" >
         </activity>
+         <activity
+            android:name="com.example.it3197_casestudy.ui_logic.SearchHobbyByMap"
+            android:label="@string/title_activity_search_hobby_by_map" >
+        </activity>
     </application>
 
 </manifest>
