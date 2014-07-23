@@ -257,7 +257,8 @@
         </activity>
         <activity android:name=".ui_logic.SelectPostLocation" >
         </activity>
-        <activity android:name="com.example.it3197_casestudy.ui_logic.SelectNewEventAdminActivity" >
+        <activity android:name="com.example.it3197_casestudy.ui_logic.SelectNewEventAdminActivity" 
+            android:label="@string/title_activity_select_new_event_admin">
         </activity>
          <activity
             android:name="com.example.it3197_casestudy.ui_logic.SearchHobbyByMap"

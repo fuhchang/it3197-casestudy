@@ -290,4 +290,5 @@
 	<string name="title_activity_hobby_search_by_map">HobbySearchByMap</string>
     <string name="title_activity_search_hobby_by_map">SearchHobbyByMap</string>
     <string name="title_activity_geolocation">GeolocationActivity</string>
+    <string name="title_activity_select_new_event_admin"> Select a new event admin </string>
 </resources>
