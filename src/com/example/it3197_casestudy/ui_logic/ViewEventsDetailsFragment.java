@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -46,6 +47,7 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 	private Event event = new Event();
 	private String nric;
 	private ArrayList<EventParticipants> eventParticipantsArrList = new ArrayList<EventParticipants>();
+	private String nricList[] = new String[10];
 	
 	public ImageView getIvEventPoster() {
 		return ivEventPoster;
@@ -67,8 +69,17 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 		return eventParticipantsArrList;
 	}
 
-	public void setEventParticipantsArrList(ArrayList<EventParticipants> eventParticipantsArrList) {
+	public void setEventParticipantsArrList(
+			ArrayList<EventParticipants> eventParticipantsArrList) {
 		this.eventParticipantsArrList = eventParticipantsArrList;
+	}
+
+	public String[] getNricList() {
+		return nricList;
+	}
+
+	public void setNricList(String nricList[]) {
+		this.nricList = nricList;
 	}
 
 	public ViewEventsDetailsFragment(){}
@@ -127,18 +138,12 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 			joinEvent.execute();
 			break;
 		case R.id.unjoin:
-			//if((eventParticipantsArrList.size() >= 3) && (nric.equals(event.getEventAdminNRIC()))){
+			if((eventParticipantsArrList.size() >= 3) && (nric.equals(event.getEventAdminNRIC()))){
 				Intent intent = new Intent(ViewEventsDetailsFragment.this.getActivity(), SelectNewEventAdminActivity.class);
-				String[] nricList = new String[eventParticipantsArrList.size()];
-				for(int i=0;i<eventParticipantsArrList.size();i++){
-					/*if(nric.equals(event.getEventAdminNRIC())){
-						nricList.
-					}*/
-					nricList[i] = eventParticipantsArrList.get(i).getUserNRIC();
-				}
+				intent.putExtra("eventID", event.getEventID());
 				intent.putExtra("nricList", nricList);
-				this.getActivity().startActivity(intent);
-			//}
+				this.getActivity().startActivityFromFragment(ViewEventsDetailsFragment.this, intent,  	1);
+			}
 			break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -200,8 +205,20 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 		tvEventOccur.setText("Occurs: \n" + event.getOccurence());
 		tvEventNoOfParticipants.setText("No of participants allowed: \n" + event.getNoOfParticipantsAllowed());
 
-		GetEventParticipants getEventParticipants = new GetEventParticipants(ViewEventsDetailsFragment.this,event.getEventID());
+		GetEventParticipants getEventParticipants = new GetEventParticipants(ViewEventsDetailsFragment.this, event.getEventID());
 		getEventParticipants.execute();
+	}
+	
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data){
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode,resultCode,data);
+		if(requestCode == 1){
+			if(resultCode == Activity.RESULT_OK){
+				System.out.println(data.getExtras().getString("newEventAdminNRIC"));
+			}
+		}
 	}
 }
 

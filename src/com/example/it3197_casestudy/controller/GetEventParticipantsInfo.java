@@ -19,48 +19,48 @@ import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v4.app.FragmentManager;
+import android.widget.ArrayAdapter;
 
-import com.example.it3197_casestudy.model.Event;
 import com.example.it3197_casestudy.model.EventParticipants;
+import com.example.it3197_casestudy.model.User;
 import com.example.it3197_casestudy.ui_logic.SelectNewEventAdminActivity;
 import com.example.it3197_casestudy.ui_logic.ViewEventsDetailsFragment;
 import com.example.it3197_casestudy.util.Settings;
-import com.example.it3197_casestudy.util.ViewEventsAdapter;
 
-public class GetEventParticipants extends AsyncTask<Object, Object, Object> implements Settings{
-	private ViewEventsDetailsFragment activity;
-	private ArrayList<EventParticipants> eventParticipantsArrList = new ArrayList<EventParticipants>();
+public class GetEventParticipantsInfo extends AsyncTask<Object, Object, Object> implements Settings{
+	private SelectNewEventAdminActivity activity;
 	private int eventID;
+	private ArrayList<User> userArrList = new ArrayList<User>();
+	private String[] nricList;
 	private ProgressDialog dialog;
 	
-	public GetEventParticipants(ViewEventsDetailsFragment activity, int eventID){
+	public GetEventParticipantsInfo(SelectNewEventAdminActivity activity, int eventID, String[] nricList){
 		this.activity = activity;
 		this.eventID = eventID;
+		this.nricList = nricList;
 	}
 	
 	@Override
 	protected void onPreExecute() { 
-		dialog = ProgressDialog.show(activity.getActivity(),
-				"Retrieving event participants", "Please wait...", true);
+		dialog = ProgressDialog.show(activity,
+				"Retrieving event participants information", "Please wait...", true);
 	}
 
 	@Override
 	protected String doInBackground(Object... arg0) {
-		return retrieveEventParticipants();
+		return retrieveEventParticipantsInfo();
 	}
 
 	@Override
 	protected void onPostExecute(Object result) {
 		parseJSONResponse((String) result);
 		try{
-			String nricList[] = new String[eventParticipantsArrList.size()];
-			for(int i=0;i<eventParticipantsArrList.size();i++){
-				nricList[i] = eventParticipantsArrList.get(i).getUserNRIC();
+			String nameList[] = new String[userArrList.size()];
+			for(int i=0;i<userArrList.size();i++){
+				nameList[i] = userArrList.get(i).getName();
 			}
-			activity.setEventParticipantsArrList(eventParticipantsArrList);
-			activity.setNricList(nricList);
-			
+	        ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity,android.R.layout.simple_list_item_single_choice,nameList);
+	        activity.getLvEventAdmin().setAdapter(adapter);
 		}
 		catch(Exception e){
 			errorOnExecuting();
@@ -69,11 +69,11 @@ public class GetEventParticipants extends AsyncTask<Object, Object, Object> impl
 		dialog.dismiss();
 	}
 
-	public String retrieveEventParticipants() {
+	public String retrieveEventParticipantsInfo() {
 		String responseBody = "";
 		// Instantiate an HttpClient
 		HttpClient httpclient = new DefaultHttpClient();
-		HttpPost httppost = new HttpPost(API_URL + "retrieveEventParticipant");
+		HttpPost httppost = new HttpPost(API_URL + "retrieveAllUsers");
 		ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
 		postParameters.add(new BasicNameValuePair("eventID",String.valueOf(eventID)));
 		// Instantiate a POST HTTP method
@@ -92,19 +92,28 @@ public class GetEventParticipants extends AsyncTask<Object, Object, Object> impl
 	public void parseJSONResponse(String responseBody) {
 		JSONArray data_array;
 		JSONObject json;
-		EventParticipants eventParticipants;
+		User user;
 		try {
 			json = new JSONObject(responseBody);
 			System.out.println(responseBody);
-			data_array = json.getJSONArray("eventParticipantsInfo");
-			for (int i = 0; i < data_array.length(); i++) {
-				JSONObject dataJob = new JSONObject(data_array.getString(i));
-				eventParticipants = new EventParticipants();
-				eventParticipants.setEventID(dataJob.getInt("eventID"));
-				eventParticipants.setUserNRIC(dataJob.getString("userNRIC"));
-				eventParticipants.setDateTimeJoined(sqlDateTimeFormatter.parse(dataJob.getString("dateTimeJoined")));
-				eventParticipants.setCheckIn(dataJob.getInt("checkIn"));
-				eventParticipantsArrList.add(eventParticipants);
+			data_array = json.getJSONArray("userInfo");
+			for(int index=0;index<nricList.length;index++){
+				for (int i = 0; i < data_array.length(); i++) {
+					JSONObject dataJob = new JSONObject(data_array.getString(i));
+					if(nricList[index].equals(dataJob.getString("nric"))){
+						user = new User();
+						user.setNric(dataJob.getString("nric"));
+						user.setName(dataJob.getString("name"));
+						user.setType(dataJob.getString("type"));
+						user.setPassword(dataJob.getString("password"));
+						user.setContactNo(dataJob.getString("contactNo"));
+						user.setAddress(dataJob.getString("address"));
+						user.setEmail(dataJob.getString("email"));
+						user.setActive(dataJob.getInt("active"));
+						//user.setPoints(dataJob.getInt("points"));
+						userArrList.add(user);
+					}
+				}
 			}
 		} catch (Exception e) {
 			errorOnExecuting();
@@ -117,9 +126,9 @@ public class GetEventParticipants extends AsyncTask<Object, Object, Object> impl
 		new Handler(Looper.getMainLooper()).post(new Runnable() {
 	        public void run() {
 	        	dialog.dismiss();
-	            AlertDialog.Builder builder = new AlertDialog.Builder(activity.getActivity());
-	            builder.setTitle("Error in retrieving event participants.");
-	            builder.setMessage("Unable to retrieve event participants. Please try again.");
+	            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+	            builder.setTitle("Error in retrieving event participants information.");
+	            builder.setMessage("Unable to retrieve event participants information. Please try again.");
 	            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
