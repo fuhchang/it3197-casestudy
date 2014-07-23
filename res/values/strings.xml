@@ -132,6 +132,7 @@
     <string name="title_activity_profile">Profile</string>
     <string name="title_activity_riddle">Riddle</string>
     <string name="title_activity_create_riddle">Create Riddle</string>
+    <string name="title_activity_update_riddle">Update Riddle</string>
     
     <!-- MENU ITEMS -->
     <string name="action_create_riddle">Create Riddle</string>
