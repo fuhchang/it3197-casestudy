@@ -40,6 +40,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
@@ -47,6 +48,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.text.format.DateUtils;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -65,7 +67,6 @@ public class SearchHobbyByMap extends FragmentActivity implements LocationListen
 	private SimpleGeofenceStore mPrefs;
 	private GeofenceRequester mGeofenceRequester;
 	 List<Geofence> mCurrentGeofences;
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -83,11 +84,13 @@ public class SearchHobbyByMap extends FragmentActivity implements LocationListen
 		mp.title("Your location");
 		map.addMarker(new MarkerOptions().position(current_location).title("Your location")).showInfoWindow();
 		for (int i = 0; i < hobbyList.size(); i++) {
+			
 			MarkerOptions marker = new MarkerOptions();
 			LatLng hobbyLoc = new LatLng(hobbyList.get(i).getLat(), hobbyList.get(i).getLng());
 			marker.title(hobbyList.get(i).getGroupName());
 			marker.snippet(reverseGeoCoding(hobbyList.get(i).getLat(), hobbyList.get(i).getLng()));
 			marker.position(hobbyLoc);
+			
 			CircleOptions co = new CircleOptions().center(new LatLng(hobbyList.get(i).getLat(), hobbyList.get(i).getLng())).radius(2000).fillColor(0x40ff0000).strokeColor(Color.TRANSPARENT).strokeWidth(2);
 			Circle circle = map.addCircle(co);
 			SimpleGeofence UiGeofence = new SimpleGeofence(hobbyList.get(i).getGroupName(), hobbyList.get(i).getLat(), hobbyList.get(i).getLng(), 1000,Geofence.NEVER_EXPIRE, Geofence.GEOFENCE_TRANSITION_ENTER);
@@ -152,6 +155,7 @@ public class SearchHobbyByMap extends FragmentActivity implements LocationListen
 	@Override
 	public boolean onMarkerClick(Marker mp) {
 		// TODO Auto-generated method stub
+		
 		return false;
 	}
 

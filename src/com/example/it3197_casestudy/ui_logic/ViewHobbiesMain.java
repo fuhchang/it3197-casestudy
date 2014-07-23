@@ -30,6 +30,9 @@ public class ViewHobbiesMain extends FragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_view_events);
+		if(getIntent().getExtras().getString("viewid") != null){
+			
+		}
 		nric = getIntent().getExtras().getString("nric");
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();

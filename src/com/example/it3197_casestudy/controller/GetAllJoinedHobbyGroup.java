@@ -87,6 +87,7 @@ implements Settings{
 	@Override
 	protected void onPreExecute() {
 		allJoinedhobbyList = new ArrayList<Hobby>();
+		allJoinedhobbyList.clear();
 		dialog = ProgressDialog.show(activity.getActivity(),
 				"Retrieving Hobby", "Please wait...", true);
 	}

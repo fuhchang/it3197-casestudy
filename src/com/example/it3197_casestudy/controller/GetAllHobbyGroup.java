@@ -59,6 +59,7 @@ public class GetAllHobbyGroup extends AsyncTask<Object, Object, Object>
 	protected void onPreExecute() {
 		// TODO Auto-generated method stub
 		hobbyList = new ArrayList<Hobby>();
+		hobbyList.clear();
 		dialog = ProgressDialog.show(activity.getActivity(),
 				"Retrieving Hobby", "Please wait...", true);
 	}

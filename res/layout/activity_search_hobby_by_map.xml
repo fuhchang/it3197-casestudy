@@ -5,7 +5,7 @@
 	 <fragment  
           android:id="@+id/gMap"
           android:layout_width="match_parent"
-          android:layout_height="280dp"
+          android:layout_height="match_parent"
           android:name="com.google.android.gms.maps.MapFragment"
           />
 </LinearLayout>

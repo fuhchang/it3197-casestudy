@@ -49,6 +49,8 @@ public class CreateHobbyPostController extends
 		// TODO Auto-generated method stub
 		parseJSONResponse((String)result);
 		Intent intent = new Intent(activity, ViewHobbiesMain.class);
+		intent.putExtra("nric", hobbypost.getPosterNric());
+		
 		activity.startActivity(intent);
 		activity.finish();
 	}

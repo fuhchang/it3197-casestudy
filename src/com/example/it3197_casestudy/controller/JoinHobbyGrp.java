@@ -44,6 +44,7 @@ public class JoinHobbyGrp extends AsyncTask<Object, Object, Object> implements S
 		// TODO Auto-generated method stub
 		parseJSONResponse((String)result);
 		Intent intent = new Intent(activity, ViewHobbiesMain.class);
+		intent.putExtra("nric", members.getUserNric());
 		activity.startActivity(intent);
 		activity.finish();
 		
