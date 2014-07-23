@@ -67,10 +67,10 @@ public class ViewRiddleActivity extends FragmentActivity {
 			updateRiddleIntent.putExtra("riddle", riddle);
 			updateRiddleIntent.putParcelableArrayListExtra("riddleAnswerList", riddleAnswerList);
 			startActivity(updateRiddleIntent);
-			
+			break;
 		case R.id.action_delete_riddle :
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setTitle("Delete").setMessage("Are you sure you want to delete this riddle?");
+			builder.setTitle("Delete").setMessage("Are you sure you want to delete?");
 			builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface arg0, int arg1) {
@@ -84,6 +84,7 @@ public class ViewRiddleActivity extends FragmentActivity {
 				}
 			});
 			builder.create().show();
+			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}

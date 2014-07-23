@@ -182,14 +182,6 @@ public class RetrieveAllRiddleWithAnswers  extends AsyncTask<Object, Object, Obj
 			@Override
 			public void run() {
 				dialog.dismiss();
-				AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-				builder.setTitle("Error").setMessage("Unable to retrieve riddle answers. Please try again.");
-				builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-					}
-				});
-				builder.create().show();
 			}
 		});
 	}

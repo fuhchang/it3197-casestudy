@@ -9,6 +9,7 @@ import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.R.layout;
 import com.example.it3197_casestudy.R.menu;
 import com.example.it3197_casestudy.model.RowItem;
+import com.example.it3197_casestudy.model.User;
 import com.example.it3197_casestudy.util.GridImageList;
 import com.example.it3197_casestudy.util.LocationService;
 import com.example.it3197_casestudy.ui_logic.SubmitArticle;
@@ -52,6 +53,9 @@ public class MainLinkPage extends Activity {
 			R.drawable.article, R.drawable.riddles, R.drawable.profile,
 			R.drawable.setting };
 	
+	Bundle data;
+	User user;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -59,6 +63,8 @@ public class MainLinkPage extends Activity {
 		
 		getActionBar().setTitle("Home");
 		
+		data = getIntent().getExtras();
+		user = data.getParcelable("user");
 		
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
 		String username = sp.getString("username","");
@@ -93,7 +99,7 @@ public class MainLinkPage extends Activity {
 					intent.putExtra("nric", nric);
 				}else if (position == 3){
 					intent = new Intent(MainLinkPage.this, RiddleActivity.class);
-					intent.putExtra("nric", nric);
+					intent.putExtra("user", user);
 				}else if (position == 4){
 					intent = new Intent(MainLinkPage.this, ProfileActivity.class);
 					intent.putExtra("nric", nric);

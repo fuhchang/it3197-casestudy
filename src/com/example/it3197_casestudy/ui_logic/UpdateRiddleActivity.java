@@ -2,12 +2,6 @@ package com.example.it3197_casestudy.ui_logic;
 
 import java.util.ArrayList;
 
-import com.example.it3197_casestudy.R;
-import com.example.it3197_casestudy.controller.UpdateRiddle;
-import com.example.it3197_casestudy.model.Riddle;
-import com.example.it3197_casestudy.model.RiddleAnswer;
-
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
@@ -15,6 +9,11 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+
+import com.example.it3197_casestudy.R;
+import com.example.it3197_casestudy.controller.UpdateRiddle;
+import com.example.it3197_casestudy.model.Riddle;
+import com.example.it3197_casestudy.model.RiddleAnswer;
 
 public class UpdateRiddleActivity extends FragmentActivity {
 	RadioButton rbtn_riddleAns1, rbtn_riddleAns2, rbtn_riddleAns3, rbtn_riddleAns4;
@@ -162,14 +161,5 @@ public class UpdateRiddleActivity extends FragmentActivity {
 				updateRiddle.execute();
 			}
 		});
-	}
-
-	@Override
-	public void onBackPressed() {
-		this.finish();
-		Intent intent = new Intent(UpdateRiddleActivity.this, ViewRiddleActivity.class);
-		intent.putExtra("riddle", riddle);
-		intent.putParcelableArrayListExtra("riddleAnswerList", riddleAnswerList);
-		startActivity(intent);
 	}
 }

@@ -1,6 +1,10 @@
 package com.example.it3197_casestudy.ui_logic;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,12 +23,22 @@ public class CreateRiddleActivity extends FragmentActivity {
 	EditText et_riddleTitle, et_riddleContent, et_riddleAns1, et_riddleAns2, et_riddleAns3, et_riddleAns4;
 	Button btn_createRiddle;
 	int checked = 0;
-	User user = new User("S9876543A", "Mr Loi", "User", "Password", "99999999", "AMK", "mr_loi@email.com", 1, 100);
+	
+	Bundle data;
+	User user;
+	/*SharedPreferences sp;
+	String userNRIC;*/
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_riddle);
+		
+		data = getIntent().getExtras();
+		user = data.getParcelable("user");
+		
+		/*sp = PreferenceManager.getDefaultSharedPreferences(this);
+		userNRIC = sp.getString("nric","");*/
 		
 		et_riddleTitle = (EditText) findViewById(R.id.et_riddle_title);
 		et_riddleContent = (EditText) findViewById(R.id.et_riddle_content);
@@ -81,9 +95,10 @@ public class CreateRiddleActivity extends FragmentActivity {
 		btn_createRiddle.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View view) {
-				
 				Riddle riddle = new Riddle();
 				riddle.setUser(user);
+				riddle.getUser().setPoints(user.getPoints()-10);
+				//riddle.setUser(new User(userNRIC));
 				riddle.setRiddleTitle(et_riddleTitle.getText().toString());
 				riddle.setRiddleContent(et_riddleContent.getText().toString());
 				riddle.setRiddleStatus("ACTIVE");

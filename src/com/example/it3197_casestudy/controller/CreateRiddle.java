@@ -29,7 +29,9 @@ public class CreateRiddle extends AsyncTask<Object, Object, Object> implements S
 	CreateRiddleActivity activity;
 	Riddle riddle;
 	RiddleAnswer[] riddleChoices;
+	
 	ProgressDialog dialog;
+	String[] responses;
 	
 	public CreateRiddle(CreateRiddleActivity activity, Riddle riddle, RiddleAnswer[] riddleChoices){
 		this.activity = activity;
@@ -39,24 +41,45 @@ public class CreateRiddle extends AsyncTask<Object, Object, Object> implements S
 
 	@Override
 	protected Object doInBackground(Object... arg0) {
-		return createRiddle();
+		return createRiddleUpdatePoints();
 	}
 	
 	@Override
 	protected void onPreExecute() {
+		responses = new String[2];
+		
 		dialog = ProgressDialog.show(activity, null, "Creating...", true);
 	}
 	
 	@Override
 	protected void onPostExecute(Object result) {
-		parseJSONResponse((String) result);
+		parseJSONResponse((String[]) result);
 		Toast.makeText(activity, "Create successful", Toast.LENGTH_SHORT).show();
 	}
 	
-	private void parseJSONResponse(String responseBody){
+	public String[] createRiddleUpdatePoints() {
+		String riddleResponseBody = createRiddle();
+		String userResponseBody = updateUserPoints();
+		responses[0] = riddleResponseBody;
+		responses[1] = userResponseBody;
+		
+		return responses;
+	}
+	
+	private void parseJSONResponse(String[] responseBody){
 		JSONObject json;
 		try {
-			json = new JSONObject(responseBody);
+			json = new JSONObject(responseBody[0]);
+			boolean success = json.getBoolean("success");
+			if(success){
+				dialog.dismiss();
+				activity.finish();
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		try {
+			json = new JSONObject(responseBody[1]);
 			boolean success = json.getBoolean("success");
 			if(success){
 				dialog.dismiss();
@@ -83,6 +106,29 @@ public class CreateRiddle extends AsyncTask<Object, Object, Object> implements S
 			postParameters.add(new BasicNameValuePair("riddleAnswer"+i, riddleChoices[i].getRiddleAnswer()));
 			postParameters.add(new BasicNameValuePair("riddleAnswerStatus"+i, riddleChoices[i].getRiddleAnswerStatus()));
 		}
+		
+		try {
+			httpPost.setEntity(new UrlEncodedFormEntity(postParameters));
+			ResponseHandler<String> responseHandler = new BasicResponseHandler();
+			responseBody = httpClient.execute(httpPost, responseHandler);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return responseBody;
+	}
+	
+	public String updateUserPoints(){
+		String responseBody = "";
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpPost httpPost = new HttpPost(API_URL + "UpdateUserPointsServlet");
+		ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+		
+		postParameters.add(new BasicNameValuePair("userNRIC", riddle.getUser().getNric()));
+		postParameters.add(new BasicNameValuePair("userPoints", Integer.toString(riddle.getUser().getPoints())));
 		
 		try {
 			httpPost.setEntity(new UrlEncodedFormEntity(postParameters));
