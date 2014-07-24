@@ -2,16 +2,16 @@
     <item
         android:id="@+id/update"
         android:orderInCategory="100"
-        android:showAsAction="never"
+        android:showAsAction="always"
         android:title="@string/update_event"/>
     <item
         android:id="@+id/join"
         android:orderInCategory="100"
-        android:showAsAction="never"
+        android:showAsAction="always"
         android:title="@string/join_event"/>
 	 <item
         android:id="@+id/unjoin"
         android:orderInCategory="100"
-        android:showAsAction="never"
+        android:showAsAction="always"
         android:title="@string/unjoin_event"/>
 </menu>

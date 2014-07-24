@@ -49,6 +49,9 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 	private String nric;
 	private ArrayList<EventParticipants> eventParticipantsArrList = new ArrayList<EventParticipants>();
 	private String nricList[] = new String[10];
+	MenuItem menuItemJoin;
+	MenuItem menuItemUnjoin;
+	MenuItem menuItemUpdate;
 	
 	public ImageView getIvEventPoster() {
 		return ivEventPoster;
@@ -83,6 +86,38 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 		this.nricList = nricList;
 	}
 
+	public MenuItem getMenuItemJoin() {
+		return menuItemJoin;
+	}
+
+	public void setMenuItemJoin(MenuItem menuItemJoin) {
+		this.menuItemJoin = menuItemJoin;
+	}
+
+	public MenuItem getMenuItemUnjoin() {
+		return menuItemUnjoin;
+	}
+
+	public void setMenuItemUnjoin(MenuItem menuItemUnjoin) {
+		this.menuItemUnjoin = menuItemUnjoin;
+	}
+
+	public String getNric() {
+		return nric;
+	}
+
+	public void setNric(String nric) {
+		this.nric = nric;
+	}
+
+	public MenuItem getMenuItemUpdate() {
+		return menuItemUpdate;
+	}
+
+	public void setMenuItemUpdate(MenuItem menuItemUpdate) {
+		this.menuItemUpdate = menuItemUpdate;
+	}
+
 	public ViewEventsDetailsFragment(){}
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -95,6 +130,9 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 		// TODO Auto-generated method stub
 		super.onCreateOptionsMenu(menu, inflater);
 		inflater.inflate(R.menu.view_events_details_fragment_menu, menu);
+		menuItemJoin = menu.findItem(R.id.join);
+		menuItemUnjoin = menu.findItem(R.id.unjoin);
+		menuItemUpdate = menu.findItem(R.id.update);
 	}
 
 	@Override
@@ -146,6 +184,10 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 				intent.putExtra("userNRIC", nric);
 				this.getActivity().startActivityFromFragment(ViewEventsDetailsFragment.this, intent, 1);
 			}
+			else{
+				UnjoinEvent unjoinEvent = new UnjoinEvent(ViewEventsDetailsFragment.this,event.getEventID(), nric, "");
+				unjoinEvent.execute();
+			}
 			break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -156,7 +198,6 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_view_events_details, container, false);
 		Bundle bundle = getArguments();
-		event.setEventID(bundle.getInt("eventID"));
 		event.setEventID(bundle.getInt("eventID"));
 		event.setEventAdminNRIC(bundle.getString("eventAdminNRIC"));
 		event.setEventName(bundle.getString("eventName"));

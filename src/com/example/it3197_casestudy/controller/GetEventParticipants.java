@@ -20,11 +20,13 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.FragmentManager;
+import android.view.MenuItem;
 
 import com.example.it3197_casestudy.model.Event;
 import com.example.it3197_casestudy.model.EventParticipants;
 import com.example.it3197_casestudy.ui_logic.SelectNewEventAdminActivity;
 import com.example.it3197_casestudy.ui_logic.ViewEventsDetailsFragment;
+import com.example.it3197_casestudy.util.MySharedPreferences;
 import com.example.it3197_casestudy.util.Settings;
 import com.example.it3197_casestudy.util.ViewEventsAdapter;
 
@@ -55,11 +57,35 @@ public class GetEventParticipants extends AsyncTask<Object, Object, Object> impl
 		parseJSONResponse((String) result);
 		try{
 			String nricList[] = new String[eventParticipantsArrList.size()];
+
+			MySharedPreferences preferences = new MySharedPreferences(activity.getActivity());
+			String nric = preferences.getPreferences("nric","");
 			for(int i=0;i<eventParticipantsArrList.size();i++){
 				nricList[i] = eventParticipantsArrList.get(i).getUserNRIC();
 			}
 			activity.setEventParticipantsArrList(eventParticipantsArrList);
 			activity.setNricList(nricList);
+
+			MenuItem menuItemJoin = activity.getMenuItemJoin();
+			MenuItem menuItemUnjoin = activity.getMenuItemUnjoin();
+			
+			boolean joined = false;
+			for(int i=0;i<eventParticipantsArrList.size();i++){
+				if(nric.equals(eventParticipantsArrList.get(i).getUserNRIC())){
+					joined = true;
+					break;
+				}
+			}
+			if(joined){
+				menuItemJoin.setVisible(false);
+			}
+			else{
+				menuItemUnjoin.setVisible(false);
+			}
+			
+			if(!nric.equals(activity.getEvent().getEventAdminNRIC())){
+				activity.getMenuItemUpdate().setVisible(false);
+			}
 			
 		}
 		catch(Exception e){
