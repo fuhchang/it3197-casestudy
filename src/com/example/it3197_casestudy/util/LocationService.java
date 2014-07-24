@@ -32,7 +32,6 @@ public class LocationService extends Service {
 	    Log.v("START SERVICE", "STARTED");
 	    locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 	    listener = new MyLocationListener();
-	    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 4000, 0, listener);
 	    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 4000, 0, listener);
 	}
 	
@@ -54,13 +53,13 @@ public class LocationService extends Service {
 	        // A new location is always better than no location
 	        return true;
 	    }
-	
+	    
 	    // Check whether the new location fix is newer or older
 	    long timeDelta = location.getTime() - currentBestLocation.getTime();
 	    boolean isSignificantlyNewer = timeDelta > TWO_MINUTES;
 	    boolean isSignificantlyOlder = timeDelta < -TWO_MINUTES;
 	    boolean isNewer = timeDelta > 0;
-	
+	    
 	    // If it's been more than two minutes since the current location, use the new location because the user has likely moved
 	    if (isSignificantlyNewer) {
 	        return true;
@@ -74,7 +73,7 @@ public class LocationService extends Service {
 	    boolean isLessAccurate = accuracyDelta > 0;
 	    boolean isMoreAccurate = accuracyDelta < 0;
 	    boolean isSignificantlyLessAccurate = accuracyDelta > 200;
-	
+	    
 	    // Check if the old and new location are from the same provider
 	    boolean isFromSameProvider = isSameProvider(location.getProvider(), currentBestLocation.getProvider());
 	
@@ -104,7 +103,7 @@ public class LocationService extends Service {
 	            try {
 	                runnable.run();
 	            } finally {
-	
+	            	
 	            }
 	        }
 	    };
@@ -119,12 +118,11 @@ public class LocationService extends Service {
 	        Log.i("Location", "Location changed");
 	        if(isBetterLocation(loc, previousBestLocation)) {
 	            loc.getLatitude();
-	            loc.getLongitude();             
+	            loc.getLongitude();
 	            intent.putExtra("Latitude", loc.getLatitude());
-	            intent.putExtra("Longitude", loc.getLongitude());     
-	            intent.putExtra("Provider", loc.getProvider());                 
+	            intent.putExtra("Longitude", loc.getLongitude());
+	            intent.putExtra("Provider", loc.getProvider());
 	            sendBroadcast(intent);
-	
 	        }                               
 	    }
 	    
@@ -140,6 +138,7 @@ public class LocationService extends Service {
 
 		@Override
 		public void onStatusChanged(String provider, int status, Bundle extras) {
+			
 		}
 	}
 }
