@@ -27,6 +27,7 @@ import android.location.Location;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -153,5 +154,21 @@ public class MainLinkPage extends Activity {
 		intent = new Intent(this, LocationService.class);
 		startService(intent);
 		registerReceiver(broadcastReceiver, new IntentFilter(LocationService.BROADCAST_ACTION));
+	}
+
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		// TODO Auto-generated method stub
+		
+		
+		int id = item.getItemId();
+		
+		
+		if(id==R.id.action_settings){
+			Intent intent = new Intent(MainLinkPage.this, MainActivity.class);
+			startActivity(intent);
+		}
+		
+		return super.onMenuItemSelected(featureId, item);
 	}
 }

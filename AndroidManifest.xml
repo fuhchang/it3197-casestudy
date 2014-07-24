@@ -89,7 +89,7 @@
             android:label="@string/title_activity_main_link_page" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.MainActivity"
+            android:name="com.example.it3197_casestudy.ui_logic.MainActivity"
             android:label="@string/title_activity_main" >
         </activity>
         <activity
@@ -158,7 +158,7 @@
         <!--
              <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyDVor5BS2mdSm_sxCIOBtQTYS2uBDuNpJg" />
+            android:value="AIzaSyDVor5BS2mdSm_sxCIOBtQTYS2uBDuNpJg" />
         -->
 
 
@@ -166,7 +166,7 @@
         <!--
             <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyCpTBz_uJRG9Wm5UWupZsZ2yMz9R3cbERk" />
+            android:value="AIzaSyCpTBz_uJRG9Wm5UWupZsZ2yMz9R3cbERk" />
         -->
 
         <activity
@@ -253,14 +253,15 @@
             android:name="com.example.it3197_casestudy.ui_logic.FeedbackArticleStatsActivity"
             android:label="@string/title_activity_feedback_article_stats" >
         </activity>
-        <activity android:name=".ui_logic.EditHobbyGrp" >
+        <activity android:name="com.example.it3197_casestudy.ui_logic.EditHobbyGrp" >
         </activity>
-        <activity android:name=".ui_logic.SelectPostLocation" >
+        <activity android:name="com.example.it3197_casestudy.ui_logic.SelectPostLocation" >
         </activity>
-        <activity android:name="com.example.it3197_casestudy.ui_logic.SelectNewEventAdminActivity" 
-            android:label="@string/title_activity_select_new_event_admin">
+        <activity
+            android:name="com.example.it3197_casestudy.ui_logic.SelectNewEventAdminActivity"
+            android:label="@string/title_activity_select_new_event_admin" >
         </activity>
-         <activity
+        <activity
             android:name="com.example.it3197_casestudy.ui_logic.SearchHobbyByMap"
             android:label="@string/title_activity_search_hobby_by_map" >
         </activity>

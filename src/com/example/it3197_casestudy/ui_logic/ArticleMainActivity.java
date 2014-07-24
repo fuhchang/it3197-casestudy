@@ -127,8 +127,8 @@ public class ArticleMainActivity extends Activity {
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
 		
-		Intent intent = new Intent(ArticleMainActivity.this, MainLinkPage.class);
-		startActivity(intent);
+		//Intent intent = new Intent(ArticleMainActivity.this, MainLinkPage.class);
+		//startActivity(intent);
 		ArticleMainActivity.this.finish();
 		
 		super.onBackPressed();

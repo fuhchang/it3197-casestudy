@@ -1,0 +1,33 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="#0A2229" 
+    >
+<!-- 
+    <ImageView
+	        android:id="@+id/iv_login_pic"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_alignParentTop="true"
+	        android:layout_marginTop="5dp"
+	        android:layout_marginBottom="5dp"
+	        android:fontFamily="sans-serif-light"
+	        android:src="@drawable/ic_login_page"
+			/>
+    -->
+    
+   <ListView
+		android:id="@+id/mainListView"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:divider="#0A2229" 
+		
+		android:layout_margin="10dp"
+		android:background="#FFFFFF" 
+		android:dividerHeight="7dp"
+	/>
+
+        
+</LinearLayout>
