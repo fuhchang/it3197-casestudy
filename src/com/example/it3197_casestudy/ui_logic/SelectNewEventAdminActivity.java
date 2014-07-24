@@ -1,5 +1,7 @@
 package com.example.it3197_casestudy.ui_logic;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
@@ -14,12 +16,15 @@ import android.widget.ListView;
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.controller.GetEventParticipants;
 import com.example.it3197_casestudy.controller.GetEventParticipantsInfo;
+import com.example.it3197_casestudy.model.User;
 
 public class SelectNewEventAdminActivity extends Activity{
 	private int eventID;
 	private String nricList[];
+	private String userNRIC;
 	ListView lvEventAdmin;
 	private String newEventAdminNRIC;
+	private ArrayList<User> userArrList = new ArrayList<User>();
 	
 	public ListView getLvEventAdmin() {
 		return lvEventAdmin;
@@ -29,6 +34,22 @@ public class SelectNewEventAdminActivity extends Activity{
 		this.lvEventAdmin = lvEventAdmin;
 	}
 	
+	public ArrayList<User> getUserArrList() {
+		return userArrList;
+	}
+
+	public void setUserArrList(ArrayList<User> userArrList) {
+		this.userArrList = userArrList;
+	}
+
+	public String getNewEventAdminNRIC() {
+		return newEventAdminNRIC;
+	}
+
+	public void setNewEventAdminNRIC(String newEventAdminNRIC) {
+		this.newEventAdminNRIC = newEventAdminNRIC;
+	}
+
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,21 +58,14 @@ public class SelectNewEventAdminActivity extends Activity{
         if(savedInstanceState != null){
         	eventID = savedInstanceState.getInt("eventID");
         	nricList = savedInstanceState.getStringArray("nricList");
+        	userNRIC = savedInstanceState.getString("userNRIC");
         }
 
-		GetEventParticipantsInfo getEventParticipantsInfo = new GetEventParticipantsInfo(SelectNewEventAdminActivity.this, eventID, nricList);
+		GetEventParticipantsInfo getEventParticipantsInfo = new GetEventParticipantsInfo(SelectNewEventAdminActivity.this, eventID, nricList, userNRIC);
 		getEventParticipantsInfo.execute();
 		
         lvEventAdmin = (ListView) findViewById(R.id.lv_event_admin);
         lvEventAdmin.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        lvEventAdmin.setOnItemClickListener(new OnItemClickListener(){
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
-					long arg3) {
-				// TODO Auto-generated method stub
-				newEventAdminNRIC = nricList[position].toString();
-			}
-        });
     }
 
 	@Override
@@ -66,7 +80,7 @@ public class SelectNewEventAdminActivity extends Activity{
 			switch (view.getId()) {
 			case R.id.btn_select_new_admin:{
 				Intent returnIntent = new Intent();
-				returnIntent.putExtra("newEventAdminNRIC",newEventAdminNRIC);
+				returnIntent.putExtra("newEventAdminNRIC",getNewEventAdminNRIC());
 				setResult(RESULT_OK,returnIntent);
 				finish();
 			}

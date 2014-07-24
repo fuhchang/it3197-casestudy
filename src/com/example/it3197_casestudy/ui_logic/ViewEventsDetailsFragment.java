@@ -28,6 +28,7 @@ import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.controller.GetEvent;
 import com.example.it3197_casestudy.controller.GetEventParticipants;
 import com.example.it3197_casestudy.controller.JoinEvent;
+import com.example.it3197_casestudy.controller.UnjoinEvent;
 import com.example.it3197_casestudy.model.Event;
 import com.example.it3197_casestudy.model.EventParticipants;
 import com.example.it3197_casestudy.util.MySharedPreferences;
@@ -142,7 +143,8 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 				Intent intent = new Intent(ViewEventsDetailsFragment.this.getActivity(), SelectNewEventAdminActivity.class);
 				intent.putExtra("eventID", event.getEventID());
 				intent.putExtra("nricList", nricList);
-				this.getActivity().startActivityFromFragment(ViewEventsDetailsFragment.this, intent,  	1);
+				intent.putExtra("userNRIC", nric);
+				this.getActivity().startActivityFromFragment(ViewEventsDetailsFragment.this, intent, 1);
 			}
 			break;
 		}
@@ -217,6 +219,9 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 		if(requestCode == 1){
 			if(resultCode == Activity.RESULT_OK){
 				System.out.println(data.getExtras().getString("newEventAdminNRIC"));
+				String newEventAdminNRIC = data.getExtras().getString("newEventAdminNRIC");
+				UnjoinEvent unjoinEvent = new UnjoinEvent(ViewEventsDetailsFragment.this,event.getEventID(), nric, newEventAdminNRIC);
+				unjoinEvent.execute();
 			}
 		}
 	}

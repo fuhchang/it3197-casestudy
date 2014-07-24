@@ -19,7 +19,10 @@ import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AdapterView.OnItemClickListener;
 
 import com.example.it3197_casestudy.model.EventParticipants;
 import com.example.it3197_casestudy.model.User;
@@ -32,12 +35,14 @@ public class GetEventParticipantsInfo extends AsyncTask<Object, Object, Object> 
 	private int eventID;
 	private ArrayList<User> userArrList = new ArrayList<User>();
 	private String[] nricList;
+	private String userNRIC;
 	private ProgressDialog dialog;
 	
-	public GetEventParticipantsInfo(SelectNewEventAdminActivity activity, int eventID, String[] nricList){
+	public GetEventParticipantsInfo(SelectNewEventAdminActivity activity, int eventID, String[] nricList, String userNRIC){
 		this.activity = activity;
 		this.eventID = eventID;
 		this.nricList = nricList;
+		this.userNRIC = userNRIC;
 	}
 	
 	@Override
@@ -59,8 +64,18 @@ public class GetEventParticipantsInfo extends AsyncTask<Object, Object, Object> 
 			for(int i=0;i<userArrList.size();i++){
 				nameList[i] = userArrList.get(i).getName();
 			}
+			activity.setUserArrList(userArrList);
 	        ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity,android.R.layout.simple_list_item_single_choice,nameList);
 	        activity.getLvEventAdmin().setAdapter(adapter);
+	        activity.getLvEventAdmin().setOnItemClickListener(new OnItemClickListener(){
+				@Override
+				public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+						long arg3) {
+					// TODO Auto-generated method stub
+					activity.setNewEventAdminNRIC(userArrList.get(position).getNric().toString());
+					System.out.println(activity.getNewEventAdminNRIC());
+				}
+	        });
 		}
 		catch(Exception e){
 			errorOnExecuting();
@@ -111,7 +126,12 @@ public class GetEventParticipantsInfo extends AsyncTask<Object, Object, Object> 
 						user.setEmail(dataJob.getString("email"));
 						user.setActive(dataJob.getInt("active"));
 						//user.setPoints(dataJob.getInt("points"));
-						userArrList.add(user);
+						if(nricList[index].equals(userNRIC)){
+							
+						}
+						else{
+							userArrList.add(user);
+						}
 					}
 				}
 			}

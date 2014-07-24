@@ -15,34 +15,32 @@ import org.json.JSONObject;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.Toast;
 
-import com.example.it3197_casestudy.model.Event;
 import com.example.it3197_casestudy.model.EventParticipants;
-import com.example.it3197_casestudy.ui_logic.CreateEventStep2Activity;
-import com.example.it3197_casestudy.ui_logic.ViewAllEventsActivity;
 import com.example.it3197_casestudy.ui_logic.ViewEventsDetailsFragment;
 import com.example.it3197_casestudy.util.Settings;
 
-public class JoinEvent extends AsyncTask<Object, Object, Object> implements Settings{
+public class UnjoinEvent extends AsyncTask<Object, Object, Object> implements Settings{
 	private ViewEventsDetailsFragment activity;
-	private EventParticipants eventParticipants;
-	
+	private EventParticipants eventParticipants = new EventParticipants();
+	private String newEventAdminNRIC;
 	private ProgressDialog dialog;
 	
-	public JoinEvent(ViewEventsDetailsFragment activity, EventParticipants eventParticipants){
+	public UnjoinEvent(ViewEventsDetailsFragment activity, int eventID, String eventAdminNRIC, String newEventAdminNRIC){
 		this.activity = activity;
-		this.eventParticipants = eventParticipants;
+		eventParticipants.setEventID(eventID);
+		eventParticipants.setUserNRIC(eventAdminNRIC);
+		this.newEventAdminNRIC = newEventAdminNRIC;
 	}
 	
 	@Override
 	protected void onPreExecute() {
 		dialog = ProgressDialog.show(activity.getActivity(),
-				"Joining event", "Please wait...", true);
+				"Unjoining event", "Please wait...", true);
 	}
 
 	@Override
@@ -59,12 +57,12 @@ public class JoinEvent extends AsyncTask<Object, Object, Object> implements Sett
 		String responseBody = "";
 		// Instantiate an HttpClient
 		HttpClient httpclient = new DefaultHttpClient();
-		HttpPost httppost = new HttpPost(API_URL + "createEventParticipant");
+		HttpPost httppost = new HttpPost(API_URL + "deleteEventParticipant");
 		ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
 		postParameters.add(new BasicNameValuePair("eventID", String.valueOf(eventParticipants.getEventID())));
 		postParameters.add(new BasicNameValuePair("userNRIC", eventParticipants.getUserNRIC()));
-		postParameters.add(new BasicNameValuePair("eventDateTimeFrom", sqlDateTimeFormatter.format(eventParticipants.getDateTimeJoined())));
-		postParameters.add(new BasicNameValuePair("web", "false"));
+		postParameters.add(new BasicNameValuePair("newEventAdminNRIC", newEventAdminNRIC));
+
 		// Instantiate a POST HTTP method
 		try {
 			httppost.setEntity(new UrlEncodedFormEntity(postParameters));
@@ -84,7 +82,7 @@ public class JoinEvent extends AsyncTask<Object, Object, Object> implements Sett
 			boolean success = json.getBoolean("success");
 			if(success){
 				dialog.dismiss();
-				Toast.makeText(activity.getActivity().getApplicationContext(),"Joined event successfully.", Toast.LENGTH_SHORT).show();
+				Toast.makeText(activity.getActivity().getApplicationContext(),"Event unjoined successfully.", Toast.LENGTH_SHORT).show();
 			}
 			else{
 				errorOnExecuting();
@@ -100,8 +98,8 @@ public class JoinEvent extends AsyncTask<Object, Object, Object> implements Sett
 	        public void run() {
 	            dialog.dismiss();
 	            AlertDialog.Builder builder = new AlertDialog.Builder(activity.getActivity());
-	            builder.setTitle("Error in joining event ");
-	            builder.setMessage("Unable to join event. Please try again.");
+	            builder.setTitle("Error in unjoining event ");
+	            builder.setMessage("Unable to unjoin event. Please try again.");
 	            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
