@@ -55,6 +55,8 @@ public class MainLinkPage extends Activity {
 	
 	Bundle data;
 	User user;
+	Intent intent;
+	Location polledLocation;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +104,7 @@ public class MainLinkPage extends Activity {
 					intent.putExtra("user", user);
 				}else if (position == 4){
 					intent = new Intent(MainLinkPage.this, ProfileActivity.class);
-					intent.putExtra("nric", nric);
+					intent.putExtra("user", user);
 				}else if(position == 5){
 					Toast.makeText(getApplicationContext(), "SETTING", Toast.LENGTH_LONG).show();
 				}else{
@@ -114,19 +116,19 @@ public class MainLinkPage extends Activity {
 	}
 
 	@Override
-	public void onBackPressed() {
-		if(intent!=null){
-			unregisterReceiver(broadcastReceiver);
-			stopService(intent);
-		}
-		super.onBackPressed();
-	}
-
-	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main_link_page, menu);
 		return true;
+	}
+
+	@Override
+	protected void onDestroy() {
+		if(intent!=null){
+			unregisterReceiver(broadcastReceiver);
+			stopService(intent);
+		}
+		super.onDestroy();
 	}
 	
 	private BroadcastReceiver broadcastReceiver = new BroadcastReceiver(){
@@ -137,9 +139,6 @@ public class MainLinkPage extends Activity {
 		}
 		
 	};
-	private Intent intent;
-	private Location polledLocation;
-	private int points = 0;
 	public void getLocationService(Intent intent) {
 		final double lat = intent.getDoubleExtra("Latitude", 0.00);
 		final double lng = intent.getDoubleExtra("Longitude", 0.00);
@@ -148,9 +147,8 @@ public class MainLinkPage extends Activity {
 		polledLocation.setLatitude(lat);
 		polledLocation.setLongitude(lng);
 		Toast.makeText(this, "Lat: "+ polledLocation.getLatitude() + "\nLong: " +polledLocation.getLongitude(), Toast.LENGTH_LONG).show();
-		points++;
-		System.out.println(points);
 	}
+	
 	private void startService() {
 		intent = new Intent(this, LocationService.class);
 		startService(intent);

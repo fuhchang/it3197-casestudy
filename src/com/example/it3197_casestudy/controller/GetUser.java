@@ -69,6 +69,7 @@ implements Settings{
 				Intent intent = new Intent(activity, MainLinkPage.class);
 				intent.putExtra("nric", user.getNric());
 				intent.putExtra("user", checkUser);
+				System.out.println("Line 72: " + checkUser.getPoints());
 				activity.startActivity(intent);
 				activity.finish();
 			}
