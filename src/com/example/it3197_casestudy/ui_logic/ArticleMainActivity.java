@@ -96,16 +96,7 @@ public class ArticleMainActivity extends Activity {
 		
 	//	tv.setText(Html.fromHtml(txt));
 		
-		getMyCurrentLocation();
 		
-		
-		
-		
-		
-		list = (ListView) findViewById(R.id.articleListView);
-		//list.setBackgroundColor(Color.WHITE);
-		GetApprovedLatestArticles gala = new GetApprovedLatestArticles(this, list, lat, lon,selectedDist);
-		gala.execute();
 		
 		
 		
@@ -374,6 +365,25 @@ public class ArticleMainActivity extends Activity {
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
+	}
+
+	@Override
+	protected void onStart() {
+		// TODO Auto-generated method stub
+		
+		getMyCurrentLocation();
+		
+		
+		
+		
+		
+		list = (ListView) findViewById(R.id.articleListView);
+		//list.setBackgroundColor(Color.WHITE);
+		GetApprovedLatestArticles gala = new GetApprovedLatestArticles(this, list, lat, lon,selectedDist);
+		gala.execute();
+		
+		
+		super.onStart();
 	}  
 	
 	

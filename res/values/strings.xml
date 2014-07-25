@@ -58,9 +58,10 @@
     <string name="action_new_post">create post</string>
     <string name="action_update_group">Edit Group</string>
     <string name="update_event">Update event</string>
-	<string name="join_event">Join event</string>
-	<string name="unjoin_event">Unjoin event</string>
-	 <string name="action_update">Update</string>
+    <string name="join_event">Join event</string>
+    <string name="unjoin_event">Unjoin event</string>
+    <string name="action_update">Update</string>
+
     <string-array name="imgBy">
         <item>Gallery</item>
         <item>Camera</item>
@@ -103,7 +104,6 @@
         <item>Dance</item>
         <item>Cooking</item>
         <item>Gardening</item>
-        
     </string-array>
     <string-array name="navgigation_drawer_items_array">
         <item>Create</item>
@@ -129,12 +129,12 @@
     <string name="title_activity_riddle">Riddle</string>
     <string name="title_activity_create_riddle">Create Riddle</string>
     <string name="title_activity_update_riddle">Update Riddle</string>
-    
+
     <!-- MENU ITEMS -->
     <string name="action_create_riddle">Create Riddle</string>
     <string name="action_update_riddle">Update Riddle</string>
     <string name="action_delete_riddle">Delete Riddle</string>
-    
+
     <!-- RIDDLE -->
     <string name="tv_riddle_title">Title:</string>
     <string name="et_hint_riddle_title">Enter title</string>
@@ -148,8 +148,9 @@
     <string name="et_hint_riddle_answer">Enter answer</string>
     <string name="btn_create_riddle">CREATE</string>
     <string name="btn_update_riddle">UPDATE</string>
-    
+
     <!-- Location -->
+
 
     <!-- User interface labels and strings -->
 
@@ -272,7 +273,7 @@
     <string name="title_activity_suggest_location">Suggest Location</string>
     <string name="title_facebook_login">Login via Facebook</string>
     <string name="title_activity_view_single_hobby">ViewSingleHobby</string>
-	<string name="title_activity_post_list_view">PostListView</string>
+    <string name="title_activity_post_list_view">PostListView</string>
     <!-- Facebook -->
     <string name="app_id">1448892845363751</string>
     <string name="title_activity_create_hobby_post">CreateHobbyPost</string>
@@ -287,8 +288,13 @@
     <string name="title_activity_article_display_main_stats">ArticleDisplayMainStatsActivity</string>
     <string name="title_activity_officer_main">OfficerMainActivity</string>
     <string name="title_activity_feedback_article_stats">FeedbackArticleStatsActivity</string>
-	<string name="title_activity_hobby_search_by_map">HobbySearchByMap</string>
+    <string name="title_activity_hobby_search_by_map">HobbySearchByMap</string>
     <string name="title_activity_search_hobby_by_map">SearchHobbyByMap</string>
     <string name="title_activity_geolocation">GeolocationActivity</string>
     <string name="title_activity_select_new_event_admin"> Select a new event admin </string>
+    <string name="title_activity_article_user_view">ArticleUserView</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+
 </resources>

@@ -34,6 +34,7 @@ import android.widget.Toast;
 import com.example.it3197_casestudy.model.Article;
 import com.example.it3197_casestudy.ui_logic.ArticleMainActivity;
 import com.example.it3197_casestudy.ui_logic.ArticleSelectedActivityActivity;
+import com.example.it3197_casestudy.ui_logic.ArticleUserView;
 import com.example.it3197_casestudy.ui_logic.SingleArticleActivity;
 import com.example.it3197_casestudy.ui_logic.SubmitArticle;
 import com.example.it3197_casestudy.util.Settings;
@@ -92,7 +93,7 @@ public class GetApprovedLatestArticles extends AsyncTask<Object, Object, Object>
 				// TODO Auto-generated method stub
 				Article a = new Article();
 				
-				Intent intent = new Intent(activity, ArticleSelectedActivityActivity.class);
+				Intent intent = new Intent(activity, ArticleUserView.class);
 				intent.putExtra("title", articleList.get(pos).getTitle());
 				intent.putExtra("author", articleList.get(pos).getArticleUser());
 				intent.putExtra("articleDate", articleList.get(pos).getArticleDate());
