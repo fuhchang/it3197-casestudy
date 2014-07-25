@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.it3197_casestudy.R;
@@ -32,6 +33,10 @@ public class FeedbackListRow extends ArrayAdapter<Article>{
 				//setup the infalter
 				LayoutInflater inflater = context.getLayoutInflater();
 				View rowView = inflater.inflate(R.layout.feedback_list_row, null, true);
+				
+				
+				ImageView iv = (ImageView)rowView.findViewById(R.id.image);
+				iv.setImageResource(R.drawable.article_main5);
 				
 				//link to widgets
 				TextView txtTitle = (TextView) rowView.findViewById(R.id.title);

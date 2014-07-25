@@ -2,8 +2,37 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:background="#0A2229" 
+     android:background="#0A2229"
     >
+    
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+	    <TextView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginLeft="10dp"
+	        android:id="@+id/current"
+	        android:textSize="18sp"
+	        android:textColor="#FFFFFF"
+	        android:layout_marginTop="5dp"
+	        />
+	    
+	    <TextView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:id="@+id/currentDateTime"
+	        android:layout_marginRight="10dp"
+	        android:layout_alignParentRight="true"
+	        android:textSize="17sp"
+	        android:textColor="#FFFFFF"
+	        android:layout_marginTop="5dp"
+	        />
+	    
+	    
+	    
+    </RelativeLayout>
 <!-- 
     <ImageView
 	        android:id="@+id/iv_login_pic"
@@ -22,9 +51,10 @@
 		android:id="@+id/mainListView"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:divider="#0A2229" 
-		
-		android:layout_margin="10dp"
+		android:divider="#0A2229"
+		android:layout_marginLeft="10dp"
+		android:layout_marginRight="10dp"
+		android:layout_marginTop="5dp"
 		android:background="#FFFFFF" 
 		android:dividerHeight="7dp"
 	/>

@@ -175,7 +175,7 @@ public class MainPageController extends AsyncTask<Object, Object, Object> implem
 				event = new Event();
 				
 				event.setEventName(dataJob.getString("eventName"));				
-			
+				event.setEventDescription(dataJob.getString("eventDescription"));
 
 				
 				eventList.add(event);
@@ -190,7 +190,7 @@ public class MainPageController extends AsyncTask<Object, Object, Object> implem
 				hobby = new Hobby();
 				
 				hobby.setGroupName(dataJob.getString("grpName"));
-
+				hobby.setDescription(dataJob.getString("grpDesc"));
 				
 				
 				hobbyList.add(hobby);

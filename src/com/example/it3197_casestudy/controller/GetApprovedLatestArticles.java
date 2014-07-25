@@ -64,8 +64,8 @@ public class GetApprovedLatestArticles extends AsyncTask<Object, Object, Object>
 	@Override
 	protected void onPreExecute() {
 		articleList = new ArrayList<Article>(); 
-		dialog = ProgressDialog.show(activity,
-				"Retrieving Latest Articles", "Please wait...", true);
+	//	dialog = ProgressDialog.show(activity,
+	//			"Retrieving Latest Articles", "Please wait...", true);
 	}
 
 	@Override
@@ -113,7 +113,7 @@ public class GetApprovedLatestArticles extends AsyncTask<Object, Object, Object>
 			}
 			
 		});
-		dialog.dismiss();
+	//	dialog.dismiss();
 	}
 
 	public String retrieveApprovedLatestArticles() {

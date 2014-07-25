@@ -41,6 +41,10 @@ public class SingleArticleActivity extends ArrayAdapter<Article>{
 					View rowView = inflater.inflate(R.layout.activity_single_article, null, true);
 					
 					//link to widgets
+					ImageView iv = (ImageView)rowView.findViewById(R.id.image);
+					iv.setImageResource(R.drawable.article_main4);
+					
+					
 					TextView txtTitle = (TextView) rowView.findViewById(R.id.title);
 					TextView txtAuthor = (TextView) rowView.findViewById(R.id.author);
 					TextView txtDate = (TextView) rowView.findViewById(R.id.date);

@@ -171,4 +171,15 @@ public class MainLinkPage extends Activity {
 		
 		return super.onMenuItemSelected(featureId, item);
 	}
+
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		
+		Intent i = new Intent(MainLinkPage.this, LoginActivity.class);
+		startActivity(i);
+		MainLinkPage.this.finish();
+		
+		super.onBackPressed();
+	}
 }

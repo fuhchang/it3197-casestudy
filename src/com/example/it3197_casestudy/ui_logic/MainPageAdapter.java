@@ -62,8 +62,8 @@ public class MainPageAdapter extends ArrayAdapter<Combined>{
 					txtTitle.setText(eventArray.get(0).getEventName());
 					
 					txtDate.setText("Date here");
-					txtDesc.setText("The big brown fox jumps over the lazy dog.");
-					iv.setImageResource(R.drawable.events);
+					txtDesc.setText(eventArray.get(0).getEventDescription());
+					iv.setImageResource(R.drawable.event_main);
 					
 				}
 				if(position==1){
@@ -74,16 +74,16 @@ public class MainPageAdapter extends ArrayAdapter<Combined>{
 					txtType.setText(" Hobby: ");
 					txtTitle.setText(hobbyArray.get(0).getGroupName());
 					txtDate.setText("Date here");
-					txtDesc.setText("The big brown fox jumps over the lazy dog.");
+					txtDesc.setText(hobbyArray.get(0).getDescription());
 					
-					iv.setImageResource(R.drawable.dance);
+					iv.setImageResource(R.drawable.hobby_main2);
 				}
 				if(position==2){
 					String myHexColor = "#00FF00";
 					//txtType.setBackgroundColor(Color.parseColor(myHexColor));
 					
 					
-					txtType.setText(" Latest Article: ");
+					txtType.setText(" Article: ");
 					txtTitle.setText(articleArray.get(0).getTitle());		
 					txtDate.setText(articleArray.get(0).getArticleDate());
 					
@@ -97,7 +97,7 @@ public class MainPageAdapter extends ArrayAdapter<Combined>{
 						txtDesc.setText(content.substring(0, 150) + "...");
 					}
 					
-					iv.setImageResource(R.drawable.article);
+					iv.setImageResource(R.drawable.article_main4);
 
 				}
 				else{
