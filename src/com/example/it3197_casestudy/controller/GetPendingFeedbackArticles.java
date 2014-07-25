@@ -66,7 +66,7 @@ public class GetPendingFeedbackArticles extends AsyncTask<Object, Object, Object
 	protected void onPreExecute() {
 		// TODO Auto-generated method stub
 		articleList = new ArrayList<Article>(); 
-		dialog = ProgressDialog.show(activity, "Retrieving Pending Articles", "Please wait...", true);
+	//	dialog = ProgressDialog.show(activity, "Retrieving Pending Articles", "Please wait...", true);
 	}
 
 
@@ -115,7 +115,7 @@ public class GetPendingFeedbackArticles extends AsyncTask<Object, Object, Object
 			}
 			
 		});
-		dialog.dismiss();
+		//dialog.dismiss();
 	}
 	
 	

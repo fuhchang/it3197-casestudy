@@ -1,26 +1,21 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" 
-    >
-    
-    
-    <LinearLayout
-         android:layout_width="fill_parent"
-    	 android:layout_height="fill_parent"
-         android:orientation="vertical" 
-    	 android:background="#2B547E">
+    android:background="#2B547E" 
+    android:id="@+id/swipe">
+
    
     	<ListView
 		    android:id="@+id/articleListView"
 		    android:layout_width="fill_parent"
 		    android:layout_height="fill_parent"
 		    android:divider="#2B547E"
-		    
 		    android:dividerHeight="7dp"
 		    android:listSelector="@drawable/article_style" />
         
-     </LinearLayout>
+   
         
         
-</LinearLayout>
+</android.support.v4.widget.SwipeRefreshLayout>

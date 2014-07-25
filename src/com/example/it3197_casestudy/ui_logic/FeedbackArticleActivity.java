@@ -7,8 +7,6 @@ import java.util.Locale;
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.R.layout;
 import com.example.it3197_casestudy.R.menu;
-import com.example.it3197_casestudy.controller.GetApprovedLatestArticles;
-import com.example.it3197_casestudy.controller.GetApprovedLatestArticles2;
 import com.example.it3197_casestudy.controller.GetPendingFeedbackArticles;
 import com.example.it3197_casestudy.controller.GetPendingFeedbackArticles2;
 import com.example.it3197_casestudy.model.Article;
@@ -19,7 +17,9 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -31,6 +31,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.NumberPicker.OnValueChangeListener;
@@ -83,6 +84,59 @@ public class FeedbackArticleActivity extends Activity {
 		//list.setBackgroundColor(Color.WHITE);
 		GetPendingFeedbackArticles gpfa = new GetPendingFeedbackArticles(this, list, lat, lon,selectedDist);
 		gpfa.execute();
+		
+		
+		
+		
+		
+final SwipeRefreshLayout swipeView = (SwipeRefreshLayout) findViewById(R.id.swipe); 
+		
+		swipeView.setEnabled(false); 
+		
+		swipeView.setColorScheme(android.R.color.holo_blue_bright, android.R.color.holo_green_light, android.R.color.holo_orange_light, android.R.color.holo_red_light);
+		swipeView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+			
+			@Override
+			public void onRefresh() {
+				// TODO Auto-generated method stub
+				swipeView.setRefreshing(true);
+				( new Handler()).postDelayed(new Runnable() {
+					@Override
+					public void run() { 						
+						Intent intent = new Intent(FeedbackArticleActivity.this, FeedbackArticleActivity.class);
+						startActivity(intent);
+						FeedbackArticleActivity.this.finish();
+						swipeView.setRefreshing(false);
+						
+						}
+					}, 1500);
+				
+			}
+		});
+		
+		
+		list.setOnScrollListener(new AbsListView.OnScrollListener() {
+			
+			@Override
+			public void onScrollStateChanged(AbsListView view, int i) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+				// TODO Auto-generated method stub
+				if (firstVisibleItem == 0)
+					swipeView.setEnabled(true);
+				else
+					swipeView.setEnabled(false); 
+			}
+		} );
+		
+		
+		
+		
 	}
 
 	@Override
@@ -303,6 +357,8 @@ public class FeedbackArticleActivity extends Activity {
 			menu.removeItem(R.id.showArticlesLocation);
 
 		}
+		
+		menu.removeItem(R.id.refresh);
 		
 		return super.onPrepareOptionsMenu(menu);
 	}
