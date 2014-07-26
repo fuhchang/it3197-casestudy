@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,9 +46,13 @@ public class ArticleSelectedActivity extends Fragment {
 		contentTv = (TextView)getActivity().findViewById(R.id.content);
 		
 		titleTv.setText(title);
-		authorTv.setText("Author: " + author);
+		authorTv.setText("Posted By: " + author);
 		articleDateTv.setText(date);
 		contentTv.setText(content);
+		
+		
+		ImageView iv = (ImageView)getActivity().findViewById(R.id.image);
+		iv.setImageResource(R.drawable.article123);
 	}
 
 }

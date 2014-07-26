@@ -23,6 +23,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -75,6 +76,10 @@ public class ArticleSelectedFeedbackActivity extends Activity {
 		articleDateTv.setText(date);
 		contentTv.setText(content);
 		cat.setText("Category: " + catRetrieved);
+		
+		
+		ImageView iv = (ImageView)findViewById(R.id.image);
+		iv.setImageResource(R.drawable.article123);
 		
 		getMyCurrentLocation();
 	}

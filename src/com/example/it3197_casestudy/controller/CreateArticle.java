@@ -43,8 +43,8 @@ public class CreateArticle extends AsyncTask<Object, Object, Object> implements 
 	@Override
 	protected void onPreExecute() {
 		// TODO Auto-generated method stub
-		dialog = ProgressDialog.show(activity, "Creating Article",
-				"Creating...Please Wait", true);
+		dialog = ProgressDialog.show(activity, "Submitting Article",
+				"Please Wait", true);
 	}
 
 	@Override
@@ -100,7 +100,7 @@ public class CreateArticle extends AsyncTask<Object, Object, Object> implements 
 			boolean success = json.getBoolean("success");
 			if(success){
 				dialog.dismiss();
-				Toast.makeText(activity, "Article Created", Toast.LENGTH_LONG).show();
+				Toast.makeText(activity, "Article Submitted", Toast.LENGTH_LONG).show();
 				//Intent intent = new Intent(activity, ArticleMainActivity.class);
 				//activity.startActivity(intent);
 				activity.finish();
