@@ -12,7 +12,9 @@ import com.example.it3197_casestudy.controller.MainPageController;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -49,4 +51,24 @@ public class MainActivity extends Activity {
 		return true;
 	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
+		
+		int id = item.getItemId();
+		
+		if(id==R.id.logout){
+			Intent i = new Intent(MainActivity.this, LoginActivity.class);
+			startActivity(i);
+			MainActivity.this.finish();
+		}
+		
+		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		super.onBackPressed();
+	}
 }

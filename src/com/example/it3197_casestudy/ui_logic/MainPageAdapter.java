@@ -38,7 +38,7 @@ public class MainPageAdapter extends ArrayAdapter<Combined>{
 	}
 	
 	public int getCount() {
-        return 3;
+        return 4;
     }
 
 	@Override
@@ -63,7 +63,7 @@ public class MainPageAdapter extends ArrayAdapter<Combined>{
 					
 					txtDate.setText("Date here");
 					txtDesc.setText(eventArray.get(0).getEventDescription());
-					iv.setImageResource(R.drawable.event_main);
+					iv.setImageResource(R.drawable.event_main2);
 					
 				}
 				if(position==1){
@@ -76,7 +76,7 @@ public class MainPageAdapter extends ArrayAdapter<Combined>{
 					txtDate.setText("Date here");
 					txtDesc.setText(hobbyArray.get(0).getDescription());
 					
-					iv.setImageResource(R.drawable.hobby_main2);
+					iv.setImageResource(R.drawable.hobby_main3);
 				}
 				if(position==2){
 					String myHexColor = "#00FF00";
@@ -99,6 +99,15 @@ public class MainPageAdapter extends ArrayAdapter<Combined>{
 					
 					iv.setImageResource(R.drawable.article_main4);
 
+				}
+				
+				if(position==3){
+					txtType.setText(" Riddle: ");
+					txtTitle.setText("Riddle Title Here");
+					txtDate.setText("Date here");
+					txtDesc.setText("Latest riddle here");
+					
+					iv.setImageResource(R.drawable.riddle_main2);
 				}
 				else{
 					

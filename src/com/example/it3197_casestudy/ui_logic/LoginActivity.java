@@ -83,26 +83,34 @@ public class LoginActivity extends FragmentActivity {
 	}
 
 	public void onClick(View view) {
-		try {
-			switch (view.getId()) {
-			case R.id.btn_login:
-				String userNric = etUserName.getText().toString();
-				String password = etPassword.getText().toString();
-				User user = new User();
-				user.setNric(userNric);
-				user.setPassword(password);
-				GetUser checkUser = new GetUser(this, user);
-				checkUser.execute();
-				break;
-			case R.id.btn_login_facebook:
-				//Session.openActiveSession(LoginActivity.this, true, callback);
-				break;
-			default:
-				LoginActivity.this.finish();
-				break;
+		String userNric = etUserName.getText().toString();
+		String password = etPassword.getText().toString();
+		
+		
+		if(userNric.equals("")||password.equals("")){
+			
+		}
+		else{
+			try {
+				switch (view.getId()) {
+				case R.id.btn_login:
+					
+					User user = new User();
+					user.setNric(userNric);
+					user.setPassword(password);
+					GetUser checkUser = new GetUser(this, user);
+					checkUser.execute();
+					break;
+				case R.id.btn_login_facebook:
+					//Session.openActiveSession(LoginActivity.this, true, callback);
+					break;
+				default:
+					LoginActivity.this.finish();
+					break;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 

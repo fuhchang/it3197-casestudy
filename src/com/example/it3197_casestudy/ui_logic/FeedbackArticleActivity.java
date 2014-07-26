@@ -34,6 +34,7 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.NumberPicker;
+import android.widget.Toast;
 import android.widget.NumberPicker.OnValueChangeListener;
 
 public class FeedbackArticleActivity extends Activity {
@@ -246,18 +247,41 @@ final SwipeRefreshLayout swipeView = (SwipeRefreshLayout) findViewById(R.id.swip
 			
 		}
 		
+		if(id==R.id.officer_logout){
+			Intent i = new Intent(FeedbackArticleActivity.this,LoginActivity.class);
+			startActivity(i);
+			FeedbackArticleActivity.this.finish();
+		}
+		
 		return super.onMenuItemSelected(featureId, item);
 	}
 
 	@Override
 	public void onBackPressed() {
-		// TODO Auto-generated method stub
-		
-		Intent i = new Intent(FeedbackArticleActivity.this,LoginActivity.class);
-		startActivity(i);
-		FeedbackArticleActivity.this.finish();
-		
-		super.onBackPressed();
+		// TODO Auto-generated method stub	
+		  AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+	      alertDialogBuilder.setMessage("Logout?");
+	      alertDialogBuilder.setNegativeButton("Yes", 
+	      new DialogInterface.OnClickListener() {
+			
+	         @Override
+	         public void onClick(DialogInterface arg0, int arg1) {
+	        	Intent i = new Intent(FeedbackArticleActivity.this,LoginActivity.class);
+	     		startActivity(i);
+	     		FeedbackArticleActivity.this.finish();
+	         }
+	      });
+	      alertDialogBuilder.setPositiveButton("No", 
+	      new DialogInterface.OnClickListener() {
+				
+	         @Override
+	         public void onClick(DialogInterface dialog, int which) {
+	            dialog.cancel();
+			 }
+	      });
+		    
+	      AlertDialog alertDialog = alertDialogBuilder.create();
+	      alertDialog.show();		
 	}
 	
 	

@@ -18,8 +18,10 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -176,10 +178,28 @@ public class MainLinkPage extends Activity {
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
 		
-		Intent i = new Intent(MainLinkPage.this, LoginActivity.class);
-		startActivity(i);
-		MainLinkPage.this.finish();
-		
-		super.onBackPressed();
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+	      alertDialogBuilder.setMessage("Logout?");
+	      alertDialogBuilder.setNegativeButton("Yes", 
+	      new DialogInterface.OnClickListener() {
+			
+	         @Override
+	         public void onClick(DialogInterface arg0, int arg1) {
+	        	Intent i = new Intent(MainLinkPage.this,LoginActivity.class);
+	     		startActivity(i);
+	     		MainLinkPage.this.finish();
+	         }
+	      });
+	      alertDialogBuilder.setPositiveButton("No", 
+	      new DialogInterface.OnClickListener() {
+				
+	         @Override
+	         public void onClick(DialogInterface dialog, int which) {
+	            dialog.cancel();
+			 }
+	      });
+		    
+	      AlertDialog alertDialog = alertDialogBuilder.create();
+	      alertDialog.show();
 	}
 }
