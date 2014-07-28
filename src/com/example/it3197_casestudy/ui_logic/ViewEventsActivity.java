@@ -57,7 +57,6 @@ public class ViewEventsActivity extends FragmentActivity implements ActionBar.Ta
 			event.setEventName(savedInstanceState.getString("eventName"));
 			event.setEventCategory(savedInstanceState.getString("eventCategory"));
 			event.setEventDescription(savedInstanceState.getString("eventDescription"));
-			event.setEventType(savedInstanceState.getString("eventType"));
 			try {
 				event.setEventDateTimeFrom(sqlDateTimeFormatter.parse(savedInstanceState.getString("eventDateTimeTo")));
 				event.setEventDateTimeTo(sqlDateTimeFormatter.parse(savedInstanceState.getString("eventDateTimeFrom")));
@@ -66,7 +65,6 @@ public class ViewEventsActivity extends FragmentActivity implements ActionBar.Ta
 				e.printStackTrace();
 			}
 			event.setOccurence(savedInstanceState.getString("occurence"));
-			event.setEventLocation(savedInstanceState.getString("eventLocation"));
 			event.setNoOfParticipantsAllowed(savedInstanceState.getInt("noOfParticipants"));
 			event.setActive(savedInstanceState.getInt("active"));
 		}

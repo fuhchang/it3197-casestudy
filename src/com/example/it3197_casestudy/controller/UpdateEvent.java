@@ -77,11 +77,9 @@ public class UpdateEvent extends AsyncTask<Object, Object, Object> implements Se
 		postParameters.add(new BasicNameValuePair("eventAdminNRIC", nric));
 		postParameters.add(new BasicNameValuePair("eventCategory", event.getEventCategory()));
 		postParameters.add(new BasicNameValuePair("eventDescription", event.getEventDescription()));
-		postParameters.add(new BasicNameValuePair("eventType", event.getEventType()));
 		postParameters.add(new BasicNameValuePair("eventDateTimeFrom", sqlDateTimeFormatter.format(event.getEventDateTimeFrom())));
 		postParameters.add(new BasicNameValuePair("eventDateTimeTo", sqlDateTimeFormatter.format(event.getEventDateTimeTo())));
 		postParameters.add(new BasicNameValuePair("occurence", event.getOccurence()));
-		postParameters.add(new BasicNameValuePair("eventLocation", event.getEventLocation()));
 		postParameters.add(new BasicNameValuePair("noOfParticipants", String.valueOf(event.getNoOfParticipantsAllowed())));
 		postParameters.add(new BasicNameValuePair("web", "false"));
 		// Instantiate a POST HTTP method

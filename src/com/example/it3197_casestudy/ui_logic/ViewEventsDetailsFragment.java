@@ -156,7 +156,6 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 			}
 			else{
 				Intent i = new Intent(ViewEventsDetailsFragment.this.getActivity(), UpdateEventStep1Activity.class);
-				i.putExtra("typeOfEvent", event.getEventType());
 				i.putExtra("eventID", String.valueOf(event.getEventID()));
 				i.putExtra("eventName", event.getEventName());
 				i.putExtra("eventCategory", event.getEventCategory());
@@ -164,7 +163,6 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 				i.putExtra("eventDateTimeFrom", sqlDateTimeFormatter.format(event.getEventDateTimeFrom()));
 				i.putExtra("eventDateTimeTo", sqlDateTimeFormatter.format(event.getEventDateTimeTo()));
 				i.putExtra("occurence", event.getOccurence());
-				i.putExtra("eventLocation", event.getEventLocation());
 				i.putExtra("noOfParticipants", String.valueOf(event.getNoOfParticipantsAllowed()));
 				startActivity(i);
 				ViewEventsDetailsFragment.this.getActivity().finish();
@@ -203,7 +201,6 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 		event.setEventName(bundle.getString("eventName"));
 		event.setEventCategory(bundle.getString("eventCategory"));
 		event.setEventDescription(bundle.getString("eventDescription"));
-		event.setEventType(bundle.getString("eventType"));
 		try {
 			event.setEventDateTimeFrom(sqlDateTimeFormatter.parse(bundle.getString("eventDateTimeTo")));
 			event.setEventDateTimeTo(sqlDateTimeFormatter.parse(bundle.getString("eventDateTimeFrom")));
@@ -212,7 +209,6 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 			e.printStackTrace();
 		}
 		event.setOccurence(bundle.getString("occurence"));
-		event.setEventLocation(bundle.getString("eventLocation"));
 		event.setNoOfParticipantsAllowed(bundle.getInt("noOfParticipants"));
 		event.setActive(bundle.getInt("active"));
 		

@@ -71,8 +71,6 @@ public class UpdateEventStep2Activity extends Activity implements Settings{
 			String eventName = bundle.getString("eventName", "");
 			String eventCategory = bundle.getString("eventCategory","");
 			String eventDescription = bundle.getString("eventDescription", "");
-			typeOfEvent = bundle.getString("typeOfEvent","Small Event");
-			String eventLocation = bundle.getString("eventLocation", "");
 			String noOfParticipants = bundle.getString("noOfParticipants", "");
 			String eventDateTimeFrom = bundle.getString("eventDateTimeFrom","");
 			String eventDateTimeTo = bundle.getString("eventDateTimeTo","");
@@ -82,8 +80,6 @@ public class UpdateEventStep2Activity extends Activity implements Settings{
 			event.setEventName(eventName);
 			event.setEventCategory(eventCategory);
 			event.setEventDescription(eventDescription);
-			event.setEventType(typeOfEvent);
-			event.setEventLocation(eventLocation);
 			try {
 				event.setEventDateTimeFrom(sqlDateTimeFormatter.parse(eventDateTimeFrom));
 				event.setEventDateTimeTo(sqlDateTimeFormatter.parse(eventDateTimeTo));
@@ -234,7 +230,6 @@ public class UpdateEventStep2Activity extends Activity implements Settings{
 		intent.putExtra("eventDateTimeFrom", sqlDateTimeFormatter.format(event.getEventDateTimeFrom()));
 		intent.putExtra("eventDateTimeTo", sqlDateTimeFormatter.format(event.getEventDateTimeTo()));
 		intent.putExtra("occurence", event.getOccurence());
-		intent.putExtra("eventLocation", event.getEventLocation());
 		intent.putExtra("noOfParticipants", String.valueOf(event.getNoOfParticipantsAllowed()));
 		startActivity(intent);
 		this.finish();

@@ -39,7 +39,6 @@ public class UpdateEventStep2ValidationController implements Settings{
 		int days = -86400000 * differenceInDays;
 		double compare = (calendarFrom.getTimeInMillis()-calendarTo.getTimeInMillis()) - days;
 		System.out.println(compare);
-		event.setEventType(typeOfEvent);
 		if((calendarFrom.before(calendarCurrentDate) || (calendarTo.before(calendarCurrentDate) || (t.compare(calendarFrom, calendarCurrentDate) == 0 ) || (t.compare(calendarTo, calendarCurrentDate) == 0 )))){
 			Crouton crouton = Crouton.makeText(activity,"Please choose another date after today.",Style.ALERT);
 			crouton.show();
@@ -63,7 +62,6 @@ public class UpdateEventStep2ValidationController implements Settings{
 				System.out.println("Event Name: " + event.getEventName());
 				System.out.println("Event Category: " + event.getEventCategory());
 				System.out.println("Event Description: " + event.getEventDescription());
-				System.out.println("Event Location: " + event.getEventLocation());
 				System.out.println("No of participants: " + event.getNoOfParticipantsAllowed());
 				UpdateEvent updateEvent = new UpdateEvent(activity,event);
 				updateEvent.execute();
