@@ -28,6 +28,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.it3197_casestudy.model.Event;
+import com.example.it3197_casestudy.model.EventLocationDetail;
 import com.example.it3197_casestudy.ui_logic.CreateEventStep2Activity;
 import com.example.it3197_casestudy.ui_logic.MainLinkPage;
 import com.example.it3197_casestudy.ui_logic.UpdateEventStep2Activity;
@@ -39,12 +40,13 @@ import com.example.it3197_casestudy.util.Settings;
 public class UpdateEvent extends AsyncTask<Object, Object, Object> implements Settings{
 	private UpdateEventStep2Activity activity;
 	private Event event;
-	
+	private EventLocationDetail eventLocationDetails;
 	private ProgressDialog dialog;
 	
-	public UpdateEvent(UpdateEventStep2Activity activity, Event event){
+	public UpdateEvent(UpdateEventStep2Activity activity, Event event, EventLocationDetail eventLocationDetails){
 		this.activity = activity;
 		this.event = event;
+		this.eventLocationDetails = eventLocationDetails;
 	}
 	
 	@Override
@@ -81,6 +83,12 @@ public class UpdateEvent extends AsyncTask<Object, Object, Object> implements Se
 		postParameters.add(new BasicNameValuePair("eventDateTimeTo", sqlDateTimeFormatter.format(event.getEventDateTimeTo())));
 		postParameters.add(new BasicNameValuePair("occurence", event.getOccurence()));
 		postParameters.add(new BasicNameValuePair("noOfParticipants", String.valueOf(event.getNoOfParticipantsAllowed())));
+		
+		postParameters.add(new BasicNameValuePair("locationName", eventLocationDetails.getEventLocationName()));
+		postParameters.add(new BasicNameValuePair("locationAddress", eventLocationDetails.getEventLocationAddress()));
+		postParameters.add(new BasicNameValuePair("locationHyperLink", eventLocationDetails.getEventLocationHyperLink()));
+		postParameters.add(new BasicNameValuePair("lat", String.valueOf(eventLocationDetails.getEventLocationLat())));
+		postParameters.add(new BasicNameValuePair("lng", String.valueOf(eventLocationDetails.getEventLocationLng())));
 		postParameters.add(new BasicNameValuePair("web", "false"));
 		// Instantiate a POST HTTP method
 		try {
@@ -101,7 +109,7 @@ public class UpdateEvent extends AsyncTask<Object, Object, Object> implements Se
 			boolean success = json.getBoolean("success");
 			if(success){
 				dialog.dismiss();
-				Toast.makeText(activity.getApplicationContext(),"Event created successfully.", Toast.LENGTH_SHORT).show();
+				Toast.makeText(activity.getApplicationContext(),"Event updated successfully.", Toast.LENGTH_SHORT).show();
 				Intent intent = new Intent(activity,ViewAllEventsActivity.class);
 				activity.startActivity(intent);
 				activity.finish();

@@ -7,6 +7,7 @@ import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.R.layout;
 import com.example.it3197_casestudy.R.menu;
 import com.example.it3197_casestudy.model.Event;
+import com.example.it3197_casestudy.model.EventLocationDetail;
 import com.example.it3197_casestudy.util.Settings;
 import com.example.it3197_casestudy.validation.Form;
 import com.example.it3197_casestudy.validation.validate.ConfirmValidate;
@@ -37,7 +38,7 @@ import android.widget.Toast;
 
 public class UpdateEventStep2Activity extends Activity implements Settings{
 	Event event;
-	String typeOfEvent;
+	EventLocationDetail eventLocationDetails = new EventLocationDetail();
 	
 	Button btnDateFrom, btnDateTo, btnTimeFrom, btnTimeTo;
 	Spinner spinnerRepeats;
@@ -103,6 +104,13 @@ public class UpdateEventStep2Activity extends Activity implements Settings{
 			else if(noOfParticipants.equals("10000 - 99999")){
 				event.setNoOfParticipantsAllowed(99999);
 			}
+			
+			String locationName = bundle.getString("locationName", "");
+			String locationAddress = bundle.getString("locationAddress", "");
+			String locationHyperLink = bundle.getString("locationHyperLink", "");
+			double lat = bundle.getDouble("lat", 0.0000);
+			double lng = bundle.getDouble("lng", 0.0000);
+			eventLocationDetails = new EventLocationDetail(0,0,"Test","Test","Test",1.0,2.0);
 		}
 		
 		btnDateFrom = (Button) findViewById(R.id.btn_date_from);
@@ -134,15 +142,6 @@ public class UpdateEventStep2Activity extends Activity implements Settings{
 		btnDateTo.setText(new StringBuilder().append(dayTo).append("/").append(monthTo + 1).append("/").append(yearTo).append(" "));		
 		btnTimeFrom.setText(new StringBuilder().append(pad(hourFrom)).append(":").append(pad(minuteFrom)));
 		btnTimeTo.setText(new StringBuilder().append(pad(hourTo)).append(":").append(pad(minuteTo)));
-		
-		if(typeOfEvent.equals("Small Event")){
-			spinnerRepeats.setVisibility(View.GONE);
-			tvRepeats.setVisibility(View.GONE);
-		}
-		else{
-			spinnerRepeats.setVisibility(View.VISIBLE);
-			tvRepeats.setVisibility(View.VISIBLE);
-		}
 	}
 
 	@Override
@@ -178,7 +177,7 @@ public class UpdateEventStep2Activity extends Activity implements Settings{
 			System.out.println("From Date: " + sqlDateTimeFormatter.format(calendarFrom.getTime()));
 			System.out.println("To Date: " + sqlDateTimeFormatter.format(calendarTo.getTime()));
 			
-			UpdateEventStep2ValidationController controller = new UpdateEventStep2ValidationController(UpdateEventStep2Activity.this,typeOfEvent);
+			UpdateEventStep2ValidationController controller = new UpdateEventStep2ValidationController(UpdateEventStep2Activity.this,eventLocationDetails);
 			controller.validateForm(intent,calendarFrom,calendarTo,event,spinnerRepeats.getSelectedItem().toString());
 			break;
 		case R.id.previous:
@@ -190,19 +189,13 @@ public class UpdateEventStep2Activity extends Activity implements Settings{
 
 	public void onClick(View view) {
 		//Intent intent = null;
-		Log.i("Type of event: ",typeOfEvent);
 		try {
 			switch (view.getId()) {
 			case R.id.btn_date_from:
 				showDialog(DATE_DIALOG_ID);
 				break;
 			case R.id.btn_date_to:
-				if(typeOfEvent.equals("Small Event")){
-					showDialog(DATE_DIALOG_ID);
-				}
-				else{
-					showDialog(DATE_DIALOG_ID_1);
-				}
+				showDialog(DATE_DIALOG_ID_1);
 				break;
 			case R.id.btn_time_from:
 				showDialog(TIME_DIALOG_ID);
@@ -223,7 +216,6 @@ public class UpdateEventStep2Activity extends Activity implements Settings{
 	@Override
 	public void onBackPressed() {
 		Intent intent = new Intent(UpdateEventStep2Activity.this,UpdateEventStep1Activity.class);
-		intent.putExtra("typeOfEvent", typeOfEvent);
 		intent.putExtra("eventName", event.getEventName());
 		intent.putExtra("eventCategory", event.getEventCategory());
 		intent.putExtra("eventDescription", event.getEventDescription());
@@ -271,16 +263,6 @@ public class UpdateEventStep2Activity extends Activity implements Settings{
 			// set selected date into textview
 			btnDateFrom.setText(new StringBuilder().append(dayFrom).append("/")
 					.append(monthFrom + 1).append("/").append(yearFrom).append(" "));
-			
-			if(typeOfEvent.equals("Small Event")){
-				yearTo = selectedYear;
-				monthTo = selectedMonth;
-				dayTo = selectedDay;
-
-				// set selected date into textview
-				btnDateTo.setText(new StringBuilder().append(dayTo).append("/")
-						.append(monthTo + 1).append("/").append(yearTo).append(" "));
-			}
 		}
 	};
 	private DatePickerDialog.OnDateSetListener datePickerToListener = new DatePickerDialog.OnDateSetListener() {
@@ -295,16 +277,6 @@ public class UpdateEventStep2Activity extends Activity implements Settings{
 			// set selected date into textview
 			btnDateTo.setText(new StringBuilder().append(dayTo).append("/")
 					.append(monthTo + 1).append("/").append(yearTo).append(" "));
-			
-			if(typeOfEvent.equals("Small Event")){
-				yearFrom = selectedYear;
-				monthFrom = selectedMonth;
-				dayFrom = selectedDay;
-
-				// set selected date into textview
-				btnDateFrom.setText(new StringBuilder().append(dayFrom).append("/")
-						.append(monthFrom + 1).append("/").append(yearFrom).append(" "));
-			}
 		}
 	};
 	 

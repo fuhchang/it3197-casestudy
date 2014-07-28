@@ -23,6 +23,7 @@ import com.dropbox.chooser.android.DbxChooser;
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.crouton.Crouton;
 import com.example.it3197_casestudy.crouton.Style;
+import com.example.it3197_casestudy.model.EventLocationDetail;
 import com.example.it3197_casestudy.util.Settings;
 import com.example.it3197_casestudy.validation.Form;
 import com.example.it3197_casestudy.validation.Validate;
@@ -32,6 +33,8 @@ import com.example.it3197_casestudy.validation_controller.UpdateEventStep1Valida
 
 public class UpdateEventStep1Activity extends Activity implements Settings{
 	String typeOfEvent,eventID,eventName,eventCategory,eventDescription,eventDateTimeFrom,eventDateTimeTo,occurence,eventLocation,noOfParticipants;
+	
+	EventLocationDetail eventLocationDetails = new EventLocationDetail();
 	
 	EditText etEventName,etDescription,etLocation;
 	Spinner spinnerCategory,spinnerNoOfParticipants;
@@ -105,7 +108,6 @@ public class UpdateEventStep1Activity extends Activity implements Settings{
 			eventDateTimeFrom = bundle.getString("eventDateTimeFrom", "");
 			eventDateTimeTo = bundle.getString("eventDateTimeTo", "");
 			occurence = bundle.getString("occurence", "");
-			eventLocation = bundle.getString("eventLocation", "");
 			noOfParticipants = bundle.getString("noOfParticipants", "0");
 			System.out.println(noOfParticipants);
 		}
@@ -214,16 +216,14 @@ public class UpdateEventStep1Activity extends Activity implements Settings{
 			
 			mForm.addValidates(eventNameField);
 			mForm.addValidates(eventDescriptionField);
+			mForm.addValidates(eventLocationField);
 			
 			ArrayList<Validate> validatorsArrList = new ArrayList<Validate>();
 			validatorsArrList.add(eventNameField);
 			validatorsArrList.add(eventDescriptionField);
-			if(!typeOfEvent.equals("Big Event")){
-				mForm.addValidates(eventLocationField);
-				validatorsArrList.add(eventLocationField);
-			}
+			validatorsArrList.add(eventLocationField);
 			
-			UpdateEventStep1ValidationController validationController = new UpdateEventStep1ValidationController(UpdateEventStep1Activity.this,typeOfEvent);
+			UpdateEventStep1ValidationController validationController = new UpdateEventStep1ValidationController(UpdateEventStep1Activity.this,eventLocationDetails);
 			validationController.validateForm(eventID, intent, mForm, validatorsArrList, eventDateTimeFrom, eventDateTimeTo, occurence);
 			break;
 
@@ -244,6 +244,8 @@ public class UpdateEventStep1Activity extends Activity implements Settings{
 			case R.id.btn_suggest_location:{
 				Intent i = new Intent(UpdateEventStep1Activity.this,SuggestLocationActivity.class);
 				startActivity(i);
+				eventLocationDetails = new EventLocationDetail(0,0,"Test","Test","Test",1.0,2.0);
+				break;
 			}
 			default:
 				UpdateEventStep1Activity.this.finish();
