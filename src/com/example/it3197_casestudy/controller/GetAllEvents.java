@@ -38,17 +38,18 @@ import com.example.it3197_casestudy.ui_logic.MainLinkPage;
 import com.example.it3197_casestudy.ui_logic.ViewAllEventsActivity;
 import com.example.it3197_casestudy.ui_logic.ViewEventsActivity;
 import com.example.it3197_casestudy.util.EventListAdapter;
+import com.example.it3197_casestudy.util.PullToRefreshListView;
 import com.example.it3197_casestudy.util.Settings;
 
 public class GetAllEvents extends AsyncTask<Object, Object, Object> implements Settings{
 	private ArrayList<Event> eventArrList;
 	private Event[] eventList;
 	private ViewAllEventsActivity activity;
-	private ListView lvViewAllEvents;
+	private PullToRefreshListView lvViewAllEvents;
 
 	private ProgressDialog dialog;
 	
-	public GetAllEvents(ViewAllEventsActivity activity,ListView lvViewAllEvents){
+	public GetAllEvents(ViewAllEventsActivity activity,PullToRefreshListView lvViewAllEvents){
 		this.activity = activity;
 		this.lvViewAllEvents = lvViewAllEvents;
 	}
@@ -97,6 +98,7 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 		        activity.startActivity(intent);
 			}
 		});
+		lvViewAllEvents.onRefreshComplete();
 		dialog.dismiss();
 	}
 
