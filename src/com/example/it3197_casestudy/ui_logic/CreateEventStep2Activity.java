@@ -94,7 +94,7 @@ public class CreateEventStep2Activity extends Activity implements Settings{
 			String locationHyperLink = bundle.getString("locationHyperLink", "");
 			double lat = bundle.getDouble("lat", 0.0000);
 			double lng = bundle.getDouble("lng", 0.0000);
-			eventLocationDetails = new EventLocationDetail(0,0,"Test","Test","Test",1.0,2.0);
+			eventLocationDetails = new EventLocationDetail(0,0,locationName,locationAddress,locationHyperLink,lat,lng);
 		}
 		
 		btnDateFrom = (Button) findViewById(R.id.btn_date_from);
