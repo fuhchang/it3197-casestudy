@@ -12,6 +12,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -88,11 +89,9 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 				intent.putExtra("eventName", event.getEventName());
 				intent.putExtra("eventCategory", event.getEventCategory());
 				intent.putExtra("eventDescription", event.getEventDescription());
-				intent.putExtra("eventType", event.getEventType());
 				intent.putExtra("eventDateTimeFrom", sqlDateTimeFormatter.format(event.getEventDateTimeFrom()));
 				intent.putExtra("eventDateTimeTo", sqlDateTimeFormatter.format(event.getEventDateTimeTo()));
 				intent.putExtra("occurence", event.getOccurence());
-				intent.putExtra("eventLocation", event.getEventLocation());
 				intent.putExtra("noOfParticipants", event.getNoOfParticipantsAllowed());
 				intent.putExtra("active", event.getActive());
 		        activity.startActivity(intent);
@@ -107,6 +106,7 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpPost httppost = new HttpPost(API_URL + "retrieveAllEvents");
 		ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+		postParameters.add(new BasicNameValuePair("web","false"));
 		// Instantiate a POST HTTP method
 		try {
 			httppost.setEntity(new UrlEncodedFormEntity(postParameters));
@@ -137,11 +137,9 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 				event.setEventName(dataJob.getString("eventName"));
 				event.setEventCategory(dataJob.getString("eventCategory"));
 				event.setEventDescription(dataJob.getString("eventDescription"));
-				event.setEventType(dataJob.getString("eventType"));
 				event.setEventDateTimeFrom(sqlDateTimeFormatter.parse(dataJob.getString("eventDateTimeFrom")));
 				event.setEventDateTimeTo(sqlDateTimeFormatter.parse(dataJob.getString("eventDateTimeTo")));
 				event.setOccurence(dataJob.getString("occurence"));
-				event.setEventLocation(dataJob.getString("eventLocation"));
 				event.setNoOfParticipantsAllowed(dataJob.getInt("noOfParticipantsAllowed"));
 				event.setActive(dataJob.getInt("active"));
 				System.out.println(event.getEventDateTimeFrom());

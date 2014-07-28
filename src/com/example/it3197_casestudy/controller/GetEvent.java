@@ -100,11 +100,9 @@ public class GetEvent extends AsyncTask<Object, Object, Object> implements Setti
 			event.setEventName(json_object.getString("eventName"));
 			event.setEventCategory(json_object.getString("eventCategory"));
 			event.setEventDescription(json_object.getString("eventDescription"));
-			event.setEventType(json_object.getString("eventType"));
 			event.setEventDateTimeFrom(sqlDateTimeFormatter.parse(json_object.getString("eventDateTimeFrom")));
 			event.setEventDateTimeTo(sqlDateTimeFormatter.parse(json_object.getString("eventDateTimeTo")));
 			event.setOccurence(json_object.getString("occurence"));
-			event.setEventLocation(json_object.getString("eventLocation"));
 			event.setNoOfParticipantsAllowed(json_object.getInt("noOfParticipantsAllowed"));
 			event.setActive(json_object.getInt("active"));
 		} catch (Exception e) {

@@ -44,11 +44,9 @@ public class ViewEventsAdapter extends FragmentPagerAdapter implements Settings{
 			args.putString("eventName", event.getEventName());
 			args.putString("eventCategory", event.getEventCategory());
 			args.putString("eventDescription", event.getEventDescription());
-			args.putString("eventType", event.getEventType());
 			args.putString("eventDateTimeFrom", sqlDateTimeFormatter.format(event.getEventDateTimeFrom()));
 			args.putString("eventDateTimeTo", sqlDateTimeFormatter.format(event.getEventDateTimeTo()));
 			args.putString("occurence", event.getOccurence());
-			args.putString("eventLocation", event.getEventLocation());
 			args.putInt("noOfParticipants", event.getNoOfParticipantsAllowed());
 			args.putInt("active", event.getActive());
 			fragment.setArguments(args);

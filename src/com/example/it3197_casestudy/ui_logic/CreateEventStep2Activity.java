@@ -67,15 +67,11 @@ public class CreateEventStep2Activity extends Activity implements Settings{
 			String eventName = bundle.getString("eventName", "");
 			String eventCategory = bundle.getString("eventCategory","");
 			String eventDescription = bundle.getString("eventDescription", "");
-			typeOfEvent = bundle.getString("typeOfEvent","Small Event");
-			String eventLocation = bundle.getString("eventLocation", "");
 			String noOfParticipants = bundle.getString("noOfParticipants", "");
 			event = new Event();
 			event.setEventName(eventName);
 			event.setEventCategory(eventCategory);
 			event.setEventDescription(eventDescription);
-			event.setEventType(typeOfEvent);
-			event.setEventLocation(eventLocation);
 			if(noOfParticipants.equals("0 - 99")){
 				event.setNoOfParticipantsAllowed(99);
 			}
