@@ -22,6 +22,7 @@ import com.dropbox.chooser.android.DbxChooser;
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.crouton.Crouton;
 import com.example.it3197_casestudy.crouton.Style;
+import com.example.it3197_casestudy.model.EventLocationDetail;
 import com.example.it3197_casestudy.util.Settings;
 import com.example.it3197_casestudy.validation.Form;
 import com.example.it3197_casestudy.validation.Validate;
@@ -29,7 +30,7 @@ import com.example.it3197_casestudy.validation.validator.NotEmptyValidator;
 import com.example.it3197_casestudy.validation_controller.CreateEventStep1ValidationController;
 
 public class CreateEventStep1Activity extends Activity implements Settings{
-	String typeOfEvent;
+	EventLocationDetail eventLocationDetails = new EventLocationDetail();
 	
 	EditText etEventName,etDescription,etLocation;
 	Spinner spinnerCategory,spinnerNoOfParticipants;
@@ -92,10 +93,7 @@ public class CreateEventStep1Activity extends Activity implements Settings{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_event_step_1);
-		Bundle bundle = getIntent().getExtras();
-		if(bundle != null){
-			typeOfEvent = bundle.getString("typeOfEvent","Small Event");
-		}
+		
 		etEventName = (EditText) findViewById(R.id.et_name);
 		spinnerCategory = (Spinner) findViewById(R.id.spinner_category);
 		etDescription = (EditText) findViewById(R.id.et_description);
@@ -117,18 +115,10 @@ public class CreateEventStep1Activity extends Activity implements Settings{
 	    });
 		
 		tvPoster.setVisibility(View.GONE);
-		if(typeOfEvent.equals("Big Event")){
-			tvLocation.setVisibility(View.VISIBLE);
-			tvLocationAlt.setVisibility(View.VISIBLE);
-			etLocation.setVisibility(View.GONE);
-			btnSuggestLocation.setVisibility(View.GONE);
-		}
-		else{
-			tvLocation.setVisibility(View.VISIBLE);
-			tvLocationAlt.setVisibility(View.GONE);
-			etLocation.setVisibility(View.VISIBLE);
-			btnSuggestLocation.setVisibility(View.VISIBLE);
-		}
+		tvLocation.setVisibility(View.VISIBLE);
+		tvLocationAlt.setVisibility(View.GONE);
+		etLocation.setVisibility(View.VISIBLE);
+		btnSuggestLocation.setVisibility(View.VISIBLE);
 	}
 	
 	@Override
@@ -177,16 +167,14 @@ public class CreateEventStep1Activity extends Activity implements Settings{
 			
 			mForm.addValidates(eventNameField);
 			mForm.addValidates(eventDescriptionField);
+			mForm.addValidates(eventLocationField);
 			
 			ArrayList<Validate> validatorsArrList = new ArrayList<Validate>();
 			validatorsArrList.add(eventNameField);
 			validatorsArrList.add(eventDescriptionField);
-			if(!typeOfEvent.equals("Big Event")){
-				mForm.addValidates(eventLocationField);
-				validatorsArrList.add(eventLocationField);
-			}
+			validatorsArrList.add(eventLocationField);
 			
-			CreateEventStep1ValidationController validationController = new CreateEventStep1ValidationController(CreateEventStep1Activity.this,typeOfEvent);
+			CreateEventStep1ValidationController validationController = new CreateEventStep1ValidationController(CreateEventStep1Activity.this,eventLocationDetails);
 			validationController.validateForm(intent, mForm, validatorsArrList);
 			break;
 
@@ -207,6 +195,8 @@ public class CreateEventStep1Activity extends Activity implements Settings{
 			case R.id.btn_suggest_location:{
 				Intent i = new Intent(CreateEventStep1Activity.this,SuggestLocationActivity.class);
 				startActivity(i);
+				eventLocationDetails = new EventLocationDetail(0,0,"Test","Test","Test",1.0,2.0);
+				break;
 			}
 			default:
 				CreateEventStep1Activity.this.finish();

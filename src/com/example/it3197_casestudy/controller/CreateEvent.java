@@ -28,6 +28,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.it3197_casestudy.model.Event;
+import com.example.it3197_casestudy.model.EventLocationDetail;
 import com.example.it3197_casestudy.ui_logic.CreateEventStep2Activity;
 import com.example.it3197_casestudy.ui_logic.MainLinkPage;
 import com.example.it3197_casestudy.ui_logic.ViewAllEventsActivity;
@@ -38,12 +39,13 @@ import com.example.it3197_casestudy.util.Settings;
 public class CreateEvent extends AsyncTask<Object, Object, Object> implements Settings{
 	private CreateEventStep2Activity activity;
 	private Event event;
-	
+	private EventLocationDetail eventLocationDetails;
 	private ProgressDialog dialog;
 	
-	public CreateEvent(CreateEventStep2Activity activity, Event event){
+	public CreateEvent(CreateEventStep2Activity activity, Event event, EventLocationDetail eventLocationDetails){
 		this.activity = activity;
 		this.event = event;
+		this.eventLocationDetails = eventLocationDetails;
 	}
 	
 	@Override
@@ -79,6 +81,12 @@ public class CreateEvent extends AsyncTask<Object, Object, Object> implements Se
 		postParameters.add(new BasicNameValuePair("eventDateTimeTo", sqlDateTimeFormatter.format(event.getEventDateTimeTo())));
 		postParameters.add(new BasicNameValuePair("occurence", event.getOccurence()));
 		postParameters.add(new BasicNameValuePair("noOfParticipants", String.valueOf(event.getNoOfParticipantsAllowed())));
+		
+		postParameters.add(new BasicNameValuePair("locationName", eventLocationDetails.getEventLocationName()));
+		postParameters.add(new BasicNameValuePair("locationAddress", eventLocationDetails.getEventLocationAddress()));
+		postParameters.add(new BasicNameValuePair("locationHyperLink", eventLocationDetails.getEventLocationHyperLink()));
+		postParameters.add(new BasicNameValuePair("lat", String.valueOf(eventLocationDetails.getEventLocationLat())));
+		postParameters.add(new BasicNameValuePair("lng", String.valueOf(eventLocationDetails.getEventLocationLng())));
 		postParameters.add(new BasicNameValuePair("web", "false"));
 		// Instantiate a POST HTTP method
 		try {

@@ -7,6 +7,7 @@ import android.content.Intent;
 
 import com.example.it3197_casestudy.crouton.Crouton;
 import com.example.it3197_casestudy.crouton.Style;
+import com.example.it3197_casestudy.model.EventLocationDetail;
 import com.example.it3197_casestudy.ui_logic.CreateEventStep1Activity;
 import com.example.it3197_casestudy.ui_logic.CreateEventStep2Activity;
 import com.example.it3197_casestudy.util.Settings;
@@ -16,11 +17,11 @@ import com.example.it3197_casestudy.validation.validator.NotEmptyValidator;
 
 public class CreateEventStep1ValidationController implements Settings{
 	private CreateEventStep1Activity activity;
-	private String typeOfEvent;
+	private EventLocationDetail eventLocationDetails;
 	
-	public CreateEventStep1ValidationController(CreateEventStep1Activity activity, String typeOfEvent){
+	public CreateEventStep1ValidationController(CreateEventStep1Activity activity, EventLocationDetail eventLocationDetails){
 		this.activity = activity;
-		this.typeOfEvent = typeOfEvent;
+		this.eventLocationDetails = eventLocationDetails;
 	}
 	
 	public void validateForm(Intent intent,Form mForm,ArrayList<Validate> validatorsArrList){
@@ -30,9 +31,13 @@ public class CreateEventStep1ValidationController implements Settings{
 			intent.putExtra("eventName", activity.getEtEventName().getText().toString());
 			intent.putExtra("eventCategory", activity.getSpinnerCategory().getSelectedItem().toString());
 			intent.putExtra("eventDescription", activity.getEtDescription().getText().toString());
-			intent.putExtra("typeOfEvent", typeOfEvent);
 			intent.putExtra("eventLocation", activity.getEtLocation().getText().toString());
 			intent.putExtra("noOfParticipants", activity.getSpinnerNoOfParticipants().getSelectedItem().toString());
+			intent.putExtra("locationName", eventLocationDetails.getEventLocationName());
+			intent.putExtra("locationAddress", eventLocationDetails.getEventLocationAddress());
+			intent.putExtra("locationHyperLink", eventLocationDetails.getEventLocationHyperLink());
+			intent.putExtra("lat", eventLocationDetails.getEventLocationLat());
+			intent.putExtra("lng", eventLocationDetails.getEventLocationLng());
 			activity.startActivity(intent);
 			activity.finish();
 		}
@@ -47,14 +52,10 @@ public class CreateEventStep1ValidationController implements Settings{
 				crouton.show();
 				return;
 			}
-			if(typeOfEvent.equals("Big Event")){
-			}
-			else{
-				if(!validatorsArrList.get(2).isValid()){
-					Crouton crouton = Crouton.makeText(activity,"Please enter a event location.",Style.ALERT);
-					crouton.show();
-					return;
-				}
+			if(!validatorsArrList.get(2).isValid()){
+				Crouton crouton = Crouton.makeText(activity,"Please enter a event location.",Style.ALERT);
+				crouton.show();
+				return;
 			}
 		}
 	}

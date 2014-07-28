@@ -12,6 +12,7 @@ import com.example.it3197_casestudy.controller.CreateEvent;
 import com.example.it3197_casestudy.crouton.Crouton;
 import com.example.it3197_casestudy.crouton.Style;
 import com.example.it3197_casestudy.model.Event;
+import com.example.it3197_casestudy.model.EventLocationDetail;
 import com.example.it3197_casestudy.ui_logic.CreateEventStep1Activity;
 import com.example.it3197_casestudy.ui_logic.CreateEventStep2Activity;
 import com.example.it3197_casestudy.ui_logic.ViewAllEventsActivity;
@@ -23,11 +24,11 @@ import com.example.it3197_casestudy.validation.validator.NotEmptyValidator;
 
 public class CreateEventStep2ValidationController implements Settings{
 	private CreateEventStep2Activity activity;
-	private String typeOfEvent;
+	private EventLocationDetail eventLocationDetails;
 	
-	public CreateEventStep2ValidationController(CreateEventStep2Activity activity, String typeOfEvent){
+	public CreateEventStep2ValidationController(CreateEventStep2Activity activity, EventLocationDetail eventLocationDetails){
 		this.activity = activity;
-		this.typeOfEvent = typeOfEvent;
+		this.eventLocationDetails = eventLocationDetails;
 	}
 	
 	public void validateForm(Intent intent, Calendar calendarFrom, Calendar calendarTo, Event event, String occurence){
@@ -47,29 +48,20 @@ public class CreateEventStep2ValidationController implements Settings{
 			crouton.show();
 			return;
 		}
-		if(typeOfEvent.equals("Big Event")){
-			if((calendarFrom.after(calendarTo)) || (t.compare(calendarFrom, calendarTo) >= 0) || ((t.compare(calendarFrom, calendarCurrentDate) == 0))){
-				Crouton crouton = Crouton.makeText(activity,"Please choose another date after the starting date.",Style.ALERT);
-				crouton.show();
-				return;
-			}
-			else{
-				event.setEventDateTimeFrom(calendarFrom.getTime());
-				event.setEventDateTimeTo(calendarTo.getTime());
-				event.setOccurence(occurence);
-				System.out.println("Event Name: " + event.getEventName());
-				System.out.println("Event Category: " + event.getEventCategory());
-				System.out.println("Event Description: " + event.getEventDescription());
-				System.out.println("No of participants: " + event.getNoOfParticipantsAllowed());
-				CreateEvent createEvent = new CreateEvent(activity,event);
-				createEvent.execute();
-			}
+		if((calendarFrom.after(calendarTo)) || (t.compare(calendarFrom, calendarTo) >= 0) || ((t.compare(calendarFrom, calendarCurrentDate) == 0))){
+			Crouton crouton = Crouton.makeText(activity,"Please choose another date after the starting date.",Style.ALERT);
+			crouton.show();
+			return;
 		}
 		else{
 			event.setEventDateTimeFrom(calendarFrom.getTime());
 			event.setEventDateTimeTo(calendarTo.getTime());
 			event.setOccurence(occurence);
-			CreateEvent createEvent = new CreateEvent(activity,event);
+			System.out.println("Event Name: " + event.getEventName());
+			System.out.println("Event Category: " + event.getEventCategory());
+			System.out.println("Event Description: " + event.getEventDescription());
+			System.out.println("No of participants: " + event.getNoOfParticipantsAllowed());
+			CreateEvent createEvent = new CreateEvent(activity,event,eventLocationDetails);
 			createEvent.execute();
 		}
 	}
