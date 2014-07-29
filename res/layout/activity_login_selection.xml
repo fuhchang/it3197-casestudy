@@ -44,7 +44,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="35dp"
         android:fontFamily="sans-serif-light"
-        android:src="@drawable/ic_login_page" />
+        android:src="@drawable/logo" />
 
     <com.facebook.widget.LoginButton
         android:id="@+id/btn_login_facebook"

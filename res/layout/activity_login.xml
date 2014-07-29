@@ -97,7 +97,7 @@
 	        android:layout_alignParentTop="true"
 	        android:layout_marginTop="35dp"
 	        android:fontFamily="sans-serif-light"
-	        android:src="@drawable/ic_login_page"
+	        android:src="@drawable/logo"
 	        tools:ignore="ContentDescription" />
 	    
 </RelativeLayout>
