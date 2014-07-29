@@ -72,7 +72,7 @@ public class ArticleSelectedDisplay extends Fragment{
 		//map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
 		//map.setMapType(GoogleMap.MAP_TYPE_TERRAIN);	
 		
-		map.setTrafficEnabled(true);
+		//map.setTrafficEnabled(true);
 		  
 		//map.setTrafficEnabled(true);
 		  
