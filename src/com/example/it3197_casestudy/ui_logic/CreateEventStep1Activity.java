@@ -1,9 +1,19 @@
 package com.example.it3197_casestudy.ui_logic;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.transition.Visibility;
@@ -20,6 +30,7 @@ import android.widget.TextView;
 
 import com.dropbox.chooser.android.DbxChooser;
 import com.example.it3197_casestudy.R;
+import com.example.it3197_casestudy.controller.GetImageFromDropbox;
 import com.example.it3197_casestudy.crouton.Crouton;
 import com.example.it3197_casestudy.crouton.Style;
 import com.example.it3197_casestudy.model.EventLocationDetail;
@@ -40,6 +51,7 @@ public class CreateEventStep1Activity extends Activity implements Settings{
 	static final int DBX_CHOOSER_REQUEST = 0;  // You can change this if needed
 	Button btnUploadEventPoster,btnSuggestLocation;
 	private DbxChooser mChooser;
+	private String posterFileName;
 	
 	public EditText getEtEventName() {
 		return etEventName;
@@ -110,10 +122,11 @@ public class CreateEventStep1Activity extends Activity implements Settings{
 		btnUploadEventPoster.setOnClickListener(new OnClickListener(){
 	        @Override
 	        public void onClick(View v) {
-	          mChooser.forResultType(DbxChooser.ResultType.FILE_CONTENT).launch(CreateEventStep1Activity.this, DBX_CHOOSER_REQUEST);
+	          mChooser.forResultType(DbxChooser.ResultType.PREVIEW_LINK).launch(CreateEventStep1Activity.this, DBX_CHOOSER_REQUEST);
 	        }
 	    });
 		
+		ivPoster.setVisibility(View.GONE);
 		tvPoster.setVisibility(View.GONE);
 		tvLocation.setVisibility(View.VISIBLE);
 		tvLocationAlt.setVisibility(View.GONE);
@@ -128,10 +141,12 @@ public class CreateEventStep1Activity extends Activity implements Settings{
 	            DbxChooser.Result result = new DbxChooser.Result(data);
 	            Log.d("main", "Link to selected file name: " + result.getName());
 	            String fileName = result.getName();
+	            posterFileName = result.getLink().toString() + "?dl=1";
 	            String validatingFileName = fileName.substring(fileName.lastIndexOf("."),fileName.length());
 	            Log.d("main", "Link to selected file extension: " + validatingFileName);
 	            Log.d("main", "Link to selected file: " + result.getLink());
-	            ivPoster.setImageURI(result.getLink());
+	            GetImageFromDropbox getImageFromDropbox = new GetImageFromDropbox(CreateEventStep1Activity.this,ivPoster, posterFileName,fileName);
+	            getImageFromDropbox.execute();
 	            tvPoster.setVisibility(View.VISIBLE);
 	            // Handle the result
 	        } else {
@@ -175,7 +190,7 @@ public class CreateEventStep1Activity extends Activity implements Settings{
 			validatorsArrList.add(eventLocationField);
 			
 			CreateEventStep1ValidationController validationController = new CreateEventStep1ValidationController(CreateEventStep1Activity.this,eventLocationDetails);
-			validationController.validateForm(intent, mForm, validatorsArrList);
+			validationController.validateForm(intent, mForm, validatorsArrList,posterFileName);
 			break;
 
 		case R.id.cancel:

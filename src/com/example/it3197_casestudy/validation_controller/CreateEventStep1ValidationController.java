@@ -24,10 +24,11 @@ public class CreateEventStep1ValidationController implements Settings{
 		this.eventLocationDetails = eventLocationDetails;
 	}
 	
-	public void validateForm(Intent intent,Form mForm,ArrayList<Validate> validatorsArrList){
+	public void validateForm(Intent intent,Form mForm,ArrayList<Validate> validatorsArrList, String posterFileName){
 		// Launch Validation
 		if(mForm.validate()){
 			intent = new Intent(activity, CreateEventStep2Activity.class);
+			intent.putExtra("posterFileName", posterFileName);
 			intent.putExtra("eventName", activity.getEtEventName().getText().toString());
 			intent.putExtra("eventCategory", activity.getSpinnerCategory().getSelectedItem().toString());
 			intent.putExtra("eventDescription", activity.getEtDescription().getText().toString());

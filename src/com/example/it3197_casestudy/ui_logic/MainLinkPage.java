@@ -1,8 +1,6 @@
 package com.example.it3197_casestudy.ui_logic;
 
 import java.util.ArrayList;
-
-
 import java.util.List;
 
 import com.example.it3197_casestudy.R;
@@ -13,6 +11,7 @@ import com.example.it3197_casestudy.model.User;
 import com.example.it3197_casestudy.util.GridImageList;
 import com.example.it3197_casestudy.util.LocationService;
 import com.example.it3197_casestudy.ui_logic.SubmitArticle;
+import com.facebook.Session;
 
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -185,9 +184,16 @@ public class MainLinkPage extends Activity {
 			
 	         @Override
 	         public void onClick(DialogInterface arg0, int arg1) {
-	        	Intent i = new Intent(MainLinkPage.this,LoginActivity.class);
-	     		startActivity(i);
-	     		MainLinkPage.this.finish();
+	        	Intent i;
+	        	if(Session.getActiveSession() != null){
+		        	i = new Intent(MainLinkPage.this,LoginSelectionActivity.class);
+		        	Session.getActiveSession().closeAndClearTokenInformation();
+	        	}
+	        	else{
+	        		i = new Intent(MainLinkPage.this,LoginActivity.class);
+	        	}
+        		startActivity(i);
+        		MainLinkPage.this.finish();
 	         }
 	      });
 	      alertDialogBuilder.setPositiveButton("No", 

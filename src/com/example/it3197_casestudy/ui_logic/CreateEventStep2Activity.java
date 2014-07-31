@@ -11,6 +11,8 @@ import com.example.it3197_casestudy.util.Settings;
 import com.example.it3197_casestudy.validation.Form;
 import com.example.it3197_casestudy.validation.validate.ConfirmValidate;
 import com.example.it3197_casestudy.validation_controller.CreateEventStep2ValidationController;
+import com.facebook.UiLifecycleHelper;
+import com.facebook.widget.FacebookDialog;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -58,13 +60,19 @@ public class CreateEventStep2Activity extends Activity implements Settings{
 
 	static final int TIME_DIALOG_ID = 99;
 	static final int TIME_DIALOG_ID_1 = 100;
+	private UiLifecycleHelper uiHelper;
+	private String posterFileName;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_event_step_2);
+		uiHelper = new UiLifecycleHelper(this, null);
+	    uiHelper.onCreate(savedInstanceState);
+	    
 		Bundle bundle = getIntent().getExtras();
 		if(bundle != null){
+			posterFileName = bundle.getString("posterFileName", "");
 			String eventName = bundle.getString("eventName", "");
 			String eventCategory = bundle.getString("eventCategory","");
 			String eventDescription = bundle.getString("eventDescription", "");
@@ -155,7 +163,7 @@ public class CreateEventStep2Activity extends Activity implements Settings{
 			System.out.println("From Date: " + sqlDateTimeFormatter.format(calendarFrom.getTime()));
 			System.out.println("To Date: " + sqlDateTimeFormatter.format(calendarTo.getTime()));
 			
-			CreateEventStep2ValidationController controller = new CreateEventStep2ValidationController(CreateEventStep2Activity.this,eventLocationDetails);
+			CreateEventStep2ValidationController controller = new CreateEventStep2ValidationController(CreateEventStep2Activity.this,eventLocationDetails,posterFileName);
 			controller.validateForm(intent,calendarFrom,calendarTo,event,spinnerRepeats.getSelectedItem().toString());
 			break;
 		case R.id.previous:
@@ -280,5 +288,46 @@ public class CreateEventStep2Activity extends Activity implements Settings{
 		   return String.valueOf(c);
 		else
 		   return "0" + String.valueOf(c);
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	    super.onActivityResult(requestCode, resultCode, data);
+
+	    uiHelper.onActivityResult(requestCode, resultCode, data, new FacebookDialog.Callback() {
+	        @Override
+	        public void onError(FacebookDialog.PendingCall pendingCall, Exception error, Bundle data) {
+	            Log.e("Activity", String.format("Error: %s", error.toString()));
+	        }
+
+	        @Override
+	        public void onComplete(FacebookDialog.PendingCall pendingCall, Bundle data) {
+	            Log.i("Activity", "Success!");
+	        }
+	    });
+	}
+	
+	@Override
+	protected void onResume() {
+	    super.onResume();
+	    uiHelper.onResume();
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+	    super.onSaveInstanceState(outState);
+	    uiHelper.onSaveInstanceState(outState);
+	}
+
+	@Override
+	public void onPause() {
+	    super.onPause();
+	    uiHelper.onPause();
+	}
+
+	@Override
+	public void onDestroy() {
+	    super.onDestroy();
+	    uiHelper.onDestroy();
 	}
 }

@@ -93,8 +93,8 @@ public class LoginSelectionActivity extends FragmentActivity {
 	private Session.StatusCallback callback = new Session.StatusCallback() {
 		@Override
 		public void call(Session session, SessionState state, Exception exception) {
-			if(!state.isClosed()){
-				//loginViaFB(session);
+			if(!Session.getActiveSession().isClosed()){
+				loginViaFB(session);
 			}
 		}
 	};
@@ -104,46 +104,48 @@ public class LoginSelectionActivity extends FragmentActivity {
 		super.onResume();
 		Session session = Session.getActiveSession();
 		if (session != null && (session.isOpened() || session.isClosed())) {
-			//loginViaFB(session);
+			loginViaFB(session);
 		}
 		uiHelper.onResume();
 	}
 	
 	private void loginViaFB(Session session){
 		onSessionStateChange(session, session.getState(), null);
-		final ProgressDialog dialog = ProgressDialog.show(this, "Logging in...", "Please Wait. ");
-		Request.newMeRequest(session, new Request.GraphUserCallback() {
-			// callback after Graph API response with user object
-			@Override
-			public void onCompleted(GraphUser user, Response response) {
-				if (user != null) {
-					
-					Intent intent = new Intent(LoginSelectionActivity.this,MainLinkPage.class);
-					dialog.dismiss();
-					intent.putExtra("userName", user.getName());
-					startActivity(intent);
-					LoginSelectionActivity.this.finish();
+		if(!Session.getActiveSession().isClosed()){
+			final ProgressDialog dialog = ProgressDialog.show(this, "Logging in...", "Please Wait. ");
+			Request.newMeRequest(session, new Request.GraphUserCallback() {
+				//callback after Graph API response with user object
+				@Override
+				public void onCompleted(GraphUser user, Response response) {
+					if (user != null) {
+						
+						Intent intent = new Intent(LoginSelectionActivity.this,MainLinkPage.class);
+						dialog.dismiss();
+						intent.putExtra("userName", user.getName());
+						startActivity(intent);
+						LoginSelectionActivity.this.finish();
+					}
+					else{
+						new Handler(Looper.getMainLooper()).post(new Runnable() {
+					        public void run() {
+					            dialog.dismiss();
+					            AlertDialog.Builder builder = new AlertDialog.Builder(LoginSelectionActivity.this);
+					            builder.setTitle("Error in logging in with Facebook ");
+					            builder.setMessage("Unable to logging in with Facebook. Please try again.");
+					            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(DialogInterface dialog, int which) {
+										// TODO Auto-generated method stub
+										Session.getActiveSession().close();
+									}
+								});
+					            builder.create().show();
+					        }
+						});
+					}
 				}
-				else{
-					new Handler(Looper.getMainLooper()).post(new Runnable() {
-				        public void run() {
-				            dialog.dismiss();
-				            AlertDialog.Builder builder = new AlertDialog.Builder(LoginSelectionActivity.this);
-				            builder.setTitle("Error in logging in with Facebook ");
-				            builder.setMessage("Unable to logging in with Facebook. Please try again.");
-				            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog, int which) {
-									// TODO Auto-generated method stub
-									Session.getActiveSession().close();
-								}
-							});
-				            builder.create().show();
-				        }
-					});
-				}
-			}
-		}).executeAsync();
+			}).executeAsync();
+		}
 	}
 	
 

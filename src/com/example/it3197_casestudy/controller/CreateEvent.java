@@ -108,9 +108,6 @@ public class CreateEvent extends AsyncTask<Object, Object, Object> implements Se
 			if(success){
 				dialog.dismiss();
 				Toast.makeText(activity.getApplicationContext(),"Event created successfully.", Toast.LENGTH_SHORT).show();
-				Intent intent = new Intent(activity,ViewAllEventsActivity.class);
-				activity.startActivity(intent);
-				activity.finish();
 			}
 			else{
 				errorOnExecuting();
