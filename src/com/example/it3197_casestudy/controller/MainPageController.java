@@ -38,6 +38,7 @@ import com.example.it3197_casestudy.ui_logic.MainActivity;
 import com.example.it3197_casestudy.ui_logic.MainPageAdapter;
 import com.example.it3197_casestudy.ui_logic.SubmitArticle;
 import com.example.it3197_casestudy.ui_logic.ViewAllEventsActivity;
+import com.example.it3197_casestudy.ui_logic.ViewEventsActivity;
 import com.example.it3197_casestudy.ui_logic.ViewHobbiesMain;
 import com.example.it3197_casestudy.util.Settings;
 
@@ -91,14 +92,31 @@ public class MainPageController extends AsyncTask<Object, Object, Object> implem
 		listView.setOnItemClickListener(new OnItemClickListener(){
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int pos,
+			public void onItemClick(AdapterView<?> arg0, View view, int pos,
 					long arg3) {
 				// TODO Auto-generated method stub
 				
 				
 				if(pos == 0){
 					//intent to event
-					Intent eve = new Intent(activity, ViewAllEventsActivity.class);
+					Intent eve = new Intent(activity, ViewEventsActivity.class);
+			        eve.putExtra("eventID", view.getId());
+			        Event event = new Event();
+			        for(int i=0;i<eventList.size();i++){
+			        	if(eventList.get(i).getEventID() == view.getId()){
+			        		event = eventList.get(i);
+			        	}
+			        }
+					eve.putExtra("eventAdminNRIC", event.getEventAdminNRIC());
+					eve.putExtra("eventName", event.getEventName());
+					eve.putExtra("eventCategory", event.getEventCategory());
+					eve.putExtra("eventDescription", event.getEventDescription());
+					eve.putExtra("eventDateTimeFrom", sqlDateTimeFormatter.format(event.getEventDateTimeFrom()));
+					eve.putExtra("eventDateTimeTo", sqlDateTimeFormatter.format(event.getEventDateTimeTo()));
+					eve.putExtra("occurence", event.getOccurence());
+					eve.putExtra("noOfParticipants", event.getNoOfParticipantsAllowed());
+					eve.putExtra("active", event.getActive());
+
 					activity.startActivity(eve);
 					//Toast.makeText(activity, "Link to Event", Toast.LENGTH_SHORT).show();
 				}
@@ -173,10 +191,17 @@ public class MainPageController extends AsyncTask<Object, Object, Object> implem
 			for(int i = 0 ; i< event_array.length(); i++){
 				JSONObject dataJob = new JSONObject(event_array.getString(i));
 				event = new Event();
-				
-				event.setEventName(dataJob.getString("eventName"));				
-				event.setEventDescription(dataJob.getString("eventDescription"));
 
+				event.setEventID(dataJob.getInt("eventID"));
+				event.setEventAdminNRIC(dataJob.getString("eventAdminNRIC"));
+				event.setEventName(dataJob.getString("eventName"));
+				event.setEventCategory(dataJob.getString("eventCategory"));
+				event.setEventDescription(dataJob.getString("eventDescription"));
+				event.setEventDateTimeFrom(sqlDateTimeFormatter.parse(dataJob.getString("eventDateTimeFrom")));
+				event.setEventDateTimeTo(sqlDateTimeFormatter.parse(dataJob.getString("eventDateTimeTo")));
+				event.setOccurence(dataJob.getString("occurence"));
+				event.setNoOfParticipantsAllowed(dataJob.getInt("noOfParticipantsAllowed"));
+				event.setActive(dataJob.getInt("active"));
 				
 				eventList.add(event);
 			}

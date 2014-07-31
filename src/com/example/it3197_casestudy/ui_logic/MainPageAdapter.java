@@ -18,8 +18,9 @@ import com.example.it3197_casestudy.model.Article;
 import com.example.it3197_casestudy.model.Combined;
 import com.example.it3197_casestudy.model.Event;
 import com.example.it3197_casestudy.model.Hobby;
+import com.example.it3197_casestudy.util.Settings;
 
-public class MainPageAdapter extends ArrayAdapter<Combined>{
+public class MainPageAdapter extends ArrayAdapter<Combined> implements Settings{
 	private final Activity context;
 	private ArrayList<Article> articleArray = new ArrayList<Article>();
 	private ArrayList<Event> eventArray = new ArrayList<Event>();
@@ -55,13 +56,14 @@ public class MainPageAdapter extends ArrayAdapter<Combined>{
 				go.setBackgroundResource(R.drawable.main_go);
 				
 				if(position == 0){
+					rowView.setId(eventArray.get(0).getEventID());
 					txtType.setText(" Event: ");
 					
 					String myHexColor = "#FF0000";
 					//txtType.setBackgroundColor(Color.parseColor(myHexColor));
 					txtTitle.setText(eventArray.get(0).getEventName());
 					
-					txtDate.setText("Date here");
+					txtDate.setText(dateTimeFormatter.format(eventArray.get(0).getEventDateTimeFrom()));
 					txtDesc.setText(eventArray.get(0).getEventDescription());
 					iv.setImageResource(R.drawable.event_main2);
 					
