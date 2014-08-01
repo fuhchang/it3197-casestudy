@@ -1,5 +1,7 @@
 package com.example.it3197_casestudy.ui_logic;
 
+import java.security.MessageDigest;
+
 import com.example.it3197_casestudy.R;
 import com.facebook.Request;
 import com.facebook.Response;
@@ -13,13 +15,18 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.FragmentActivity;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -42,7 +49,7 @@ public class LoginSelectionActivity extends FragmentActivity {
 		// Hide the action bar
 		loginActionBar.hide();
 		setContentView(R.layout.activity_login_selection);
-		
+		getHaskKey(LoginSelectionActivity.this);
 	}
 	
 	/**
@@ -171,5 +178,18 @@ public class LoginSelectionActivity extends FragmentActivity {
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		uiHelper.onSaveInstanceState(outState);
+	}
+	
+	public static void getHaskKey(Context context){
+		try {
+			PackageInfo info = context.getPackageManager().getPackageInfo("com.example.it3197_casestudy.ui_logic", PackageManager.GET_SIGNATURES); //Your package name here
+			for (Signature signature : info.signatures) {
+				MessageDigest md = MessageDigest.getInstance("SHA");
+		        md.update(signature.toByteArray());
+		        Log.v("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
