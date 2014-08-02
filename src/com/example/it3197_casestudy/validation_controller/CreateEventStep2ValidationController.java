@@ -115,7 +115,7 @@ public class CreateEventStep2ValidationController implements Settings{
 
 	        Bundle postParams = new Bundle();
 	        postParams.putString("name", event.getEventName());
-	        postParams.putString("caption", event.getEventDateTimeFrom() + "-" + event.getEventDateTimeTo());
+	        postParams.putString("caption", dateTimeFormatter.format(event.getEventDateTimeFrom()) + " -- " + dateTimeFormatter.format(event.getEventDateTimeTo()));
 	        postParams.putString("description", event.getEventDescription());
 	        postParams.putString("link", "localhost:8080/CommunityOutreach/");
 	        postParams.putString("picture", posterFileName);
