@@ -1,5 +1,7 @@
 package com.example.it3197_casestudy.model;
 
+import com.mysql.jdbc.Blob;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -12,14 +14,14 @@ public class Hobby implements Parcelable {
 	private String description;
 	private int active;
 	private String adminNric;
-	private byte[] GrpImg;
-
+	private String GrpImg;
+	private byte[] sendImg;
 	public Hobby() {
 
 	}
 
 	public Hobby(int groupID, String groupName, String category, double Lat,
-			double Lng, String desc, int active, String adminNric) {
+			double Lng, String desc, int active, String adminNric, String GrpImg) {
 		this.groupID = groupID;
 		this.groupName = groupName;
 		this.category = category;
@@ -28,6 +30,7 @@ public class Hobby implements Parcelable {
 		this.description = desc;
 		this.active = active;
 		this.adminNric = adminNric;
+		this.setGrpImg(GrpImg);
 	}
 
 	public int getGroupID() {
@@ -70,13 +73,7 @@ public class Hobby implements Parcelable {
 		this.active = active;
 	}
 
-	public byte[] getGrpImg() {
-		return GrpImg;
-	}
 
-	public void setGrpImg(byte[] grpImg) {
-		GrpImg = grpImg;
-	}
 
 	public double getLat() {
 		return Lat;
@@ -154,5 +151,33 @@ public class Hobby implements Parcelable {
 		this.description = in.readString();
 		this.active = in.readInt();
 		this.adminNric = in.readString();
+	}
+
+	/**
+	 * @return the grpImg
+	 */
+	public String getGrpImg() {
+		return GrpImg;
+	}
+
+	/**
+	 * @param grpImg the grpImg to set
+	 */
+	public void setGrpImg(String grpImg) {
+		GrpImg = grpImg;
+	}
+
+	/**
+	 * @return the sendImg
+	 */
+	public byte[] getSendImg() {
+		return sendImg;
+	}
+
+	/**
+	 * @param sendImg the sendImg to set
+	 */
+	public void setSendImg(byte[] sendImg) {
+		this.sendImg = sendImg;
 	}
 }

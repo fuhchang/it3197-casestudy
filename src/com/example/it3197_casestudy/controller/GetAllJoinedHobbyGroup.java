@@ -75,6 +75,7 @@ implements Settings{
 				intent.putExtra("Lat", allJoinedhobbyList.get(position).getLat());
 				intent.putExtra("Lng", allJoinedhobbyList.get(position).getLng());
 				intent.putExtra("adminNric", allJoinedhobbyList.get(position).getAdminNric());
+				intent.putExtra("grpImg", allJoinedhobbyList.get(position).getGrpImg());
 				intent.putExtra("member", "member");
 				intent.putExtra("userNric", nric);
 				activity.startActivity(intent);

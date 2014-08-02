@@ -1,8 +1,11 @@
 package com.example.it3197_casestudy.listview;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.R.layout;
@@ -11,10 +14,14 @@ import com.example.it3197_casestudy.controller.DeletePost;
 import com.example.it3197_casestudy.model.Hobby;
 import com.example.it3197_casestudy.model.HobbyPost;
 
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -29,10 +36,11 @@ public class PostListView extends ArrayAdapter<HobbyPost> {
 	private Activity activity;
 	private ArrayList<HobbyPost> resultArray = new ArrayList<HobbyPost>();
 	private int adminRight;
-	Button edit, delete;
 	private String nric;
 	private int selectedPos = 0;
-
+	private String Address, City;
+	private SparseBooleanArray mSelectedItemsIds;
+	TextView addressTV ;
 	public PostListView(Context context, ArrayList<HobbyPost> postList,
 			int adminRight, String nric) {
 		super(context, R.layout.activity_post_list_view, postList);
@@ -40,48 +48,26 @@ public class PostListView extends ArrayAdapter<HobbyPost> {
 		this.resultArray = postList;
 		this.adminRight = adminRight;
 		this.nric = nric;
+		mSelectedItemsIds = new SparseBooleanArray();
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
 		LayoutInflater inflater = activity.getLayoutInflater();
 		View rowView = inflater.inflate(R.layout.activity_post_list_view, null,
 				true);
 		rowView.setBackgroundColor(Color.WHITE);
-		edit = (Button) rowView.findViewById(R.id.Edit);
-		delete = (Button) rowView.findViewById(R.id.Delete);
-		edit.setBackgroundColor(Color.LTGRAY);
-		delete.setBackgroundColor(Color.LTGRAY);
 		selectedPos = position;
-		delete.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				HobbyPost post = new HobbyPost();
-				post.setPostID(resultArray.get(selectedPos).getPostID());
-				DeletePost delPost = new DeletePost(PostListView.this, post);
-				delPost.execute();
-			}
-		});
-		delete.setVisibility(View.INVISIBLE);
-		edit.setVisibility(View.INVISIBLE);
-		if (adminRight == 1) {
-			delete.setVisibility(View.VISIBLE);
-		}
-		if (nric.equals(resultArray.get(position).getPosterNric())) {
-			delete.setVisibility(View.VISIBLE);
-			edit.setVisibility(View.VISIBLE);
-		}
+	
 		TextView postTitle = (TextView) rowView.findViewById(R.id.postID);
 		TextView postDate = (TextView) rowView.findViewById(R.id.postDate);
-		TextView postContent = (TextView) rowView
-				.findViewById(R.id.postContent);
+		TextView postContent = (TextView) rowView.findViewById(R.id.postContent);
+		addressTV = (TextView) rowView.findViewById(R.id.Address);
 		postTitle.setTextSize(35);
 		postDate.setTextSize(20);
 		postContent.setTextSize(15);
-
+		getMyLocationAddress(resultArray.get(position).getLat(), resultArray.get(position).getLng());
 		View hr = rowView.findViewById(R.id.hr);
 		hr.setBackgroundColor(Color.GRAY);
 		View hr2 = rowView.findViewById(R.id.hr2);
@@ -95,5 +81,46 @@ public class PostListView extends ArrayAdapter<HobbyPost> {
 		postContent.setText(resultArray.get(position).getContent());
 		return rowView;
 	}
+	
+	public void toggleSelection(int position) {
+		selectView(position, !mSelectedItemsIds.get(position));
+	}
 
+	public void removeSelection() {
+		mSelectedItemsIds = new SparseBooleanArray();
+		notifyDataSetChanged();
+	}
+
+	public void selectView(int position, boolean value) {
+		if (value)
+			mSelectedItemsIds.put(position, value);
+		else
+			mSelectedItemsIds.delete(position);
+		notifyDataSetChanged();
+	}
+
+	public int getSelectedCount() {
+		return mSelectedItemsIds.size();
+	}
+
+	public SparseBooleanArray getSelectedIds() {
+		return mSelectedItemsIds;
+	}
+
+	public void getMyLocationAddress(double lat, double lng){
+		
+		 try {
+			 Geocoder geocoder;  
+	 	      List<Address> addresses;
+	 	      geocoder = new Geocoder(activity, Locale.getDefault());
+			addresses = geocoder.getFromLocation(lat, lng, 1);
+			Address = addresses.get(0).getAddressLine(0);
+			City = addresses.get(0).getAddressLine(1);
+			addressTV.setText(Address + " " + City);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 
+	}
 }

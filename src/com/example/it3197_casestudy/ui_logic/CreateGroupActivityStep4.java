@@ -1,14 +1,32 @@
 package com.example.it3197_casestudy.ui_logic;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import java.util.List;
 import java.util.Locale;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.ByteArrayBody;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.R.layout;
 import com.example.it3197_casestudy.R.menu;
 import com.example.it3197_casestudy.controller.CreatehobbyGroup;
+import com.example.it3197_casestudy.controller.ImageUploader;
 import com.example.it3197_casestudy.model.Hobby;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -24,12 +42,18 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
+import android.graphics.BitmapFactory;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -58,6 +82,8 @@ public class CreateGroupActivityStep4 extends Activity implements LocationListen
 	TextView addressTV;
 	EditText findAddress;
 	Button findLoc, createGrp;
+	byte[] byteImg;
+	String imgPath;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -65,6 +91,9 @@ public class CreateGroupActivityStep4 extends Activity implements LocationListen
 		title = getIntent().getStringExtra("eventName");
 		type = getIntent().getStringExtra("category");
 		gDesc = getIntent().getStringExtra("eventDesc");
+		byteImg = getIntent().getByteArrayExtra("byteImg");
+		imgPath = getIntent().getStringExtra("imgPath");
+		
 		addressTV = (TextView) findViewById(R.id.LocAddress);
 		findAddress = (EditText) findViewById(R.id.addressET);
 		findLoc = (Button) findViewById(R.id.btnFind);
@@ -115,9 +144,6 @@ public class CreateGroupActivityStep4 extends Activity implements LocationListen
 	      addresses = geocoder.getFromLocation(newPosition.latitude, newPosition.longitude,1);
 	      Address = addresses.get(0).getAddressLine(0);
 	       City = addresses.get(0).getAddressLine(1);
-	       mp.setTitle(addresses.get(0).getAddressLine(0) + ", " + addresses.get(0).getAddressLine(1));
-	       mp.setSnippet("(Co-ordinates: " + newPosition.latitude + ", " + newPosition.longitude + ").");
-	       mp.showInfoWindow();
 	       mp.setTitle(addresses.get(0).getAddressLine(0) + ", " + addresses.get(0).getAddressLine(1));
 	       mp.showInfoWindow();
 	       
@@ -316,7 +342,6 @@ public class CreateGroupActivityStep4 extends Activity implements LocationListen
 		// TODO Auto-generated method stub
 		switch(item.getItemId()){
 		case R.id.createGrp:
-		Intent intentValue = getIntent();
 		Hobby hobby = new Hobby();
 		hobby.setGroupName(title);
 		hobby.setCategory(type);
@@ -324,11 +349,41 @@ public class CreateGroupActivityStep4 extends Activity implements LocationListen
 		hobby.setLat(lat);
 		hobby.setLng(Lng);
 		hobby.setAdminNric(getIntent().getExtras().getString("nric"));
+		
 		CreatehobbyGroup createHobby = new CreatehobbyGroup(CreateGroupActivityStep4.this, hobby);
 		createHobby.execute();
+		
+		ImageUploader upload = new ImageUploader(this,hobby, imgPath );
+		upload.execute();
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	public static byte[] fileToByteArray(String path) throws IOException {
+	    File imagefile = new File(path);
+	    byte[] data = new byte[(int) imagefile.length()];
+	    FileInputStream fis = new FileInputStream(imagefile);
+	    fis.read(data);
+	    fis.close();
+	    return data;
+	}
+	
+	// And to convert the image URI to the direct file system path of the image file
+	public String getRealPathFromURI(Uri contentUri) {
+
+	        // can post image
+	        String [] proj={MediaStore.Images.Media.DATA};
+	        Cursor cursor = managedQuery( contentUri,
+	                        proj, // Which columns to return
+	                        null,       // WHERE clause; which rows to return (all rows)
+	                        null,       // WHERE clause selection arguments (none)
+	                        null); // Order-by clause (ascending by name)
+	        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+	        cursor.moveToFirst();
+
+	        return cursor.getString(column_index);
+	}
+	
 	
 	
 }

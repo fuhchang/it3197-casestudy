@@ -1,5 +1,6 @@
 package com.example.it3197_casestudy.ui_logic;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import com.dropbox.chooser.android.R.color;
@@ -17,10 +18,13 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +37,8 @@ public class ViewSingleHobby extends Activity {
 	String adminNric;
 	int adminRight = 0;
 	String memberCheck;
+	String grpImg;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -41,9 +47,10 @@ public class ViewSingleHobby extends Activity {
 		
 		String grpName = getIntent().getExtras().getString("grpName");
 		int id = getIntent().getExtras().getInt("grpID");
-		memberCheck = getIntent().getExtras().getString("member");
+		
 		userNric = getIntent().getExtras().getString("userNric");
 		adminNric = getIntent().getExtras().getString("adminNric");
+		grpImg = getIntent().getExtras().getString("grpImg");
 		grpTitle = (TextView) findViewById(R.id.grpTile);
 		grpTitle.setTextSize(40);
 		grpTitle.setText(grpName);
@@ -52,22 +59,32 @@ public class ViewSingleHobby extends Activity {
 		if(userNric.equals(adminNric)){
 			adminRight = 1;
 		}
-		getPostController getPostList = new getPostController(this, id,itemList, adminRight, userNric);
+		File imgFile = new  File("grpImg");
+		if(imgFile.exists()){
+
+		    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+
+		    ImageView myImage = (ImageView) findViewById(R.id.grpImg);
+		    myImage.setImageBitmap(myBitmap);
+
+		}
+		getPostController getPostList = new getPostController(this, id,itemList, adminRight, userNric, adminNric, grpName);
 		getPostList.execute();
 	}
 	
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		// TODO Auto-generated method stub
+		memberCheck = getIntent().getExtras().getString("member");
 		if(adminRight == 0){
 			menu.removeItem(R.id.action_update_group);
-			if(memberCheck.equals("none")){
-				menu.removeItem(R.id.action_new);
+			if(memberCheck.equals("member")){
+				menu.removeItem(R.id.action_join_group);	
 			}else{
-				menu.removeItem(R.id.action_join_group);
+				menu.removeItem(R.id.action_new);
 			}
 		}else{
-			
+			menu.removeItem(R.id.action_join_group);	
 		}
 		
 		return super.onPrepareOptionsMenu(menu);

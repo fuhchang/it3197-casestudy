@@ -47,7 +47,6 @@
         android:layout_below="@+id/gDesc"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="5dp"
-        android:src="@drawable/test" />
+        android:layout_marginTop="5dp" />
 
 </RelativeLayout>

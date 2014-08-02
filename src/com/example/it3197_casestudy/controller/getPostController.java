@@ -1,6 +1,7 @@
 package com.example.it3197_casestudy.controller;
 
 import java.io.IOException;
+
 import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -22,27 +23,38 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.AbsListView;
 import android.widget.AbsListView.MultiChoiceModeListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
-
+import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.listview.HobbyListView;
 import com.example.it3197_casestudy.listview.PostListView;
 import com.example.it3197_casestudy.model.HobbyPost;
+import com.example.it3197_casestudy.ui_logic.UpdatePost;
 import com.example.it3197_casestudy.ui_logic.ViewHobbiesMain;
 import com.example.it3197_casestudy.ui_logic.ViewSingleHobby;
+import com.example.it3197_casestudy.util.MySharedPreferences;
 import com.example.it3197_casestudy.util.Settings;
+import com.example.it3197_casestudy.util.SwipeDismissListViewTouchListener;
 
 public class getPostController extends AsyncTask<Object, Object, Object>
 		implements Settings {
@@ -54,12 +66,17 @@ public class getPostController extends AsyncTask<Object, Object, Object>
 	private ProgressDialog dialog;
 	private int adminRight;
 	private String userNric;
-	public getPostController(ViewSingleHobby activity, int id, ListView itemList, int adminRight, String nric){
+	private String grpName;
+	private String adminNric;
+	ArrayList<HobbyPost> selected_post = new ArrayList<HobbyPost>();
+	public getPostController(ViewSingleHobby activity, int id, ListView itemList, int adminRight, String nric, String adminNric,String grpName){
 		this.activity = activity;
 		this.id = id;
 		this.itemList = itemList;
 		this.adminRight = adminRight;
 		this.userNric = nric;
+		this.adminNric = adminNric;
+		this.grpName = grpName;
 	}
 	
 	@Override
@@ -83,6 +100,78 @@ public class getPostController extends AsyncTask<Object, Object, Object>
 		dialog.dismiss();
 		postListView = new PostListView(activity,getList, adminRight, userNric);
 		itemList.setAdapter(postListView);
+		
+		
+		SwipeDismissListViewTouchListener touchListener = new SwipeDismissListViewTouchListener(itemList, new SwipeDismissListViewTouchListener.DismissCallbacks(){
+			@SuppressWarnings("deprecation")
+			@Override
+			public void onDismiss(ListView listView, int[] reverseSortedPositions) {
+				// TODO Auto-generated method stub
+				MySharedPreferences preferences = new MySharedPreferences(activity);
+				final String userNric = preferences.getPreferences("nric", "none");
+				
+				for(int position : reverseSortedPositions) {
+					final int tempt = position;
+					AlertDialog Builder = new AlertDialog.Builder(activity).create();
+					Builder.setTitle("Deletion");
+					Builder.setMessage("Click yes to delete post");
+					
+					Builder.setButton(AlertDialog.BUTTON_NEGATIVE, "Edit", new DialogInterface.OnClickListener() {
+
+					      public void onClick(DialogInterface dialog, int id) {
+					    	  if(userNric.equals(postListView.getItem(tempt).getPosterNric())){
+					    		  Intent intent = new Intent(activity, UpdatePost.class);
+					    		  intent.putExtra("postTitle", getList.get(tempt).getPostTitle());
+					    		  intent.putExtra("postID", getList.get(tempt).getPostID());
+					    		  intent.putExtra("userNric", getList.get(tempt).getPosterNric());
+					    		  intent.putExtra("grpID", getList.get(tempt).getGrpID());
+					    		  intent.putExtra("content", getList.get(tempt).getContent());
+					    		  intent.putExtra("adminNric", adminNric);
+					    		  intent.putExtra("grpName", grpName);
+					    		  
+					    		  activity.startActivity(intent);
+					    		  
+					    	  }else{
+					    		  Toast.makeText(activity, "Sorry you do not have permission do edit", Toast.LENGTH_LONG).show();
+					    	  }
+					        
+					    } }); 
+					Builder.setButton(AlertDialog.BUTTON_NEUTRAL, "Delete", new DialogInterface.OnClickListener() {
+
+					      public void onClick(DialogInterface dialog, int id) {
+					    	  if(adminRight ==1){
+					    		DeletePost del = new DeletePost(activity, getList.get(tempt),id, userNric, grpName,adminNric);
+					    		del.execute();
+					    	  }else if(userNric.equals(postListView.getItem(tempt).getPosterNric())){
+					    		  DeletePost del = new DeletePost(activity, getList.get(tempt), id, userNric, grpName,adminNric);
+						    		del.execute();
+					    	  }else{
+					    		  Toast.makeText(activity, "Sorry you do not have permission do delete", Toast.LENGTH_LONG).show();
+					    	  }
+					    } }); 
+					
+					Builder.setButton(AlertDialog.BUTTON_POSITIVE, "Cancel", new DialogInterface.OnClickListener() {
+
+					      public void onClick(DialogInterface dialog, int id) {
+
+					        dialog.cancel();
+					    } }); 
+					Builder.show();
+				}
+				
+			}
+			
+			@Override
+			public boolean canDismiss(int position) {
+				// TODO Auto-generated method stub
+				return true;
+			}
+			
+		});
+		
+		itemList.setOnTouchListener(touchListener);
+		itemList.setOnScrollListener(touchListener.makeScrollListener());
+		
 	}
 	
 	public String retrievePost(int id){
@@ -165,4 +254,6 @@ public class getPostController extends AsyncTask<Object, Object, Object>
 			}
 		});
 	}
+	
+	
 }

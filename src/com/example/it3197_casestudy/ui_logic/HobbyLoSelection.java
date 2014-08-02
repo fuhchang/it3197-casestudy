@@ -87,8 +87,7 @@ public class HobbyLoSelection extends Activity implements LocationListener, OnMa
 			  map.setOnMarkerDragListener(this);
 			  Lat = getIntent().getStringExtra("lat");
 			  Lng = getIntent().getStringExtra("Lng");
-			  Toast.makeText(getApplicationContext(), Lat, Toast.LENGTH_LONG).show();
-			  Toast.makeText(getApplicationContext(), Lng, Toast.LENGTH_LONG).show();
+	
 			  convertToAddress(Lat,Lng);
 			
 			  
@@ -137,9 +136,6 @@ public class HobbyLoSelection extends Activity implements LocationListener, OnMa
 
     public void convertToAddress(String Lat, String Lng){
     	
-		  
-    	Toast.makeText(getApplicationContext(), Lat, Toast.LENGTH_LONG).show();
-    	Toast.makeText(getApplicationContext(), Lng, Toast.LENGTH_LONG).show();
     	 try
 	       {
 	   	   //Getting address based on coordinates.
@@ -201,9 +197,7 @@ public class HobbyLoSelection extends Activity implements LocationListener, OnMa
 	public void onMarkerDragEnd(Marker mp) {
 		toPosition = mp.getPosition();
 	    
-		 //   lm.removeUpdates(this);
-		    
-		   // Toast.makeText(getApplicationContext(),"Marker " + mp.getTitle() + " dragged from " + fromPosition+ " to " + toPosition, Toast.LENGTH_LONG).show();  
+ 
 		    try
 		      {
 		  	   //Getting address based on coordinates.

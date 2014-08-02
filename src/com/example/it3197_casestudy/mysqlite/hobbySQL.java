@@ -43,7 +43,7 @@ public class hobbySQL {
 			hobby.setGroupName(cursor.getString(cursor.getColumnIndex("groupName")));
 			hobby.setCategory(cursor.getString(cursor.getColumnIndex("category")));
 			hobby.setDescription(cursor.getString(cursor.getColumnIndex("description")));
-			hobby.setGrpImg(cursor.getBlob(cursor.getColumnIndex("groupImg")));
+			//hobby.setGrpImg(cursor.getBlob(cursor.getColumnIndex("groupImg")));
 			hobbyList.add(hobby);
 		}while(cursor.moveToNext());
 		return hobbyList;
