@@ -67,6 +67,7 @@ public class ViewEventsActivity extends FragmentActivity implements ActionBar.Ta
 			event.setOccurence(savedInstanceState.getString("occurence"));
 			event.setNoOfParticipantsAllowed(savedInstanceState.getInt("noOfParticipants"));
 			event.setActive(savedInstanceState.getInt("active"));
+			event.setEventFBPostID(savedInstanceState.getString("eventFBPostID"));
 		}
 		mViewEventsPagerAdapter = new ViewEventsAdapter(getSupportFragmentManager(),event);
 

@@ -4,6 +4,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import org.json.JSONException;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -27,12 +29,19 @@ import android.widget.Toast;
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.controller.GetEvent;
 import com.example.it3197_casestudy.controller.GetEventParticipants;
+import com.example.it3197_casestudy.controller.GetImageFromFacebook;
 import com.example.it3197_casestudy.controller.JoinEvent;
 import com.example.it3197_casestudy.controller.UnjoinEvent;
 import com.example.it3197_casestudy.model.Event;
 import com.example.it3197_casestudy.model.EventParticipants;
 import com.example.it3197_casestudy.util.MySharedPreferences;
 import com.example.it3197_casestudy.util.Settings;
+import com.facebook.HttpMethod;
+import com.facebook.Request;
+import com.facebook.RequestAsyncTask;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.UiLifecycleHelper;
 
 /**
  * A dummy fragment representing a section of the app, but that simply
@@ -52,6 +61,8 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 	MenuItem menuItemJoin;
 	MenuItem menuItemUnjoin;
 	MenuItem menuItemUpdate;
+
+	private UiLifecycleHelper uiHelper;
 	
 	public ImageView getIvEventPoster() {
 		return ivEventPoster;
@@ -122,6 +133,8 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+		uiHelper = new UiLifecycleHelper(ViewEventsDetailsFragment.this.getActivity(), null);
+		uiHelper.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
     	
@@ -211,6 +224,7 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 		event.setOccurence(bundle.getString("occurence"));
 		event.setNoOfParticipantsAllowed(bundle.getInt("noOfParticipants"));
 		event.setActive(bundle.getInt("active"));
+		event.setEventFBPostID(bundle.getString("eventFBPostID"));
 		
 		MySharedPreferences preferences = new MySharedPreferences(this.getActivity());
 		nric = preferences.getPreferences("nric","");
@@ -233,8 +247,12 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 		tvEventNoOfParticipants = (TextView) getActivity().findViewById(R.id.tv_event_no_of_participants);
 		btnCheckIn = (Button) getActivity().findViewById(R.id.btn_check_in);
 		
-		//ivEventPoster.setVisibility(View.GONE);
-
+		ivEventPoster = (ImageView) getActivity().findViewById(R.id.iv_event_poster);
+		
+		getPoster();
+        
+        Calendar todayDate = Calendar.getInstance();
+        
 		tvEventID.setText("Event No: #" + event.getEventID());
 		tvEventName.setText(event.getEventName());
 		tvEventCategory.setText("Category: \n" + event.getEventCategory());
@@ -246,6 +264,28 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 
 		GetEventParticipants getEventParticipants = new GetEventParticipants(ViewEventsDetailsFragment.this, event.getEventID());
 		getEventParticipants.execute();
+	}
+	
+	public void getPoster(){
+		if((Session.getActiveSession() != null) &&(!Session.getActiveSession().isClosed())){
+			Bundle b = new Bundle();
+			b.putString("fields", "full_picture");
+			Request request = new Request(Session.getActiveSession(), event.getEventFBPostID(), b, HttpMethod.GET, new Request.Callback() {
+				public void onCompleted(Response response) {
+			    /* handle the result */
+					try {
+						String pictureURL = response.getGraphObject().getInnerJSONObject().getString("full_picture");
+						GetImageFromFacebook getImageFromFacebook = new GetImageFromFacebook(ViewEventsDetailsFragment.this.getActivity(),ivEventPoster,pictureURL);
+						getImageFromFacebook.execute();
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			});
+			RequestAsyncTask task = new RequestAsyncTask(request);
+	        task.execute();
+		}
 	}
 	
 

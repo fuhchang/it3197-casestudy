@@ -49,6 +49,7 @@ public class ViewEventsAdapter extends FragmentPagerAdapter implements Settings{
 			args.putString("occurence", event.getOccurence());
 			args.putInt("noOfParticipants", event.getNoOfParticipantsAllowed());
 			args.putInt("active", event.getActive());
+			args.putString("eventFBPostID", event.getEventFBPostID());
 			fragment.setArguments(args);
 			break;
 		case 1:

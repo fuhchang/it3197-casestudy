@@ -95,6 +95,7 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 				intent.putExtra("occurence", event.getOccurence());
 				intent.putExtra("noOfParticipants", event.getNoOfParticipantsAllowed());
 				intent.putExtra("active", event.getActive());
+				intent.putExtra("eventFBPostID", event.getEventFBPostID());
 		        activity.startActivity(intent);
 			}
 		});
@@ -144,6 +145,7 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 				event.setOccurence(dataJob.getString("occurence"));
 				event.setNoOfParticipantsAllowed(dataJob.getInt("noOfParticipantsAllowed"));
 				event.setActive(dataJob.getInt("active"));
+				event.setEventFBPostID(dataJob.getString("eventFBPostID"));
 				System.out.println(event.getEventDateTimeFrom());
 				if(active == 1){
 					eventArrList.add(event);

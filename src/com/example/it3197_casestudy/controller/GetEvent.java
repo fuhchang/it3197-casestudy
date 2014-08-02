@@ -105,6 +105,7 @@ public class GetEvent extends AsyncTask<Object, Object, Object> implements Setti
 			event.setOccurence(json_object.getString("occurence"));
 			event.setNoOfParticipantsAllowed(json_object.getInt("noOfParticipantsAllowed"));
 			event.setActive(json_object.getInt("active"));
+			event.setEventFBPostID(json_object.getString("eventFBPostID"));
 		} catch (Exception e) {
 			errorOnExecuting();
 			e.printStackTrace();
