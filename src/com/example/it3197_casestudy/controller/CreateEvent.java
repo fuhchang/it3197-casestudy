@@ -42,18 +42,13 @@ public class CreateEvent extends AsyncTask<Object, Object, Object> implements Se
 	private EventLocationDetail eventLocationDetails;
 	private ProgressDialog dialog;
 	
-	public CreateEvent(CreateEventStep2Activity activity, Event event, EventLocationDetail eventLocationDetails){
+	public CreateEvent(CreateEventStep2Activity activity, Event event, EventLocationDetail eventLocationDetails, ProgressDialog dialog){
 		this.activity = activity;
 		this.event = event;
 		this.eventLocationDetails = eventLocationDetails;
+		this.dialog = dialog;
 	}
 	
-	@Override
-	protected void onPreExecute() {
-		dialog = ProgressDialog.show(activity,
-				"Creating event", "Please wait...", true);
-	}
-
 	@Override
 	protected String doInBackground(Object... arg0) {
 		return createEvent();
@@ -87,6 +82,8 @@ public class CreateEvent extends AsyncTask<Object, Object, Object> implements Se
 		postParameters.add(new BasicNameValuePair("locationHyperLink", eventLocationDetails.getEventLocationHyperLink()));
 		postParameters.add(new BasicNameValuePair("lat", String.valueOf(eventLocationDetails.getEventLocationLat())));
 		postParameters.add(new BasicNameValuePair("lng", String.valueOf(eventLocationDetails.getEventLocationLng())));
+		
+		postParameters.add(new BasicNameValuePair("eventFBPostID", event.getEventFBPostID()));
 		postParameters.add(new BasicNameValuePair("web", "false"));
 		// Instantiate a POST HTTP method
 		try {
@@ -108,6 +105,10 @@ public class CreateEvent extends AsyncTask<Object, Object, Object> implements Se
 			if(success){
 				dialog.dismiss();
 				Toast.makeText(activity.getApplicationContext(),"Event created successfully.", Toast.LENGTH_SHORT).show();
+
+	        	Intent intent = new Intent(activity,ViewAllEventsActivity.class);
+	        	activity.startActivity(intent);
+	        	activity.finish();
 			}
 			else{
 				errorOnExecuting();

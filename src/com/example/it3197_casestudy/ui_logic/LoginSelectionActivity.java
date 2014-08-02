@@ -49,7 +49,6 @@ public class LoginSelectionActivity extends FragmentActivity {
 		// Hide the action bar
 		loginActionBar.hide();
 		setContentView(R.layout.activity_login_selection);
-		getHaskKey(LoginSelectionActivity.this);
 	}
 	
 	/**
@@ -100,7 +99,7 @@ public class LoginSelectionActivity extends FragmentActivity {
 	private Session.StatusCallback callback = new Session.StatusCallback() {
 		@Override
 		public void call(Session session, SessionState state, Exception exception) {
-			if(!Session.getActiveSession().isClosed()){
+			if (session != null && (session.isOpened() || session.isClosed())) {
 				loginViaFB(session);
 			}
 		}
@@ -111,48 +110,44 @@ public class LoginSelectionActivity extends FragmentActivity {
 		super.onResume();
 		Session session = Session.getActiveSession();
 		if (session != null && (session.isOpened() || session.isClosed())) {
-			loginViaFB(session);
+			onSessionStateChange(session, session.getState(), null);
 		}
 		uiHelper.onResume();
 	}
 	
 	private void loginViaFB(Session session){
-		onSessionStateChange(session, session.getState(), null);
-		if(!Session.getActiveSession().isClosed()){
-			final ProgressDialog dialog = ProgressDialog.show(this, "Logging in...", "Please Wait. ");
-			Request.newMeRequest(session, new Request.GraphUserCallback() {
-				//callback after Graph API response with user object
-				@Override
-				public void onCompleted(GraphUser user, Response response) {
-					if (user != null) {
-						
-						Intent intent = new Intent(LoginSelectionActivity.this,MainLinkPage.class);
-						dialog.dismiss();
-						intent.putExtra("userName", user.getName());
-						startActivity(intent);
-						LoginSelectionActivity.this.finish();
-					}
-					else{
-						new Handler(Looper.getMainLooper()).post(new Runnable() {
-					        public void run() {
-					            dialog.dismiss();
-					            AlertDialog.Builder builder = new AlertDialog.Builder(LoginSelectionActivity.this);
-					            builder.setTitle("Error in logging in with Facebook ");
-					            builder.setMessage("Unable to logging in with Facebook. Please try again.");
-					            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-									@Override
-									public void onClick(DialogInterface dialog, int which) {
-										// TODO Auto-generated method stub
-										Session.getActiveSession().close();
-									}
-								});
-					            builder.create().show();
-					        }
-						});
-					}
+		final ProgressDialog dialog = ProgressDialog.show(this, "Logging in...", "Please Wait. ");
+		Request.newMeRequest(session, new Request.GraphUserCallback() {
+			//callback after Graph API response with user object
+			@Override
+			public void onCompleted(GraphUser user, Response response) {
+				if (user != null) {
+					Intent intent = new Intent(LoginSelectionActivity.this,MainLinkPage.class);
+					dialog.dismiss();
+					intent.putExtra("userName", user.getName());
+					startActivity(intent);
+					LoginSelectionActivity.this.finish();
 				}
-			}).executeAsync();
-		}
+				else{
+					new Handler(Looper.getMainLooper()).post(new Runnable() {
+				        public void run() {
+				            dialog.dismiss();
+				            AlertDialog.Builder builder = new AlertDialog.Builder(LoginSelectionActivity.this);
+				            builder.setTitle("Error in logging in with Facebook ");
+				            builder.setMessage("Unable to logging in with Facebook. Please try again.");
+				            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									// TODO Auto-generated method stub
+									Session.getActiveSession().close();
+								}
+							});
+				            builder.create().show();
+				        }
+					});
+				}
+			}
+		}).executeAsync();
 	}
 	
 
@@ -180,16 +175,4 @@ public class LoginSelectionActivity extends FragmentActivity {
 		uiHelper.onSaveInstanceState(outState);
 	}
 	
-	public static void getHaskKey(Context context){
-		try {
-			PackageInfo info = context.getPackageManager().getPackageInfo("com.example.it3197_casestudy.ui_logic", PackageManager.GET_SIGNATURES); //Your package name here
-			for (Signature signature : info.signatures) {
-				MessageDigest md = MessageDigest.getInstance("SHA");
-		        md.update(signature.toByteArray());
-		        Log.v("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 }

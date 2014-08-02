@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -74,7 +75,7 @@ public class CreateEventStep2ValidationController implements Settings{
 			crouton.show();
 			return;
 		}
-		if((calendarFrom.after(calendarTo)) || (t.compare(calendarFrom, calendarTo) >= 0) || ((t.compare(calendarFrom, calendarCurrentDate) == 0))){
+		if((calendarFrom.after(calendarTo))){
 			Crouton crouton = Crouton.makeText(activity,"Please choose another date after the starting date.",Style.ALERT);
 			crouton.show();
 			return;
@@ -83,47 +84,22 @@ public class CreateEventStep2ValidationController implements Settings{
 			event.setEventDateTimeFrom(calendarFrom.getTime());
 			event.setEventDateTimeTo(calendarTo.getTime());
 			event.setOccurence(occurence);
-			System.out.println("Event Name: " + event.getEventName());
-			System.out.println("Event Category: " + event.getEventCategory());
-			System.out.println("Event Description: " + event.getEventDescription());
-			System.out.println("No of participants: " + event.getNoOfParticipantsAllowed());
-			CreateEvent createEvent = new CreateEvent(activity,event,eventLocationDetails);
-			createEvent.execute();
+
+    		ProgressDialog dialog = ProgressDialog.show(activity,
+    				"Creating event", "Please wait...", true);
 			if(!Session.getActiveSession().isClosed()){
-				publishStory();
+				publishStory(dialog);
 			}
 			else{
-	        	intent = new Intent(activity,ViewAllEventsActivity.class);
-	        	activity.startActivity(intent);
-	        	activity.finish();
+				Toast.makeText(activity, "Unable to share event to Facebook", Toast.LENGTH_LONG).show();
+				event.setEventFBPostID("0");
+				CreateEvent createEvent = new CreateEvent(activity,event,eventLocationDetails,dialog);
+				createEvent.execute();
 			}
 		}
 	}
 	
-	private void onSessionStateChange(Session session, SessionState state, Exception exception) {
-		if (pendingPublishReauthorization && 
-		        state.equals(SessionState.OPENED_TOKEN_UPDATED)) {
-		    pendingPublishReauthorization = false;
-		    publishStory();
-		}
-	    if (state.isClosed()) {
-			AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-			builder.setTitle("Sharing of event error");
-			builder.setMessage("Unable to share event to Facebook.Please login to your Facebook account in order to share event.");
-			builder.setPositiveButton("Yes", new OnClickListener(){
-				@Override
-				public void onClick(DialogInterface arg0, int arg1) {
-					// TODO Auto-generated method stub
-    	        	Intent intent = new Intent(activity,ViewAllEventsActivity.class);
-    	        	activity.startActivity(intent);
-    	        	activity.finish();
-				}
-			});
-			builder.create().show();
-	    }
-	}
-	
-	private void publishStory() {
+	private void publishStory(final ProgressDialog dialog) {
 	    Session session = Session.getActiveSession();
 
 	    if (session != null){
@@ -147,11 +123,15 @@ public class CreateEventStep2ValidationController implements Settings{
 	        Request.Callback callback= new Request.Callback() {
 	            public void onCompleted(Response response) {
 	                JSONObject graphResponse = response.getGraphObject().getInnerJSONObject();
-	                String postId = null;
 	                try {
-	    	        	Intent intent = new Intent(activity,ViewAllEventsActivity.class);
-	    	        	activity.startActivity(intent);
-	    	        	activity.finish();
+	                	if(graphResponse.getString("id") != null){
+	                		event.setEventFBPostID(graphResponse.getString("id"));
+	                	}
+	                	else{
+	                		event.setEventFBPostID("0");
+	                	}
+	        			CreateEvent createEvent = new CreateEvent(activity,event,eventLocationDetails,dialog);
+	        			createEvent.execute();
 	                } catch (Exception e) {
 	                    Log.i("Tag",
 	                        "JSON error "+ e.getMessage());
@@ -162,7 +142,7 @@ public class CreateEventStep2ValidationController implements Settings{
 	                }
 	            }
 	        };
-	        Request request = new Request(session, "me/feed", postParams, HttpMethod.POST, callback);
+	        Request request = new Request(session, "614675458630326/feed", postParams, HttpMethod.POST, callback);
 	        RequestAsyncTask task = new RequestAsyncTask(request);
 	        task.execute();
 	    }
