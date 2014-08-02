@@ -224,7 +224,12 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 		event.setOccurence(bundle.getString("occurence"));
 		event.setNoOfParticipantsAllowed(bundle.getInt("noOfParticipants"));
 		event.setActive(bundle.getInt("active"));
-		event.setEventFBPostID(bundle.getString("eventFBPostID"));
+		if(bundle.getString("eventFBPostID") != null){
+			event.setEventFBPostID(bundle.getString("eventFBPostID"));
+		}
+		else{
+			event.setEventFBPostID("0");
+		}
 		
 		MySharedPreferences preferences = new MySharedPreferences(this.getActivity());
 		nric = preferences.getPreferences("nric","");
@@ -248,9 +253,13 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 		btnCheckIn = (Button) getActivity().findViewById(R.id.btn_check_in);
 		
 		ivEventPoster = (ImageView) getActivity().findViewById(R.id.iv_event_poster);
-		
-		getPoster();
-        
+
+		if((Session.getActiveSession() != null) && (Session.getActiveSession().isOpened()) && (!event.getEventFBPostID().equals("0"))){
+			getPoster();
+		}
+		else{
+			ivEventPoster.setVisibility(View.GONE);
+		}
         Calendar todayDate = Calendar.getInstance();
         
 		tvEventID.setText("Event No: #" + event.getEventID());
@@ -267,25 +276,29 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 	}
 	
 	public void getPoster(){
-		if((Session.getActiveSession() != null) &&(!Session.getActiveSession().isClosed())){
 			Bundle b = new Bundle();
 			b.putString("fields", "full_picture");
 			Request request = new Request(Session.getActiveSession(), event.getEventFBPostID(), b, HttpMethod.GET, new Request.Callback() {
 				public void onCompleted(Response response) {
 			    /* handle the result */
 					try {
-						String pictureURL = response.getGraphObject().getInnerJSONObject().getString("full_picture");
-						GetImageFromFacebook getImageFromFacebook = new GetImageFromFacebook(ViewEventsDetailsFragment.this.getActivity(),ivEventPoster,pictureURL);
-						getImageFromFacebook.execute();
+						if((response.getGraphObject().getInnerJSONObject().getString("full_picture") != null) && (response.getGraphObject().getInnerJSONObject().getString("full_picture").length() > 0)){
+							String pictureURL = response.getGraphObject().getInnerJSONObject().getString("full_picture");
+							GetImageFromFacebook getImageFromFacebook = new GetImageFromFacebook(ViewEventsDetailsFragment.this.getActivity(),ivEventPoster,pictureURL);
+							getImageFromFacebook.execute();
+						}
+						else{
+							ivEventPoster.setVisibility(View.GONE);
+						}
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
+						ivEventPoster.setVisibility(View.GONE);
 					}
 				}
 			});
 			RequestAsyncTask task = new RequestAsyncTask(request);
 	        task.execute();
-		}
 	}
 	
 

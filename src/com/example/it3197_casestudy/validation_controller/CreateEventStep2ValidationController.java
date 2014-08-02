@@ -122,16 +122,18 @@ public class CreateEventStep2ValidationController implements Settings{
 	        System.out.println(event.getEventName() + "(" + event.getEventDateTimeFrom() + "-" + event.getEventDateTimeTo() + "), " + event.getEventDescription() + " -- " + posterFileName);
 	        Request.Callback callback= new Request.Callback() {
 	            public void onCompleted(Response response) {
-	                JSONObject graphResponse = response.getGraphObject().getInnerJSONObject();
 	                try {
-	                	if(graphResponse.getString("id") != null){
-	                		event.setEventFBPostID(graphResponse.getString("id"));
+	                	if(response != null){
+			                JSONObject graphResponse = response.getGraphObject().getInnerJSONObject();
+		                	if(graphResponse.getString("id") != null){
+		                		event.setEventFBPostID(graphResponse.getString("id"));
+		                	}
+		                	else{
+		                		event.setEventFBPostID("0");
+		                	}
+		        			CreateEvent createEvent = new CreateEvent(activity,event,eventLocationDetails,dialog);
+		        			createEvent.execute();
 	                	}
-	                	else{
-	                		event.setEventFBPostID("0");
-	                	}
-	        			CreateEvent createEvent = new CreateEvent(activity,event,eventLocationDetails,dialog);
-	        			createEvent.execute();
 	                } catch (Exception e) {
 	                    Log.i("Tag",
 	                        "JSON error "+ e.getMessage());
