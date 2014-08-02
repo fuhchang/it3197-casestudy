@@ -32,7 +32,6 @@ public class CreateGroupActivityStep2 extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_group_activity_step2); 
 		grpDesc = (EditText) findViewById(R.id.etDesc);
-		btnNext = (Button) findViewById(R.id.btnNext);
 		title = getIntent().getStringExtra("eventName");
 		category = getIntent().getStringExtra("category");
 		grpDesc = (EditText) findViewById(R.id.etDesc);

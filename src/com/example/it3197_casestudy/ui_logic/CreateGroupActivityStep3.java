@@ -1,6 +1,8 @@
 package com.example.it3197_casestudy.ui_logic;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -45,7 +47,8 @@ public class CreateGroupActivityStep3 extends Activity {
 	byte[] blobImg;
 	Hobby hobby;
 	hobbySQL con;
-	
+	byte[] byteImg;
+	String path;
 	private static Bitmap Image = null;
 	private static final int PICK_IMAGE = 1;
 
@@ -56,8 +59,6 @@ public class CreateGroupActivityStep3 extends Activity {
 		mUploadImg = getResources().getStringArray(R.array.imgBy);
 		imgUpload = (Button) findViewById(R.id.uploadImg);
 		imgView = (ImageView) findViewById(R.id.gImg);
-		btnNext = (Button) findViewById(R.id.btnNext);
-		btnNext.setVisibility(View.INVISIBLE);
 		title = getIntent().getStringExtra("eventName");
 		type = getIntent().getStringExtra("category");
 		gDesc = getIntent().getStringExtra("eventDesc");
@@ -78,22 +79,42 @@ public class CreateGroupActivityStep3 extends Activity {
 
 		});
 		
-		btnNext.setOnClickListener(new OnClickListener(){
 
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent(CreateGroupActivityStep3.this, CreateGroupActivityStep4.class);
+	}
+	
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
+		switch(item.getItemId()){
+		case R.id.action_next:
+			try {
+				
+				byteImg =  fileToByteArray(path);
+				if(byteImg.length > 0){
+				Toast.makeText(getApplicationContext(), Integer.toString(byteImg.length), Toast.LENGTH_LONG).show();
+				Intent intent = new Intent(this, CreateGroupActivityStep4.class);
 				intent.putExtra("eventName", title);
 				intent.putExtra("category", type);
 				intent.putExtra("eventDesc", gDesc);
+				intent.putExtra("byteImg", byteImg);
+				intent.putExtra("imgPath", path);
 				intent.putExtra("nric", getIntent().getExtras().getString("nric"));
 				startActivity(intent);
+				}else{
+					Toast.makeText(getApplicationContext(), byteImg.length, Toast.LENGTH_LONG).show();
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				Toast.makeText(getApplicationContext(), "Please check your image", Toast.LENGTH_LONG).show();
 			}
 			
-		});
-
+			break;
+		}
+		return super.onOptionsItemSelected(item);
 	}
+
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -106,10 +127,9 @@ public class CreateGroupActivityStep3 extends Activity {
 
 				try {
 					uriOfImage = imageUri.toString();
-					Image = Media
-							.getBitmap(this.getContentResolver(), imageUri);
+					Image = Media.getBitmap(this.getContentResolver(), imageUri);
 					imgView.setImageBitmap(Image);
-					btnNext.setVisibility(View.VISIBLE);
+					path = getRealPathFromURI(imageUri);
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -131,20 +151,30 @@ public class CreateGroupActivityStep3 extends Activity {
 		return true;
 	}
 
-	public byte[] convertImage(String uri) throws IOException {
-		int bufferSize = 1024;
-		Uri imageUri = Uri.parse(uri);
-		InputStream iStream = getContentResolver().openInputStream(imageUri);
-		byte[] buffer = new byte[bufferSize];
-		ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
-		int len = 0;
-		while ((len = iStream.read(buffer)) != 1) {
-			byteBuffer.write(buffer, 0, len);
-		}
-		return byteBuffer.toByteArray();
-
-	}
-
 	
+	public static byte[] fileToByteArray(String path) throws IOException {
+	    File imagefile = new File(path);
+	    byte[] data = new byte[(int) imagefile.length()];
+	    FileInputStream fis = new FileInputStream(imagefile);
+	    fis.read(data);
+	    fis.close();
+	    return data;
+	}
+	
+	// And to convert the image URI to the direct file system path of the image file
+	public String getRealPathFromURI(Uri contentUri) {
+
+	        // can post image
+	        String [] proj={MediaStore.Images.Media.DATA};
+	        Cursor cursor = managedQuery( contentUri,
+	                        proj, // Which columns to return
+	                        null,       // WHERE clause; which rows to return (all rows)
+	                        null,       // WHERE clause selection arguments (none)
+	                        null); // Order-by clause (ascending by name)
+	        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+	        cursor.moveToFirst();
+
+	        return cursor.getString(column_index);
+	}
 
 }

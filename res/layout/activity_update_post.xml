@@ -1,0 +1,93 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/view1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:orientation="vertical"
+        android:padding="5dp" >
+
+        <EditText
+            android:id="@+id/postNameET"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="Please enter your post Title" >
+
+            <requestFocus />
+        </EditText>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/view2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view1"
+        android:layout_marginBottom="10dp"
+        android:orientation="vertical"
+        android:padding="5dp" >
+
+        <TextView
+            android:id="@+id/pContent"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/hr"
+            android:text="Content:" />
+
+        <EditText
+            android:id="@+id/etPContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pContent"
+            android:gravity="top"
+            android:inputType="textMultiLine"
+            android:lines="5"
+            android:scrollHorizontally="false" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/view3"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view2"
+        android:layout_marginBottom="10dp"
+        android:orientation="vertical"
+        android:padding="5dp" >
+
+        <TextView
+            android:id="@+id/imgTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/SelectImg" />
+
+        <TextView
+            android:id="@+id/imgLink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imgTV" />
+
+        <ImageView
+            android:id="@+id/gImg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/uploadImg"
+            android:paddingTop="10dp" />
+    </LinearLayout>
+	<TextView
+            android:id="@+id/newAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+             android:layout_below="@+id/view2"
+            android:textSize="20sp"
+            android:text="Click here to change location" />
+    <TextView
+            android:id="@+id/LocAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+             android:layout_below="@+id/newAddress"
+            android:textSize="20sp" />
+
+</LinearLayout>

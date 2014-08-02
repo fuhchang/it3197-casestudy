@@ -46,10 +46,11 @@ public class CreateHobbyPostController extends
 	private String grpName;
 	Hobby hobby;
 	public CreateHobbyPostController(CreateHobbyPost activity,
-			HobbyPost hobbypost, int adminRight) {
+			HobbyPost hobbypost, int adminRight, ViewSingleHobby vsh) {
 		this.activity = activity;
 		this.hobbypost = hobbypost;
 		this.adminRight = adminRight;
+		this.vsh = vsh;
 	}
 
 	@Override
@@ -62,15 +63,14 @@ public class CreateHobbyPostController extends
 	protected void onPostExecute(Object result) {
 		// TODO Auto-generated method stub
 		parseJSONResponse((String)result);
-		
-	
 		Intent intent = new Intent(activity, ViewSingleHobby.class);
 		intent.putExtra("grpName", hobby.getGroupName());
 		intent.putExtra("grpID", hobby.getGroupID());
 		intent.putExtra("adminNric", hobby.getAdminNric());
 		intent.putExtra("userNric", hobbypost.getPosterNric());
-		activity.startActivity(intent);
 		activity.finish();
+		activity.startActivity(intent);
+		
 		
 	}
 

@@ -20,8 +20,10 @@ public class CreatePostValidationController implements Settings {
 
 	private CreateHobbyPost activity;
 	private HobbyPost post;
-	public CreatePostValidationController(CreateHobbyPost activity) {
+	private ViewSingleHobby vsh;
+	public CreatePostValidationController(CreateHobbyPost activity, ViewSingleHobby vsh) {
 		this.activity = activity;
+		this.vsh  = vsh;
 	}
 
 	public void validateForm(Intent intent, Form mForm,
@@ -37,7 +39,7 @@ public class CreatePostValidationController implements Settings {
 			post.setLat(activity.getLat());
 			post.setLng(activity.getLng());
 			post.setPosterNric(activity.getUserNric());
-			CreateHobbyPostController con = new CreateHobbyPostController(activity, post, adminRight);
+			CreateHobbyPostController con = new CreateHobbyPostController(activity, post, adminRight, vsh);
 			con.execute();
 		} else {
 			if (!validatorsArrList.get(0).isValid()) {

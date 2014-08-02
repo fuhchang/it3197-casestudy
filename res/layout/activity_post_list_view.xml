@@ -54,22 +54,12 @@
         android:layout_width="fill_parent"
         android:layout_height="2dp"
         android:layout_below="@+id/postContent"/>
-<Button 
-        android:id="@+id/Edit"
-        android:layout_width="153dp"
+
+    <TextView
+        android:id="@+id/Address"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-       	android:layout_below="@+id/hr3"
-        android:layout_alignParentBottom="true"
-        android:background="?android:attr/selectableItemBackground"
-        android:text="Edit"/>
-    <Button 
-        android:id="@+id/Delete"
-        android:layout_width="153dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/Edit"
-        android:background="?android:attr/selectableItemBackground"
-        android:text="Delete"/>
-    
+        android:layout_below="@+id/hr3"
+        android:layout_marginLeft="5dp" />
    
 </RelativeLayout>

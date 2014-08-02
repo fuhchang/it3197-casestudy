@@ -173,7 +173,7 @@ public CreateHobbyPost(ViewSingleHobby vsh, ListView listview){
 			Intent intentValid = new Intent();
 			intentValid.putExtra("grpID", grpID);
 			intentValid.putExtra("adminRight", adminRight);
-			CreatePostValidationController validController = new CreatePostValidationController(this);
+			CreatePostValidationController validController = new CreatePostValidationController(this, vsh);
 			validController.validateForm(intentValid, mForm, validList);
 			break;
 		}

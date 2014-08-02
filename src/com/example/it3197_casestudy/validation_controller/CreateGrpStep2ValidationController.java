@@ -1,6 +1,7 @@
 package com.example.it3197_casestudy.validation_controller;
 
 import java.net.URISyntaxException;
+
 import java.util.ArrayList;
 
 import android.content.Intent;
@@ -31,7 +32,6 @@ public class CreateGrpStep2ValidationController implements Settings{
 	public void validateForm(Intent intent,Form mForm,ArrayList<Validate> validatorsArrList){
 		// Launch Validation
 		if(mForm.validate()){
-			Toast.makeText(activity, "get value from Desc " + grpDesc, Toast.LENGTH_SHORT).show();
 			intent = new Intent(activity, CreateGroupActivityStep3.class);
 			intent.putExtra("eventDesc", grpDesc);
 			intent.putExtra("eventName", gTitle);

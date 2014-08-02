@@ -14,6 +14,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.listview.HobbyListView;
 import com.example.it3197_casestudy.model.Hobby;
 import com.example.it3197_casestudy.ui_logic.Hobbies_All;
@@ -28,10 +29,15 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.util.SparseBooleanArray;
+import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.Toast;
+import android.widget.AbsListView.MultiChoiceModeListener;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
@@ -43,10 +49,12 @@ public class GetAllHobbyGroup extends AsyncTask<Object, Object, Object>
 	HobbyListView hobbyListView;
 	String nric;
 	ListView allList;
+	
 	public GetAllHobbyGroup(Hobbies_All activity, ListView allList, String nric) {
 		this.activity = activity;
 		this.allList = allList;
 		this.nric = nric;
+		
 	}
 
 	@Override
@@ -89,6 +97,8 @@ public class GetAllHobbyGroup extends AsyncTask<Object, Object, Object>
 			}
 			
 		});
+		
+		
 		dialog.dismiss();	
 	}
 
@@ -127,6 +137,7 @@ public class GetAllHobbyGroup extends AsyncTask<Object, Object, Object>
 				hobby.setCategory(dataJob.getString("category"));
 				hobby.setDescription(dataJob.getString("grpDesc"));
 				hobby.setAdminNric(dataJob.getString("adminNric"));
+				hobby.setGrpImg(dataJob.getString("photo"));
 				hobby.setLat(dataJob.getDouble("Lat"));
 				hobby.setLng(dataJob.getDouble("Lng"));
 				hobbyList.add(hobby);

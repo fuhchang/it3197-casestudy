@@ -34,12 +34,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/uploadImg"
         android:paddingTop="10dp" />
-	<Button 
-	    android:id="@+id/btnNext"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:paddingTop="10dp"
-	    android:layout_below="@+id/gImg"
-	    android:text="Next"/>
+	
 
 </RelativeLayout>

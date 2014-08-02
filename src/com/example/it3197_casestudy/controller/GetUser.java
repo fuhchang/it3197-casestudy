@@ -53,32 +53,7 @@ implements Settings{
 		// TODO Auto-generated method stub
 		parseJSONResponse((String)result);
 		dialog.dismiss();
-		if(checkUser.getNric().equals(user.getNric()) && checkUser.getPassword().equals(user.getPassword())){
-			MySharedPreferences preferences = new MySharedPreferences(activity);
-			preferences.addPreferences("nric", user.getNric());
-			preferences.addPreferences("username", checkUser.getName());
-			preferences.addPreferences("password",user.getPassword());
-			preferences.addPreferences("type",checkUser.getType());
-			preferences.addPreferences("contactNo",checkUser.getContactNo());
-			preferences.addPreferences("address", checkUser.getAddress());
-			preferences.addPreferences("email", checkUser.getEmail());
-			preferences.addPreferences("active", checkUser.getActive());
-			preferences.addPreferences("points", checkUser.getPoints());
-			
-			if(checkUser.getType().equals("User")){
-				Intent intent = new Intent(activity, MainLinkPage.class);
-				intent.putExtra("nric", user.getNric());
-				intent.putExtra("user", checkUser);
-				System.out.println("Line 72: " + checkUser.getPoints());
-				activity.startActivity(intent);
-				activity.finish();
-			}
-			if(checkUser.getType().equals("Officer")){
-				Intent art = new Intent(activity, FeedbackArticleActivity.class);
-				activity.startActivity(art);
-				activity.finish();
-			}
-		}
+		/*
 		/*for(int i=0; i<userList.size();i++){
 			if(userList.get(i).getNric().equals(user.getNric()) && userList.get(i).getPassword().equals(user.getPassword())){
 				MySharedPreferences preferences = new MySharedPreferences(activity);
@@ -150,6 +125,7 @@ implements Settings{
 			checkUser.setEmail(dataObj.getString("email"));
 			checkUser.setActive(dataObj.getInt("active"));
 			checkUser.setPoints(dataObj.getInt("points"));
+			System.out.println(checkUser.getNric());
 			/*data_array = json.getJSONArray("userList");
 			for (int i = 0; i < data_array.length(); i++) {
 				JSONObject dataJob = new JSONObject(data_array.getString(i));
@@ -160,6 +136,32 @@ implements Settings{
 				user.setName(dataJob.getString("name"));
 				userList.add(user);
 			}*/
+			if(checkUser.getNric().equals(user.getNric()) && checkUser.getPassword().equals(user.getPassword())){
+				MySharedPreferences preferences = new MySharedPreferences(activity);
+				preferences.addPreferences("nric", user.getNric());
+				preferences.addPreferences("username", checkUser.getName());
+				preferences.addPreferences("password",user.getPassword());
+				preferences.addPreferences("type",checkUser.getType());
+				preferences.addPreferences("contactNo",checkUser.getContactNo());
+				preferences.addPreferences("address", checkUser.getAddress());
+				preferences.addPreferences("email", checkUser.getEmail());
+				preferences.addPreferences("active", checkUser.getActive());
+				preferences.addPreferences("points", checkUser.getPoints());
+				
+				if(checkUser.getType().equals("User")){
+					Intent intent = new Intent(activity, MainLinkPage.class);
+					intent.putExtra("nric", user.getNric());
+					intent.putExtra("user", checkUser);
+					System.out.println("Line 72: " + checkUser.getPoints());
+					activity.startActivity(intent);
+					activity.finish();
+				}
+				if(checkUser.getType().equals("Officer")){
+					Intent art = new Intent(activity, FeedbackArticleActivity.class);
+					activity.startActivity(art);
+					activity.finish();
+				}
+			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
