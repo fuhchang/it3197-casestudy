@@ -9,9 +9,9 @@ import com.example.it3197_casestudy.R.layout;
 import com.example.it3197_casestudy.R.menu;
 import com.example.it3197_casestudy.controller.JoinHobbyGrp;
 import com.example.it3197_casestudy.controller.getPostController;
-import com.example.it3197_casestudy.listview.HobbyListView;
 import com.example.it3197_casestudy.model.Hobby;
 import com.example.it3197_casestudy.model.HobbyMembers;
+import com.example.it3197_casestudy.util.HobbyListView;
 import com.example.it3197_casestudy.util.MySharedPreferences;
 
 import android.os.Bundle;
@@ -75,9 +75,16 @@ public class ViewSingleHobby extends Activity {
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		// TODO Auto-generated method stub
+		if(userNric.equals("fromRequest")){
+			menu.removeItem(R.id.action_new);
+			menu.removeItem(R.id.action_join_group);
+			menu.removeItem(R.id.action_update_group);
+			menu.removeItem(R.id.action_view_request);
+		}else{
 		memberCheck = getIntent().getExtras().getString("member");
 		if(adminRight == 0){
 			menu.removeItem(R.id.action_update_group);
+			menu.removeItem(R.id.action_view_request);
 			if(memberCheck.equals("member")){
 				menu.removeItem(R.id.action_join_group);	
 			}else{
@@ -86,7 +93,7 @@ public class ViewSingleHobby extends Activity {
 		}else{
 			menu.removeItem(R.id.action_join_group);	
 		}
-		
+		}
 		return super.onPrepareOptionsMenu(menu);
 	}
 
@@ -139,7 +146,9 @@ public class ViewSingleHobby extends Activity {
 			joinGrp.execute();
 			this.finish();
 			break;
+		case R.id.action_view_request:
 			
+			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}

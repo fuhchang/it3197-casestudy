@@ -16,4 +16,9 @@
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="Join Group"/>
+	<item
+        android:id="@+id/action_view_request"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="View Request"/>
 </menu>

@@ -46,13 +46,13 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 import com.example.it3197_casestudy.R;
-import com.example.it3197_casestudy.listview.HobbyListView;
-import com.example.it3197_casestudy.listview.PostListView;
 import com.example.it3197_casestudy.model.HobbyPost;
 import com.example.it3197_casestudy.ui_logic.UpdatePost;
 import com.example.it3197_casestudy.ui_logic.ViewHobbiesMain;
 import com.example.it3197_casestudy.ui_logic.ViewSingleHobby;
+import com.example.it3197_casestudy.util.HobbyListView;
 import com.example.it3197_casestudy.util.MySharedPreferences;
+import com.example.it3197_casestudy.util.PostListView;
 import com.example.it3197_casestudy.util.Settings;
 import com.example.it3197_casestudy.util.SwipeDismissListViewTouchListener;
 
@@ -114,7 +114,7 @@ public class getPostController extends AsyncTask<Object, Object, Object>
 					final int tempt = position;
 					AlertDialog Builder = new AlertDialog.Builder(activity).create();
 					Builder.setTitle("Deletion");
-					Builder.setMessage("Click yes to delete post");
+					Builder.setMessage("Are you sure? :(");
 					
 					Builder.setButton(AlertDialog.BUTTON_NEGATIVE, "Edit", new DialogInterface.OnClickListener() {
 

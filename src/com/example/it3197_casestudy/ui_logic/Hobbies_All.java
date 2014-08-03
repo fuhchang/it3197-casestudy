@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.controller.GetAllHobbyGroup;
-import com.example.it3197_casestudy.listview.HobbyListView;
 import com.example.it3197_casestudy.model.Hobby;
+import com.example.it3197_casestudy.util.HobbyListView;
 
 import android.content.Intent;
 import android.graphics.Color;

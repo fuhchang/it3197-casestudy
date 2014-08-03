@@ -1,7 +1,9 @@
 package com.example.it3197_casestudy.controller;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
+import java.util.Date;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -14,13 +16,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.example.it3197_casestudy.R;
-import com.example.it3197_casestudy.model.Hobby;
-import com.example.it3197_casestudy.ui_logic.Hobbies_All;
-import com.example.it3197_casestudy.ui_logic.ViewSingleHobby;
-import com.example.it3197_casestudy.util.HobbyListView;
-import com.example.it3197_casestudy.util.Settings;
-
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -28,62 +24,49 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
-import android.util.SparseBooleanArray;
-import android.view.ActionMode;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.AbsListView.MultiChoiceModeListener;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.Toast;
+import com.example.it3197_casestudy.model.Hobby;
+import com.example.it3197_casestudy.ui_logic.UpdatePost;
+import com.example.it3197_casestudy.ui_logic.ViewSingleHobby;
+import com.example.it3197_casestudy.util.HobbyListView;
+import com.example.it3197_casestudy.util.Settings;
+import com.example.it3197_casestudy.util.SwipeDismissListViewTouchListener;
 
-public class GetAllHobbyGroup extends AsyncTask<Object, Object, Object>
-		implements Settings {
-	private ArrayList<Hobby> hobbyList;
-	private Hobbies_All activity;
-	private ProgressDialog dialog;
-	HobbyListView hobbyListView;
-	String nric;
-	ListView allList;
+public class GetAvaliableHobby extends AsyncTask<Object, Object, Object>implements Settings{
 	
-	public GetAllHobbyGroup(Hobbies_All activity, ListView allList, String nric) {
+	private ProgressDialog dialog;
+	private ListView allList;
+	private Activity activity;
+	private ArrayList<Hobby> hobbyList;
+	private int eventID;
+	
+	public GetAvaliableHobby(Activity activity, ListView allList, int  eventID){
 		this.activity = activity;
 		this.allList = allList;
-		this.nric = nric;
-		
+		this.eventID = eventID;
 	}
-
 	@Override
-	protected Object doInBackground(Object... params) {
+	protected Object doInBackground(Object... arg0) {
 		// TODO Auto-generated method stub
 		return getAllHobby();
 	}
-
-	@Override
-	protected void onPreExecute() {
-		// TODO Auto-generated method stub
-		hobbyList = new ArrayList<Hobby>();
-		hobbyList.clear();
-		dialog = ProgressDialog.show(activity.getActivity(),
-				"Retrieving Hobby", "Please wait...", true);
-	}
-
 	@Override
 	protected void onPostExecute(Object result) {
 		parseJSONResponse((String) result);
-		hobbyListView = new HobbyListView(activity.getActivity(), hobbyList);
-		allList.setAdapter(hobbyListView);
+		HobbyListView adapter = new HobbyListView(activity, hobbyList);
+		allList.setAdapter(adapter);
 		allList.setOnItemClickListener(new OnItemClickListener(){
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 					long arg3) {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent(activity.getActivity(), ViewSingleHobby.class);
+				Intent intent = new Intent(activity, ViewSingleHobby.class);
 				intent.putExtra("grpID", hobbyList.get(position).getGroupID());
 				intent.putExtra("grpType", hobbyList.get(position).getCategory());
 				intent.putExtra("grpName", hobbyList.get(position).getGroupName());
@@ -92,24 +75,67 @@ public class GetAllHobbyGroup extends AsyncTask<Object, Object, Object>
 				intent.putExtra("Lng", hobbyList.get(position).getLng());
 				intent.putExtra("adminNric", hobbyList.get(position).getAdminNric());
 				intent.putExtra("member", "none");
-				intent.putExtra("userNric", nric);
+				intent.putExtra("userNric", "fromRequest");
 				activity.startActivity(intent);
 			}
 			
 		});
-		
-		
-		dialog.dismiss();	
-	}
+		dialog.dismiss();
+		SwipeDismissListViewTouchListener touchListener = new SwipeDismissListViewTouchListener(allList, new SwipeDismissListViewTouchListener.DismissCallbacks(){
 
+			@Override
+			public boolean canDismiss(int position) {
+				// TODO Auto-generated method stub
+				return true;
+			}
+
+			@Override
+			public void onDismiss(ListView listView,
+					int[] reverseSortedPositions) {
+				for(int position : reverseSortedPositions) {
+					final int tempt = position;
+					AlertDialog Builder = new AlertDialog.Builder(activity).create();
+					Builder.setTitle("Request for help");
+					Builder.setMessage("do you need help?");
+					
+					Builder.setButton(AlertDialog.BUTTON_NEGATIVE, "Request", new DialogInterface.OnClickListener() {
+
+					      public void onClick(DialogInterface dialog, int id) {
+					    	  DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+					    	  Date date = new Date();
+					    	  CreateRequest request = new CreateRequest(activity, eventID, hobbyList.get(tempt).getGroupID(), dateFormat.format(date), dateFormat.format(date),hobbyList.get(tempt).getGroupName());
+					    	  request.execute();
+					    } 
+					   }); 
+					Builder.setButton(AlertDialog.BUTTON_POSITIVE, "Cancel", new DialogInterface.OnClickListener() {
+
+					      public void onClick(DialogInterface dialog, int id) {
+					    	  
+					    } }); 
+					Builder.show();
+				}
+				
+			}
+			
+		});
+		allList.setOnTouchListener(touchListener);
+		allList.setOnScrollListener(touchListener.makeScrollListener());
+	}
+	@Override
+	protected void onPreExecute() {
+		// TODO Auto-generated method stub
+		hobbyList = new ArrayList<Hobby>();
+		dialog = ProgressDialog.show(activity, "Retrieving hobby"," Please wait....", true);
+	}
+	
 	public String getAllHobby() {
 		String responseBody = "";
 		// Instantiate an HttpClient
 		HttpClient httpclient = new DefaultHttpClient();
-		HttpPost httppost = new HttpPost(API_URL + "GetAllHobbyServlet");
+		HttpPost httppost = new HttpPost(API_URL + "getAvaHobbyServlet");
 		ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
 		// Instantiate a POST HTTP method
-		postParameters.add(new BasicNameValuePair("nric", nric));
+		
 		try {
 			httppost.setEntity(new UrlEncodedFormEntity(postParameters));
 			ResponseHandler<String> responseHandler = new BasicResponseHandler();
@@ -121,7 +147,6 @@ public class GetAllHobbyGroup extends AsyncTask<Object, Object, Object>
 		return responseBody;
 
 	}
-
 	public void parseJSONResponse(String responseBody) {
 		JSONArray data_array;
 		JSONObject json;
@@ -137,7 +162,7 @@ public class GetAllHobbyGroup extends AsyncTask<Object, Object, Object>
 				hobby.setCategory(dataJob.getString("category"));
 				hobby.setDescription(dataJob.getString("grpDesc"));
 				hobby.setAdminNric(dataJob.getString("adminNric"));
-				hobby.setGrpImg(dataJob.getString("photo"));
+				//hobby.setGrpImg(dataJob.getString("photo"));
 				hobby.setLat(dataJob.getDouble("Lat"));
 				hobby.setLng(dataJob.getDouble("Lng"));
 				hobbyList.add(hobby);
@@ -148,14 +173,12 @@ public class GetAllHobbyGroup extends AsyncTask<Object, Object, Object>
 		}
 		
 	}
-
 	private void errorOnExecuting() {
 		this.cancel(true);
 		new Handler(Looper.getMainLooper()).post(new Runnable() {
 			public void run() {
 				dialog.dismiss();
-				AlertDialog.Builder builder = new AlertDialog.Builder(activity
-						.getActivity());
+				AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 				builder.setTitle("Error in retrieving hobby ");
 				builder.setMessage("Unable to retrieve hobby. Please try again.");
 				builder.setPositiveButton("Ok",

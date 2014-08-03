@@ -3,6 +3,7 @@ package com.example.it3197_casestudy.controller;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -16,36 +17,33 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-import com.example.it3197_casestudy.model.HobbyPost;
-import com.example.it3197_casestudy.ui_logic.ViewSingleHobby;
-import com.example.it3197_casestudy.util.PostListView;
 import com.example.it3197_casestudy.util.Settings;
 
-public class DeletePost extends AsyncTask<Object, Object, Object> implements Settings{
+public class CreateRequest extends AsyncTask<Object, Object, Object> implements Settings  {
 	private ProgressDialog dialog;
-	private ViewSingleHobby activity;
-	private HobbyPost post;
-	private int id;
-	private String userNric;
-	private String adminNric;
-	private String grpName;
-	public DeletePost(ViewSingleHobby activity, HobbyPost post, int id, String userNric, String grpName, String adminNric){
+	private Activity activity;
+	private int eventID;
+	private int hobbyID;
+	private String dateStart;
+	private String endDate;
+	private String groupname;
+	public CreateRequest(Activity activity, int eventID, int hobbyID, String dateStart, String endDate, String groupname ){
 		this.activity = activity;
-		this.post = post;
-		this.id = id;
-		this.userNric = userNric;
-		this.adminNric = adminNric;
-		this.grpName = grpName;
+		this.eventID = eventID;
+		this.hobbyID = hobbyID;
+		this.dateStart = dateStart;
+		this.endDate = endDate;
+		this.groupname = groupname;
 	}
 	@Override
 	protected Object doInBackground(Object... arg0) {
 		// TODO Auto-generated method stub
-		return deletePost();
+		return createRequest();
 	}
 
 	@Override
@@ -53,35 +51,25 @@ public class DeletePost extends AsyncTask<Object, Object, Object> implements Set
 		// TODO Auto-generated method stub
 		parseJSONResponse((String)result);
 		dialog.dismiss();
-		activity.recreate();
-		
-		/*
-		Intent intent = new Intent(activity, ViewSingleHobby.class);
-		intent.putExtra("grpName", grpName);
-		intent.putExtra("grpID", id);
-		intent.putExtra("adminNric", adminNric);
-		intent.putExtra("userNric", userNric);
-		activity.startActivity(intent);
-		activity.finish();
-		*/
 	}
 
 	@Override
 	protected void onPreExecute() {
 		// TODO Auto-generated method stub
-		dialog = ProgressDialog.show(activity, "Creating Hobby Group",
-				"Creatng....", true);
+		dialog = ProgressDialog.show(activity, "Requesting",
+				"Please wait....", true);
 	}
 	
-	
-	public String deletePost(){
+	public String createRequest(){
 		String responseBody= "";
 		HttpClient httpclient = new DefaultHttpClient();
-		HttpPost httppost = new HttpPost(API_URL + "DelPostServlet");
+		HttpPost httppost = new HttpPost(API_URL + "CreateRequestServlet");
 		ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
-		
-		postParameters.add(new BasicNameValuePair("postID", Integer.toString(post.getPostID())));
-	
+		postParameters.add(new BasicNameValuePair("eventID", Integer.toString(eventID)));
+		postParameters.add(new BasicNameValuePair("hobbyID", Integer.toString(hobbyID)));
+		postParameters.add(new BasicNameValuePair("dateStart", dateStart));
+		postParameters.add(new BasicNameValuePair("endDate", endDate));
+		postParameters.add(new BasicNameValuePair("groupname", groupname));
 		try {
 			httppost.setEntity(new UrlEncodedFormEntity(postParameters));
 			ResponseHandler<String> responseHandler = new BasicResponseHandler();
@@ -97,7 +85,6 @@ public class DeletePost extends AsyncTask<Object, Object, Object> implements Set
 			e.printStackTrace();
 		}
 		return responseBody;
-		
 	}
 	
 	private void parseJSONResponse(String responseBody){
@@ -108,7 +95,8 @@ public class DeletePost extends AsyncTask<Object, Object, Object> implements Set
 			boolean success = json.getBoolean("success");
 			if(success){
 				dialog.dismiss();
-				Toast.makeText(activity, "Post deleted", Toast.LENGTH_LONG).show();
+				Toast.makeText(activity, "Hobby Group Created", Toast.LENGTH_LONG).show();
+				activity.finish();
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block

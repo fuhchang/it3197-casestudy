@@ -306,5 +306,10 @@
     <string name="pull_to_refresh_refreshing_label">Loading...</string>
     <string name="pull_to_refresh_tap_label">Tap to refresh...</string>
     <string name="title_activity_update_post">UpdatePost</string>
+    <string name="title_activity_request_for_hobby_help">RequestForHobbyHelp</string>
+    <string name="title_activity_request_list_adapter">RequestListAdapter</string>
+    <string name="title_activity_view_avaliable_hobby">ViewAvaliableHobby</string>
+    <string name="title_activity_available_hobby_adapter">AvailableHobbyAdapter</string>
+    <string name="title_activity_make_request_hobby">MakeRequestHobby</string>
 
 </resources>

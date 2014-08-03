@@ -1,0 +1,42 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+    
+	<TextView
+    		android:id="@+id/grpName"
+			android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginLeft="2dp"
+	        android:layout_marginRight="2dp"
+	        android:layout_marginTop="2dp"
+	        android:textSize="21sp"
+	        android:textStyle="bold"/>
+	<TextView
+    		android:id="@+id/date1"
+			android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginLeft="2dp"
+	        android:layout_marginRight="2dp"
+	        android:layout_marginTop="2dp"
+	        android:textSize="21sp" 
+	        android:layout_below="@+id/grpName"/>
+		<TextView
+    		android:id="@+id/date2"
+			android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginLeft="2dp"
+	        android:layout_marginRight="2dp"
+	        android:layout_marginTop="2dp"
+	        android:textSize="21sp" 
+	        android:layout_below="@+id/date1"/>
+		<TextView
+    		android:id="@+id/status"
+			android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginLeft="2dp"
+	        android:layout_marginRight="2dp"
+	        android:layout_marginTop="2dp"
+	        android:textSize="21sp"
+	        android:gravity="right" 
+	        android:layout_toRightOf="@+id/date1"/>
+</RelativeLayout>

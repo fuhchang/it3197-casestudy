@@ -26,11 +26,11 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import com.example.it3197_casestudy.listview.HobbyListView;
 import com.example.it3197_casestudy.model.Hobby;
 import com.example.it3197_casestudy.ui_logic.Hobbies_All;
 import com.example.it3197_casestudy.ui_logic.Hobbies_Joined;
 import com.example.it3197_casestudy.ui_logic.ViewSingleHobby;
+import com.example.it3197_casestudy.util.HobbyListView;
 import com.example.it3197_casestudy.util.Settings;
 
 public class GetAllJoinedHobbyGroup extends AsyncTask<Object, Object, Object>
