@@ -147,7 +147,9 @@ public class ViewSingleHobby extends Activity {
 			this.finish();
 			break;
 		case R.id.action_view_request:
-			
+			Intent requestIntent = new Intent(this, ViewRequest.class);
+			requestIntent.putExtra("hobbyID", getIntent().getExtras().getInt("grpID"));
+			startActivity(requestIntent);
 			break;
 		}
 		return super.onOptionsItemSelected(item);

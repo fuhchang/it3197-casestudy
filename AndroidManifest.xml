@@ -158,7 +158,7 @@
         <!--
              <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyDVor5BS2mdSm_sxCIOBtQTYS2uBDuNpJg" />
+            android:value="AIzaSyDVor5BS2mdSm_sxCIOBtQTYS2uBDuNpJg" />
         -->
 
 
@@ -166,7 +166,7 @@
         <!--
             <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyCpTBz_uJRG9Wm5UWupZsZ2yMz9R3cbERk" />
+            android:value="AIzaSyCpTBz_uJRG9Wm5UWupZsZ2yMz9R3cbERk" />
         -->
 
         <activity
@@ -292,6 +292,10 @@
         <activity
             android:name="com.example.it3197_casestudy.ui_logic.MakeRequestHobby"
             android:label="@string/title_activity_make_request_hobby" >
+        </activity>
+        <activity
+            android:name="com.example.it3197_casestudy.ui_logic.ViewRequest"
+            android:label="@string/title_activity_view_request" >
         </activity>
     </application>
 

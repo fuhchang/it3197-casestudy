@@ -311,5 +311,6 @@
     <string name="title_activity_view_avaliable_hobby">ViewAvaliableHobby</string>
     <string name="title_activity_available_hobby_adapter">AvailableHobbyAdapter</string>
     <string name="title_activity_make_request_hobby">MakeRequestHobby</string>
+    <string name="title_activity_view_request">ViewRequest</string>
 
 </resources>

@@ -38,5 +38,5 @@
 	        android:layout_marginTop="2dp"
 	        android:textSize="21sp"
 	        android:gravity="right" 
-	        android:layout_toRightOf="@+id/date1"/>
+	        android:layout_toRightOf="@+id/grpName"/>
 </RelativeLayout>
