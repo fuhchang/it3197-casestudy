@@ -61,6 +61,7 @@
     <string name="update_event">Update event</string>
     <string name="join_event">Join event</string>
     <string name="unjoin_event">Unjoin event</string>
+    <string name="share_event">Share event</string>
     <string name="action_update">Update</string>
     <string name="btn_delete">Delete</string>
     <string name="btn_edit">Edit</string>

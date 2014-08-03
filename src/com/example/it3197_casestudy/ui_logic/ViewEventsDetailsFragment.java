@@ -276,14 +276,13 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 	}
 	
 	public void getPoster(){
-			Bundle b = new Bundle();
-			b.putString("fields", "full_picture");
-			Request request = new Request(Session.getActiveSession(), event.getEventFBPostID(), b, HttpMethod.GET, new Request.Callback() {
+			Request request = new Request(Session.getActiveSession(), event.getEventFBPostID(), null, HttpMethod.GET, new Request.Callback() {
 				public void onCompleted(Response response) {
 			    /* handle the result */
 					try {
-						if((response.getGraphObject().getInnerJSONObject().getString("full_picture") != null) && (response.getGraphObject().getInnerJSONObject().getString("full_picture").length() > 0)){
-							String pictureURL = response.getGraphObject().getInnerJSONObject().getString("full_picture");
+						if((response.getGraphObject().getInnerJSONObject().getJSONArray("image") != null) && (response.getGraphObject().getInnerJSONObject().getJSONArray("image").length() > 0)){
+							String pictureURL = response.getGraphObject().getInnerJSONObject().getJSONArray("image").getJSONObject(0).getString("url").toString().replace("\"/", "/");
+							System.out.println("Picture URL: " + pictureURL);
 							GetImageFromFacebook getImageFromFacebook = new GetImageFromFacebook(ViewEventsDetailsFragment.this.getActivity(),ivEventPoster,pictureURL);
 							getImageFromFacebook.execute();
 						}

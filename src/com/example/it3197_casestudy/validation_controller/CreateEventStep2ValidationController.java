@@ -38,9 +38,14 @@ import com.facebook.FacebookRequestError;
 import com.facebook.HttpMethod;
 import com.facebook.Request;
 import com.facebook.RequestAsyncTask;
+import com.facebook.RequestBatch;
 import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionState;
+import com.facebook.model.GraphObject;
+import com.facebook.model.OpenGraphAction;
+import com.facebook.model.OpenGraphObject;
+import com.facebook.widget.FacebookDialog;
 
 public class CreateEventStep2ValidationController implements Settings{
 	private CreateEventStep2Activity activity;
@@ -111,15 +116,26 @@ public class CreateEventStep2ValidationController implements Settings{
 	            Session.NewPermissionsRequest newPermissionsRequest = new Session.NewPermissionsRequest(activity, PERMISSIONS);
 	            session.requestNewPublishPermissions(newPermissionsRequest);
 	            return;
-	        }
+	        }	        
+	        
+	        RequestBatch requestBatch = new RequestBatch();
 
+	        
 	        Bundle postParams = new Bundle();
-	        postParams.putString("name", event.getEventName());
-	        postParams.putString("caption", dateTimeFormatter.format(event.getEventDateTimeFrom()) + " -- " + dateTimeFormatter.format(event.getEventDateTimeTo()));
-	        postParams.putString("description", event.getEventDescription());
-	        postParams.putString("link", "localhost:8080/CommunityOutreach/");
-	        postParams.putString("picture", posterFileName);
-	        System.out.println(event.getEventName() + "(" + event.getEventDateTimeFrom() + "-" + event.getEventDateTimeTo() + "), " + event.getEventDescription() + " -- " + posterFileName);
+
+	        postParams.putString("fb:app_id", "1448892845363751");
+	        postParams.putString("og:title", event.getEventName());
+	        postParams.putString("og:type", "community_outreach:event");
+	        postParams.putString("og:description", event.getEventDescription());
+	        postParams.putString("og:url", "localhost:8080/CommunityOutreach/");
+	        postParams.putString("og:image", posterFileName);
+	        if((posterFileName.length() > 0) && (posterFileName != null)){
+		        postParams.putString("object","{\"title\":\""+event.getEventName()+"\",\"type\":\"community_outreach:event\",\"image\":\""+posterFileName+"\",\"description\":\""+event.getEventDescription()+"\"}");	
+	        }
+	        else{
+	        	postParams.putString("object","{\"title\":\""+event.getEventName()+"\",\"type\":\"community_outreach:event\",\"description\":\""+event.getEventDescription()+"\"}");
+	        }
+	        //System.out.println(event.getEventName() + "(" + event.getEventDateTimeFrom() + "-" + event.getEventDateTimeTo() + "), " + event.getEventDescription() + " -- " + posterFileName);
 	        Request.Callback callback= new Request.Callback() {
 	            public void onCompleted(Response response) {
 	                try {
@@ -141,12 +157,22 @@ public class CreateEventStep2ValidationController implements Settings{
 	                FacebookRequestError error = response.getError();
 	                if (error != null) {
 	                    Toast.makeText(activity, error.getErrorMessage(), Toast.LENGTH_SHORT).show();
+	                    Log.i("Tag",
+		                        "JSON error "+ error.getErrorMessage());
 	                }
 	            }
 	        };
-	        Request request = new Request(session, "614675458630326/feed", postParams, HttpMethod.POST, callback);
-	        RequestAsyncTask task = new RequestAsyncTask(request);
-	        task.execute();
+	        Request request = new Request(session, "me/objects/community_outreach:event", postParams, HttpMethod.POST, callback);
+
+	        request.setBatchEntryName("object");
+
+		     // Add the request to the batch
+		     requestBatch.add(request);
+	
+		     // TO DO: Add the publish action request to the batch
+	
+		     // Execute the batch request
+		     requestBatch.executeAsync();
 	    }
 	}
 	
