@@ -1,9 +1,11 @@
 package com.example.it3197_casestudy.ui_logic;
 
 import java.security.MessageDigest;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 import com.example.it3197_casestudy.R;
-import com.example.it3197_casestudy.controller.GetUserByName;
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
@@ -37,7 +39,11 @@ import android.widget.Toast;
 public class LoginSelectionActivity extends FragmentActivity {
 	private ActionBar loginActionBar;
 	private UiLifecycleHelper uiHelper;
-	
+
+
+	private static final List<String> PERMISSIONS = Arrays.asList("publish_actions","user_friends","user_about_me","read_friendlists");
+	private static final String PENDING_PUBLISH_KEY = "pendingPublishReauthorization";
+	private boolean pendingPublishReauthorization = false;
 	/**
 	 * Login activity is created
 	 */
@@ -117,21 +123,25 @@ public class LoginSelectionActivity extends FragmentActivity {
 	}
 	
 	private void loginViaFB(Session session){
+        List<String> permissions = session.getPermissions();
+        if (!isSubsetOf(PERMISSIONS, permissions)) {
+            pendingPublishReauthorization = true;
+            Session.NewPermissionsRequest newPermissionsRequest = new Session.NewPermissionsRequest(this, PERMISSIONS);
+            session.requestNewPublishPermissions(newPermissionsRequest);
+            return;
+        }	        
+        
 		final ProgressDialog dialog = ProgressDialog.show(this, "Logging in...", "Please Wait. ");
 		Request.newMeRequest(session, new Request.GraphUserCallback() {
 			//callback after Graph API response with user object
 			@Override
 			public void onCompleted(GraphUser user, Response response) {
 				if (user != null) {
-					GetUserByName getUserByName = new GetUserByName(LoginSelectionActivity.this, user.getName());
-					getUserByName.execute();
-					/*
 					Intent intent = new Intent(LoginSelectionActivity.this,MainLinkPage.class);
 					dialog.dismiss();
 					intent.putExtra("userName", user.getName());
 					startActivity(intent);
 					LoginSelectionActivity.this.finish();
-					*/
 				}
 				else{
 					new Handler(Looper.getMainLooper()).post(new Runnable() {
@@ -180,4 +190,12 @@ public class LoginSelectionActivity extends FragmentActivity {
 		uiHelper.onSaveInstanceState(outState);
 	}
 	
+	private boolean isSubsetOf(Collection<String> subset, Collection<String> superset) {
+	    for (String string : subset) {
+	        if (!superset.contains(string)) {
+	            return false;
+	        }
+	    }
+	    return true;
+	}
 }
