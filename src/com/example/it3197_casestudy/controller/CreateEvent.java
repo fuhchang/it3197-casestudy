@@ -32,6 +32,7 @@ import com.example.it3197_casestudy.model.EventLocationDetail;
 import com.example.it3197_casestudy.ui_logic.CreateEventStep2Activity;
 import com.example.it3197_casestudy.ui_logic.MainLinkPage;
 import com.example.it3197_casestudy.ui_logic.ViewAllEventsActivity;
+import com.example.it3197_casestudy.ui_logic.ViewAvaliableHobby;
 import com.example.it3197_casestudy.util.EventListAdapter;
 import com.example.it3197_casestudy.util.MySharedPreferences;
 import com.example.it3197_casestudy.util.Settings;
@@ -107,8 +108,11 @@ public class CreateEvent extends AsyncTask<Object, Object, Object> implements Se
 			if(success){
 				dialog.dismiss();
 				Toast.makeText(activity.getApplicationContext(),"Event created successfully.", Toast.LENGTH_SHORT).show();
+				System.out.println("Request Help: " + requestHelp);
 				if(requestHelp){
-					
+					Intent intentAva = new Intent(activity, ViewAvaliableHobby.class);
+					activity.startActivity(intentAva);
+					activity.finish();
 				}
 				else{
 					Intent intent = new Intent(activity,ViewAllEventsActivity.class);
@@ -121,6 +125,7 @@ public class CreateEvent extends AsyncTask<Object, Object, Object> implements Se
 			}
 		} catch (Exception e) {
 			errorOnExecuting();
+			e.printStackTrace();
 		}
 	}
 	

@@ -1,14 +1,13 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout 
+   	xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/hexDEDEDE" 
-    >
-    <!--
-    The PullToRefreshListView replaces a standard ListView widget.
-    -->
-    <com.example.it3197_casestudy.util.PullToRefreshListView
-        android:id="@+id/android:list"
+    android:id="@+id/swipe"> 
+    
+    <ListView
+        android:id="@+id/lv_view_all_events"
         android:layout_height="fill_parent"
         android:layout_width="fill_parent"
        	android:layout_marginBottom="5dp"
@@ -19,4 +18,5 @@
        	android:paddingLeft="5dp"
         android:paddingRight="5dp" 
         />
-</LinearLayout>
+    
+</android.support.v4.widget.SwipeRefreshLayout>

@@ -55,7 +55,7 @@ public class CreateEventStep2ValidationController implements Settings{
 	private static final String PENDING_PUBLISH_KEY = "pendingPublishReauthorization";
 	private boolean pendingPublishReauthorization = false;
 	private String posterFileName;
-	private boolean requestHelp = false;
+	private boolean requestHelp;
 	
 	public CreateEventStep2ValidationController(CreateEventStep2Activity activity, EventLocationDetail eventLocationDetails, String posterFileName){
 		this.activity = activity;

@@ -45,11 +45,11 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 	private ArrayList<Event> eventArrList;
 	private Event[] eventList;
 	private ViewAllEventsActivity activity;
-	private PullToRefreshListView lvViewAllEvents;
+	private ListView lvViewAllEvents;
 
 	private ProgressDialog dialog;
 	
-	public GetAllEvents(ViewAllEventsActivity activity,PullToRefreshListView lvViewAllEvents){
+	public GetAllEvents(ViewAllEventsActivity activity,ListView lvViewAllEvents){
 		this.activity = activity;
 		this.lvViewAllEvents = lvViewAllEvents;
 	}
@@ -99,8 +99,8 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 		        activity.startActivity(intent);
 			}
 		});
-		lvViewAllEvents.onRefreshComplete();
 		dialog.dismiss();
+		activity.getSwipeLayout().setRefreshing(false);
 	}
 
 	public String retrieveEvents() {
