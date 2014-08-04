@@ -1,6 +1,7 @@
 package com.example.it3197_casestudy.controller;
 
 import java.io.ByteArrayOutputStream;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
@@ -11,11 +12,14 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
+
 import org.apache.http.client.methods.HttpPost;
+/*
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.entity.mime.content.StringBody;
+*/
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
@@ -73,7 +77,9 @@ public class ImageUploader extends AsyncTask<Object, Object, Object> implements 
 	@SuppressWarnings("deprecation")
 	public String ImageUpload(){
 		HttpResponse response = null;
+		 /*
          try {
+        	
         	 bm = BitmapFactory.decodeFile(imgPath);
         	 ByteArrayOutputStream bos = new ByteArrayOutputStream();
      		bm.compress(CompressFormat.JPEG, 75, bos);
@@ -86,6 +92,7 @@ public class ImageUploader extends AsyncTask<Object, Object, Object> implements 
      		reqEntity.addPart("photoCaption", new StringBody("sfsdfsdf"));
      		postRequest.setEntity(reqEntity);
      		response = httpClient.execute(postRequest);
+     		
               
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
@@ -94,6 +101,7 @@ public class ImageUploader extends AsyncTask<Object, Object, Object> implements 
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+         */
 		return response.toString();
 
 	}

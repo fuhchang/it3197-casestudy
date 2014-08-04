@@ -3,6 +3,7 @@ package com.example.it3197_casestudy.ui_logic;
 import java.security.MessageDigest;
 
 import com.example.it3197_casestudy.R;
+import com.example.it3197_casestudy.controller.GetUserByName;
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
@@ -122,11 +123,15 @@ public class LoginSelectionActivity extends FragmentActivity {
 			@Override
 			public void onCompleted(GraphUser user, Response response) {
 				if (user != null) {
+					GetUserByName getUserByName = new GetUserByName(LoginSelectionActivity.this, user.getName());
+					getUserByName.execute();
+					/*
 					Intent intent = new Intent(LoginSelectionActivity.this,MainLinkPage.class);
 					dialog.dismiss();
 					intent.putExtra("userName", user.getName());
 					startActivity(intent);
 					LoginSelectionActivity.this.finish();
+					*/
 				}
 				else{
 					new Handler(Looper.getMainLooper()).post(new Runnable() {
