@@ -12,6 +12,7 @@ import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
 import com.facebook.model.GraphUser;
+import com.facebook.widget.LoginButton;
 
 import android.annotation.TargetApi;
 import android.app.ActionBar;
@@ -39,9 +40,9 @@ import android.widget.Toast;
 public class LoginSelectionActivity extends FragmentActivity {
 	private ActionBar loginActionBar;
 	private UiLifecycleHelper uiHelper;
+	private LoginButton authButton;
 
-
-	private static final List<String> PERMISSIONS = Arrays.asList("publish_actions","user_friends","user_about_me","read_friendlists");
+	private static final List<String> PERMISSIONS = Arrays.asList("user_friends","user_about_me","read_friendlists");
 	private static final String PENDING_PUBLISH_KEY = "pendingPublishReauthorization";
 	private boolean pendingPublishReauthorization = false;
 	/**
@@ -67,6 +68,9 @@ public class LoginSelectionActivity extends FragmentActivity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		// Remove the icon
 		loginActionBar.setDisplayShowHomeEnabled(false);
+		authButton = (LoginButton) findViewById(R.id.btn_login_facebook);
+		authButton.setReadPermissions(PERMISSIONS);
+		//		authButton.setReadPermissions(PERMISSIONS);
 		// Remove the title
 		/*
 		 * actionBar.setDisplayShowTitleEnabled(false);
@@ -84,6 +88,7 @@ public class LoginSelectionActivity extends FragmentActivity {
 				break;
 			case R.id.btn_login_facebook:
 				Session.openActiveSession(LoginSelectionActivity.this, true, callback);
+				//Session.openActiveSession(LoginSelectionActivity.this, true, callback);
 				break;
 			default:
 				LoginSelectionActivity.this.finish();
@@ -97,6 +102,7 @@ public class LoginSelectionActivity extends FragmentActivity {
 	private void onSessionStateChange(Session session, SessionState state,
 			Exception exception) {
 		if (state.isOpened()) {
+			loginViaFB(session);
 			Log.i("Login via Facebook status: ", "Logged in...");
 		} else if (state.isClosed()) {
 			Log.i("Login via Facebook status: ", "Logged out...");
@@ -106,9 +112,7 @@ public class LoginSelectionActivity extends FragmentActivity {
 	private Session.StatusCallback callback = new Session.StatusCallback() {
 		@Override
 		public void call(Session session, SessionState state, Exception exception) {
-			if (session != null && (session.isOpened() || session.isClosed())) {
-				loginViaFB(session);
-			}
+			onSessionStateChange(session, session.getState(), null);
 		}
 	};
 
@@ -116,21 +120,13 @@ public class LoginSelectionActivity extends FragmentActivity {
 	public void onResume() {
 		super.onResume();
 		Session session = Session.getActiveSession();
-		if (session != null && (session.isOpened() || session.isClosed())) {
-			onSessionStateChange(session, session.getState(), null);
+		if (session != null && (session.isOpened() && !session.isClosed())) {
+			Session.openActiveSession(LoginSelectionActivity.this, true, callback);
 		}
 		uiHelper.onResume();
 	}
 	
-	private void loginViaFB(Session session){
-        List<String> permissions = session.getPermissions();
-        if (!isSubsetOf(PERMISSIONS, permissions)) {
-            pendingPublishReauthorization = true;
-            Session.NewPermissionsRequest newPermissionsRequest = new Session.NewPermissionsRequest(this, PERMISSIONS);
-            session.requestNewPublishPermissions(newPermissionsRequest);
-            return;
-        }	        
-        
+	private void loginViaFB(final Session session){
 		final ProgressDialog dialog = ProgressDialog.show(this, "Logging in...", "Please Wait. ");
 		Request.newMeRequest(session, new Request.GraphUserCallback() {
 			//callback after Graph API response with user object
