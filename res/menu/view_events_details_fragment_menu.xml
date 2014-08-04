@@ -3,20 +3,24 @@
         android:id="@+id/update"
         android:orderInCategory="100"
         android:showAsAction="always"
+        android:icon="@drawable/ic_action_edit"
         android:title="@string/update_event"/>
     <item
         android:id="@+id/join"
         android:orderInCategory="100"
         android:showAsAction="always"
+        android:icon="@drawable/ic_action_add_group"
         android:title="@string/join_event"/>
 	 <item
         android:id="@+id/unjoin"
         android:orderInCategory="100"
         android:showAsAction="always"
+        android:icon="@drawable/ic_action_remove"
         android:title="@string/unjoin_event"/>
 	 <item
         android:id="@+id/share"
         android:orderInCategory="100"
         android:showAsAction="always"
+        android:icon="@drawable/ic_action_share"
         android:title="@string/share_event"/>
 </menu>
