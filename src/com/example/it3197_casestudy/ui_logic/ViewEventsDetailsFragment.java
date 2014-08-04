@@ -2,12 +2,17 @@ package com.example.it3197_casestudy.ui_logic;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.List;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,6 +20,8 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,6 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.it3197_casestudy.R;
+import com.example.it3197_casestudy.controller.CreateEvent;
 import com.example.it3197_casestudy.controller.GetEvent;
 import com.example.it3197_casestudy.controller.GetEventParticipants;
 import com.example.it3197_casestudy.controller.GetImageFromFacebook;
@@ -34,14 +42,29 @@ import com.example.it3197_casestudy.controller.JoinEvent;
 import com.example.it3197_casestudy.controller.UnjoinEvent;
 import com.example.it3197_casestudy.model.Event;
 import com.example.it3197_casestudy.model.EventParticipants;
+import com.example.it3197_casestudy.util.FriendPickerApplication;
 import com.example.it3197_casestudy.util.MySharedPreferences;
 import com.example.it3197_casestudy.util.Settings;
+import com.facebook.AppEventsLogger;
+import com.facebook.FacebookException;
+import com.facebook.FacebookOperationCanceledException;
+import com.facebook.FacebookRequestError;
 import com.facebook.HttpMethod;
 import com.facebook.Request;
 import com.facebook.RequestAsyncTask;
+import com.facebook.RequestBatch;
 import com.facebook.Response;
 import com.facebook.Session;
+import com.facebook.Session.StatusCallback;
+import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
+import com.facebook.model.GraphObject;
+import com.facebook.model.GraphUser;
+import com.facebook.model.OpenGraphAction;
+import com.facebook.model.OpenGraphObject;
+import com.facebook.widget.FacebookDialog;
+import com.facebook.widget.WebDialog;
+import com.facebook.widget.WebDialog.OnCompleteListener;
 
 /**
  * A dummy fragment representing a section of the app, but that simply
@@ -61,8 +84,12 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 	MenuItem menuItemJoin;
 	MenuItem menuItemUnjoin;
 	MenuItem menuItemUpdate;
-
+	private String pictureURL;
 	private UiLifecycleHelper uiHelper;
+
+	private static final List<String> PERMISSIONS = Arrays.asList("publish_actions");
+	private static final String PENDING_PUBLISH_KEY = "pendingPublishReauthorization";
+	private boolean pendingPublishReauthorization = false;
 	
 	public ImageView getIvEventPoster() {
 		return ivEventPoster;
@@ -133,8 +160,8 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-		uiHelper = new UiLifecycleHelper(ViewEventsDetailsFragment.this.getActivity(), null);
-		uiHelper.onCreate(savedInstanceState);
+	    uiHelper = new UiLifecycleHelper(this.getActivity(), null);
+	    uiHelper.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
     	
@@ -200,6 +227,36 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 				unjoinEvent.execute();
 			}
 			break;
+
+		case R.id.share:
+			//Archive this for you to pick friends
+            /*Intent intent = new Intent(this.getActivity(), PickFriendsActivity.class);
+            PickFriendsActivity.populateParameters(intent, "me", true, true);
+            startActivityForResult(intent, 100);*/
+
+            if (FacebookDialog.canPresentOpenGraphActionDialog(this.getActivity().getApplicationContext(), FacebookDialog.OpenGraphActionDialogFeature.OG_ACTION_DIALOG)) {
+            	publishStory();
+            }
+            else{
+            	Bundle postParams = new Bundle();
+    	        postParams.putString("title", event.getEventName());
+    	        postParams.putString("type", "community_outreach:event");
+    	        postParams.putString("description", event.getEventDescription());
+    	        postParams.putString("url", "localhost:8080/CommunityOutreach/");
+    	        postParams.putString("image", pictureURL);
+    	        postParams.putString("to", "947027648641504");
+                WebDialog feedDialog = new WebDialog.FeedDialogBuilder(this.getActivity(), Session.getActiveSession(),postParams).setOnCompleteListener(new OnCompleteListener() {
+					@Override
+					public void onComplete(Bundle values,
+							FacebookException error) {
+						// TODO Auto-generated method stub
+						
+					}
+                }).build();
+                feedDialog.show();
+            }
+            
+			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -209,6 +266,7 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_view_events_details, container, false);
 		Bundle bundle = getArguments();
+		
 		event.setEventID(bundle.getInt("eventID"));
 		event.setEventAdminNRIC(bundle.getString("eventAdminNRIC"));
 		event.setEventName(bundle.getString("eventName"));
@@ -258,6 +316,7 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 			getPoster();
 		}
 		else{
+			pictureURL = "";
 			ivEventPoster.setVisibility(View.GONE);
 		}
         Calendar todayDate = Calendar.getInstance();
@@ -283,12 +342,13 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 			    /* handle the result */
 					try {
 						if((response.getGraphObject().getInnerJSONObject().getJSONArray("image") != null) && (response.getGraphObject().getInnerJSONObject().getJSONArray("image").length() > 0)){
-							String pictureURL = response.getGraphObject().getInnerJSONObject().getJSONArray("image").getJSONObject(0).getString("url").toString().replace("\"/", "/");
+							pictureURL = response.getGraphObject().getInnerJSONObject().getJSONArray("image").getJSONObject(0).getString("url").toString().replace("\"/", "/");
 							//System.out.println("Picture URL: " + pictureURL);
 							GetImageFromFacebook getImageFromFacebook = new GetImageFromFacebook(ViewEventsDetailsFragment.this.getActivity(),ivEventPoster,pictureURL);
 							getImageFromFacebook.execute();
 						}
 						else{
+							pictureURL = "";
 							ivEventPoster.setVisibility(View.GONE);
 						}
 					} catch (JSONException e) {
@@ -307,6 +367,9 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 	public void onActivityResult(int requestCode, int resultCode, Intent data){
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode,resultCode,data);
+		/*if(requestCode == 10){
+			uiHelper.onActivityResult(requestCode, resultCode, data, null);
+		}*/
 		if(requestCode == 1){
 			if(resultCode == Activity.RESULT_OK){
 				System.out.println(data.getExtras().getString("newEventAdminNRIC"));
@@ -315,6 +378,46 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 				unjoinEvent.execute();
 			}
 		}
+	}
+	
+	private void publishStory() {
+	    Session session = Session.getActiveSession();
+
+	    if (session != null){
+
+	        // Check for publish permissions    
+	        List<String> permissions = session.getPermissions();
+	        if (!isSubsetOf(PERMISSIONS, permissions)) {
+	            pendingPublishReauthorization = true;
+	            Session.NewPermissionsRequest newPermissionsRequest = new Session.NewPermissionsRequest(this.getActivity(), PERMISSIONS);
+	            session.requestNewPublishPermissions(newPermissionsRequest);
+	        }	        
+			OpenGraphObject eventObj = OpenGraphObject.Factory.createForPost("community_outreach.event");
+			if((pictureURL != null) && (pictureURL.length() > 0)){
+				eventObj.setProperty("og:image:url", pictureURL);
+			}
+			else{
+				eventObj.setProperty("og:image:url", "");
+			}
+	        eventObj.setTitle(event.getEventName());
+	        eventObj.setUrl("https://developers.facebook.com/docs/android/share");
+	        eventObj.setDescription(event.getEventDescription());
+	        
+            OpenGraphAction readAction = GraphObject.Factory.create(OpenGraphAction.class);
+            readAction.setProperty("event",eventObj);
+            FacebookDialog shareDialog = new FacebookDialog.OpenGraphActionDialogBuilder(this.getActivity(), readAction, "community_outreach:create", "event").build();
+            shareDialog.present();
+
+	    }
+	}
+	
+	private boolean isSubsetOf(Collection<String> subset, Collection<String> superset) {
+	    for (String string : subset) {
+	        if (!superset.contains(string)) {
+	            return false;
+	        }
+	    }
+	    return true;
 	}
 }
 
