@@ -405,7 +405,7 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 	        
             OpenGraphAction readAction = GraphObject.Factory.create(OpenGraphAction.class);
             readAction.setProperty("event",eventObj);
-            FacebookDialog shareDialog = new FacebookDialog.OpenGraphActionDialogBuilder(this.getActivity(), readAction, "community_outreach:create", "event").build();
+            FacebookDialog shareDialog = new FacebookDialog.OpenGraphActionDialogBuilder(this.getActivity(), readAction, "community_outreach:share", "event").build();
             shareDialog.present();
 
 	    }
