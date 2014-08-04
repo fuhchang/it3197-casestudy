@@ -261,6 +261,8 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 			ivEventPoster.setVisibility(View.GONE);
 		}
         Calendar todayDate = Calendar.getInstance();
+        Calendar eventDateTimeFrom = Calendar.getInstance();
+        eventDateTimeFrom.setTime(event.getEventDateTimeFrom());
         
 		tvEventID.setText("Event No: #" + event.getEventID());
 		tvEventName.setText(event.getEventName());
@@ -282,7 +284,7 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 					try {
 						if((response.getGraphObject().getInnerJSONObject().getJSONArray("image") != null) && (response.getGraphObject().getInnerJSONObject().getJSONArray("image").length() > 0)){
 							String pictureURL = response.getGraphObject().getInnerJSONObject().getJSONArray("image").getJSONObject(0).getString("url").toString().replace("\"/", "/");
-							System.out.println("Picture URL: " + pictureURL);
+							//System.out.println("Picture URL: " + pictureURL);
 							GetImageFromFacebook getImageFromFacebook = new GetImageFromFacebook(ViewEventsDetailsFragment.this.getActivity(),ivEventPoster,pictureURL);
 							getImageFromFacebook.execute();
 						}

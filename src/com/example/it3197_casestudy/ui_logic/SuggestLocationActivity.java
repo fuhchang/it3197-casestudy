@@ -22,12 +22,12 @@ public class SuggestLocationActivity extends Activity{
 		// Get a handle to the Map Fragment
 		GoogleMap map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
 
-        LatLng sydney = new LatLng(-33.867, 151.206);
+        LatLng singapore = new LatLng(1.3450, 103.8250);
 
         map.setMyLocationEnabled(true);
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 13));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(singapore, 10));
 
-        map.addMarker(new MarkerOptions().title("Sydney").snippet("The most populous city in Australia.").position(sydney));
+        //map.addMarker(new MarkerOptions().title("Sydney").snippet("The most populous city in Australia.").position(singapore));
 		// Show the Up button in the action bar.
 		setupActionBar();
 	}
