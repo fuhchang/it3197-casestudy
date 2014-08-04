@@ -4,12 +4,14 @@
         android:id="@+id/previous"
         android:orderInCategory="100"
         android:showAsAction="always"
+        android:icon="@drawable/ic_action_back"
         android:title="@string/previous"/>
 	
 	<item
         android:id="@+id/create_event"
         android:orderInCategory="100"
         android:showAsAction="always"
+        android:icon="@drawable/ic_action_new"
         android:title="@string/create_event"/>
 
 </menu>

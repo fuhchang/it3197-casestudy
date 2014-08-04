@@ -4,12 +4,14 @@
         android:id="@+id/cancel"
         android:orderInCategory="100"
         android:showAsAction="always"
+        android:icon="@drawable/ic_action_discard"
         android:title="@string/cancel"/>
 	
 	<item
         android:id="@+id/next"
         android:orderInCategory="100"
         android:showAsAction="always"
+        android:icon="@drawable/ic_action_forward"
         android:title="@string/next"/>
 
 </menu>

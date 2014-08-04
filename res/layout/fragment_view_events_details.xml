@@ -1,91 +1,102 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginLeft="10dp"
-    android:orientation="vertical"
-    tools:context=".ViewEventsActivity$DummySectionFragment" >
-
-    <TextView
-        android:id="@+id/tv_event_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-light"
-        android:layout_marginTop="10dp"
-        android:textSize="10sp" />
-
-    <TextView
-        android:id="@+id/tv_event_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="26sp"
-        android:layout_marginTop="10dp"
-        android:fontFamily="sans-serif-bold" />
-
-    <ImageView
-        android:id="@+id/iv_event_poster"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="10dp"
-        android:contentDescription="@string/event_poster_desc"
-        android:fontFamily="sans-serif-light"
-        android:textSize="@dimen/normal_font_size" />
-
-    <TextView
-        android:id="@+id/tv_event_category"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-light"
-        android:layout_marginTop="10dp"
-        android:textSize="@dimen/normal_font_size" />
-
-    <TextView
-        android:id="@+id/tv_event_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-light"
-        android:layout_marginTop="10dp"
-        android:maxLines="4"
-        android:textSize="@dimen/normal_font_size" />
-
-    <TextView
-        android:id="@+id/tv_event_date_time_from"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-light"
-        android:layout_marginTop="10dp"
-        android:textSize="@dimen/normal_font_size" />
-
-    <TextView
-        android:id="@+id/tv_event_date_time_to"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-light"
-        android:layout_marginTop="10dp"
-        android:textSize="@dimen/normal_font_size" />
-
-    <TextView
-        android:id="@+id/tv_event_occur"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-light"
-        android:layout_marginTop="10dp"
-        android:textSize="@dimen/normal_font_size" />
-    
-  	<TextView
-        android:id="@+id/tv_event_no_of_participants"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-light"
-        android:layout_marginTop="10dp"
-        android:textSize="@dimen/normal_font_size" />
-  	
-  	<Button 
-	    android:id="@+id/btn_check_in"
-	    android:layout_height="wrap_content"
-	    android:layout_width="fill_parent"
-	    android:layout_marginTop="10dp"
-	    android:fontFamily="sans-serif-light"
-	    android:text="@string/check_in"/>
-
-</LinearLayout>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	 xmlns:tools="http://schemas.android.com/tools"
+	 android:layout_width="match_parent"
+ 	 android:layout_height="match_parent"
+ 	 >
+	<LinearLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:orientation="vertical"
+	    tools:context=".ViewEventsActivity$DummySectionFragment" >
+	
+	    <ImageView
+	        android:id="@+id/iv_event_poster"
+	        android:layout_width="match_parent"
+	        android:layout_height="200dp"
+	        android:layout_marginTop="5dp"
+	        android:contentDescription="@string/event_poster_desc"
+	        android:textSize="@dimen/normal_font_size" />
+	    
+	    <TextView
+	        android:id="@+id/tv_event_id"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:fontFamily="sans-serif-light"
+	        android:layout_marginTop="10dp"
+	        android:layout_marginLeft="5dp"
+	        android:textSize="10sp" />
+	
+	    <TextView
+	        android:id="@+id/tv_event_name"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:textSize="26sp"
+	        android:layout_marginTop="10dp"
+	        android:layout_marginLeft="5dp"
+	        android:fontFamily="sans-serif-bold" />
+	
+	    <TextView
+	        android:id="@+id/tv_event_category"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:fontFamily="sans-serif-light"
+	        android:layout_marginTop="10dp"
+	        android:layout_marginLeft="5dp"
+	        android:textSize="@dimen/normal_font_size" />
+	
+	    <TextView
+	        android:id="@+id/tv_event_description"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:fontFamily="sans-serif-light"
+	        android:layout_marginTop="10dp"
+	        android:layout_marginLeft="5dp"
+	        android:maxLines="4"
+	        android:textSize="@dimen/normal_font_size" />
+	
+	    <TextView
+	        android:id="@+id/tv_event_date_time_from"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:fontFamily="sans-serif-light"
+	        android:layout_marginTop="10dp"
+	        android:layout_marginLeft="5dp"
+	        android:textSize="@dimen/normal_font_size" />
+	
+	    <TextView
+	        android:id="@+id/tv_event_date_time_to"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:fontFamily="sans-serif-light"
+	        android:layout_marginTop="10dp"
+	        android:layout_marginLeft="5dp"
+	        android:textSize="@dimen/normal_font_size" />
+	
+	    <TextView
+	        android:id="@+id/tv_event_occur"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:fontFamily="sans-serif-light"
+	        android:layout_marginTop="10dp"
+	        android:layout_marginLeft="5dp"
+	        android:textSize="@dimen/normal_font_size" />
+	    
+	  	<TextView
+	        android:id="@+id/tv_event_no_of_participants"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:fontFamily="sans-serif-light"
+	        android:layout_marginTop="10dp"
+	        android:layout_marginLeft="5dp"
+	        android:textSize="@dimen/normal_font_size" />
+	  	
+	  	<Button 
+		    android:id="@+id/btn_check_in"
+		    android:layout_height="wrap_content"
+		    android:layout_width="fill_parent"
+		    android:layout_marginTop="10dp"
+		    android:fontFamily="sans-serif-light"
+		    android:text="@string/check_in"/>
+	
+	</LinearLayout>
+</ScrollView>
