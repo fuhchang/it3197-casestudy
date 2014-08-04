@@ -21,6 +21,7 @@ import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
@@ -41,10 +42,12 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.preference.PreferenceManager;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
@@ -69,6 +72,7 @@ public class SearchHobbyByMap extends FragmentActivity implements LocationListen
 	private LatLng current_location;
 	private SimpleGeofenceStore mPrefs;
 	private GeofenceRequester mGeofenceRequester;
+	private String userName;
 	 List<Geofence> mCurrentGeofences;
 	
 	 BitmapDescriptor iconDance;
@@ -79,6 +83,8 @@ public class SearchHobbyByMap extends FragmentActivity implements LocationListen
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_search_hobby_by_map);
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		userName = prefs.getString("nric", "");
 		MapsInitializer.initialize(getApplicationContext());
 		iconDance = BitmapDescriptorFactory.fromResource(R.drawable.dance);
 		iconGardening = BitmapDescriptorFactory.fromResource(R.drawable.gardening);
@@ -124,13 +130,37 @@ public class SearchHobbyByMap extends FragmentActivity implements LocationListen
 
 		 try {
 	            // Try to add geofences
-	            mGeofenceRequester.addGeofences(mCurrentGeofences,"Hi","There is a event nearby");
+	            mGeofenceRequester.addGeofences(mCurrentGeofences,"Hi","There is a hobby group nearby");
+	            
 	        } catch (UnsupportedOperationException e) {
 	            // Notify user that previous request hasn't finished.
 	            Toast.makeText(this, R.string.add_geofences_already_requested_error,
 	                        Toast.LENGTH_LONG).show();
 	        }
 		map.setOnMarkerDragListener(this);
+		map.setOnInfoWindowClickListener(new OnInfoWindowClickListener(){
+
+			@Override
+			public void onInfoWindowClick(Marker mp) {
+				// TODO Auto-generated method stub
+				Hobby hobby = new Hobby();
+				Intent intent = new Intent(SearchHobbyByMap.this, ViewSingleHobby.class);
+				for(int i=0; i<hobbyList.size(); i++){
+					if(hobbyList.get(i).getGroupName().equals(mp.getTitle())){
+						hobby.setGroupID(hobbyList.get(i).getGroupID());
+						hobby.setAdminNric(hobbyList.get(i).getAdminNric());
+						hobby.setDescription(hobbyList.get(i).getDescription());
+						hobby.setLat(hobbyList.get(i).getLat());
+						hobby.setLng(hobbyList.get(i).getLng());
+						
+					}
+				}
+				intent.putExtra("grpName", mp.getTitle());
+				intent.putExtra("userNric", userName);
+				startActivity(intent);
+			}
+			
+		});
 		map.setOnMapLongClickListener(new OnMapLongClickListener(){
 
 			@Override
@@ -138,6 +168,7 @@ public class SearchHobbyByMap extends FragmentActivity implements LocationListen
 				// reverse geocode point
 				reverseGeoCoding(point.latitude, point.longitude);
 			}
+			
 			
 		});
 		
