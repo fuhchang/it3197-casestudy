@@ -35,16 +35,17 @@ public class CreateArticle extends AsyncTask<Object, Object, Object> implements 
 	private Article article;
 	private ProgressDialog dialog;
 
-	public CreateArticle(SubmitArticle activity, Article article) {
+	public CreateArticle(SubmitArticle activity, Article article, ProgressDialog dialog) {
 		this.activity = activity;
 		this.article = article;
+		this.dialog=dialog;
 	}
 
 	@Override
 	protected void onPreExecute() {
 		// TODO Auto-generated method stub
-		dialog = ProgressDialog.show(activity, "Submitting Article",
-				"Please Wait", true);
+	//	dialog = ProgressDialog.show(activity, "Submitting Article",
+	//			"Please Wait", true);
 	}
 
 	@Override
@@ -71,6 +72,7 @@ public class CreateArticle extends AsyncTask<Object, Object, Object> implements 
 		postParameters.add(new BasicNameValuePair("address", article.getLocation()));
 		postParameters.add(new BasicNameValuePair("storingLat", String.valueOf(article.getDbLat())));
 		postParameters.add(new BasicNameValuePair("storingLon", String.valueOf(article.getDbLon())));
+		postParameters.add(new BasicNameValuePair("artImgPostId", article.getArticleFBPostID()));
 		postParameters.add(new BasicNameValuePair("usernric",article.getUserNRIC()));
 		
 		
