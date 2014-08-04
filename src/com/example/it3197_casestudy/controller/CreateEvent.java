@@ -41,12 +41,14 @@ public class CreateEvent extends AsyncTask<Object, Object, Object> implements Se
 	private Event event;
 	private EventLocationDetail eventLocationDetails;
 	private ProgressDialog dialog;
+	private boolean requestHelp;
 	
-	public CreateEvent(CreateEventStep2Activity activity, Event event, EventLocationDetail eventLocationDetails, ProgressDialog dialog){
+	public CreateEvent(CreateEventStep2Activity activity, Event event, EventLocationDetail eventLocationDetails, ProgressDialog dialog, boolean requestHelp){
 		this.activity = activity;
 		this.event = event;
 		this.eventLocationDetails = eventLocationDetails;
 		this.dialog = dialog;
+		this.requestHelp = requestHelp;
 	}
 	
 	@Override
@@ -105,10 +107,14 @@ public class CreateEvent extends AsyncTask<Object, Object, Object> implements Se
 			if(success){
 				dialog.dismiss();
 				Toast.makeText(activity.getApplicationContext(),"Event created successfully.", Toast.LENGTH_SHORT).show();
-
-	        	Intent intent = new Intent(activity,ViewAllEventsActivity.class);
-	        	activity.startActivity(intent);
-	        	activity.finish();
+				if(requestHelp){
+					
+				}
+				else{
+					Intent intent = new Intent(activity,ViewAllEventsActivity.class);
+					activity.startActivity(intent);
+					activity.finish();
+				}
 			}
 			else{
 				errorOnExecuting();

@@ -39,6 +39,7 @@ public class CreateEventStep1ValidationController implements Settings{
 			intent.putExtra("locationHyperLink", eventLocationDetails.getEventLocationHyperLink());
 			intent.putExtra("lat", eventLocationDetails.getEventLocationLat());
 			intent.putExtra("lng", eventLocationDetails.getEventLocationLng());
+			intent.putExtra("requestHelp", activity.getcBoxRequestHelp().isChecked());
 			activity.startActivity(intent);
 			activity.finish();
 		}

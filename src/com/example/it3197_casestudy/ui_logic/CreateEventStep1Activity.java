@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -47,6 +48,7 @@ public class CreateEventStep1Activity extends Activity implements Settings{
 	Spinner spinnerCategory,spinnerNoOfParticipants;
 	ImageView ivPoster;
 	TextView tvLocation, tvLocationAlt, tvPoster;
+	CheckBox cBoxRequestHelp;
 	
 	static final int DBX_CHOOSER_REQUEST = 0;  // You can change this if needed
 	Button btnUploadEventPoster,btnSuggestLocation;
@@ -101,6 +103,14 @@ public class CreateEventStep1Activity extends Activity implements Settings{
 		this.ivPoster = ivPoster;
 	}
 
+	public CheckBox getcBoxRequestHelp() {
+		return cBoxRequestHelp;
+	}
+
+	public void setcBoxRequestHelp(CheckBox cBoxRequestHelp) {
+		this.cBoxRequestHelp = cBoxRequestHelp;
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -117,6 +127,7 @@ public class CreateEventStep1Activity extends Activity implements Settings{
 		tvPoster = (TextView) findViewById(R.id.tv_event_poster);
 		tvLocation = (TextView) findViewById(R.id.tv_location);
 		tvLocationAlt = (TextView) findViewById(R.id.tv_location_alt);
+		cBoxRequestHelp = (CheckBox) findViewById(R.id.cbox_request_help);
 		
 		mChooser = new DbxChooser(DROPBOX_API_KEY);		
 		btnUploadEventPoster.setOnClickListener(new OnClickListener(){
@@ -128,10 +139,7 @@ public class CreateEventStep1Activity extends Activity implements Settings{
 		
 		ivPoster.setVisibility(View.GONE);
 		tvPoster.setVisibility(View.GONE);
-		tvLocation.setVisibility(View.VISIBLE);
 		tvLocationAlt.setVisibility(View.GONE);
-		etLocation.setVisibility(View.VISIBLE);
-		btnSuggestLocation.setVisibility(View.VISIBLE);
 	}
 	
 	@Override

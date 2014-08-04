@@ -55,6 +55,7 @@ public class CreateEventStep2ValidationController implements Settings{
 	private static final String PENDING_PUBLISH_KEY = "pendingPublishReauthorization";
 	private boolean pendingPublishReauthorization = false;
 	private String posterFileName;
+	private boolean requestHelp = false;
 	
 	public CreateEventStep2ValidationController(CreateEventStep2Activity activity, EventLocationDetail eventLocationDetails, String posterFileName){
 		this.activity = activity;
@@ -62,8 +63,10 @@ public class CreateEventStep2ValidationController implements Settings{
 		this.posterFileName = posterFileName;
 	}
 	
-	public void validateForm(Intent intent, Calendar calendarFrom, Calendar calendarTo, Event event, String occurence){
+	public void validateForm(Intent intent, Calendar calendarFrom, Calendar calendarTo, Event event, String occurence, boolean requestHelp){
 		this.event = event; 
+		this.requestHelp = requestHelp;
+		
 		Calendar calendarCurrentDate = Calendar.getInstance();
 		TimeIgnoringComparator t = new TimeIgnoringComparator();
 		int differenceInDays = (int) Math.floor((calendarFrom.getTimeInMillis()-calendarTo.getTimeInMillis())/-86400000);
@@ -98,7 +101,7 @@ public class CreateEventStep2ValidationController implements Settings{
 			else{
 				Toast.makeText(activity, "Unable to share event to Facebook", Toast.LENGTH_LONG).show();
 				event.setEventFBPostID("0");
-				CreateEvent createEvent = new CreateEvent(activity,event,eventLocationDetails,dialog);
+				CreateEvent createEvent = new CreateEvent(activity,event,eventLocationDetails,dialog,requestHelp);
 				createEvent.execute();
 			}
 		}
@@ -147,7 +150,7 @@ public class CreateEventStep2ValidationController implements Settings{
 		                	else{
 		                		event.setEventFBPostID("0");
 		                	}
-		        			CreateEvent createEvent = new CreateEvent(activity,event,eventLocationDetails,dialog);
+		        			CreateEvent createEvent = new CreateEvent(activity,event,eventLocationDetails,dialog,requestHelp);
 		        			createEvent.execute();
 	                	}
 	                } catch (Exception e) {
