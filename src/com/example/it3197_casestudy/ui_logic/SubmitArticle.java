@@ -4,19 +4,33 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import org.json.JSONObject;
+
+import com.dropbox.chooser.android.DbxChooser;
 import com.example.it3197_casestudy.controller.CreateArticle;
+import com.example.it3197_casestudy.controller.GetImageFromDropbox;
 import com.example.it3197_casestudy.model.Article;
 import com.example.it3197_casestudy.ui_logic.ArticleLocSelection;
+import com.example.it3197_casestudy.util.Settings;
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.R.array;
 import com.example.it3197_casestudy.R.id;
 import com.example.it3197_casestudy.R.layout;
 import com.example.it3197_casestudy.R.menu;
+import com.facebook.FacebookRequestError;
+import com.facebook.HttpMethod;
+import com.facebook.Request;
+import com.facebook.RequestBatch;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.UiLifecycleHelper;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -35,9 +49,12 @@ import android.location.Address;
 
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.animation.Animator;
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -47,20 +64,47 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
-public class SubmitArticle extends Activity {
+public class SubmitArticle extends Activity implements Settings{
 
+	
+	/***For show/hide attachments***/
+	static LinearLayout mLinearLayout;
+	static LinearLayout mLinearLayoutHeader;
+	TextView attachments;
+	
 
+	static final int DBX_CHOOSER_REQUEST = 0;  // You can change this if needed
+	Button btnUploadEventPoster;
+	private DbxChooser mChooser;
+	private String posterFileName;
+	
+	private String articlePOSTID;
+	
+	private static final List<String> PERMISSIONS = Arrays.asList("publish_actions");
+	private static final String PENDING_PUBLISH_KEY = "pendingPublishReauthorization";
+	private boolean pendingPublishReauthorization = false;
+	
+	private UiLifecycleHelper uiHelper;
+	
+	ImageView iv;
+	View v,hrTv, middle, imgHr;
+	
+	Article article = new Article();
+	
 
 	GoogleMap map;
 	Spinner spCat;
@@ -99,7 +143,7 @@ public class SubmitArticle extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.submit_article);
+		setContentView(R.layout.article_submission);
 		
 		getActionBar().setTitle("Submit Article");
 		
@@ -196,7 +240,51 @@ public class SubmitArticle extends Activity {
 		//		}
 				  
 		//	  });
-		
+			  
+			  
+			  
+			  iv= (ImageView)findViewById(R.id.article_post);
+			  iv.setVisibility(View.GONE);
+			  
+			  imgHr = (View)findViewById(R.id.imgHr);
+			  imgHr.setVisibility(View.GONE);
+			  
+			  
+			  middle = (View) findViewById(R.id.middle);
+			  middle.setVisibility(View.GONE);
+			  
+			  
+			 
+			  
+			    uiHelper = new UiLifecycleHelper(this, null);
+			    uiHelper.onCreate(savedInstanceState);
+				
+				
+				mChooser = new DbxChooser(DROPBOX_API_KEY);	
+				
+				
+				
+				
+				/****Displaying attachments****/
+				attachments=(TextView)findViewById(R.id.clickme);
+				mLinearLayout = (LinearLayout) findViewById(R.id.expandable);
+		        //set visibility to GONE
+		        //mLinearLayout.setVisibility(View.GONE);
+		        mLinearLayoutHeader = (LinearLayout) findViewById(R.id.header);
+		       
+		        mLinearLayout.setVisibility(View.GONE);
+		        mLinearLayoutHeader.setOnClickListener(new OnClickListener(){
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						if (mLinearLayout.getVisibility()==View.GONE){
+		                    expand();
+		                }else{
+		                    collapse();            
+		                }
+		            }
+		        });	
+			          
 	}
 
 
@@ -207,62 +295,7 @@ public class SubmitArticle extends Activity {
 		return true;
 	}
 	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// TODO Auto-generated method stub
-		
-		int id = item.getItemId();
-		
-		DateFormat dateFormat = new SimpleDateFormat("dd/MMMM/yyyy HH:mm a");
-		Calendar cal = Calendar.getInstance();
-		String now = dateFormat.format(cal.getTime());
-		
-		
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMMM/yyyy HH:mm a");
-
-            Date currentTime = null;
-			try {
-				currentTime = simpleDateFormat.parse(now);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		
-		
-		if(id==R.id.submit){
-			
-			if((articleTitle.getText().toString().equals(""))||(articleContent.getText().toString().equals(""))){
-				Toast.makeText(getApplicationContext(), "Please provide a title and description", Toast.LENGTH_LONG).show();
-			}
-			else{
-				Article article = new Article();
-				article.setArticleID(0);
-				article.setTitle(articleTitle.getText().toString());
-				article.setContent(articleContent.getText().toString());
-				article.setDateTime(currentTime);
-				article.setCategory(categorySelected);
-				article.setLocation(locToBeStored);
-				SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-				String usernric = sp.getString("nric","");
-				article.setUserNRIC(usernric);
-				article.setActive(1);
-				article.setApproved("Pending");
-				article.setDbLat(lat);
-				article.setDbLon(lon);
-				
-				//(0, "Hi", "Hi", currentTime,categorySelected, "Hi", "S9512233X", 1, "Hi", 1.3, 54.6);
-				CreateArticle c = new CreateArticle(SubmitArticle.this,article);
-				c.execute();
-			}
-		}
-		/*if(id==R.id.backToMain){
-			//Intent intent = new Intent(SubmitArticle.this, ArticleMainActivity.class);
-			//startActivity(intent);
-			SubmitArticle.this.finish();
-		}*/
-		
-		return super.onOptionsItemSelected(item);
-	}
+	
 
 /*
 	@Override
@@ -547,6 +580,28 @@ public class SubmitArticle extends Activity {
 			}
 			
 		}
+		
+		if (requestCode == DBX_CHOOSER_REQUEST) {
+	        if (resultCode == Activity.RESULT_OK) {
+	            DbxChooser.Result result = new DbxChooser.Result(data);
+	            Log.d("main", "Link to selected file name: " + result.getName());
+	            String fileName = result.getName();
+	            posterFileName = result.getLink().toString() + "?dl=1";
+	            String validatingFileName = fileName.substring(fileName.lastIndexOf("."),fileName.length());
+	            Log.d("main", "Link to selected file extension: " + validatingFileName);
+	            Log.d("main", "Link to selected file: " + result.getLink());
+	            GetImageFromDropbox getImageFromDropbox = new GetImageFromDropbox(SubmitArticle.this,iv, posterFileName,fileName);
+	            getImageFromDropbox.execute();  
+	            imgHr.setVisibility(View.VISIBLE);
+	            // Handle the result
+	            
+	            
+	        } else {
+	            // Failed or was cancelled by the user.
+	        }
+	    } else {
+	        super.onActivityResult(requestCode, resultCode, data);
+	    }
 	}
 	
 	
@@ -566,6 +621,252 @@ public class SubmitArticle extends Activity {
 		//startActivity(intent);
 		SubmitArticle.this.finish();
 		super.onBackPressed();
+	}
+	
+	
+	@Override
+	protected void onResume() {
+	    super.onResume();
+	    uiHelper.onResume();
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+	    super.onSaveInstanceState(outState);
+	    uiHelper.onSaveInstanceState(outState);
+	}
+
+	@Override
+	public void onPause() {
+	    super.onPause();
+	    uiHelper.onPause();
+	}
+
+	@Override
+	public void onDestroy() {
+	    super.onDestroy();
+	    uiHelper.onDestroy();
+	}
+	
+	
+	/*****Hide/Show attachments*****/
+	private void expand() {
+	     mLinearLayout.setVisibility(View.VISIBLE);
+	     final int widthSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+	     final int heightSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+	     mLinearLayout.measure(widthSpec, heightSpec);
+	     ValueAnimator mAnimator = slideAnimator(0, mLinearLayout.getMeasuredHeight()); 
+	     articleContent.setVisibility(View.GONE);
+	     middle.setVisibility(View.VISIBLE);
+	     attachments.setText("Miscellaneous - tap to close"); 
+	     mAnimator.start();
+	}
+	 
+	private void collapse() {
+	     int finalHeight = mLinearLayout.getHeight();
+	     ValueAnimator mAnimator = slideAnimator(finalHeight, 0);	     	     
+	     mAnimator.addListener(new Animator.AnimatorListener() {	    	 			
+			@Override
+			public void onAnimationStart(Animator animation) {
+				// TODO Auto-generated method stub				
+			}		
+			@Override
+			public void onAnimationRepeat(Animator animation) {
+				// TODO Auto-generated method stub				
+			}
+			
+			@Override
+			public void onAnimationEnd(Animator animation) {
+				// TODO Auto-generated method stub
+				mLinearLayout.setVisibility(View.GONE);
+				 articleContent.setVisibility(View.VISIBLE);
+				 middle.setVisibility(View.GONE);
+				 attachments.setText("Miscellaneous - tap to view");
+			}
+			
+			@Override
+			public void onAnimationCancel(Animator animation) {
+				// TODO Auto-generated method stub				
+			}
+		});
+	     mAnimator.start();    
+	}
+
+	private ValueAnimator slideAnimator(int start, int end) {
+	    ValueAnimator animator = ValueAnimator.ofInt(start, end);
+	    animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+	         @Override
+	         public void onAnimationUpdate(ValueAnimator valueAnimator) {
+	            //Update Height
+	            int value = (Integer) valueAnimator.getAnimatedValue();
+	            ViewGroup.LayoutParams layoutParams = mLinearLayout.getLayoutParams();
+	            layoutParams.height = value;
+	            mLinearLayout.setLayoutParams(layoutParams);
+	         }
+	    });
+	    return animator;
+	}
+	
+	
+	private void publishStory(final ProgressDialog dialog) {
+	    Session session = Session.getActiveSession();
+
+	    if (session != null){
+
+	        // Check for publish permissions    
+	        List<String> permissions = session.getPermissions();
+	        if (!isSubsetOf(PERMISSIONS, permissions)) {
+	            pendingPublishReauthorization = true;
+	            Session.NewPermissionsRequest newPermissionsRequest = new Session.NewPermissionsRequest(SubmitArticle.this, PERMISSIONS);
+	            session.requestNewPublishPermissions(newPermissionsRequest);
+	            return;
+	        }	        
+	        
+	        RequestBatch requestBatch = new RequestBatch();
+   
+	        Bundle params = new Bundle();
+	        params.putString("fb:app_id", "1448892845363751");
+	        params.putString("og:type", "community_outreach:news_article");
+	        params.putString("og:url", "localhost:8080/CommunityOutreach/");
+	        params.putString("og:title", "Sample News Article");
+	        params.putString("og:image", posterFileName);
+	        
+	        if((posterFileName.length() > 0) && (posterFileName != null)){
+		        params.putString("object","{\"title\":\"Sample News Article\",\"type\":\"community_outreach:news_article\",\"image\":\""+posterFileName+"\"}");	
+	        }
+	        else{
+	        	params.putString("object","{\"title\":\"Sample News Article\",\"type\":\"community_outreach:news_article\"}");
+	        }
+	        
+	        
+	        Request.Callback callback= new Request.Callback() {
+	            public void onCompleted(Response response) {
+	            	
+	            	try {
+	                	if(response != null){
+			                JSONObject graphResponse = response.getGraphObject().getInnerJSONObject(); 
+		                	if(graphResponse.getString("id") != null){
+		                		//Toast.makeText(getApplicationContext(), "Callback side:" + graphResponse.getString("id"), Toast.LENGTH_LONG).show();
+		                		article.setArticleFBPostID(graphResponse.getString("id"));
+		                		
+		                		
+		                		DateFormat dateFormat = new SimpleDateFormat("dd/MMMM/yyyy HH:mm a");
+		                		Calendar cal = Calendar.getInstance();
+		                		String now = dateFormat.format(cal.getTime());
+		                		
+		                		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMMM/yyyy HH:mm a");
+
+		                        Date currentInsertTime = null;
+		            			try {
+		            				currentInsertTime = simpleDateFormat.parse(now);
+		            			} catch (ParseException e) {
+		            				// TODO Auto-generated catch block
+		            				e.printStackTrace();
+		            			}
+		                		
+		                		
+		                		article.setArticleID(0);
+		        				article.setTitle(articleTitle.getText().toString());
+		        				article.setContent(articleContent.getText().toString());
+		        				article.setDateTime(currentInsertTime);
+		        				article.setCategory(categorySelected);
+		        				article.setLocation(locToBeStored);
+		        				SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(SubmitArticle.this);
+		        				String usernric = sp.getString("nric","");
+		        				article.setUserNRIC(usernric);
+		        				article.setActive(1);
+		        				article.setApproved("Pending");
+		        				article.setDbLat(lat);
+		        				article.setDbLon(lon);
+		        				//article.setArticleFBPostID(articlePOSTID);
+		        				//Toast.makeText(getApplicationContext(), "Insert:" + article.getArticleFBPostID(), Toast.LENGTH_LONG).show();
+		        				
+		        				//(0, "Hi", "Hi", currentTime,categorySelected, "Hi", "S9512233X", 1, "Hi", 1.3, 54.6);
+		        				CreateArticle c = new CreateArticle(SubmitArticle.this,article, dialog);
+		        				c.execute();
+		                	}
+		                	else{
+		                		article.setArticleFBPostID("0");
+		                	}
+	                	}
+	                } catch (Exception e) {
+	                    Log.i("Tag",
+	                        "JSON error ARTICLE "+ e.getMessage());
+	                    e.printStackTrace();
+	                }
+	                FacebookRequestError error = response.getError();
+	                if (error != null) {
+	                    //Toast.makeText(activity, error.getErrorMessage(), Toast.LENGTH_SHORT).show();
+	                    Log.i("Tag","JSON error "+ error.getErrorMessage());
+	                }
+	            }
+	        }; 
+	        Request request = new Request(Session.getActiveSession(),"me/objects/community_outreach:news_article",params, HttpMethod.POST, callback);
+	        request.setBatchEntryName("object");
+		     // Add the request to the batch
+		     requestBatch.add(request);
+		     // Execute the batch request
+		     requestBatch.executeAsync();
+
+	    }
+	}
+	
+	private boolean isSubsetOf(Collection<String> subset, Collection<String> superset) {
+	    for (String string : subset) {
+	        if (!superset.contains(string)) {
+	            return false;
+	        }
+	    }
+	    return true;
+	}
+	
+	
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
+		
+		int id = item.getItemId();
+		
+
+		boolean hasDrawable = (iv.getDrawable() != null);
+	
+		
+		if(id==R.id.submit){
+			
+			if((articleTitle.getText().toString().equals(""))||(articleContent.getText().toString().equals(""))||hasDrawable==false){
+				Toast.makeText(getApplicationContext(), "Please provide a title, description, and image", Toast.LENGTH_LONG).show();
+			}
+			else{
+				
+				
+				ProgressDialog dialog = ProgressDialog.show(SubmitArticle.this,"Creating article", "Please wait...", true);
+				if(!Session.getActiveSession().isClosed()){
+					publishStory(dialog);
+				}
+				else{
+					Toast.makeText(SubmitArticle.this, "Unable to share event to Facebook", Toast.LENGTH_LONG).show();
+					article.setArticleFBPostID("0");
+				}
+				
+				
+				
+				
+				
+				
+			}
+		}
+		/*if(id==R.id.backToMain){
+			//Intent intent = new Intent(SubmitArticle.this, ArticleMainActivity.class);
+			//startActivity(intent);
+			SubmitArticle.this.finish();
+		}*/
+		
+		if(id==R.id.selectImageFromDB){
+			mChooser.forResultType(DbxChooser.ResultType.PREVIEW_LINK).launch(SubmitArticle.this, DBX_CHOOSER_REQUEST);
+		}
+		
+		return super.onOptionsItemSelected(item);
 	}
 
 }

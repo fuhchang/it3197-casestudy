@@ -34,6 +34,7 @@ import com.example.it3197_casestudy.model.Article;
 import com.example.it3197_casestudy.model.Combined;
 import com.example.it3197_casestudy.model.Event;
 import com.example.it3197_casestudy.model.Hobby;
+import com.example.it3197_casestudy.ui_logic.ArticleUserView;
 import com.example.it3197_casestudy.ui_logic.MainActivity;
 import com.example.it3197_casestudy.ui_logic.MainPageAdapter;
 import com.example.it3197_casestudy.ui_logic.SubmitArticle;
@@ -130,8 +131,19 @@ public class MainPageController extends AsyncTask<Object, Object, Object> implem
 				
 				if(pos ==2){
 					//intent to article
-					Intent art = new Intent(activity, SubmitArticle.class);
-					activity.startActivity(art);
+					Intent intent = new Intent(activity, SubmitArticle.class);
+					intent.putExtra("title", articleList.get(0).getTitle());
+					intent.putExtra("author", articleList.get(0).getArticleUser());
+					intent.putExtra("articleDate", articleList.get(0).getArticleDate());
+					intent.putExtra("content", articleList.get(0).getContent());
+					intent.putExtra("address", articleList.get(0).getLocation());
+					intent.putExtra("dbLat", articleList.get(0).getDbLat());
+					intent.putExtra("dbLon", articleList.get(0).getDbLon());
+					intent.putExtra("dist", articleList.get(0).getDist());
+					intent.putExtra("fromMain", "YES");
+					
+					activity.startActivity(intent);
+					
 					//Toast.makeText(activity, "Link to Article", Toast.LENGTH_SHORT).show();
 					
 				}
@@ -179,9 +191,21 @@ public class MainPageController extends AsyncTask<Object, Object, Object> implem
 			for (int i = 0; i < art_array.length(); i++) {
 				JSONObject dataJob = new JSONObject(art_array.getString(i));
 				article = new Article();
+				article.setArticleID(dataJob.getInt("articleID"));
 				article.setTitle(dataJob.getString("title"));
-				article.setArticleDate(dataJob.getString("articleDate"));
 				article.setContent(dataJob.getString("content"));
+				article.setArticleDate(dataJob.getString("articleDate"));
+				article.setCategory(dataJob.getString("category"));
+				article.setLocation(dataJob.getString("location"));
+				article.setUserNRIC(dataJob.getString("userNRIC"));
+				article.setActive(1);
+				article.setApproved(dataJob.getString("approved"));
+				article.setDbLat(dataJob.getDouble("dbLat"));
+				article.setDbLon(dataJob.getDouble("dbLon"));
+				article.setArticleUser(dataJob.getString("articleUser"));
+				
+				
+				
 				articleList.add(article);
 			}
 			

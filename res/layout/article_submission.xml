@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    
+    
+  <!--    <LinearLayout
+        android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:orientation="vertical">-->
+    
+    <EditText
+	        android:id="@+id/articleTitle"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:background="@drawable/article_styling"
+	        android:layout_marginTop="5dp"
+	        android:layout_marginLeft="5dp"
+	        android:textSize="32sp"
+	        android:singleLine="true"
+	        android:hint="Title"
+	        />
+	    
+	    
+	     <TextView
+	        android:id="@+id/currentTime"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:textColor="#C35817"
+	        android:layout_marginLeft="5dp" />
+	
+   	<View 
+	   	android:layout_marginTop="5dp"
+	  	android:layout_width="fill_parent"
+	    android:layout_height="2dp"      
+	    android:background="#000"/>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+	    <TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="Category: "
+	        android:textSize="20sp"
+	        android:layout_marginLeft="5dp" />
+	    
+	    <Spinner 
+	        android:id="@+id/spCat" 
+	        android:layout_width="match_parent"
+	        android:textSize="20sp"
+	        android:layout_height="wrap_content"
+			 />
+    
+	</LinearLayout>
+	
+    <View 
+        android:id="@+id/view1"
+	   	android:layout_marginTop="5dp"
+	  	android:layout_width="fill_parent"
+	    android:layout_height="2dp"      
+	    android:background="#000"/>
+    
+      <LinearLayout
+	        android:id="@+id/header"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:background="#336699"
+	        android:layout_gravity="bottom"
+	        android:orientation="horizontal" >
+
+			<TextView
+			    android:layout_width="17dp"
+				android:layout_height="17dp"
+				android:layout_marginLeft="10dp"
+				android:background="@drawable/attachment"
+				
+				/>	       
+	       
+	       <TextView
+	        	android:id="@+id/clickme"
+	        	android:layout_width="fill_parent"
+	        	android:layout_height="wrap_content"
+	        	android:textStyle="bold"
+	        	android:textSize="20sp"
+	        	android:textColor="#FFF"
+	        	android:gravity="left"
+	        	android:layout_marginBottom="5dp"
+	        	android:layout_marginLeft="5dp"
+	        	android:text="Miscellaneous - tap to view"
+	        	/>
+	  
+     	 </LinearLayout>
+   	 
+    	<View 
+    	    android:id="@+id/middle"
+			android:layout_width="fill_parent"
+			android:layout_height="2dp"     
+			android:background="#000"/>
+    
+ 		<LinearLayout
+			 android:id="@+id/expandable"
+			 android:layout_width="match_parent"
+			 android:layout_height="wrap_content"
+			 android:background="#D8D8D8"		        
+			 android:orientation="vertical" >
+        
+		    <RelativeLayout
+			    android:layout_width="fill_parent"
+			    android:layout_height="fill_parent"
+			    android:layout_gravity="bottom">
+               
+			    <Button
+			         android:id="@+id/icon"
+			         
+			         android:layout_width="30dp"
+			         android:layout_height="30dp"
+			         android:layout_above="@+id/storingLoc"
+			         android:layout_marginLeft="5dp"
+					 android:layout_marginBottom="5dp"
+			         android:background="@drawable/article_select2"
+			         />
+			    
+			    <TextView
+			         android:id="@+id/chooseLoc"
+			         android:layout_toRightOf="@+id/icon"
+			         android:layout_width="fill_parent"
+			         android:layout_height="40dp"
+			         android:layout_marginLeft="5dp"
+			         android:textSize="20sp"
+			         android:onClick="changeLoc"
+					 android:clickable="true"
+					 android:textColor="#0000ff"
+					 android:gravity="center_vertical"
+					 android:text="@string/articleLocSelection"
+			         />
+			    
+			   
+
+			        
+			    <TextView
+			        android:id="@+id/storingLoc"
+					android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+			        android:textSize="20sp"
+			        android:layout_below="@+id/chooseLoc"
+			        android:layout_marginLeft="5dp"
+			        android:layout_marginBottom="5dp"
+			        />
+			    
+			     <View 
+		    	    android:id="@+id/imgHr"
+		    	    android:layout_below="@+id/storingLoc"
+					android:layout_width="fill_parent"
+					android:layout_height="2dp"     
+					android:background="#000"/>
+					    
+				<ImageView
+			        android:id="@+id/article_post"
+			        android:layout_width="fill_parent"
+			        android:layout_height="150dp"
+			        android:layout_marginTop="5dp"
+			        android:layout_below="@+id/imgHr"
+			        android:fontFamily="sans-serif-light"
+			        android:layout_gravity="center"
+			        android:layout_marginBottom="5dp"
+			        android:textSize="@dimen/normal_font_size" />
+					     
+			    </RelativeLayout>
+    
+    
+			    
+			    
+			    
+    
+				
+					
+  	</LinearLayout>
+    
+   
+    
+    <View 
+		android:id="@+id/hrTv"
+		android:layout_width="fill_parent"
+		android:layout_height="2dp"     
+		android:background="#000"/>
+    
+    <EditText
+	    android:id="@+id/articleContent"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_marginLeft="5dp"
+	    android:layout_marginTop="5dp"
+	    android:background="@drawable/article_styling"
+	    android:gravity="top"
+	    android:textSize="20sp"
+	    android:hint="Short description"
+	    android:inputType="textMultiLine" />
+
+	</LinearLayout>
+<!-- </ScrollView>-->

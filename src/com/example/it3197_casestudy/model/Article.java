@@ -21,6 +21,7 @@ public class Article{
 	
 	private double distToSort;
 	
+	private String articleFBPostID;
 	
 	/**
 	 * Article's default constructor
@@ -172,6 +173,14 @@ public class Article{
 
 	public void setDistToSort(double distToSort) {
 		this.distToSort = distToSort;
+	}
+
+	public String getArticleFBPostID() {
+		return articleFBPostID;
+	}
+
+	public void setArticleFBPostID(String articleFBPostID) {
+		this.articleFBPostID = articleFBPostID;
 	}
 
 }

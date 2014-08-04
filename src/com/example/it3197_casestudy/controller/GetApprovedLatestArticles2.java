@@ -96,6 +96,7 @@ public class GetApprovedLatestArticles2 extends AsyncTask<Object, Object, Object
 		intent.putExtra("artLatitude", artLatitude);
 		intent.putExtra("artLongitude", artLongitude);
 		intent.putExtra("artTitle", artTitle);
+		intent.putExtra("fromMain", "NO");
 		activity.startActivity(intent);
 		
 		//Toast.makeText(activity, String.valueOf(artLatitude.size()), Toast.LENGTH_LONG).show();
