@@ -9,9 +9,12 @@ import com.example.it3197_casestudy.R.id;
 import com.example.it3197_casestudy.R.layout;
 import com.example.it3197_casestudy.R.menu;
 import com.example.it3197_casestudy.controller.MainPageController;
+import com.facebook.Session;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -58,9 +61,36 @@ public class MainActivity extends Activity {
 		int id = item.getItemId();
 		
 		if(id==R.id.logout){
-			Intent i = new Intent(MainActivity.this, LoginActivity.class);
-			startActivity(i);
-			MainActivity.this.finish();
+			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+		      alertDialogBuilder.setMessage("Logout?");
+		      alertDialogBuilder.setNegativeButton("Yes", 
+		      new DialogInterface.OnClickListener() {
+				
+		         @Override
+		         public void onClick(DialogInterface arg0, int arg1) {
+		        	Intent i;
+		        	if(Session.getActiveSession() != null){
+			        	i = new Intent(MainActivity.this,LoginSelectionActivity.class);
+			        	Session.getActiveSession().closeAndClearTokenInformation();
+		        	}
+		        	else{
+		        		i = new Intent(MainActivity.this,LoginActivity.class);
+		        	}
+	        		startActivity(i);
+	        		MainActivity.this.finish();
+		         }
+		      });
+		      alertDialogBuilder.setPositiveButton("No", 
+		      new DialogInterface.OnClickListener() {
+					
+		         @Override
+		         public void onClick(DialogInterface dialog, int which) {
+		            dialog.cancel();
+				 }
+		      });
+			    
+		      AlertDialog alertDialog = alertDialogBuilder.create();
+		      alertDialog.show();
 		}
 		
 		return super.onOptionsItemSelected(item);
@@ -69,6 +99,40 @@ public class MainActivity extends Activity {
 	@Override
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
+		
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+	      alertDialogBuilder.setMessage("Logout?");
+	      alertDialogBuilder.setNegativeButton("Yes", 
+	      new DialogInterface.OnClickListener() {
+			
+	         @Override
+	         public void onClick(DialogInterface arg0, int arg1) {
+	        	Intent i;
+	        	if(Session.getActiveSession() != null){
+		        	i = new Intent(MainActivity.this,LoginSelectionActivity.class);
+		        	Session.getActiveSession().closeAndClearTokenInformation();
+	        	}
+	        	else{
+	        		i = new Intent(MainActivity.this,LoginActivity.class);
+	        	}
+      		startActivity(i);
+      		MainActivity.this.finish();
+	         }
+	      });
+	      alertDialogBuilder.setPositiveButton("No", 
+	      new DialogInterface.OnClickListener() {
+				
+	         @Override
+	         public void onClick(DialogInterface dialog, int which) {
+	            dialog.cancel();
+			 }
+	      });
+		    
+	      AlertDialog alertDialog = alertDialogBuilder.create();
+	      alertDialog.show();
+		
+		
+		
 		super.onBackPressed();
 	}
 }
