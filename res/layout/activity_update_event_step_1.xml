@@ -99,7 +99,8 @@
 	            android:ems="10"
 	            android:inputType="textMultiLine"
 	            android:lines="4"
-	            android:maxLines="4" 
+	            android:maxLines="4"
+	            android:scrollbars="vertical" 
 	            android:hint="@string/hint_event_description"/>
 	        
 	        
@@ -129,6 +130,7 @@
 				android:inputType="textMultiLine"
 	            android:lines="4"
 	            android:maxLines="4" 
+	            android:scrollbars="vertical"
 	            android:fontFamily="sans-serif-light"
 	            android:textSize="@dimen/normal_font_size"
 	            android:hint="@string/hint_event_location"/>
