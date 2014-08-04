@@ -50,6 +50,8 @@ public class ViewSingleHobby extends Activity {
 		
 		userNric = getIntent().getExtras().getString("userNric");
 		adminNric = getIntent().getExtras().getString("adminNric");
+		Toast.makeText(getApplicationContext(), userNric, Toast.LENGTH_LONG).show();
+		Toast.makeText(getApplicationContext(), adminNric, Toast.LENGTH_LONG).show();
 		grpImg = getIntent().getExtras().getString("grpImg");
 		grpTitle = (TextView) findViewById(R.id.grpTile);
 		grpTitle.setTextSize(40);
