@@ -201,7 +201,45 @@ public class ArticleUserView extends FragmentActivity implements
 		}
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.article_user_view, menu);
+		return true;
+	}
 	
+	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		// TODO Auto-generated method stub
+		
+		menu.removeItem(R.id.backToMainLink);
+		Bundle extras = this.getIntent().getExtras();
+		String fromMain = extras.getString("fromMain");
+
+		if (fromMain.equals("NO")){
+			menu.removeItem(R.id.article_main);
+		}
+		return super.onPrepareOptionsMenu(menu);
+	}
+
+
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		// TODO Auto-generated method stub
+		
+		int id= item.getItemId();
+		
+		if(id==R.id.article_main){
+			
+			Intent intent = new Intent(ArticleUserView.this, ArticleMainActivity.class);
+			startActivity(intent);
+			ArticleUserView.this.finish();
+		}
+		
+		
+		return super.onMenuItemSelected(featureId, item);
+	}
 	
 
 }

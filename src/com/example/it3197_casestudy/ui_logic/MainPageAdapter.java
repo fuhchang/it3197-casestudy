@@ -86,7 +86,18 @@ public class MainPageAdapter extends ArrayAdapter<Combined> implements Settings{
 					
 					
 					txtType.setText(" Article: ");
-					txtTitle.setText(articleArray.get(0).getTitle());		
+					//txtTitle.setText(articleArray.get(0).getTitle());	
+					
+					String title = articleArray.get(0).getTitle();
+					System.out.println(title.length());
+					//if(title.length()<10){
+						txtTitle.setText(articleArray.get(0).getTitle());	
+				/*	}
+					if(title.length()>=11){
+						txtTitle.setText(title.substring(0, 27) + "...");
+					}*/
+					
+					
 					txtDate.setText(articleArray.get(0).getArticleDate());
 					
 					String content = articleArray.get(0).getContent();
