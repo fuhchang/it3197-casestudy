@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.List;
 
 import com.example.it3197_casestudy.R;
+import com.example.it3197_casestudy.util.CheckNetworkConnection;
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
@@ -102,7 +103,17 @@ public class LoginSelectionActivity extends FragmentActivity {
 	private void onSessionStateChange(Session session, SessionState state,
 			Exception exception) {
 		if (state.isOpened()) {
-			loginViaFB(session);
+			if(!CheckNetworkConnection.haveNetworkConnection(LoginSelectionActivity.this)){
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				builder.setTitle("You are in offline mode");
+				builder.setMessage("Please check your internet connection and try again.");
+				builder.setPositiveButton("OK", null);
+				builder.create().show();
+				Session.getActiveSession().close();
+			}
+			else{
+				loginViaFB(session);
+			}
 			Log.i("Login via Facebook status: ", "Logged in...");
 		} else if (state.isClosed()) {
 			Log.i("Login via Facebook status: ", "Logged out...");

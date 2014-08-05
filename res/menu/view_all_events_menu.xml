@@ -1,5 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
+   	<item
+        android:id="@+id/view_saved_event"
+        android:orderInCategory="100"
+        android:showAsAction="always|withText"
+        android:icon="@drawable/ic_action_star"
+        android:title="@string/view_saved_event"/>
     <item
         android:id="@+id/create_event"
         android:orderInCategory="100"

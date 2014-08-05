@@ -62,6 +62,7 @@
     <string name="join_event">Join event</string>
     <string name="unjoin_event">Unjoin event</string>
     <string name="share_event">Share event</string>
+    <string name="view_saved_event">View saved event</string>
     <string name="action_update">Update</string>
     <string name="btn_delete">Delete</string>
     <string name="btn_edit">Edit</string>
@@ -315,7 +316,7 @@
     <string name="title_activity_make_request_hobby">MakeRequestHobby</string>
     <string name="title_activity_view_request">ViewRequest</string>
 
-       <!-- pick friends -->
+    <!-- pick friends -->
     <string name="exception">Exception: %1$s</string>
     <string name="ok_button">OK</string>
     <string name="need_perms_alert_text">In order to pick your friends you need to accept all the permissions on the following page.</string>
