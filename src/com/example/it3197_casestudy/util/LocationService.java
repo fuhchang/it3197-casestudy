@@ -32,7 +32,8 @@ public class LocationService extends Service {
 	    Log.v("START SERVICE", "STARTED");
 	    locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 	    listener = new MyLocationListener();
-	    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 4000, 0, listener);
+	    //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 4000, 0, listener);
+	    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 4000, 0, listener);
 	}
 	
 	@Override
@@ -128,12 +129,14 @@ public class LocationService extends Service {
 	    
 	    public void onProviderDisabled(String provider)
 	    {
-	        Toast.makeText(getApplicationContext(), "Gps Disabled", Toast.LENGTH_SHORT).show();
+	        Toast.makeText(getApplicationContext(), "GPS Disabled", Toast.LENGTH_SHORT).show();
+	        intent.putExtra("GPSstatus", "disabled");
+            sendBroadcast(intent);
 	    }
 	
 	    public void onProviderEnabled(String provider)
 	    {
-	        Toast.makeText(getApplicationContext(), "Gps Enabled", Toast.LENGTH_SHORT).show();
+	        Toast.makeText(getApplicationContext(), "GPS Enabled", Toast.LENGTH_SHORT).show();
 	    }
 
 		@Override

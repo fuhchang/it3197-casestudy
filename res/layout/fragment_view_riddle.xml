@@ -43,21 +43,21 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:layout_above="@+id/btn_riddle_ans_2"
-	    android:layout_marginBottom="10dp" />
+	    android:layout_marginBottom="12dp" />
 	
 	<Button
 	    android:id="@+id/btn_riddle_ans_2"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:layout_above="@+id/btn_riddle_ans_3"
-	    android:layout_marginBottom="10dp" />
+	    android:layout_marginBottom="12dp" />
 	
 	<Button
 	    android:id="@+id/btn_riddle_ans_3"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:layout_above="@+id/btn_riddle_ans_4"
-	    android:layout_marginBottom="10dp" />
+	    android:layout_marginBottom="12dp" />
 	
 	<Button
 	    android:id="@+id/btn_riddle_ans_4"

@@ -64,6 +64,8 @@ public class LoginActivity extends FragmentActivity {
 		etUserName = (EditText) findViewById(R.id.et_user_name);
 		etPassword = (EditText) findViewById(R.id.et_password);
 		
+		etUserName.setText("S9876543A");
+		etPassword.setText("h");
 	}
 
 	/**

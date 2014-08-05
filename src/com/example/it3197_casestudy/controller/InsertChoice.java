@@ -16,53 +16,55 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.example.it3197_casestudy.model.Riddle;
-import com.example.it3197_casestudy.model.RiddleAnswer;
-import com.example.it3197_casestudy.ui_logic.CreateRiddleActivity;
-import com.example.it3197_casestudy.util.Settings;
-
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.widget.Toast;
 
-public class CreateRiddle extends AsyncTask<Object, Object, Object> implements Settings	{
-	CreateRiddleActivity activity;
+import com.example.it3197_casestudy.model.Riddle;
+import com.example.it3197_casestudy.model.RiddleAnswer;
+import com.example.it3197_casestudy.model.User;
+import com.example.it3197_casestudy.ui_logic.ViewRiddleActivity;
+import com.example.it3197_casestudy.util.Settings;
+
+public class InsertChoice  extends AsyncTask<Object, Object, Object> implements Settings {
+	ViewRiddleActivity activity;
 	Riddle riddle;
-	RiddleAnswer[] riddleChoices;
+	RiddleAnswer riddleAnswer;
+	User user;
 	
 	ProgressDialog dialog;
 	String[] responses;
 	
-	public CreateRiddle(CreateRiddleActivity activity, Riddle riddle, RiddleAnswer[] riddleChoices){
+	public InsertChoice(ViewRiddleActivity activity, Riddle riddle, RiddleAnswer riddleAnswer, User user){
 		this.activity = activity;
 		this.riddle = riddle;
-		this.riddleChoices = riddleChoices;
+		this.riddleAnswer = riddleAnswer;
+		this.user = user;
 	}
-
+	
 	@Override
 	protected Object doInBackground(Object... arg0) {
-		return createRiddleUpdatePoints();
+		return insertChoiceUpdatePoints();
 	}
 	
 	@Override
 	protected void onPreExecute() {
 		responses = new String[2];
 		
-		dialog = ProgressDialog.show(activity, null, "Creating...", true);
+		dialog = ProgressDialog.show(activity, null, "Checking answer...", true);
 	}
 	
 	@Override
 	protected void onPostExecute(Object result) {
 		parseJSONResponse((String[]) result);
-		Toast.makeText(activity, "Create successful", Toast.LENGTH_SHORT).show();
 	}
 	
-	public String[] createRiddleUpdatePoints() {
-		String riddleResponseBody = createRiddle();
-		String userResponseBody = updateUserPoints();
-		responses[0] = riddleResponseBody;
-		responses[1] = userResponseBody;
-		
+	public String[] insertChoiceUpdatePoints() {
+		String insertChoiceResponseBody = insertChoice();
+		responses[0] = insertChoiceResponseBody;
+		if(riddleAnswer.getRiddleAnswerStatus().equals("CORRECT")) {
+			String userResponseBody = updateUserPoints();
+			responses[1] = userResponseBody;
+		}
 		return responses;
 	}
 	
@@ -78,34 +80,29 @@ public class CreateRiddle extends AsyncTask<Object, Object, Object> implements S
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		try {
-			json = new JSONObject(responseBody[1]);
-			boolean success = json.getBoolean("success");
-			if(success){
-				dialog.dismiss();
-				activity.finish();
+		if(responseBody[1] != null) {
+			try {
+				json = new JSONObject(responseBody[1]);
+				boolean success = json.getBoolean("success");
+				if(success){
+					dialog.dismiss();
+					activity.finish();
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
 			}
-		} catch (JSONException e) {
-			e.printStackTrace();
 		}
 	}
 	
-	public String createRiddle(){
+	public String insertChoice() {
 		String responseBody = "";
 		HttpClient httpClient = new DefaultHttpClient();
-		HttpPost httpPost = new HttpPost(API_URL + "CreateRiddleServlet");
+		HttpPost httpPost = new HttpPost(API_URL + "InsertChoiceServlet");
 		ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
 		
-		postParameters.add(new BasicNameValuePair("userNRIC", riddle.getUser().getNric()));
-		postParameters.add(new BasicNameValuePair("riddleTitle", riddle.getRiddleTitle()));
-		postParameters.add(new BasicNameValuePair("riddleContent", riddle.getRiddleContent()));
-		postParameters.add(new BasicNameValuePair("riddleStatus", riddle.getRiddleStatus()));
-		postParameters.add(new BasicNameValuePair("riddlePoint", Integer.toString(riddle.getRiddlePoint())));
-		
-		for(int i = 0; i < riddleChoices.length; i++) {
-			postParameters.add(new BasicNameValuePair("riddleAnswer"+i, riddleChoices[i].getRiddleAnswer()));
-			postParameters.add(new BasicNameValuePair("riddleAnswerStatus"+i, riddleChoices[i].getRiddleAnswerStatus()));
-		}
+		postParameters.add(new BasicNameValuePair("riddleID", Integer.toString(riddle.getRiddleID())));
+		postParameters.add(new BasicNameValuePair("riddleAnswerID", Integer.toString(riddleAnswer.getRiddleAnswerID())));	
+		postParameters.add(new BasicNameValuePair("userNRIC", user.getNric()));
 		
 		try {
 			httpPost.setEntity(new UrlEncodedFormEntity(postParameters));
@@ -121,14 +118,14 @@ public class CreateRiddle extends AsyncTask<Object, Object, Object> implements S
 		return responseBody;
 	}
 	
-	public String updateUserPoints(){
+	public String updateUserPoints() {
 		String responseBody = "";
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpPost httpPost = new HttpPost(API_URL + "UpdateUserPointsServlet");
 		ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
 		
-		postParameters.add(new BasicNameValuePair("userNRIC", riddle.getUser().getNric()));
-		postParameters.add(new BasicNameValuePair("userPoints", Integer.toString(riddle.getUser().getPoints())));
+		postParameters.add(new BasicNameValuePair("userNRIC", user.getNric()));
+		postParameters.add(new BasicNameValuePair("userPoints", Integer.toString(user.getPoints()+riddle.getRiddlePoint())));
 		
 		try {
 			httpPost.setEntity(new UrlEncodedFormEntity(postParameters));

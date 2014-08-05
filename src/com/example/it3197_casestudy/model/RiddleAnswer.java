@@ -19,6 +19,10 @@ public class RiddleAnswer implements Parcelable {
 		this.riddleAnswerStatus = riddleAnswerStatus;
 	}
 	
+	public RiddleAnswer(int riddleAnswerID) {
+		this.riddleAnswerID = riddleAnswerID;
+	}
+	
 	// Getter and Setter
 	public int getRiddleAnswerID() {
 		return riddleAnswerID;

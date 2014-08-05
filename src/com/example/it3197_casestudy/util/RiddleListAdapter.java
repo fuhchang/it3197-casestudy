@@ -35,8 +35,8 @@ public class RiddleListAdapter extends ArrayAdapter<Riddle>{
 		tv_riddleUser = (TextView) rowView.findViewById(R.id.tv_riddle_user);
 		
 		tv_riddleTitle.setText(riddleList.get(position).getRiddleTitle());
-		if(riddleList.get(position).getRiddleContent().length() > 40){
-			tv_riddleContent.setText(riddleList.get(position).getRiddleContent().substring(0, 39) + " ..");
+		if(riddleList.get(position).getRiddleContent().length() > 45){
+			tv_riddleContent.setText(riddleList.get(position).getRiddleContent().substring(0, 44) + " ...");
 		}
 		else
 			tv_riddleContent.setText(riddleList.get(position).getRiddleContent());

@@ -1,10 +1,6 @@
 package com.example.it3197_casestudy.ui_logic;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -97,7 +93,7 @@ public class CreateRiddleActivity extends FragmentActivity {
 			public void onClick(View view) {
 				Riddle riddle = new Riddle();
 				riddle.setUser(user);
-				riddle.getUser().setPoints(user.getPoints()-10);
+				riddle.getUser().setPoints(user.getPoints()-50);
 				//riddle.setUser(new User(userNRIC));
 				riddle.setRiddleTitle(et_riddleTitle.getText().toString());
 				riddle.setRiddleContent(et_riddleContent.getText().toString());

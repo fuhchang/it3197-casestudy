@@ -34,7 +34,7 @@ public class RiddleActivity extends FragmentActivity {
 		user = data.getParcelable("user");
 		
 		lv_riddle = (ListView) findViewById(R.id.lv_riddle);
-		RetrieveAllRiddleWithAnswers retrieveAllRiddleWithAnswers = new RetrieveAllRiddleWithAnswers(this, lv_riddle);
+		RetrieveAllRiddleWithAnswers retrieveAllRiddleWithAnswers = new RetrieveAllRiddleWithAnswers(this, lv_riddle, user);
 		retrieveAllRiddleWithAnswers.execute();
 	}
 
@@ -46,7 +46,7 @@ public class RiddleActivity extends FragmentActivity {
 
 	@Override
 	protected void onRestart() {
-		RetrieveAllRiddleWithAnswers retrieveAllRiddleWithAnswers = new RetrieveAllRiddleWithAnswers(this, lv_riddle);
+		RetrieveAllRiddleWithAnswers retrieveAllRiddleWithAnswers = new RetrieveAllRiddleWithAnswers(this, lv_riddle, user);
 		retrieveAllRiddleWithAnswers.execute();
 		super.onRestart();
 	}
@@ -55,14 +55,14 @@ public class RiddleActivity extends FragmentActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch(item.getItemId()){
 			case R.id.action_create_riddle:
-				if(user.getPoints() > 10) {
+				if(user.getPoints() > 50) {
 					Intent createRiddleIntent = new Intent(RiddleActivity.this, CreateRiddleActivity.class);
 					createRiddleIntent.putExtra("user", user);
 					startActivity(createRiddleIntent);
 				}
 				else {
 					AlertDialog.Builder builder = new AlertDialog.Builder(RiddleActivity.this);
-					builder.setTitle("Unable to create").setMessage("Insufficient points to create.\nTravel within the community or join some events to earn points.");
+					builder.setTitle("Unable to create").setMessage("Insufficient points to create.\nTravel with our application or join some events to earn points.");
 					builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {

@@ -9,12 +9,11 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
@@ -26,6 +25,7 @@ import android.widget.ListView;
 
 import com.example.it3197_casestudy.model.Riddle;
 import com.example.it3197_casestudy.model.RiddleAnswer;
+import com.example.it3197_casestudy.model.RiddleUserAnswered;
 import com.example.it3197_casestudy.model.User;
 import com.example.it3197_casestudy.ui_logic.RiddleActivity;
 import com.example.it3197_casestudy.ui_logic.ViewRiddleActivity;
@@ -37,7 +37,11 @@ public class RetrieveAllRiddleWithAnswers  extends AsyncTask<Object, Object, Obj
 	ArrayList<Riddle> riddleList;
 	ArrayList<RiddleAnswer> riddleAnsList;
 	ArrayList<RiddleAnswer> riddleAnswerList;
+	ArrayList<RiddleUserAnswered> answeredList;
+	
 	Riddle riddle;
+	RiddleUserAnswered userAnswer;
+	User user;
 	
 	RiddleListAdapter riddleAdapter;
 	ListView riddleListView;
@@ -45,9 +49,10 @@ public class RetrieveAllRiddleWithAnswers  extends AsyncTask<Object, Object, Obj
 	ProgressDialog dialog;
 	String[] responses;
 	
-	public RetrieveAllRiddleWithAnswers(RiddleActivity activity, ListView riddleListView) {
+	public RetrieveAllRiddleWithAnswers(RiddleActivity activity, ListView riddleListView, User user) {
 		this.activity = activity;
 		this.riddleListView = riddleListView;
+		this.user = user;
 	}
 	
 	@Override
@@ -57,11 +62,12 @@ public class RetrieveAllRiddleWithAnswers  extends AsyncTask<Object, Object, Obj
 
 	@Override
 	protected void onPreExecute() {
-		responses = new String[2];
+		responses = new String[3];
 		riddleList = new ArrayList<Riddle>();
 		riddleAnsList = new ArrayList<RiddleAnswer>();
 		riddleAnswerList = new ArrayList<RiddleAnswer>();
-
+		answeredList = new ArrayList<RiddleUserAnswered>();
+		
 		dialog = ProgressDialog.show(activity, null, "Retrieving...", true);
 	}
 
@@ -74,13 +80,20 @@ public class RetrieveAllRiddleWithAnswers  extends AsyncTask<Object, Object, Obj
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 				Intent intent = new Intent(activity, ViewRiddleActivity.class);
+				intent.putExtra("user", user);
 				intent.putExtra("riddle", riddleList.get(position));
 				for(int i = 0; i < riddleAnsList.size(); i++) {
 					if(riddleList.get(position).getRiddleID() == riddleAnsList.get(i).getRiddle().getRiddleID()) {
 						riddleAnswerList.add(riddleAnsList.get(i));
 					}
 				}
+				for(int i = 0; i < answeredList.size(); i++) {
+					if(riddleList.get(position).getRiddleID() == answeredList.get(i).getRiddle().getRiddleID()) {
+						userAnswer = answeredList.get(i);
+					}
+				}
 				intent.putParcelableArrayListExtra("riddleAnswerList", riddleAnswerList);
+				intent.putExtra("userAnswer", userAnswer);
 				activity.startActivity(intent);
 			}
 		});
@@ -90,8 +103,10 @@ public class RetrieveAllRiddleWithAnswers  extends AsyncTask<Object, Object, Obj
 	public String[] retrieveAllRiddleWithAnswers() {
 		String riddleResponseBody = retrieveAllRiddle();
 		String answersResponseBody = retrieveAllRiddleAnswer();
+		String userAnsResponseBody = retrieveAllUserAnswer();
 		responses[0] = riddleResponseBody;
 		responses[1] = answersResponseBody;
+		responses[2] = userAnsResponseBody;
 		
 		return responses;
 	}
@@ -101,6 +116,7 @@ public class RetrieveAllRiddleWithAnswers  extends AsyncTask<Object, Object, Obj
 		JSONObject jsonObj;
 		Riddle riddle;
 		RiddleAnswer riddleAns;
+		RiddleUserAnswered userAns;
 		
 		try {
 			jsonObj = new JSONObject(responseBody[0]);
@@ -136,8 +152,28 @@ public class RetrieveAllRiddleWithAnswers  extends AsyncTask<Object, Object, Obj
 				riddleAns.setRiddleAnswer(data.getString("riddleAnswer"));
 				riddleAns.setRiddleAnswerStatus(data.getString("riddleAnswerStatus"));
 				riddleAnsList.add(riddleAns);
-			}
+			}			
+		} catch (Exception e) {
+			e.printStackTrace();
+			errorOnExecuting();
+		}
+		
+		try {
+			jsonObj = new JSONObject(responseBody[2]);
+			dataArray = jsonObj.getJSONArray("answeredList");
 			
+			for(int i = 0; i < dataArray.length(); i++) {
+				JSONObject data = new JSONObject(dataArray.getString(i));
+				userAns = new RiddleUserAnswered();
+				userAns.setRiddleUserAnsweredID(data.getInt("riddleUserAnsweredID"));
+				JSONObject riddleObj = data.getJSONObject("riddle");
+				userAns.setRiddle(new Riddle(riddleObj.getInt("riddleID")));
+				JSONObject riddleAnsObj = data.getJSONObject("riddleAnswer");
+				userAns.setRiddleAnswer(new RiddleAnswer(riddleAnsObj.getInt("riddleAnswerID")));
+				JSONObject userObj = data.getJSONObject("user");
+				userAns.setUser(new User(userObj.getString("nric")));
+				answeredList.add(userAns);
+			}			
 		} catch (Exception e) {
 			e.printStackTrace();
 			errorOnExecuting();
@@ -165,6 +201,24 @@ public class RetrieveAllRiddleWithAnswers  extends AsyncTask<Object, Object, Obj
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpPost httpPost = new HttpPost(API_URL + "RetrieveAllRiddleAnswerServlet");
 		ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+		
+		try {
+			httpPost.setEntity(new UrlEncodedFormEntity(postParameters));
+			ResponseHandler<String> responseHandler = new BasicResponseHandler();
+			responseBody = httpClient.execute(httpPost, responseHandler);			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return responseBody;
+	}
+	
+	public String retrieveAllUserAnswer() {
+		String responseBody = "";
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpPost httpPost = new HttpPost(API_URL + "RetrieveAllUserAnswerServlet");
+		ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+		
+		postParameters.add(new BasicNameValuePair("userNRIC", user.getNric()));
 		
 		try {
 			httpPost.setEntity(new UrlEncodedFormEntity(postParameters));

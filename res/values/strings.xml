@@ -154,6 +154,11 @@
     <string name="et_hint_riddle_answer">Enter answer</string>
     <string name="btn_create_riddle">CREATE</string>
     <string name="btn_update_riddle">UPDATE</string>
+    
+    <!-- PROFILE -->
+    <string name="tv_username">Username: </string>
+    <string name="tv_points">Points: </string>
+    <string name="tv_address">Curren Location: </string>
 
     <!-- Location -->
 

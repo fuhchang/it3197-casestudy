@@ -123,6 +123,47 @@ public class MainLinkPage extends Activity {
 		getMenuInflater().inflate(R.menu.main_link_page, menu);
 		return true;
 	}
+	
+	private BroadcastReceiver broadcastReceiver = new BroadcastReceiver(){
+		@Override
+		public void onReceive(Context context, Intent intent) {			
+			MainLinkPage.this.getLocationService(intent);
+			
+			/*if(intent.getStringExtra("GPSstatus").equals("disabled")) {
+				AlertDialog.Builder builder = new AlertDialog.Builder(MainLinkPage.this);
+				builder.setTitle("GPS disabled").setMessage("Enable GPS setting to earn points while travelling");
+				builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						Intent gpsOptionsIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);  
+						startActivity(gpsOptionsIntent);
+					}
+				});
+				builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+					}
+				});
+				builder.create().show();
+			}*/
+		}
+	};
+	
+	public void getLocationService(Intent intent) {
+		final double lat = intent.getDoubleExtra("Latitude", 0.00);
+		final double lng = intent.getDoubleExtra("Longitude", 0.00);
+		final String provider = intent.getStringExtra("Provider");
+		polledLocation = new Location(provider);
+		polledLocation.setLatitude(lat);
+		polledLocation.setLongitude(lng);
+	}
+	
+	private void startService() {
+		intent = new Intent(this, LocationService.class);
+		startService(intent);
+		
+		registerReceiver(broadcastReceiver, new IntentFilter(LocationService.BROADCAST_ACTION));
+	}
 
 	@Override
 	protected void onDestroy() {
@@ -131,30 +172,6 @@ public class MainLinkPage extends Activity {
 			stopService(intent);
 		}
 		super.onDestroy();
-	}
-	
-	private BroadcastReceiver broadcastReceiver = new BroadcastReceiver(){
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			// TODO Auto-generated method stub
-			MainLinkPage.this.getLocationService(intent);
-		}
-		
-	};
-	public void getLocationService(Intent intent) {
-		final double lat = intent.getDoubleExtra("Latitude", 0.00);
-		final double lng = intent.getDoubleExtra("Longitude", 0.00);
-		final String provider = intent.getStringExtra("Provider");
-		polledLocation = new Location(provider);
-		polledLocation.setLatitude(lat);
-		polledLocation.setLongitude(lng);
-		Toast.makeText(this, "Lat: "+ polledLocation.getLatitude() + "\nLong: " +polledLocation.getLongitude(), Toast.LENGTH_LONG).show();
-	}
-	
-	private void startService() {
-		intent = new Intent(this, LocationService.class);
-		startService(intent);
-		registerReceiver(broadcastReceiver, new IntentFilter(LocationService.BROADCAST_ACTION));
 	}
 
 	@Override
