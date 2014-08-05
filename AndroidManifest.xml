@@ -27,16 +27,16 @@
     <uses-permission android:name="com.example.it3197_casestudy.permission.MAPS_RECEIVE" />
 
     <application
+        android:name=".util.FriendPickerApplication"
         android:allowBackup="true"
         android:label="@string/app_name"
         android:theme="@style/CustomActionBarTheme"
-        tools:ignore="MissingApplicationIcon"
-        android:name="com.example.it3197_casestudy.util.FriendPickerApplication">
-        <service android:name="com.example.it3197_casestudy.util.LocationService" >
+        tools:ignore="MissingApplicationIcon" >
+        <service android:name=".util.LocationService" >
         </service>
 
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.LoginSelectionActivity"
+            android:name=".ui_logic.LoginSelectionActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -50,7 +50,7 @@
             android:value="@string/app_id" />
 
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.LoginActivity"
+            android:name=".ui_logic.LoginActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
@@ -58,88 +58,88 @@
             android:label="@string/title_facebook_login" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.MainPageActivity"
+            android:name=".ui_logic.MainPageActivity"
             android:label="@string/title_activity_main_page" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.ViewEventsActivity"
+            android:name=".ui_logic.ViewEventsActivity"
             android:label="@string/title_view_events"
-            android:parentActivityName="com.example.it3197_casestudy.ui_logic.ViewAllEventsActivity" >
+            android:parentActivityName=".ui_logic.ViewAllEventsActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.it3197_casestudy.ui_logic.ViewAllEventsActivity" />
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.CreateEventStep1Activity"
+            android:name=".ui_logic.CreateEventStep1Activity"
             android:label="@string/title_activity_create_event" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.CreateEventStep2Activity"
+            android:name=".ui_logic.CreateEventStep2Activity"
             android:label="@string/title_activity_create_event" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.UpdateEventStep1Activity"
+            android:name=".ui_logic.UpdateEventStep1Activity"
             android:label="@string/title_activity_update_event" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.UpdateEventStep2Activity"
+            android:name=".ui_logic.UpdateEventStep2Activity"
             android:label="@string/title_activity_update_event" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.MainLinkPage"
+            android:name=".ui_logic.MainLinkPage"
             android:label="@string/title_activity_main_link_page" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.MainActivity"
+            android:name=".ui_logic.MainActivity"
             android:label="@string/title_activity_main" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.ViewHobbiesMain"
+            android:name=".ui_logic.ViewHobbiesMain"
             android:label="@string/title_activity_view_hobbies_main" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.Hobbies_Joined"
+            android:name=".ui_logic.Hobbies_Joined"
             android:label="@string/title_activity_hobbies__joined" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.Hobbies_All"
+            android:name=".ui_logic.Hobbies_All"
             android:label="@string/title_activity_hobbies__all" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.SubmitArticle"
+            android:name=".ui_logic.SubmitArticle"
             android:label="@string/title_activity_submit_article" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.ProfileActivity"
+            android:name=".ui_logic.ProfileActivity"
             android:label="@string/title_activity_profile"
-            android:parentActivityName="com.example.it3197_casestudy.ui_logic.MainPageActivity" >
+            android:parentActivityName=".ui_logic.MainPageActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.it3197_casestudy.ui_logic.MainPageActivity" />
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.RiddleActivity"
+            android:name=".ui_logic.RiddleActivity"
             android:label="@string/title_activity_riddle"
-            android:parentActivityName="com.example.it3197_casestudy.ui_logic.MainPageActivity" >
+            android:parentActivityName=".ui_logic.MainPageActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.it3197_casestudy.ui_logic.MainPageActivity" />
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.CreateRiddleActivity"
+            android:name=".ui_logic.CreateRiddleActivity"
             android:label="@string/title_activity_create_riddle" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.ViewRiddleActivity"
+            android:name=".ui_logic.ViewRiddleActivity"
             android:label="@string/title_activity_riddle" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.UpdateRiddleActivity"
+            android:name=".ui_logic.UpdateRiddleActivity"
             android:label="@string/title_activity_update_riddle" >
         </activity>
 
         <service
-            android:name="com.example.it3197_casestudy.geofencing.ReceiveTransitionsIntentService"
+            android:name=".geofencing.ReceiveTransitionsIntentService"
             android:exported="false" >
         </service>
 
@@ -159,7 +159,7 @@
         <!--
              <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyDVor5BS2mdSm_sxCIOBtQTYS2uBDuNpJg" />
+            android:value="AIzaSyDVor5BS2mdSm_sxCIOBtQTYS2uBDuNpJg" />
         -->
 
 
@@ -167,139 +167,144 @@
         <!--
             <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyCpTBz_uJRG9Wm5UWupZsZ2yMz9R3cbERk" />
+            android:value="AIzaSyCpTBz_uJRG9Wm5UWupZsZ2yMz9R3cbERk" />
         -->
 
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.ViewAllEventsActivity"
+            android:name=".ui_logic.ViewAllEventsActivity"
             android:label="@string/title_activity_view_all_events" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.ArticleLocSelection"
+            android:name=".ui_logic.ArticleLocSelection"
             android:label="@string/title_activity_article_loc_selection" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.CreateGroupActivityStep1"
+            android:name=".ui_logic.CreateGroupActivityStep1"
             android:label="@string/title_activity_create_group_activity_step1" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.CreateGroupActivityStep2"
+            android:name=".ui_logic.CreateGroupActivityStep2"
             android:label="@string/title_activity_create_group_activity_step2" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.CreateGroupActivityStep3"
+            android:name=".ui_logic.CreateGroupActivityStep3"
             android:label="@string/title_activity_create_group_activity_step3" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.CreateGroupActivityStep4"
+            android:name=".ui_logic.CreateGroupActivityStep4"
             android:label="@string/title_activity_create_group_activity_step4" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.SuggestLocationActivity"
+            android:name=".ui_logic.SuggestLocationActivity"
             android:label="@string/title_activity_suggest_location"
-            android:parentActivityName="com.example.it3197_casestudy.ui_logic.CreateEventStep1Activity" >
+            android:parentActivityName=".ui_logic.CreateEventStep1Activity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.it3197_casestudy.ui_logic.CreateEventStep1Activity" />
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.ViewSingleHobby"
+            android:name=".ui_logic.ViewSingleHobby"
             android:label="@string/title_activity_view_single_hobby" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.CreateHobbyPost"
+            android:name=".ui_logic.CreateHobbyPost"
             android:label="@string/title_activity_create_hobby_post" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.UpdateGroupActivity"
+            android:name=".ui_logic.UpdateGroupActivity"
             android:label="@string/title_activity_update_group" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.HobbyLoSelection"
+            android:name=".ui_logic.HobbyLoSelection"
             android:label="@string/title_activity_hobby_lo_selection" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.ArticleMainActivity"
+            android:name=".ui_logic.ArticleMainActivity"
             android:label="@string/title_activity_article_main" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.SingleArticleActivity"
+            android:name=".ui_logic.SingleArticleActivity"
             android:label="@string/title_activity_single_article" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.ArticleSelectedActivityActivity"
+            android:name=".ui_logic.ArticleSelectedActivityActivity"
             android:label="@string/title_activity_article_selected_activity" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.ArticleLatestMoreDetailActivity"
+            android:name=".ui_logic.ArticleLatestMoreDetailActivity"
             android:label="@string/title_activity_article_latest_more_detail" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.FeedbackArticleActivity"
+            android:name=".ui_logic.FeedbackArticleActivity"
             android:label="@string/title_activity_feedback_article" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.ArticleSelectedFeedbackActivity"
+            android:name=".ui_logic.ArticleSelectedFeedbackActivity"
             android:label="@string/title_activity_article_selected_feedback" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.ArticleDisplayMainStatsActivity"
+            android:name=".ui_logic.ArticleDisplayMainStatsActivity"
             android:label="@string/title_activity_article_display_main_stats" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.OfficerMainActivity"
+            android:name=".ui_logic.OfficerMainActivity"
             android:label="@string/title_activity_officer_main" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.FeedbackArticleStatsActivity"
+            android:name=".ui_logic.FeedbackArticleStatsActivity"
             android:label="@string/title_activity_feedback_article_stats" >
         </activity>
-        <activity android:name="com.example.it3197_casestudy.ui_logic.EditHobbyGrp" >
+        <activity android:name=".ui_logic.EditHobbyGrp" >
         </activity>
-        <activity android:name="com.example.it3197_casestudy.ui_logic.SelectPostLocation" >
+        <activity android:name=".ui_logic.SelectPostLocation" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.SelectNewEventAdminActivity"
+            android:name=".ui_logic.SelectNewEventAdminActivity"
             android:label="@string/title_activity_select_new_event_admin" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.SearchHobbyByMap"
+            android:name=".ui_logic.SearchHobbyByMap"
             android:label="@string/title_activity_search_hobby_by_map" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.ArticleUserView"
+            android:name=".ui_logic.ArticleUserView"
             android:label="@string/title_activity_article_user_view" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.UpdatePost"
+            android:name=".ui_logic.UpdatePost"
             android:label="@string/title_activity_update_post" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.RequestForHobbyHelp"
+            android:name=".ui_logic.RequestForHobbyHelp"
             android:label="@string/title_activity_request_for_hobby_help" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.util.RequestListAdapter"
+            android:name=".util.RequestListAdapter"
             android:label="@string/title_activity_request_list_adapter" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.ViewAvaliableHobby"
+            android:name=".ui_logic.ViewAvaliableHobby"
             android:label="@string/title_activity_view_avaliable_hobby" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.util.AvailableHobbyAdapter"
+            android:name=".util.AvailableHobbyAdapter"
             android:label="@string/title_activity_available_hobby_adapter" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.MakeRequestHobby"
+            android:name=".ui_logic.MakeRequestHobby"
             android:label="@string/title_activity_make_request_hobby" >
         </activity>
         <activity
-            android:name="com.example.it3197_casestudy.ui_logic.ViewRequest"
+            android:name=".ui_logic.ViewRequest"
             android:label="@string/title_activity_view_request" >
         </activity>
-        <activity android:name="com.example.it3197_casestudy.ui_logic.PickFriendsActivity"
-       			 android:label="Pick Friends">
+        <activity
+            android:name=".ui_logic.PickFriendsActivity"
+            android:label="Pick Friends" >
+        </activity>
+        <activity
+            android:name="com.example.it3197_casestudy.ui_logic.RegisterByFacebookActivity"
+            android:label="@string/title_activity_register_by_facebook" >
         </activity>
     </application>
 

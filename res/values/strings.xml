@@ -66,8 +66,8 @@
     <string name="action_update">Update</string>
     <string name="btn_delete">Delete</string>
     <string name="btn_edit">Edit</string>
-	<string name="request_help"> Request help from hobby group? </string>
-	
+    <string name="request_help"> Request help from hobby group? </string>
+
     <string-array name="imgBy">
         <item>Gallery</item>
         <item>Camera</item>
@@ -322,4 +322,6 @@
     <string name="need_perms_alert_text">In order to pick your friends you need to accept all the permissions on the following page.</string>
     <string name="need_perms_alert_button_ok">OK</string>
     <string name="need_perms_alert_button_quit">Quit</string>
+    <string name="title_activity_register_by_facebook">Register Account</string>
+
 </resources>

@@ -10,6 +10,7 @@ import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.controller.GetAllEvents;
 import com.example.it3197_casestudy.model.Event;
 import com.example.it3197_casestudy.mysqlite.EventSQLController;
+import com.example.it3197_casestudy.mysqlite.SavedEventSQLController;
 import com.example.it3197_casestudy.util.CheckNetworkConnection;
 import com.example.it3197_casestudy.util.EventListAdapter;
 import com.example.it3197_casestudy.util.MySharedPreferences;
