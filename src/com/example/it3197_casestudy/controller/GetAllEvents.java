@@ -73,9 +73,17 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 		eventList = new Event[eventArrList.size()];
 
 		EventSQLController controller = new EventSQLController(activity);
-		for(int i=0;i<eventArrList.size();i++){
-			eventList[i] = eventArrList.get(i);
-			controller.insertEvent(eventArrList.get(i));
+		int internalDBSize = controller.getAllEvent().size();
+		if(internalDBSize != eventArrList.size()){
+			for(int i=0;i<eventArrList.size();i++){
+				eventList[i] = eventArrList.get(i);
+				controller.insertEvent(eventArrList.get(i));
+			}
+		}
+		else{
+			for(int i=0;i<eventArrList.size();i++){
+				eventList[i] = eventArrList.get(i);
+			}
 		}
 		EventListAdapter adapter = new EventListAdapter(activity,eventList);
 		lvViewAllEvents.setAdapter(adapter);

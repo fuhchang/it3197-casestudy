@@ -103,6 +103,12 @@ public class mySqLiteController {
 	public SQLiteDatabase getDB(){
 		return ourDatabase;
 	}
+	public String getEventTable(){
+		return database_event;
+	}
+	public String getSavedEventTable(){
+		return database_user_saved_event;
+	}
 	public String getHobbyTable(){
 		return database_hobby;
 	}
@@ -114,8 +120,5 @@ public class mySqLiteController {
 	}
 	public String getRiddleAnsTable(){
 		return database_riddle_answered;
-	}
-	public String getEventTable(){
-		return database_event;
 	}
 }

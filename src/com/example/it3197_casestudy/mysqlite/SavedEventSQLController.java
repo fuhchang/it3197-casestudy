@@ -4,18 +4,17 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 
-import com.example.it3197_casestudy.model.Event;
-import com.example.it3197_casestudy.model.Hobby;
-import com.example.it3197_casestudy.util.Settings;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
-public class EventSQLController implements Settings{
+import com.example.it3197_casestudy.model.Event;
+import com.example.it3197_casestudy.util.Settings;
+
+public class SavedEventSQLController implements Settings{
 	Context context;
 	mySqLiteController conn;
-	public EventSQLController(Context context){
+	public SavedEventSQLController(Context context){
 		this.context = context;
 		conn = new mySqLiteController(context);
 	}
@@ -35,14 +34,14 @@ public class EventSQLController implements Settings{
 		cv.put("active", event.getActive());
 		cv.put("eventFBPostID", event.getEventFBPostID());
 		
-		conn.getDB().insert(conn.getEventTable(), null, cv);
+		conn.getDB().insert(conn.getSavedEventTable(), null, cv);
 		conn.close();
 	}
 	
-	public ArrayList<Event> getAllEvent(){
+	public ArrayList<Event> getAllSavedEvent(){
 		ArrayList<Event> eventList = new ArrayList<Event>();
 		conn.open();
-		Cursor cursor = conn.getDB().query(conn.getEventTable(), null, null, null, null, null, "eventDateTimeFrom", null);
+		Cursor cursor = conn.getDB().query(conn.getSavedEventTable(), null, null, null, null, null, "eventDateTimeFrom", null);
 		if(cursor.moveToFirst()){
 			do{
 				Event event = new Event();
@@ -75,12 +74,14 @@ public class EventSQLController implements Settings{
 		return eventList;
 	}
 	
-	public Event getEvent(int eventID){
+	public Event getSavedEvent(int eventID){
 		Event event = new Event();
 		conn.open();
-		Cursor cursor = conn.getDB().query(conn.getEventTable(), null, "eventID = ?", new String[]{ String.valueOf(eventID) }, null, null, null, null);
+		Cursor cursor = conn.getDB().query(conn.getSavedEventTable(), null, "eventID = ?", new String[]{ String.valueOf(eventID) }, null, null, null, null);
+	
 		if(cursor.moveToFirst()){
 			event.setEventID(cursor.getInt(cursor.getColumnIndex("eventID")));
+			System.out.print(event.getEventID());
 			event.setEventAdminNRIC(cursor.getString(cursor.getColumnIndex("eventAdminNRIC")));
 			event.setEventName(cursor.getString(cursor.getColumnIndex("eventName")));
 			event.setEventCategory(cursor.getString(cursor.getColumnIndex("eventCategory")));
@@ -109,5 +110,10 @@ public class EventSQLController implements Settings{
 		conn.close();
 		return event;
 	}
+	
+	public void deleteEvent(int eventID){
+		conn.open();
+		conn.getDB().delete(conn.getSavedEventTable(), "eventID = " + eventID, null);
+		conn.close();
+	}
 }
-
