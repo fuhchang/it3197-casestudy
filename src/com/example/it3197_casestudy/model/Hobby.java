@@ -16,6 +16,7 @@ public class Hobby implements Parcelable {
 	private String adminNric;
 	private String GrpImg;
 	private byte[] sendImg;
+	private String hobbyFBPostID;
 	public Hobby() {
 
 	}
@@ -179,5 +180,19 @@ public class Hobby implements Parcelable {
 	 */
 	public void setSendImg(byte[] sendImg) {
 		this.sendImg = sendImg;
+	}
+
+	/**
+	 * @return the hobbyFBPostID
+	 */
+	public String getHobbyFBPostID() {
+		return hobbyFBPostID;
+	}
+
+	/**
+	 * @param hobbyFBPostID the hobbyFBPostID to set
+	 */
+	public void setHobbyFBPostID(String hobbyFBPostID) {
+		this.hobbyFBPostID = hobbyFBPostID;
 	}
 }

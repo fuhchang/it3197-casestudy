@@ -9,6 +9,7 @@ import java.util.Locale;
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.R.layout;
 import com.example.it3197_casestudy.R.menu;
+import com.example.it3197_casestudy.controller.CheckMemberHobby;
 import com.example.it3197_casestudy.geofencing.GeofenceRemover;
 import com.example.it3197_casestudy.geofencing.GeofenceRequester;
 import com.example.it3197_casestudy.geofencing.GeofenceUtils.REMOVE_TYPE;
@@ -147,15 +148,22 @@ public class SearchHobbyByMap extends FragmentActivity implements LocationListen
 				Intent intent = new Intent(SearchHobbyByMap.this, ViewSingleHobby.class);
 				for(int i=0; i<hobbyList.size(); i++){
 					if(hobbyList.get(i).getGroupName().equals(mp.getTitle())){
-						hobby.setGroupID(hobbyList.get(i).getGroupID());
-						hobby.setAdminNric(hobbyList.get(i).getAdminNric());
-						hobby.setDescription(hobbyList.get(i).getDescription());
-						hobby.setLat(hobbyList.get(i).getLat());
-						hobby.setLng(hobbyList.get(i).getLng());
-						
+						intent.putExtra("grpID", hobbyList.get(i).getGroupID());
+						intent.putExtra("adminNric", hobbyList.get(i).getAdminNric());
+						if(!hobbyList.get(i).getAdminNric().equals(userName)){
+							CheckMemberHobby checkmember = new CheckMemberHobby(SearchHobbyByMap.this,userName, hobbyList.get(i).getGroupID( ));
+							checkmember.execute();
+							if(checkmember.getCheckID() == 0){
+								intent.putExtra("member", "none");
+							}else{
+								intent.putExtra("member", "member");
+							}
+							
+						}
 					}
 				}
 				intent.putExtra("grpName", mp.getTitle());
+				
 				intent.putExtra("userNric", userName);
 				startActivity(intent);
 			}

@@ -55,6 +55,9 @@ import com.example.it3197_casestudy.util.MySharedPreferences;
 import com.example.it3197_casestudy.util.PostListView;
 import com.example.it3197_casestudy.util.Settings;
 import com.example.it3197_casestudy.util.SwipeDismissListViewTouchListener;
+import com.facebook.HttpMethod;
+import com.facebook.Request;
+import com.facebook.Session;
 
 public class getPostController extends AsyncTask<Object, Object, Object>
 		implements Settings {

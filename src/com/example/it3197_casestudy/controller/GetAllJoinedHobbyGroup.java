@@ -11,6 +11,7 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.AlertDialog;
@@ -32,6 +33,10 @@ import com.example.it3197_casestudy.ui_logic.Hobbies_Joined;
 import com.example.it3197_casestudy.ui_logic.ViewSingleHobby;
 import com.example.it3197_casestudy.util.HobbyListView;
 import com.example.it3197_casestudy.util.Settings;
+import com.facebook.HttpMethod;
+import com.facebook.Request;
+import com.facebook.Response;
+import com.facebook.Session;
 
 public class GetAllJoinedHobbyGroup extends AsyncTask<Object, Object, Object>
 implements Settings{
@@ -130,6 +135,7 @@ implements Settings{
 				hobby.setAdminNric(dataJob.getString("adminNric"));
 				hobby.setLat(dataJob.getDouble("Lat"));
 				hobby.setLng(dataJob.getDouble("Lng"));
+				hobby.setHobbyFBPostID(dataJob.getString("hobbyFBPostID"));
 				allJoinedhobbyList.add(hobby);
 			}
 		} catch (Exception e) {
@@ -160,4 +166,7 @@ implements Settings{
 			}
 		});
 	}	
+	
+	
+	
 }

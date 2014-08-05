@@ -7,10 +7,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import com.dropbox.chooser.android.DbxChooser;
 import com.example.it3197_casestudy.R;
+import com.example.it3197_casestudy.controller.GetImageFromDropbox;
 import com.example.it3197_casestudy.model.Hobby;
 import com.example.it3197_casestudy.mysqlite.hobbySQL;
 import com.example.it3197_casestudy.mysqlite.mySqLiteController;
+import com.example.it3197_casestudy.util.Settings;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -37,7 +40,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 @SuppressLint("ValidFragment")
-public class CreateGroupActivityStep3 extends Activity {
+public class CreateGroupActivityStep3 extends Activity implements Settings{
 	Button imgUpload;
 	String[] mUploadImg;
 	static int selected;
@@ -49,9 +52,11 @@ public class CreateGroupActivityStep3 extends Activity {
 	hobbySQL con;
 	byte[] byteImg;
 	String path;
+	private DbxChooser mChooser;
 	private static Bitmap Image = null;
 	private static final int PICK_IMAGE = 1;
-
+	static final int DBX_CHOOSER_REQUEST = 0;
+	private String posterFileName;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -62,24 +67,17 @@ public class CreateGroupActivityStep3 extends Activity {
 		title = getIntent().getStringExtra("eventName");
 		type = getIntent().getStringExtra("category");
 		gDesc = getIntent().getStringExtra("eventDesc");
-		imgUpload.setOnClickListener(new OnClickListener() {
-			
+		mChooser = new DbxChooser(DROPBOX_API_KEY);	
+		
+		imgUpload.setOnClickListener(new OnClickListener(){
+
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-
-				Intent intent = new Intent();
-				intent.setType("image/*");
-				intent.setAction(Intent.ACTION_PICK);
-				startActivityForResult(
-						Intent.createChooser(intent, "Select Picture"),
-						PICK_IMAGE);
-
+				mChooser.forResultType(DbxChooser.ResultType.PREVIEW_LINK).launch(CreateGroupActivityStep3.this,  DBX_CHOOSER_REQUEST);
 			}
-
+			
 		});
-		
-
 	}
 	
 	
@@ -88,6 +86,16 @@ public class CreateGroupActivityStep3 extends Activity {
 		// TODO Auto-generated method stub
 		switch(item.getItemId()){
 		case R.id.action_next:
+			if(!posterFileName.equals("")){
+				Intent intent = new Intent(this, CreateGroupActivityStep4.class);
+				intent.putExtra("hobbyName", title);
+				intent.putExtra("category", type);
+				intent.putExtra("hobbyDesc", gDesc);
+				intent.putExtra("imgPath", posterFileName);
+				intent.putExtra("nric", getIntent().getExtras().getString("nric"));
+				startActivity(intent);
+			}
+			/*
 			try {
 				
 				byteImg =  fileToByteArray(path);
@@ -109,7 +117,7 @@ public class CreateGroupActivityStep3 extends Activity {
 				e.printStackTrace();
 				Toast.makeText(getApplicationContext(), "Please check your image", Toast.LENGTH_LONG).show();
 			}
-			
+			*/
 			break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -122,21 +130,14 @@ public class CreateGroupActivityStep3 extends Activity {
 
 		if (resultCode == RESULT_OK) {
 			switch (requestCode) {
-			case PICK_IMAGE:
-				Uri imageUri = data.getData();
-
-				try {
-					uriOfImage = imageUri.toString();
-					Image = Media.getBitmap(this.getContentResolver(), imageUri);
-					imgView.setImageBitmap(Image);
-					path = getRealPathFromURI(imageUri);
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			case DBX_CHOOSER_REQUEST:
+				 DbxChooser.Result result = new DbxChooser.Result(data);
+				 Log.d("main", "Link to selected file name: " + result.getName());
+				 String fileName = result.getName();
+				 posterFileName = result.getLink().toString() + "?dl=1";
+				 GetImageFromDropbox getImageFromDropbox = new GetImageFromDropbox(CreateGroupActivityStep3.this,imgView, posterFileName,fileName);
+		          getImageFromDropbox.execute();
+		          imgView.setVisibility(View.VISIBLE);
 				break;
 			}
 		}

@@ -13,6 +13,10 @@ import com.example.it3197_casestudy.model.Hobby;
 import com.example.it3197_casestudy.model.HobbyMembers;
 import com.example.it3197_casestudy.util.HobbyListView;
 import com.example.it3197_casestudy.util.MySharedPreferences;
+import com.facebook.HttpMethod;
+import com.facebook.Request;
+import com.facebook.Session;
+import com.facebook.UiLifecycleHelper;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -38,21 +42,18 @@ public class ViewSingleHobby extends Activity {
 	int adminRight = 0;
 	String memberCheck;
 	String grpImg;
-	
+	private UiLifecycleHelper uiHelper;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_view_single_hobby);
-
-		
+		uiHelper = new UiLifecycleHelper(ViewSingleHobby.this, null);
+		uiHelper.onCreate(savedInstanceState);
 		String grpName = getIntent().getExtras().getString("grpName");
 		int id = getIntent().getExtras().getInt("grpID");
 		
 		userNric = getIntent().getExtras().getString("userNric");
 		adminNric = getIntent().getExtras().getString("adminNric");
-		Toast.makeText(getApplicationContext(), userNric, Toast.LENGTH_LONG).show();
-		Toast.makeText(getApplicationContext(), adminNric, Toast.LENGTH_LONG).show();
-		grpImg = getIntent().getExtras().getString("grpImg");
 		grpTitle = (TextView) findViewById(R.id.grpTile);
 		grpTitle.setTextSize(40);
 		grpTitle.setText(grpName);
@@ -84,6 +85,7 @@ public class ViewSingleHobby extends Activity {
 			menu.removeItem(R.id.action_view_request);
 		}else{
 		memberCheck = getIntent().getExtras().getString("member");
+		System.out.println(memberCheck);
 		if(adminRight == 0){
 			menu.removeItem(R.id.action_update_group);
 			menu.removeItem(R.id.action_view_request);
@@ -119,7 +121,7 @@ public class ViewSingleHobby extends Activity {
 			newPost.putExtra("grpID", grpID);
 			newPost.putExtra("userNric", userNric);
 			newPost.putExtra("adminRight", adminRight);
-			CreateHobbyPost createPost = new CreateHobbyPost(ViewSingleHobby.this,itemList);
+			//CreateHobbyPost createPost = new CreateHobbyPost(ViewSingleHobby.this,itemList);
 			startActivity(newPost);
 			break;
 		case R.id.action_update_group:
@@ -155,6 +157,27 @@ public class ViewSingleHobby extends Activity {
 			break;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		 uiHelper.onDestroy();
+	}
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		 uiHelper.onPause();
+	}
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		 uiHelper.onResume();
 	}
 	
 	

@@ -33,16 +33,17 @@ public class CreatehobbyGroup extends AsyncTask<Object, Object, Object>
 	private CreateGroupActivityStep4 activity;
 	private Hobby hobby;
 	private ProgressDialog dialog;
-
-	public CreatehobbyGroup(CreateGroupActivityStep4 activity, Hobby hobby) {
+	private String imgID;
+	public CreatehobbyGroup(CreateGroupActivityStep4 activity, Hobby hobby, ProgressDialog dialog, String imgID) {
 		this.activity = activity;
 		this.hobby = hobby;
+		this.dialog = dialog;
+		this.imgID =imgID;
 	}
 
 	@Override
 	protected void onPreExecute() {
-		dialog = ProgressDialog.show(activity, "Creating Hobby Group",
-				"Creating....", true);
+		
 	}
 
 	@Override
@@ -56,7 +57,7 @@ public class CreatehobbyGroup extends AsyncTask<Object, Object, Object>
 	protected void onPostExecute(Object result) {
 		// TODO Auto-generated method stub
 		parseJSONResponse((String)result);
-		
+		dialog.dismiss();
 	}
 
 	public String createHobby(){
@@ -71,6 +72,8 @@ public class CreatehobbyGroup extends AsyncTask<Object, Object, Object>
 		postParameters.add(new BasicNameValuePair("gDesc", hobby.getDescription()));
 		postParameters.add(new BasicNameValuePair("gLat", Double.toString(hobby.getLat())));
 		postParameters.add(new BasicNameValuePair("gLng", Double.toString(hobby.getLng())));
+		postParameters.add(new BasicNameValuePair("gImg", hobby.getGrpImg()));
+		postParameters.add(new BasicNameValuePair("imgID", imgID));
 		try {
 			httppost.setEntity(new UrlEncodedFormEntity(postParameters));
 			ResponseHandler<String> responseHandler = new BasicResponseHandler();

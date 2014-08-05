@@ -6,12 +6,23 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
+
+import org.json.JSONObject;
+
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.controller.CreatehobbyGroup;
 import com.example.it3197_casestudy.controller.ImageUploader;
 import com.example.it3197_casestudy.model.Hobby;
+import com.facebook.HttpMethod;
+import com.facebook.Request;
+import com.facebook.RequestBatch;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.UiLifecycleHelper;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -31,9 +42,11 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -64,15 +77,22 @@ public class CreateGroupActivityStep4 extends Activity implements LocationListen
 	Button findLoc, createGrp;
 	byte[] byteImg;
 	String imgPath;
+	private UiLifecycleHelper uiHelper;
+	private ProgressDialog dialog;
+	private static final List<String> PERMISSIONS = Arrays.asList("publish_actions");
+	private boolean pendingPublishReauthorization = false;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_group_activity_step4);
-		title = getIntent().getStringExtra("eventName");
+		uiHelper = new UiLifecycleHelper(this, null);
+	    uiHelper.onCreate(savedInstanceState);
+	    imgPath = getIntent().getStringExtra("imgPath");
+		title = getIntent().getStringExtra("hobbyName");
 		type = getIntent().getStringExtra("category");
-		gDesc = getIntent().getStringExtra("eventDesc");
+		gDesc = getIntent().getStringExtra("hobbyDesc");
 		byteImg = getIntent().getByteArrayExtra("byteImg");
-		imgPath = getIntent().getStringExtra("imgPath");
+		
 		
 		addressTV = (TextView) findViewById(R.id.LocAddress);
 		findAddress = (EditText) findViewById(R.id.addressET);
@@ -328,17 +348,22 @@ public class CreateGroupActivityStep4 extends Activity implements LocationListen
 		hobby.setDescription(gDesc);
 		hobby.setLat(lat);
 		hobby.setLng(Lng);
+		hobby.setGrpImg(imgPath);
 		hobby.setAdminNric(getIntent().getExtras().getString("nric"));
+		dialog = ProgressDialog.show(CreateGroupActivityStep4.this,
+				"Creating Hobby", "Please wait...", true);
+		if(!Session.getActiveSession().isClosed()){
+			publishHobby(dialog, hobby);
+			}else{
+				Toast.makeText(getApplicationContext(), "Unable to share on facebook", Toast.LENGTH_LONG).show();
+				dialog.dismiss();
+			}
 		
-		CreatehobbyGroup createHobby = new CreatehobbyGroup(CreateGroupActivityStep4.this, hobby);
-		createHobby.execute();
-		
-		ImageUploader upload = new ImageUploader(this,hobby, imgPath );
-		upload.execute();
 		}
+		
 		return super.onOptionsItemSelected(item);
 	}
-	
+	/*
 	public static byte[] fileToByteArray(String path) throws IOException {
 	    File imagefile = new File(path);
 	    byte[] data = new byte[(int) imagefile.length()];
@@ -363,7 +388,107 @@ public class CreateGroupActivityStep4 extends Activity implements LocationListen
 
 	        return cursor.getString(column_index);
 	}
+	*/
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		 uiHelper.onDestroy();
+	}
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		 uiHelper.onPause();
+	}
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		 uiHelper.onResume();
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		// TODO Auto-generated method stub
+		super.onSaveInstanceState(outState);
+		 uiHelper.onSaveInstanceState(outState);
+	}
 	
-	
-	
+	private void publishHobby(final ProgressDialog dialog, Hobby hobby){
+		final Hobby hobbyItem = hobby;
+		Session session = Session.getActiveSession();
+		if(session != null){
+			
+			 List<String> permissions = session.getPermissions();
+			 
+		        if (!isSubsetOf(PERMISSIONS, permissions)) {
+		            pendingPublishReauthorization = true;
+		            Session.NewPermissionsRequest newPermissionsRequest = new Session.NewPermissionsRequest(this, PERMISSIONS);
+		            session.requestNewPublishPermissions(newPermissionsRequest);
+		            return;
+		        }else{
+		        	dialog.dismiss();
+					
+		        }
+		        
+		        RequestBatch requestBatch = new RequestBatch();
+		        Bundle params = new Bundle();
+		        params.putString("fb:app_id", "1448892845363751");
+		        params.putString("og:type", "community_outreach:hobby_group");
+		        params.putString("og:url", "localhost:8080/CommunityOutreach/");
+		        params.putString("og:title", title);
+		        params.putString("og:image", imgPath);
+		        params.putString("og:description", gDesc);
+		        if((imgPath.length() >0 ) && imgPath != null){
+		        	params.putString("object","{\"title\":\""+title+"\",\"type\":\"community_outreach:hobby_group\",\"image\":\""+imgPath+"\",\"description\":\""+gDesc+"\"}");	
+		        }else{
+		        	params.putString("object","{\"title\":\""+title+"\",\"type\":\"community_outreach:hobby_group\",\"description\":\""+gDesc+"\"}");
+		        }
+		       
+		        Request.Callback callback= new Request.Callback() {
+
+					@Override
+					public void onCompleted(Response response) {
+						// TODO Auto-generated method stub
+						System.out.println(response.toString());
+						try{
+							if(response != null){
+								
+				                JSONObject graphResponse = response.getGraphObject().getInnerJSONObject();
+				               
+			                	if(graphResponse.getString("id") != null){
+			                		hobbyItem.setHobbyFBPostID(graphResponse.getString("id"));
+			                	}
+			                	else{
+			                		hobbyItem.setHobbyFBPostID("0");
+			                	}
+			                	CreatehobbyGroup createHobby = new CreatehobbyGroup(CreateGroupActivityStep4.this, hobbyItem, dialog, graphResponse.getString("id") );
+			            		createHobby.execute();
+							}
+						} catch (Exception e) {
+		                    Log.i("Tag","JSON error "+ e.getMessage());
+		                    e.printStackTrace();
+			                }
+					}
+		        	
+		        };
+		        Request request = new Request(session, "me/objects/community_outreach:hobby_group", params, HttpMethod.POST, callback);
+		        request.setBatchEntryName("object");
+		        requestBatch.add(request);
+		        requestBatch.executeAsync();
+		        
+		}
+		
+	}
+	private boolean isSubsetOf(Collection<String> subset, Collection<String> superset) {
+	    for (String string : subset) {
+	        if (!superset.contains(string)) {
+	            return false;
+	        }
+	    }
+	    return true;
+	}
 }
