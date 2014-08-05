@@ -13,7 +13,9 @@ public class mySqLiteController {
 	private static final String database_name = "community_outreach";
 	private static final String database_article = "article";
 	private static final String database_comments = "comments";
-	private static final String database_Event = "event";
+	private static final String database_event = "event";
+	private static final String database_user_saved_event = "user_saved_event";
+	private static final String database_event_location_details = "event_location_details";
 	private static final String database_particpants = "event_Particpant";
 	private static final String database_groupmember = "hobbies_group_members";
 	private static final String database_post = "post";
@@ -47,8 +49,14 @@ public class mySqLiteController {
 					+ database_comments
 					+ "(postID INTEGER PRIMARY KEY, userNRIC TEXT, content TEXT, dateTime DATETIME, location TEXT)");
 			db.execSQL("CREATE TABLE "
-					+ database_Event
-					+ "(eventID INTEGER PRIMARY KEY, eventAdminNRIC TEXT, eventName TEXT, eventCategory TEXT, eventCategory TEXT, eventDescription TEXT, eventType TEXT, eventDateTimeFROM DATETIME, eventDateTimeTo DATETIME, occurence TEXT, eventLocation TEXT, noOfParticipantsAllowed INTEGER, active INTEGER)");
+					+ database_event
+					+ "(eventID INTEGER PRIMARY KEY, eventAdminNRIC TEXT, eventName TEXT, eventCategory TEXT, eventDescription TEXT, eventDateTimeFrom DATETIME, eventDateTimeTo DATETIME, occurence TEXT, noOfParticipantsAllowed INTEGER, active INTEGER, eventFBPostID INTEGER)");
+			db.execSQL("CREATE TABLE "
+					+ database_user_saved_event
+					+ "(eventID INTEGER PRIMARY KEY, eventAdminNRIC TEXT, eventName TEXT, eventCategory TEXT, eventDescription TEXT, eventDateTimeFrom DATETIME, eventDateTimeTo DATETIME, occurence TEXT, noOfParticipantsAllowed INTEGER, active INTEGER, eventFBPostID INTEGER)");
+			db.execSQL("CREATE TABLE "
+					+ database_event_location_details
+					+ "(eventLocationID INTEGER PRIMARY KEY, eventID INTEGER, eventLocationName TEXT, eventLocationAddress TEXT, eventLocationHyperLink TEXT, eventLocationLat INTEGER, eventLocationLng INTEGER)");
 			db.execSQL("CREATE TABLE "
 					+ database_particpants
 					+ "(eventID INTEGER PRIMARY KEY, userNRIC TEXT, dateTImeJoined DATETIME , checkIn INTEGER)");
@@ -70,9 +78,10 @@ public class mySqLiteController {
 		}
 
 		@Override
-		public void onUpgrade(SQLiteDatabase arg0, int arg1, int arg2) {
+		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 			// TODO Auto-generated method stub
-
+			db.execSQL("DROP TABLE IF EXISTS " + database_name);
+			onCreate(db);
 		}
 
 	}
@@ -81,20 +90,21 @@ public class mySqLiteController {
 		ourContext = context;
 	}
 
-	public mySqLiteController open() throws SQLException {
+	public mySqLiteController open() throws SQLException{
 		ourHelper = new DBHelper(ourContext);
 		ourDatabase = ourHelper.getWritableDatabase();
+		
 		return this;
 	}
 
 	public void close() {
 		ourHelper.close();
 	}
-	public String getHobbyTable(){
-		return database_hobby;
-	}
 	public SQLiteDatabase getDB(){
 		return ourDatabase;
+	}
+	public String getHobbyTable(){
+		return database_hobby;
 	}
 	public String getUserTable(){
 		return database_user;
@@ -104,5 +114,8 @@ public class mySqLiteController {
 	}
 	public String getRiddleAnsTable(){
 		return database_riddle_answered;
+	}
+	public String getEventTable(){
+		return database_event;
 	}
 }

@@ -34,6 +34,7 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.example.it3197_casestudy.model.Event;
+import com.example.it3197_casestudy.mysqlite.EventSQLController;
 import com.example.it3197_casestudy.ui_logic.MainLinkPage;
 import com.example.it3197_casestudy.ui_logic.ViewAllEventsActivity;
 import com.example.it3197_casestudy.ui_logic.ViewEventsActivity;
@@ -70,8 +71,11 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 	protected void onPostExecute(Object result) {
 		parseJSONResponse((String) result);
 		eventList = new Event[eventArrList.size()];
+
+		EventSQLController controller = new EventSQLController(activity);
 		for(int i=0;i<eventArrList.size();i++){
 			eventList[i] = eventArrList.get(i);
+			controller.insertEvent(eventArrList.get(i));
 		}
 		EventListAdapter adapter = new EventListAdapter(activity,eventList);
 		lvViewAllEvents.setAdapter(adapter);
