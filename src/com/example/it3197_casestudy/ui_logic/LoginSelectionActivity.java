@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.List;
 
 import com.example.it3197_casestudy.R;
+import com.example.it3197_casestudy.controller.GetUserByName;
 import com.example.it3197_casestudy.util.CheckNetworkConnection;
 import com.facebook.Request;
 import com.facebook.Response;
@@ -144,11 +145,8 @@ public class LoginSelectionActivity extends FragmentActivity {
 			@Override
 			public void onCompleted(GraphUser user, Response response) {
 				if (user != null) {
-					Intent intent = new Intent(LoginSelectionActivity.this,MainLinkPage.class);
-					dialog.dismiss();
-					intent.putExtra("userName", user.getName());
-					startActivity(intent);
-					LoginSelectionActivity.this.finish();
+					GetUserByName getUserByName = new GetUserByName(LoginSelectionActivity.this, user.getName());
+					getUserByName.execute();
 				}
 				else{
 					new Handler(Looper.getMainLooper()).post(new Runnable() {
