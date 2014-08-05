@@ -1,0 +1,66 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fb_create_user_instructions"
+        android:layout_marginTop="5dp" />
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fb_user_nric"
+        android:layout_marginTop="5dp" />
+
+    <EditText
+        android:id="@+id/et_fb_user_nric"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+	  	android:layout_marginTop="5dp"
+	   	android:ems="10"
+	    android:fontFamily="sans-serif-light"
+	    android:textSize="@dimen/normal_font_size"
+	    android:hint="@string/fb_hint_user_nric"/>
+
+   	<TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fb_user_contact_no"
+        android:layout_marginTop="5dp" />
+   	
+   	<EditText
+        android:id="@+id/et_fb_contact_no"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+	  	android:layout_marginTop="5dp"
+	   	android:ems="10"
+  	    android:inputType="phone"
+	    android:fontFamily="sans-serif-light"
+	    android:textSize="@dimen/normal_font_size"
+	    android:hint="@string/fb_hint_user_contact_no"/>
+   	
+   	<TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fb_user_address" 
+        android:layout_marginTop="5dp"/>
+   	
+   	<EditText
+        android:id="@+id/et_fb_user_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+	  	android:layout_marginTop="5dp"
+	   	android:fontFamily="sans-serif-light"
+	    android:textSize="@dimen/normal_font_size"
+	 	android:ems="10"
+  	    android:inputType="textMultiLine"
+	    android:lines="4"
+	    android:maxLines="4"
+	    android:scrollbars="vertical" 
+	    android:hint="@string/fb_hint_user_address"/>
+   	
+</LinearLayout>

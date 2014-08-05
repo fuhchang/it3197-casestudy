@@ -329,4 +329,12 @@
     <string name="need_perms_alert_button_quit">Quit</string>
     <string name="title_activity_register_by_facebook">Register Account</string>
 
+    <string name="fb_create_user_instructions"> Please fill in the user details. </string>
+    <string name="fb_user_nric">NRIC: </string>
+    <string name="fb_hint_user_nric"> Enter your nric </string>
+    <string name="fb_user_contact_no">Contact No: </string>
+    <string name="fb_hint_user_contact_no"> Enter your contact no </string>
+    <string name="fb_user_address"> Address: </string>
+    <string name="fb_hint_user_address"> Enter your address </string>
+    
 </resources>
