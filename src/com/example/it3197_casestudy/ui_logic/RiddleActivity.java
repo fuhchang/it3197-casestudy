@@ -55,7 +55,7 @@ public class RiddleActivity extends FragmentActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch(item.getItemId()){
 			case R.id.action_create_riddle:
-				if(user.getPoints() > 50) {
+				if(user.getPoints() >= 50) {
 					Intent createRiddleIntent = new Intent(RiddleActivity.this, CreateRiddleActivity.class);
 					createRiddleIntent.putExtra("user", user);
 					startActivity(createRiddleIntent);

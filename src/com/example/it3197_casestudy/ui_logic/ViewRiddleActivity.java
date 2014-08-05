@@ -67,7 +67,7 @@ public class ViewRiddleActivity extends FragmentActivity {
 			@Override
 			public void onClick(View arg0) {
 				RiddleAnswer riddleAnswer = riddleAnswerList.get(0);
-				InsertChoice insertChoice = new InsertChoice(ViewRiddleActivity.this, riddle, riddleAnswer, user);
+				InsertChoice insertChoice = new InsertChoice(ViewRiddleActivity.this, riddle, riddleAnswerList, riddleAnswer, user);
 				insertChoice.execute();
 			}
 		});
@@ -76,7 +76,7 @@ public class ViewRiddleActivity extends FragmentActivity {
 			@Override
 			public void onClick(View arg0) {
 				RiddleAnswer riddleAnswer = riddleAnswerList.get(1);
-				InsertChoice insertChoice = new InsertChoice(ViewRiddleActivity.this, riddle, riddleAnswer, user);
+				InsertChoice insertChoice = new InsertChoice(ViewRiddleActivity.this, riddle, riddleAnswerList, riddleAnswer, user);
 				insertChoice.execute();
 			}
 		});
@@ -85,7 +85,7 @@ public class ViewRiddleActivity extends FragmentActivity {
 			@Override
 			public void onClick(View arg0) {
 				RiddleAnswer riddleAnswer = riddleAnswerList.get(2);
-				InsertChoice insertChoice = new InsertChoice(ViewRiddleActivity.this, riddle, riddleAnswer, user);
+				InsertChoice insertChoice = new InsertChoice(ViewRiddleActivity.this, riddle, riddleAnswerList, riddleAnswer, user);
 				insertChoice.execute();
 			}
 		});
@@ -94,7 +94,7 @@ public class ViewRiddleActivity extends FragmentActivity {
 			@Override
 			public void onClick(View arg0) {
 				RiddleAnswer riddleAnswer = riddleAnswerList.get(3);
-				InsertChoice insertChoice = new InsertChoice(ViewRiddleActivity.this, riddle, riddleAnswer, user);
+				InsertChoice insertChoice = new InsertChoice(ViewRiddleActivity.this, riddle, riddleAnswerList, riddleAnswer, user);
 				insertChoice.execute();
 			}
 		});
@@ -110,53 +110,54 @@ public class ViewRiddleActivity extends FragmentActivity {
 				if(riddleAnswerList.get(i).getRiddleAnswerStatus().equals("CORRECT")) {
 					index = i;
 				}
-				if(userAnswer != null) {
-					if(riddleAnswerList.get(i).getRiddleAnswerID() == userAnswer.getRiddleAnswer().getRiddleAnswerID()) {				
-						switch(index) {
-							case 0 :
-								if(riddleAnswerList.get(i).getRiddleAnswerStatus().equals("CORRECT")) {
-									btn_riddleAns1.setCompoundDrawablesWithIntrinsicBounds((R.drawable.ic_action_accept), 0, 0, 0);
-									btn_riddleAns1.setCompoundDrawablePadding(-100);
-								}
-								else {
+				else {
+					if(userAnswer != null) {
+						if(riddleAnswerList.get(i).getRiddleAnswerID() == userAnswer.getRiddleAnswer().getRiddleAnswerID()) {
+							switch(i) {
+								case 0 :
 									btn_riddleAns1.setCompoundDrawablesWithIntrinsicBounds((R.drawable.ic_action_cancel), 0, 0, 0);
 									btn_riddleAns1.setCompoundDrawablePadding(-100);
-								}
-								break;
-							case 1 :
-								if(riddleAnswerList.get(i).getRiddleAnswerStatus().equals("CORRECT")) {
-									btn_riddleAns2.setCompoundDrawablesWithIntrinsicBounds((R.drawable.ic_action_accept), 0, 0, 0);
-									btn_riddleAns2.setCompoundDrawablePadding(-100);
-								}
-								else {
+									break;
+								case 1 :
 									btn_riddleAns2.setCompoundDrawablesWithIntrinsicBounds((R.drawable.ic_action_cancel), 0, 0, 0);
 									btn_riddleAns2.setCompoundDrawablePadding(-100);
-								}
-								break;
-							case 2 :
-								if(riddleAnswerList.get(i).getRiddleAnswerStatus().equals("CORRECT")) {
-									btn_riddleAns3.setCompoundDrawablesWithIntrinsicBounds((R.drawable.ic_action_accept), 0, 0, 0);
-									btn_riddleAns3.setCompoundDrawablePadding(-100);
-								}
-								else {
+									break;
+								case 2 :
 									btn_riddleAns3.setCompoundDrawablesWithIntrinsicBounds((R.drawable.ic_action_cancel), 0, 0, 0);
 									btn_riddleAns3.setCompoundDrawablePadding(-100);
-								}
-								break;
-							case 3 :
-								if(riddleAnswerList.get(i).getRiddleAnswerStatus().equals("CORRECT")) {
-									btn_riddleAns4.setCompoundDrawablesWithIntrinsicBounds((R.drawable.ic_action_accept), 0, 0, 0);
-									btn_riddleAns4.setCompoundDrawablePadding(-100);
-								}
-								else {
+									break;
+								case 3 :
 									btn_riddleAns4.setCompoundDrawablesWithIntrinsicBounds((R.drawable.ic_action_cancel), 0, 0, 0);
 									btn_riddleAns4.setCompoundDrawablePadding(-100);
-								}
-								break;
+									break;
 							}
 						}
 					}
 				}
+			}
+			
+			if(userAnswer != null) {
+				if(riddleAnswerList.get(index).getRiddleAnswerID() == userAnswer.getRiddleAnswer().getRiddleAnswerID()) {
+					switch(index) {
+						case 0 :
+							btn_riddleAns1.setCompoundDrawablesWithIntrinsicBounds((R.drawable.ic_action_accept), 0, 0, 0);
+							btn_riddleAns1.setCompoundDrawablePadding(-100);
+							break;
+						case 1 :
+							btn_riddleAns2.setCompoundDrawablesWithIntrinsicBounds((R.drawable.ic_action_accept), 0, 0, 0);
+							btn_riddleAns2.setCompoundDrawablePadding(-100);
+							break;
+						case 2 :
+							btn_riddleAns3.setCompoundDrawablesWithIntrinsicBounds((R.drawable.ic_action_accept), 0, 0, 0);
+							btn_riddleAns3.setCompoundDrawablePadding(-100);
+							break;
+						case 3 :
+							btn_riddleAns4.setCompoundDrawablesWithIntrinsicBounds((R.drawable.ic_action_accept), 0, 0, 0);
+							btn_riddleAns4.setCompoundDrawablePadding(-100);
+							break;
+					}
+				}
+			}
 			
 			switch(index) {
 				case 0 :

@@ -17,10 +17,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 
 import com.example.it3197_casestudy.model.Riddle;
 import com.example.it3197_casestudy.model.RiddleAnswer;
+import com.example.it3197_casestudy.model.RiddleUserAnswered;
 import com.example.it3197_casestudy.model.User;
 import com.example.it3197_casestudy.ui_logic.ViewRiddleActivity;
 import com.example.it3197_casestudy.util.Settings;
@@ -28,15 +30,17 @@ import com.example.it3197_casestudy.util.Settings;
 public class InsertChoice  extends AsyncTask<Object, Object, Object> implements Settings {
 	ViewRiddleActivity activity;
 	Riddle riddle;
+	ArrayList<RiddleAnswer> riddleAnswerList;
 	RiddleAnswer riddleAnswer;
 	User user;
 	
 	ProgressDialog dialog;
 	String[] responses;
 	
-	public InsertChoice(ViewRiddleActivity activity, Riddle riddle, RiddleAnswer riddleAnswer, User user){
+	public InsertChoice(ViewRiddleActivity activity, Riddle riddle, ArrayList<RiddleAnswer> riddleAnswerList, RiddleAnswer riddleAnswer, User user){
 		this.activity = activity;
 		this.riddle = riddle;
+		this.riddleAnswerList = riddleAnswerList;
 		this.riddleAnswer = riddleAnswer;
 		this.user = user;
 	}
@@ -56,6 +60,13 @@ public class InsertChoice  extends AsyncTask<Object, Object, Object> implements 
 	@Override
 	protected void onPostExecute(Object result) {
 		parseJSONResponse((String[]) result);
+		Intent intent = new Intent(activity, ViewRiddleActivity.class);
+		activity.finish();
+		intent.putExtra("user", user);
+		intent.putExtra("riddle", riddle);
+		intent.putParcelableArrayListExtra("riddleAnswerList", riddleAnswerList);
+		intent.putExtra("userAnswer", new RiddleUserAnswered(riddle, riddleAnswer, user, "NULL"));
+		activity.startActivity(intent);
 	}
 	
 	public String[] insertChoiceUpdatePoints() {
@@ -75,7 +86,6 @@ public class InsertChoice  extends AsyncTask<Object, Object, Object> implements 
 			boolean success = json.getBoolean("success");
 			if(success){
 				dialog.dismiss();
-				activity.finish();
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -86,7 +96,6 @@ public class InsertChoice  extends AsyncTask<Object, Object, Object> implements 
 				boolean success = json.getBoolean("success");
 				if(success){
 					dialog.dismiss();
-					activity.finish();
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();

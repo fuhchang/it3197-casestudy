@@ -20,6 +20,13 @@ public class RiddleUserAnswered implements Parcelable {
 		this.user = user;
 		this.answeredRate = answeredRate;
 	}
+	
+	public RiddleUserAnswered(Riddle riddle, RiddleAnswer riddleAnswer, User user, String answeredRate){
+		this.riddle = riddle;
+		this.riddleAnswer = riddleAnswer;
+		this.user = user;
+		this.answeredRate = answeredRate;
+	}
 
 	//Getter and Setter
 	public int getRiddleUserAnsweredID() {
