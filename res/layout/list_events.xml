@@ -6,7 +6,8 @@
    	android:paddingLeft="10dp"
     android:paddingRight="10dp"
     android:paddingBottom="10dp"
-    android:paddingTop="10dp">
+    android:paddingTop="10dp"
+	android:descendantFocusability="blocksDescendants">
     
 	<TextView
 	    android:id="@+id/tv_event_name"

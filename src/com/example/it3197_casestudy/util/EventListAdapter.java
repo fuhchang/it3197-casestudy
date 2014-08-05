@@ -9,8 +9,10 @@ import com.example.it3197_casestudy.ui_logic.ViewAllEventsActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -55,25 +57,27 @@ public class EventListAdapter extends ArrayAdapter<Event> implements Settings{
 			btnFavourite.setImageResource(android.R.drawable.btn_star_big_off);
 		}
 		
-		btnFavourite.setOnClickListener(new OnClickListener(){
+		btnFavourite.setOnTouchListener(new OnTouchListener(){
 			@Override
-			public void onClick(View view) {
+			public boolean onTouch(View v, MotionEvent event) {
 				// TODO Auto-generated method stub
-				int eventID = rowView.getId();
-				Event savedEvent =  savedEventController.getSavedEvent(eventID);
-				System.out.println(eventID);
-				System.out.println(savedEvent.getEventID());
-				if(savedEvent.getEventID() != 0){
-					savedEventController.deleteEvent(eventID);
-					btnFavourite.setImageResource(android.R.drawable.btn_star_big_off);
-					Toast.makeText(context, "Event unsaved", Toast.LENGTH_LONG).show();
+				if (event.getAction() == MotionEvent.ACTION_DOWN ) {
+					int eventID = rowView.getId();
+					Event savedEvent =  savedEventController.getSavedEvent(eventID);
+					if(savedEvent.getEventID() != 0){
+						savedEventController.deleteEvent(eventID);
+						btnFavourite.setImageResource(android.R.drawable.btn_star_big_off);
+						Toast.makeText(context, "Event unsaved", Toast.LENGTH_LONG).show();
+					}
+					else{
+						Event newSavedEvent = eventController.getEvent(eventID);
+						savedEventController.insertEvent(newSavedEvent);
+						btnFavourite.setImageResource(android.R.drawable.btn_star_big_on);
+						Toast.makeText(context, "Event saved", Toast.LENGTH_LONG).show();
+					}
+					return true;
 				}
-				else{
-					Event newSavedEvent = eventController.getEvent(eventID);
-					savedEventController.insertEvent(newSavedEvent);
-					btnFavourite.setImageResource(android.R.drawable.btn_star_big_on);
-					Toast.makeText(context, "Event saved", Toast.LENGTH_LONG).show();
-				}
+				return false;
 			}
 		});
 		tvEventName.setText(eventList[position].getEventName().toString());
