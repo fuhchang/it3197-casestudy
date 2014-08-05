@@ -10,6 +10,7 @@ import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.controller.GetAllEvents;
 import com.example.it3197_casestudy.model.Event;
 import com.example.it3197_casestudy.mysqlite.EventSQLController;
+import com.example.it3197_casestudy.util.CheckNetworkConnection;
 import com.example.it3197_casestudy.util.EventListAdapter;
 import com.example.it3197_casestudy.util.MySharedPreferences;
 import com.example.it3197_casestudy.util.PullToRefreshListView;
@@ -39,6 +40,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -48,8 +50,7 @@ public class ViewAllEventsActivity extends Activity implements Settings{
 	ListView lvViewAllEvents;
 	SwipeRefreshLayout swipeLayout;
 	ProgressDialog dialog;
-	MenuItem menuItemCreate;
-
+	
 	public SwipeRefreshLayout getSwipeLayout() {
 		return swipeLayout;
 	}
@@ -58,21 +59,13 @@ public class ViewAllEventsActivity extends Activity implements Settings{
 		this.swipeLayout = swipeLayout;
 	}
 
-	public MenuItem getMenuItemCreate() {
-		return menuItemCreate;
-	}
-
-	public void setMenuItemCreate(MenuItem menuItemCreate) {
-		this.menuItemCreate = menuItemCreate;
-	}
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_view_all_events);
 
 		lvViewAllEvents = (ListView) findViewById(R.id.lv_view_all_events);
-
+		
 		swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe);
 		swipeLayout.setColorScheme(android.R.color.holo_blue_bright,android.R.color.holo_green_light,android.R.color.holo_orange_light,android.R.color.holo_red_light);
 		swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -113,11 +106,6 @@ public class ViewAllEventsActivity extends Activity implements Settings{
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.view_all_events_menu, menu);
-		if(!haveNetworkConnection()){
-			Toast.makeText(this, "Offline Mode", Toast.LENGTH_LONG).show();
-			menuItemCreate = menu.findItem(R.id.create_event);
-			menuItemCreate.setVisible(false);
-		}
 		return true;
 	}
 
@@ -125,17 +113,25 @@ public class ViewAllEventsActivity extends Activity implements Settings{
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.create_event:
-			Intent intent = new Intent(ViewAllEventsActivity.this,
-					CreateEventStep1Activity.class);
-			startActivity(intent);
-			finish();
+			if(!CheckNetworkConnection.haveNetworkConnection(ViewAllEventsActivity.this)){
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				builder.setTitle("You are in offline mode");
+				builder.setMessage("Please check your internet connection and try again.");
+				builder.setPositiveButton("OK", null);
+				builder.create().show();
+			}
+			else{
+				Intent intent = new Intent(ViewAllEventsActivity.this, CreateEventStep1Activity.class);
+				startActivity(intent);
+				finish();
+			}
 			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
 	public void getAllEvents(){
-		if(haveNetworkConnection()){
+		if(CheckNetworkConnection.haveNetworkConnection(ViewAllEventsActivity.this)){
 			GetAllEvents getAllEvents = new GetAllEvents(ViewAllEventsActivity.this, lvViewAllEvents);
 			getAllEvents.execute();	
 		}
@@ -206,28 +202,6 @@ public class ViewAllEventsActivity extends Activity implements Settings{
 		}
 		dialog.dismiss();
 		swipeLayout.setRefreshing(false);
-	}
-	
-
-	/**
-	 * This method is to check if there is any existing connection
-	 * @return boolean
-	 */
-	private boolean haveNetworkConnection() {
-		boolean haveConnectedWifi = false;
-		boolean haveConnectedMobile = false;
-
-		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo[] netInfo = cm.getAllNetworkInfo();
-		for (NetworkInfo ni : netInfo) {
-			if (ni.getTypeName().equalsIgnoreCase("WIFI"))
-				if (ni.isConnected())
-					haveConnectedWifi = true;
-			if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
-				if (ni.isConnected())
-					haveConnectedMobile = true;
-		}
-		return haveConnectedWifi || haveConnectedMobile;
 	}
 	
 	// @Override

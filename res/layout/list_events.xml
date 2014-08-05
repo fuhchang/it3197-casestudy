@@ -1,28 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/White"
    	android:paddingLeft="10dp"
     android:paddingRight="10dp"
     android:paddingBottom="10dp"
-    android:paddingTop="10dp"
-    android:orientation="vertical" >
+    android:paddingTop="10dp">
     
 	<TextView
- 		android:id="@+id/tv_event_name"
+	    android:id="@+id/tv_event_name"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:fontFamily="sans-serif-bold"
 	    android:textSize="@dimen/large_font_size" >
+
 	</TextView>
-	
+
+	<ImageButton
+	    android:id="@+id/btn_favourite"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_marginTop="10dp"
+	    android:layout_alignParentRight="true"
+	    android:layout_alignTop="@+id/tv_event_name"
+	    android:src="@android:drawable/btn_star_big_off" 
+	    android:background="#00ffffff" />
+
 	<TextView
-		android:id="@+id/tv_event_date_time"
-	   	android:layout_width="wrap_content"
-	   	android:layout_height="wrap_content"
-	   	android:fontFamily="sans-serif-light"
-	   	android:textSize="@dimen/normal_font_size"
-	   	android:layout_marginTop="5dp" >
-	</TextView>
-</LinearLayout>
+	    android:id="@+id/tv_event_date_time"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_marginBottom="10dp"
+	    android:layout_alignLeft="@+id/tv_event_name"
+	    android:layout_below="@+id/btn_favourite"
+	    android:fontFamily="sans-serif-light"
+	    android:textSize="@dimen/normal_font_size" />
+
+</RelativeLayout>

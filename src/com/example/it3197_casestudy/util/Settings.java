@@ -16,5 +16,5 @@ public interface Settings {
 	SimpleDateFormat dateTimeFormatter = new SimpleDateFormat("dd/MM/yyyy hh:mm aa");
 	//E.g. Jul 27, 2014 9:00:00 AM
 	SimpleDateFormat sqlDateTimeFormatter = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aa");
-	SimpleDateFormat sqliteDateTimeFormatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+	SimpleDateFormat sqliteDateTimeFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 }
