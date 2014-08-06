@@ -30,6 +30,8 @@ public class ViewEventsAdapter extends FragmentPagerAdapter implements Settings{
 	@Override
 	public Fragment getItem(int position) {
 		Fragment fragment = null;
+		//Add parameter into a bundle to transfer data to the fragment
+		Bundle args = new Bundle();
 		// getItem is called to instantiate the fragment for the given page.
 		// Return a DummySectionFragment (defined as a static inner class
 		// below) with the page number as its lone argument.
@@ -37,8 +39,6 @@ public class ViewEventsAdapter extends FragmentPagerAdapter implements Settings{
 		switch (position) {
 		case 0:
 			fragment = new ViewEventsDetailsFragment();
-			//Add parameter into a bundle to transfer data to the fragment
-			Bundle args = new Bundle();
 			args.putInt("eventID", event.getEventID());
 			args.putString("eventAdminNRIC", event.getEventAdminNRIC());
 			args.putString("eventName", event.getEventName());
@@ -54,6 +54,8 @@ public class ViewEventsAdapter extends FragmentPagerAdapter implements Settings{
 			break;
 		case 1:
 			fragment = new ViewEventsTimelineFragment();
+			args.putString("eventFBPostID", event.getEventFBPostID());
+			fragment.setArguments(args);
 			break;
 		case 2:
 			fragment = new ViewEventsGalleryFragment();
