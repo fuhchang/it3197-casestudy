@@ -1,6 +1,10 @@
 package com.example.it3197_casestudy.ui_logic;
 
+import java.util.ArrayList;
+
 import com.example.it3197_casestudy.R;
+import com.example.it3197_casestudy.model.MashUpData;
+import com.example.it3197_casestudy.one_map_controller.GetMashUpData;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -14,22 +18,32 @@ import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 
 public class SuggestLocationActivity extends Activity{
+	GoogleMap map;
+	public GoogleMap getMap() {
+		return map;
+	}
+
+	public void setMap(GoogleMap map) {
+		this.map = map;
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_suggest_location);
 		// Get a handle to the Map Fragment
-		GoogleMap map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
 
         LatLng singapore = new LatLng(1.3450, 103.8250);
 
         map.setMyLocationEnabled(true);
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(singapore, 10));
 
-        //map.addMarker(new MarkerOptions().title("Sydney").snippet("The most populous city in Australia.").position(singapore));
 		// Show the Up button in the action bar.
 		setupActionBar();
+		
+		GetMashUpData getMashUpData = new GetMashUpData(SuggestLocationActivity.this,"HOTELS");
+		getMashUpData.execute();
 	}
 
 	/**
