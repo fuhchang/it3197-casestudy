@@ -26,10 +26,11 @@ public class UpdateEventStep1ValidationController implements Settings{
 		this.eventLocationDetails = eventLocationDetails;
 	}
 	
-	public void validateForm(String eventID, Intent intent,Form mForm,ArrayList<Validate> validatorsArrList, String eventDateTimeFrom, String eventDateTimeTo, String occurence){
+	public void validateForm(String eventID, Intent intent,Form mForm,ArrayList<Validate> validatorsArrList, String eventDateTimeFrom, String eventDateTimeTo, String occurence, String posterFileName){
 		// Launch Validation
 		if(mForm.validate()){
 			intent = new Intent(activity, UpdateEventStep2Activity.class);
+			intent.putExtra("posterFileName", posterFileName);
 			intent.putExtra("eventID", eventID);
 			intent.putExtra("eventName", activity.getEtEventName().getText().toString());
 			intent.putExtra("eventCategory", activity.getSpinnerCategory().getSelectedItem().toString());
@@ -43,6 +44,7 @@ public class UpdateEventStep1ValidationController implements Settings{
 			intent.putExtra("locationHyperLink", eventLocationDetails.getEventLocationHyperLink());
 			intent.putExtra("lat", eventLocationDetails.getEventLocationLat());
 			intent.putExtra("lng", eventLocationDetails.getEventLocationLng());
+			intent.putExtra("requestHelp", activity.getcBoxRequestHelp().isChecked());
 			activity.startActivity(intent);
 			activity.finish();
 		}

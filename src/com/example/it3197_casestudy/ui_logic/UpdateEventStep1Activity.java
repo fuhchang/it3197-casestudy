@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 
 import com.dropbox.chooser.android.DbxChooser;
 import com.example.it3197_casestudy.R;
+import com.example.it3197_casestudy.controller.GetImageFromDropbox;
 import com.example.it3197_casestudy.crouton.Crouton;
 import com.example.it3197_casestudy.crouton.Style;
 import com.example.it3197_casestudy.model.EventLocationDetail;
@@ -40,10 +42,12 @@ public class UpdateEventStep1Activity extends Activity implements Settings{
 	Spinner spinnerCategory,spinnerNoOfParticipants;
 	ImageView ivPoster;
 	TextView tvLocation, tvLocationAlt, tvPoster;
+	CheckBox cBoxRequestHelp;
 	
 	static final int DBX_CHOOSER_REQUEST = 0;  // You can change this if needed
 	Button btnUploadEventPoster,btnSuggestLocation;
 	private DbxChooser mChooser;
+	private String posterFileName;
 	
 	public EditText getEtEventName() {
 		return etEventName;
@@ -91,6 +95,14 @@ public class UpdateEventStep1Activity extends Activity implements Settings{
 
 	public void setIvPoster(ImageView ivPoster) {
 		this.ivPoster = ivPoster;
+	}
+
+	public CheckBox getcBoxRequestHelp() {
+		return cBoxRequestHelp;
+	}
+
+	public void setcBoxRequestHelp(CheckBox cBoxRequestHelp) {
+		this.cBoxRequestHelp = cBoxRequestHelp;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -146,12 +158,13 @@ public class UpdateEventStep1Activity extends Activity implements Settings{
 		tvPoster = (TextView) findViewById(R.id.tv_event_poster);
 		tvLocation = (TextView) findViewById(R.id.tv_location);
 		tvLocationAlt = (TextView) findViewById(R.id.tv_location_alt);
-		
+
+		cBoxRequestHelp = (CheckBox) findViewById(R.id.cbox_request_help);
 		mChooser = new DbxChooser(DROPBOX_API_KEY);		
 		btnUploadEventPoster.setOnClickListener(new OnClickListener(){
 	        @Override
 	        public void onClick(View v) {
-	          mChooser.forResultType(DbxChooser.ResultType.FILE_CONTENT).launch(UpdateEventStep1Activity.this, DBX_CHOOSER_REQUEST);
+	          mChooser.forResultType(DbxChooser.ResultType.PREVIEW_LINK).launch(UpdateEventStep1Activity.this, DBX_CHOOSER_REQUEST);
 	        }
 	    });
 		
@@ -177,10 +190,12 @@ public class UpdateEventStep1Activity extends Activity implements Settings{
 	            DbxChooser.Result result = new DbxChooser.Result(data);
 	            Log.d("main", "Link to selected file name: " + result.getName());
 	            String fileName = result.getName();
+	            posterFileName = result.getLink().toString() + "?dl=1";
 	            String validatingFileName = fileName.substring(fileName.lastIndexOf("."),fileName.length());
 	            Log.d("main", "Link to selected file extension: " + validatingFileName);
 	            Log.d("main", "Link to selected file: " + result.getLink());
-	            ivPoster.setImageURI(result.getLink());
+	            GetImageFromDropbox getImageFromDropbox = new GetImageFromDropbox(UpdateEventStep1Activity.this,ivPoster, posterFileName,fileName);
+	            getImageFromDropbox.execute();
 	            tvPoster.setVisibility(View.VISIBLE);
 	            // Handle the result
 	        } else {
@@ -224,7 +239,7 @@ public class UpdateEventStep1Activity extends Activity implements Settings{
 			validatorsArrList.add(eventLocationField);
 			
 			UpdateEventStep1ValidationController validationController = new UpdateEventStep1ValidationController(UpdateEventStep1Activity.this,eventLocationDetails);
-			validationController.validateForm(eventID, intent, mForm, validatorsArrList, eventDateTimeFrom, eventDateTimeTo, occurence);
+			validationController.validateForm(eventID, intent, mForm, validatorsArrList, eventDateTimeFrom, eventDateTimeTo, occurence, posterFileName);
 			break;
 
 		case R.id.cancel:

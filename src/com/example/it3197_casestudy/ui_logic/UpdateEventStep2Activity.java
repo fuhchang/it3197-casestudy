@@ -13,6 +13,8 @@ import com.example.it3197_casestudy.validation.Form;
 import com.example.it3197_casestudy.validation.validate.ConfirmValidate;
 import com.example.it3197_casestudy.validation_controller.CreateEventStep2ValidationController;
 import com.example.it3197_casestudy.validation_controller.UpdateEventStep2ValidationController;
+import com.facebook.UiLifecycleHelper;
+import com.facebook.widget.FacebookDialog;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -61,13 +63,19 @@ public class UpdateEventStep2Activity extends Activity implements Settings{
 
 	static final int TIME_DIALOG_ID = 99;
 	static final int TIME_DIALOG_ID_1 = 100;
-	
+	private UiLifecycleHelper uiHelper;
+	private String posterFileName;
+	private boolean requestHelp;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_update_event_step_2);
+		uiHelper = new UiLifecycleHelper(this, null);
+	    uiHelper.onCreate(savedInstanceState);
+	    
 		Bundle bundle = getIntent().getExtras();
 		if(bundle != null){
+			posterFileName = bundle.getString("posterFileName", "");
 			String eventID = bundle.getString("eventID","0");
 			String eventName = bundle.getString("eventName", "");
 			String eventCategory = bundle.getString("eventCategory","");
@@ -110,6 +118,8 @@ public class UpdateEventStep2Activity extends Activity implements Settings{
 			String locationHyperLink = bundle.getString("locationHyperLink", "");
 			double lat = bundle.getDouble("lat", 0.0000);
 			double lng = bundle.getDouble("lng", 0.0000);
+
+			requestHelp = bundle.getBoolean("requestHelp", false);
 			eventLocationDetails = new EventLocationDetail(0,0,locationName,locationAddress,locationHyperLink,lat,lng);
 		}
 		
@@ -177,8 +187,8 @@ public class UpdateEventStep2Activity extends Activity implements Settings{
 			System.out.println("From Date: " + sqlDateTimeFormatter.format(calendarFrom.getTime()));
 			System.out.println("To Date: " + sqlDateTimeFormatter.format(calendarTo.getTime()));
 			
-			UpdateEventStep2ValidationController controller = new UpdateEventStep2ValidationController(UpdateEventStep2Activity.this,eventLocationDetails);
-			controller.validateForm(intent,calendarFrom,calendarTo,event,spinnerRepeats.getSelectedItem().toString());
+			UpdateEventStep2ValidationController controller = new UpdateEventStep2ValidationController(UpdateEventStep2Activity.this,eventLocationDetails,posterFileName);
+			controller.validateForm(intent,calendarFrom,calendarTo,event,spinnerRepeats.getSelectedItem().toString(),requestHelp);
 			break;
 		case R.id.previous:
 			onBackPressed();
@@ -309,5 +319,46 @@ public class UpdateEventStep2Activity extends Activity implements Settings{
 		   return String.valueOf(c);
 		else
 		   return "0" + String.valueOf(c);
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	    super.onActivityResult(requestCode, resultCode, data);
+
+	    uiHelper.onActivityResult(requestCode, resultCode, data, new FacebookDialog.Callback() {
+	        @Override
+	        public void onError(FacebookDialog.PendingCall pendingCall, Exception error, Bundle data) {
+	            Log.e("Activity", String.format("Error: %s", error.toString()));
+	        }
+
+	        @Override
+	        public void onComplete(FacebookDialog.PendingCall pendingCall, Bundle data) {
+	            Log.i("Activity", "Success!");
+	        }
+	    });
+	}
+	
+	@Override
+	protected void onResume() {
+	    super.onResume();
+	    uiHelper.onResume();
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+	    super.onSaveInstanceState(outState);
+	    uiHelper.onSaveInstanceState(outState);
+	}
+
+	@Override
+	public void onPause() {
+	    super.onPause();
+	    uiHelper.onPause();
+	}
+
+	@Override
+	public void onDestroy() {
+	    super.onDestroy();
+	    uiHelper.onDestroy();
 	}
 }

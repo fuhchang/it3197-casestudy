@@ -4,7 +4,7 @@
         android:id="@+id/cancel"
         android:orderInCategory="100"
         android:showAsAction="always"
-        android:icon="@drawable/ic_action_discard"
+        android:icon="@drawable/ic_action_remove"
         android:title="@string/cancel"/>
 	
 	<item

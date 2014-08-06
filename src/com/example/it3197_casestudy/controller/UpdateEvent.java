@@ -33,6 +33,7 @@ import com.example.it3197_casestudy.ui_logic.CreateEventStep2Activity;
 import com.example.it3197_casestudy.ui_logic.MainLinkPage;
 import com.example.it3197_casestudy.ui_logic.UpdateEventStep2Activity;
 import com.example.it3197_casestudy.ui_logic.ViewAllEventsActivity;
+import com.example.it3197_casestudy.ui_logic.ViewAvaliableHobby;
 import com.example.it3197_casestudy.util.EventListAdapter;
 import com.example.it3197_casestudy.util.MySharedPreferences;
 import com.example.it3197_casestudy.util.Settings;
@@ -42,22 +43,19 @@ public class UpdateEvent extends AsyncTask<Object, Object, Object> implements Se
 	private Event event;
 	private EventLocationDetail eventLocationDetails;
 	private ProgressDialog dialog;
+	private boolean requestHelp;
 	
-	public UpdateEvent(UpdateEventStep2Activity activity, Event event, EventLocationDetail eventLocationDetails){
+	public UpdateEvent(UpdateEventStep2Activity activity, Event event, EventLocationDetail eventLocationDetails, ProgressDialog dialog, boolean requestHelp){
 		this.activity = activity;
 		this.event = event;
 		this.eventLocationDetails = eventLocationDetails;
-	}
-	
-	@Override
-	protected void onPreExecute() {
-		dialog = ProgressDialog.show(activity,
-				"Updating event", "Please wait...", true);
+		this.dialog = dialog;
+		this.requestHelp = requestHelp;
 	}
 
 	@Override
 	protected String doInBackground(Object... arg0) {
-		return createEvent();
+		return updateEvent();
 	}
 
 	@Override
@@ -65,7 +63,7 @@ public class UpdateEvent extends AsyncTask<Object, Object, Object> implements Se
 		parseJSONResponse((String) result);
 	}
 
-	public String createEvent() {
+	public String updateEvent() {
 		String responseBody = "";
 		// Instantiate an HttpClient
 		HttpClient httpclient = new DefaultHttpClient();
@@ -89,6 +87,8 @@ public class UpdateEvent extends AsyncTask<Object, Object, Object> implements Se
 		postParameters.add(new BasicNameValuePair("locationHyperLink", eventLocationDetails.getEventLocationHyperLink()));
 		postParameters.add(new BasicNameValuePair("lat", String.valueOf(eventLocationDetails.getEventLocationLat())));
 		postParameters.add(new BasicNameValuePair("lng", String.valueOf(eventLocationDetails.getEventLocationLng())));
+
+		postParameters.add(new BasicNameValuePair("eventFBPostID", event.getEventFBPostID()));
 		postParameters.add(new BasicNameValuePair("web", "false"));
 		// Instantiate a POST HTTP method
 		try {
@@ -110,9 +110,17 @@ public class UpdateEvent extends AsyncTask<Object, Object, Object> implements Se
 			if(success){
 				dialog.dismiss();
 				Toast.makeText(activity.getApplicationContext(),"Event updated successfully.", Toast.LENGTH_SHORT).show();
-				Intent intent = new Intent(activity,ViewAllEventsActivity.class);
-				activity.startActivity(intent);
-				activity.finish();
+				System.out.println("Request Help: " + requestHelp);
+				if(requestHelp){
+					Intent intentAva = new Intent(activity, ViewAvaliableHobby.class);
+					activity.startActivity(intentAva);
+					activity.finish();
+				}
+				else{
+					Intent intent = new Intent(activity,ViewAllEventsActivity.class);
+					activity.startActivity(intent);
+					activity.finish();
+				}
 			}
 			else{
 				errorOnExecuting();

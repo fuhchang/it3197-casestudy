@@ -163,6 +163,16 @@
 	            android:textSize="@dimen/normal_font_size"
 	            android:entries="@array/noOfParticipants"/>
 	        	        
+	        	        
+			<CheckBox
+			    android:id="@+id/cbox_request_help"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+	            android:layout_marginTop="10dp"
+	            android:fontFamily="sans-serif-light"
+	            android:textSize="@dimen/normal_font_size"
+	            android:text="@string/request_help" />
+			
 	        <Button
 	            android:id="@+id/btn_upload_event_poster"
 	            android:layout_width="match_parent"
