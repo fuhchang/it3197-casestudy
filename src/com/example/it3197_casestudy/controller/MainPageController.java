@@ -141,7 +141,7 @@ public class MainPageController extends AsyncTask<Object, Object, Object> implem
 					intent.putExtra("dbLon", articleList.get(0).getDbLon());
 					intent.putExtra("dist", articleList.get(0).getDist());
 					intent.putExtra("fromMain", "YES");
-					
+					intent.putExtra("postID", articleList.get(0).getArticleFBPostID());
 					activity.startActivity(intent);
 					
 					//Toast.makeText(activity, "Link to Article", Toast.LENGTH_SHORT).show();
@@ -203,7 +203,7 @@ public class MainPageController extends AsyncTask<Object, Object, Object> implem
 				article.setDbLat(dataJob.getDouble("dbLat"));
 				article.setDbLon(dataJob.getDouble("dbLon"));
 				article.setArticleUser(dataJob.getString("articleUser"));
-				
+				article.setArticleFBPostID(dataJob.getString("articleFBPostID"));
 				
 				
 				articleList.add(article);
