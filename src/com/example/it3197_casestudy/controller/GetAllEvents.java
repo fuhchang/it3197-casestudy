@@ -149,6 +149,7 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 				intent.putExtra("active", event.getActive());
 				intent.putExtra("eventFBPostID", event.getEventFBPostID());
 		        activity.startActivity(intent);
+		        activity.finish();
 			}
 		});
 		dialog.dismiss();

@@ -232,6 +232,7 @@ public class ViewAllEventsActivity extends Activity implements Settings{
 					intent.putExtra("active", event.getActive());
 					intent.putExtra("eventFBPostID", event.getEventFBPostID());
 					ViewAllEventsActivity.this.startActivity(intent);
+					ViewAllEventsActivity.this.finish();
 				}
 			});
 		}

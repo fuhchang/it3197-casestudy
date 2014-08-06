@@ -2,6 +2,7 @@ package com.example.it3197_casestudy.controller;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.URL;
 
@@ -11,6 +12,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.Handler;
@@ -24,6 +26,7 @@ public class GetImageFromFacebook extends AsyncTask<Object,Object,Object>{
 	private String posterFileName;
 	private Bitmap myBitmap;
 	private ProgressDialog dialog;
+	private String simplifiedPosterFileName;
 	
 	public GetImageFromFacebook(Context context,ImageView ivEventPoster, String posterFileName){
 		this.context = context;
@@ -46,27 +49,46 @@ public class GetImageFromFacebook extends AsyncTask<Object,Object,Object>{
 		// TODO Auto-generated method stub
 		super.onPostExecute(result);
 		ivEventPoster.setVisibility(View.VISIBLE);
-        ivEventPoster.setImageBitmap(myBitmap);
         dialog.dismiss();
 	}
 
 	public String getImageFromFacebook() {
-		try {
-			URL url = new URL(posterFileName);
-			InputStream is = url.openStream();
-			ByteArrayOutputStream os = new ByteArrayOutputStream();			
-			byte[] buf = new byte[4096];
-			int n;			
-			while ((n = is.read(buf)) >= 0) 
-				os.write(buf, 0, n);
-			os.close();
-			is.close();			
-			byte[] data = os.toByteArray();
-			myBitmap = BitmapFactory.decodeByteArray(data, 0, os.size());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		new Handler(Looper.getMainLooper()).post(new Runnable() {
+		    @Override
+		    public void run() {
+				try {
+					URL url = new URL(posterFileName);
+					simplifiedPosterFileName = posterFileName.substring(posterFileName.lastIndexOf("/"),posterFileName.length() - 5);
+					File f = new File(context.getCacheDir(), simplifiedPosterFileName);
+					if(!f.exists()){
+						InputStream is = url.openStream();
+						ByteArrayOutputStream os = new ByteArrayOutputStream();			
+						byte[] buf = new byte[4096];
+						int n;			
+						while ((n = is.read(buf)) >= 0) 
+							os.write(buf, 0, n);
+						os.close();
+						is.close();			
+						byte[] data = os.toByteArray();
+						myBitmap = BitmapFactory.decodeByteArray(data, 0, os.size());
+						
+						
+						f.createNewFile();
+						FileOutputStream fos = new FileOutputStream(f);
+						fos.write(data);
+						fos.close();
+						ivEventPoster.setImageBitmap(myBitmap);
+					}
+					else{
+						ivEventPoster.setImageURI(Uri.fromFile(f));
+					}
+					
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
 		return null;
 	}
 	

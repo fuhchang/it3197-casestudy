@@ -135,7 +135,7 @@ public class CreateGroupActivityStep3 extends Activity implements Settings{
 				 Log.d("main", "Link to selected file name: " + result.getName());
 				 String fileName = result.getName();
 				 posterFileName = result.getLink().toString() + "?dl=1";
-				 GetImageFromDropbox getImageFromDropbox = new GetImageFromDropbox(CreateGroupActivityStep3.this,imgView, posterFileName,fileName);
+				 GetImageFromDropbox getImageFromDropbox = new GetImageFromDropbox(CreateGroupActivityStep3.this,imgView, posterFileName);
 		          getImageFromDropbox.execute();
 		          imgView.setVisibility(View.VISIBLE);
 				break;

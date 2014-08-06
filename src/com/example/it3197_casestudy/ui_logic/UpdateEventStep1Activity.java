@@ -121,6 +121,8 @@ public class UpdateEventStep1Activity extends Activity implements Settings{
 			eventDateTimeTo = bundle.getString("eventDateTimeTo", "");
 			occurence = bundle.getString("occurence", "");
 			noOfParticipants = bundle.getString("noOfParticipants", "0");
+			posterFileName = bundle.getString("pictureURL","");
+			
 			System.out.println(noOfParticipants);
 		}
 		etEventName = (EditText) findViewById(R.id.et_name);
@@ -167,6 +169,16 @@ public class UpdateEventStep1Activity extends Activity implements Settings{
 	          mChooser.forResultType(DbxChooser.ResultType.PREVIEW_LINK).launch(UpdateEventStep1Activity.this, DBX_CHOOSER_REQUEST);
 	        }
 	    });
+		if((posterFileName != "") && (!posterFileName.equals(""))){
+			ivPoster.setVisibility(View.VISIBLE);
+			tvPoster.setVisibility(View.VISIBLE);
+            GetImageFromDropbox getImageFromDropbox = new GetImageFromDropbox(UpdateEventStep1Activity.this,ivPoster, posterFileName);
+            getImageFromDropbox.execute();
+		}
+		else{
+			ivPoster.setVisibility(View.GONE);
+			tvPoster.setVisibility(View.GONE);
+		}
 		
 		tvPoster.setVisibility(View.GONE);
 		if(typeOfEvent.equals("Big Event")){
@@ -194,7 +206,7 @@ public class UpdateEventStep1Activity extends Activity implements Settings{
 	            String validatingFileName = fileName.substring(fileName.lastIndexOf("."),fileName.length());
 	            Log.d("main", "Link to selected file extension: " + validatingFileName);
 	            Log.d("main", "Link to selected file: " + result.getLink());
-	            GetImageFromDropbox getImageFromDropbox = new GetImageFromDropbox(UpdateEventStep1Activity.this,ivPoster, posterFileName,fileName);
+	            GetImageFromDropbox getImageFromDropbox = new GetImageFromDropbox(UpdateEventStep1Activity.this,ivPoster, posterFileName);
 	            getImageFromDropbox.execute();
 	            tvPoster.setVisibility(View.VISIBLE);
 	            // Handle the result
@@ -276,6 +288,6 @@ public class UpdateEventStep1Activity extends Activity implements Settings{
 	public void onBackPressed(){  
 		Intent intent = new Intent(UpdateEventStep1Activity.this, ViewAllEventsActivity.class);
 		startActivity(intent);
-		this.finish();
+		UpdateEventStep1Activity.this.finish();
 	}
 }

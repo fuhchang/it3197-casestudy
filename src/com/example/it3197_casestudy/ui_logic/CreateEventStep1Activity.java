@@ -153,7 +153,7 @@ public class CreateEventStep1Activity extends Activity implements Settings{
 	            String validatingFileName = fileName.substring(fileName.lastIndexOf("."),fileName.length());
 	            Log.d("main", "Link to selected file extension: " + validatingFileName);
 	            Log.d("main", "Link to selected file: " + result.getLink());
-	            GetImageFromDropbox getImageFromDropbox = new GetImageFromDropbox(CreateEventStep1Activity.this,ivPoster, posterFileName,fileName);
+	            GetImageFromDropbox getImageFromDropbox = new GetImageFromDropbox(CreateEventStep1Activity.this,ivPoster, posterFileName);
 	            getImageFromDropbox.execute();
 	            tvPoster.setVisibility(View.VISIBLE);
 	            // Handle the result

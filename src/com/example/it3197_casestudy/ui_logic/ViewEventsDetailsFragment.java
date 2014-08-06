@@ -16,10 +16,12 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.LruCache;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -204,6 +206,7 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 				i.putExtra("eventDateTimeTo", sqlDateTimeFormatter.format(event.getEventDateTimeTo()));
 				i.putExtra("occurence", event.getOccurence());
 				i.putExtra("noOfParticipants", String.valueOf(event.getNoOfParticipantsAllowed()));
+				i.putExtra("pictureURL", pictureURL);
 				startActivity(i);
 				ViewEventsDetailsFragment.this.getActivity().finish();
 			}
@@ -345,6 +348,7 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 						if((response.getGraphObject().getInnerJSONObject().getJSONArray("image") != null) && (response.getGraphObject().getInnerJSONObject().getJSONArray("image").length() > 0)){
 							pictureURL = response.getGraphObject().getInnerJSONObject().getJSONArray("image").getJSONObject(0).getString("url").toString().replace("\"/", "/");
 							//System.out.println("Picture URL: " + pictureURL);
+
 							GetImageFromFacebook getImageFromFacebook = new GetImageFromFacebook(ViewEventsDetailsFragment.this.getActivity(),ivEventPoster,pictureURL);
 							getImageFromFacebook.execute();
 						}

@@ -590,7 +590,7 @@ public class SubmitArticle extends Activity implements Settings{
 	            String validatingFileName = fileName.substring(fileName.lastIndexOf("."),fileName.length());
 	            Log.d("main", "Link to selected file extension: " + validatingFileName);
 	            Log.d("main", "Link to selected file: " + result.getLink());
-	            GetImageFromDropbox getImageFromDropbox = new GetImageFromDropbox(SubmitArticle.this,iv, posterFileName,fileName);
+	            GetImageFromDropbox getImageFromDropbox = new GetImageFromDropbox(SubmitArticle.this,iv, posterFileName);
 	            getImageFromDropbox.execute();  
 	            imgHr.setVisibility(View.VISIBLE);
 	            // Handle the result
