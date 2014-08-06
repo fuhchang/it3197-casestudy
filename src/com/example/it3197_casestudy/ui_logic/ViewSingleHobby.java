@@ -7,6 +7,7 @@ import com.dropbox.chooser.android.R.color;
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.R.layout;
 import com.example.it3197_casestudy.R.menu;
+import com.example.it3197_casestudy.controller.CheckMemberHobby;
 import com.example.it3197_casestudy.controller.JoinHobbyGrp;
 import com.example.it3197_casestudy.controller.getPostController;
 import com.example.it3197_casestudy.model.Hobby;
@@ -51,17 +52,22 @@ public class ViewSingleHobby extends Activity {
 		uiHelper.onCreate(savedInstanceState);
 		String grpName = getIntent().getExtras().getString("grpName");
 		int id = getIntent().getExtras().getInt("grpID");
-		
-		userNric = getIntent().getExtras().getString("userNric");
-		adminNric = getIntent().getExtras().getString("adminNric");
+		String fbID = getIntent().getExtras().getString("fbID");
+		MySharedPreferences preferences = new MySharedPreferences(this);
+		userNric = preferences.getPreferences("nric", "S000000E");
 		grpTitle = (TextView) findViewById(R.id.grpTile);
 		grpTitle.setTextSize(40);
 		grpTitle.setText(grpName);
 		itemList = (ListView) findViewById(R.id.grpList);
 		itemList.setBackgroundColor(Color.GRAY);
+		adminNric = getIntent().getExtras().getString("adminNric");
 		if(userNric.equals(adminNric)){
 			adminRight = 1;
+			
+		}else{
+			adminRight =0;
 		}
+		System.out.println(adminRight);
 		File imgFile = new  File("grpImg");
 		if(imgFile.exists()){
 
@@ -84,8 +90,8 @@ public class ViewSingleHobby extends Activity {
 			menu.removeItem(R.id.action_update_group);
 			menu.removeItem(R.id.action_view_request);
 		}else{
+			System.out.println(adminRight);
 		memberCheck = getIntent().getExtras().getString("member");
-		System.out.println(memberCheck);
 		if(adminRight == 0){
 			menu.removeItem(R.id.action_update_group);
 			menu.removeItem(R.id.action_view_request);
@@ -179,6 +185,7 @@ public class ViewSingleHobby extends Activity {
 		super.onResume();
 		 uiHelper.onResume();
 	}
+	
 	
 	
 }

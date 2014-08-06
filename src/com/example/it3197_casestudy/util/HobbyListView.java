@@ -10,11 +10,13 @@ import com.example.it3197_casestudy.controller.GetImageFromFaceBookForHobby;
 import com.example.it3197_casestudy.model.Hobby;
 import com.facebook.HttpMethod;
 import com.facebook.Request;
+import com.facebook.RequestAsyncTask;
 import com.facebook.Response;
 import com.facebook.Session;
 import com.google.android.gms.common.images.ImageManager;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -32,10 +34,14 @@ public class HobbyListView extends ArrayAdapter<Hobby> {
 	private final Activity context;
 	private ArrayList<Hobby> resultArray = new ArrayList<Hobby>();
 	private ImageView imgView;
-	public HobbyListView(Context context, ArrayList<Hobby> hobbyList) {
+	private String pictureURL;
+	private ProgressDialog dialog;
+
+	public HobbyListView(Context context, ArrayList<Hobby> hobbyList, ProgressDialog dialog) {
 		super(context, R.layout.activity_hobby_list_view, hobbyList);
 		this.context = (Activity) context;
 		this.resultArray = hobbyList;
+		this.dialog = dialog;
 	}
 
 	
@@ -43,6 +49,7 @@ public class HobbyListView extends ArrayAdapter<Hobby> {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
+		
 		LayoutInflater inflater = context.getLayoutInflater();
 		View rowView = inflater.inflate(R.layout.activity_hobby_list_view,
 				null, true);
@@ -51,8 +58,15 @@ public class HobbyListView extends ArrayAdapter<Hobby> {
 		TextView gTitle = (TextView) rowView.findViewById(R.id.gTitle);
 		TextView gCate = (TextView) rowView.findViewById(R.id.gType);
 		TextView gDesc = (TextView) rowView.findViewById(R.id.gDesc);
-		imgView = (ImageView) rowView.findViewById(R.id.imageView);
-		getImage(position, imgView);
+		
+		if((Session.getActiveSession() != null) && (Session.getActiveSession().isOpened()) && (!resultArray.get(position).getHobbyFBPostID().equals("0"))){
+			Toast.makeText(getContext(), "setting image in "+position + " with " +resultArray.get(position).getHobbyFBPostID() , Toast.LENGTH_LONG).show();
+				getImage(position, imgView, resultArray.get(position).getHobbyFBPostID(), rowView);
+		}else{
+			Toast.makeText(getContext(), "no session found", Toast.LENGTH_LONG).show();
+			
+		}
+		
 		gTitle.setTextSize(35);
 		gCate.setTextSize(20);
 		gDesc.setTextSize(15);
@@ -67,18 +81,21 @@ public class HobbyListView extends ArrayAdapter<Hobby> {
 	}
 	
 	
-	public void getImage(final int position, final ImageView imgview){
-		Request request = new Request(Session.getActiveSession(), resultArray.get(position).getHobbyFBPostID(), null, HttpMethod.GET, new Request.Callback() {
+	public void getImage(int position, ImageView imgview, String imgFile, final View rowView){
+		
+		Request request = new Request(Session.getActiveSession(), imgFile, null, HttpMethod.GET, new Request.Callback() {
 
 			@Override
 			public void onCompleted(Response response) {
 				// TODO Auto-generated method stub
+				System.out.println(response);
 				try{
 					if((response.getGraphObject().getInnerJSONObject().getJSONArray("image") != null) && (response.getGraphObject().getInnerJSONObject().getJSONArray("image").length() > 0)){
-						String pictureURL = response.getGraphObject().getInnerJSONObject().getJSONArray("image").getJSONObject(0).getString("url").toString().replace("\"/", "/");
-						
-						GetImageFromFaceBookForHobby getImageFromFacebook = new GetImageFromFaceBookForHobby(context,imgview,resultArray.get(position).getHobbyFBPostID());
+						pictureURL = response.getGraphObject().getInnerJSONObject().getJSONArray("image").getJSONObject(0).getString("url").toString().replace("\"/", "/");
+						GetImageFromFaceBookForHobby getImageFromFacebook = new GetImageFromFaceBookForHobby(context,imgView, pictureURL, dialog, rowView); 
 						getImageFromFacebook.execute();
+					}else{
+						pictureURL = "";
 					}
 				}catch(JSONException e){
 					e.printStackTrace();
@@ -86,6 +103,10 @@ public class HobbyListView extends ArrayAdapter<Hobby> {
 			}
 			
 		});
+		
+		RequestAsyncTask task = new RequestAsyncTask(request);
+        task.execute();
+		
 	}
 
 }

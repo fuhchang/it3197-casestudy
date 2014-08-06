@@ -58,7 +58,7 @@ public class GetAvaliableHobby extends AsyncTask<Object, Object, Object>implemen
 	@Override
 	protected void onPostExecute(Object result) {
 		parseJSONResponse((String) result);
-		HobbyListView adapter = new HobbyListView(activity, hobbyList);
+		HobbyListView adapter = new HobbyListView(activity, hobbyList, dialog);
 		allList.setAdapter(adapter);
 		allList.setOnItemClickListener(new OnItemClickListener(){
 

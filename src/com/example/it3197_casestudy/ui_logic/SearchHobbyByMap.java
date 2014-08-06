@@ -86,6 +86,7 @@ public class SearchHobbyByMap extends FragmentActivity implements LocationListen
 		setContentView(R.layout.activity_search_hobby_by_map);
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		userName = prefs.getString("nric", "");
+		
 		MapsInitializer.initialize(getApplicationContext());
 		iconDance = BitmapDescriptorFactory.fromResource(R.drawable.dance);
 		iconGardening = BitmapDescriptorFactory.fromResource(R.drawable.gardening);
@@ -148,11 +149,17 @@ public class SearchHobbyByMap extends FragmentActivity implements LocationListen
 				Intent intent = new Intent(SearchHobbyByMap.this, ViewSingleHobby.class);
 				for(int i=0; i<hobbyList.size(); i++){
 					if(hobbyList.get(i).getGroupName().equals(mp.getTitle())){
-						intent.putExtra("grpID", hobbyList.get(i).getGroupID());
-						intent.putExtra("adminNric", hobbyList.get(i).getAdminNric());
-						if(!hobbyList.get(i).getAdminNric().equals(userName)){
+		
+						Toast.makeText(getApplicationContext(), hobbyList.get(i).getAdminNric() +"-"+ userName, Toast.LENGTH_LONG).show();
+						if (hobbyList.get(i).getAdminNric().equals(userName)){
+							intent.putExtra("adminNric", hobbyList.get(i).getAdminNric());
+							intent.putExtra("member", "none");
+						}else{
+							intent.putExtra("adminNric", "S0000E");
+							
 							CheckMemberHobby checkmember = new CheckMemberHobby(SearchHobbyByMap.this,userName, hobbyList.get(i).getGroupID( ));
 							checkmember.execute();
+							
 							if(checkmember.getCheckID() == 0){
 								intent.putExtra("member", "none");
 							}else{
@@ -160,6 +167,22 @@ public class SearchHobbyByMap extends FragmentActivity implements LocationListen
 							}
 							
 						}
+						
+						/*
+						intent.putExtra("grpID", hobbyList.get(i).getGroupID());
+						if(hobbyList.get(i).getAdminNric().isEmpty()){
+							intent.putExtra("adminNric", "none");
+							CheckMemberHobby checkmember = new CheckMemberHobby(SearchHobbyByMap.this,userName, hobbyList.get(i).getGroupID( ));
+							checkmember.execute();
+							if(checkmember.getCheckID() == 0){
+								intent.putExtra("member", "none");
+							}else{
+								intent.putExtra("member", "member");
+							}
+						}else if (hobbyList.get(i).getAdminNric().equals(userName)){
+						intent.putExtra("adminNric", hobbyList.get(i).getAdminNric());
+					}
+					*/
 					}
 				}
 				intent.putExtra("grpName", mp.getTitle());

@@ -113,6 +113,7 @@ public class GetUserByName extends AsyncTask<Object, Object, Object> implements 
 			if(checkUser.getName().equals(username)){
 				MySharedPreferences preferences = new MySharedPreferences(activity);
 				preferences.addPreferences("nric", checkUser.getNric());
+				System.out.println(checkUser.getNric() + checkUser.getName());
 				preferences.addPreferences("username", checkUser.getName());
 				preferences.addPreferences("password",user.getPassword());
 				preferences.addPreferences("type",checkUser.getType());

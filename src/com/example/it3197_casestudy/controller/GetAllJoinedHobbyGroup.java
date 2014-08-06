@@ -63,8 +63,7 @@ implements Settings{
 		// TODO Auto-generated method stub
 		
 		parseJSONResponse((String) result);
-		dialog.dismiss();
-		hobbyListView = new HobbyListView(activity.getActivity(), allJoinedhobbyList);
+		hobbyListView = new HobbyListView(activity.getActivity(), allJoinedhobbyList, dialog);
 		allList.setAdapter(hobbyListView);
 		allList.setOnItemClickListener(new OnItemClickListener(){
 

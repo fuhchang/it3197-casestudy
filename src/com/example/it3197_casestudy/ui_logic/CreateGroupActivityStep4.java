@@ -417,7 +417,7 @@ public class CreateGroupActivityStep4 extends Activity implements LocationListen
 		 uiHelper.onSaveInstanceState(outState);
 	}
 	
-	private void publishHobby(final ProgressDialog dialog, Hobby hobby){
+	private void publishHobby(final ProgressDialog dialog, final Hobby hobby){
 		final Hobby hobbyItem = hobby;
 		Session session = Session.getActiveSession();
 		if(session != null){
@@ -465,7 +465,7 @@ public class CreateGroupActivityStep4 extends Activity implements LocationListen
 			                	else{
 			                		hobbyItem.setHobbyFBPostID("0");
 			                	}
-			                	CreatehobbyGroup createHobby = new CreatehobbyGroup(CreateGroupActivityStep4.this, hobbyItem, dialog, graphResponse.getString("id") );
+			                	CreatehobbyGroup createHobby = new CreatehobbyGroup(CreateGroupActivityStep4.this, hobby, dialog, graphResponse.getString("id") );
 			            		createHobby.execute();
 							}
 						} catch (Exception e) {

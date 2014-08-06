@@ -1,7 +1,9 @@
 package com.example.it3197_casestudy.ui_logic;
 
+
 import com.example.it3197_casestudy.R;
 
+import com.example.it3197_casestudy.ar.activity.Demo;
 import com.example.it3197_casestudy.controller.GetHobbyForMap;
 import com.example.it3197_casestudy.util.viewHobbiesAdapter;
 import android.app.ActionBar;
@@ -84,10 +86,12 @@ public class ViewHobbiesMain extends FragmentActivity implements
 			startActivity(intentNewGrp);
 			break;
 		case R.id.action_requestHelp:
-		
+			Intent demoIntent = new Intent(this, Demo.class);
+			startActivity(demoIntent);
+			/*
 			Intent intentRequest = new Intent(this, RequestForHobbyHelp.class);
 			startActivity(intentRequest);
-			/*
+			
 			Intent intentAva = new Intent(this, ViewAvaliableHobby.class);
 			startActivity(intentAva);
 			*/

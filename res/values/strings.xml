@@ -337,4 +337,5 @@
     <string name="fb_user_address"> Address: </string>
     <string name="fb_hint_user_address"> Enter your address </string>
     
+<string name="google_places_api_key">AIzaSyC5mTsDhjayzCqXH87ggEYsfswR1cStfX8</string>
 </resources>

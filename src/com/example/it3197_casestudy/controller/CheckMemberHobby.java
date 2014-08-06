@@ -86,7 +86,7 @@ public class CheckMemberHobby  extends AsyncTask<Object, Object, Object> impleme
 			data_array = json.getJSONArray("memberCheck");
 			//JSONObject dataObj = json.getJSONObject("user");
 			JSONObject dataObj = new JSONObject(data_array.getString(0));
-			
+			setMembership(dataObj.getString("MemberRoles"));
 			setCheckID(dataObj.getInt("groupID"));
 			
 			

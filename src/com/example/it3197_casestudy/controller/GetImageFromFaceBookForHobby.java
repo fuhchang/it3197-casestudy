@@ -4,6 +4,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.net.URL;
 
+import com.example.it3197_casestudy.R;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -13,6 +15,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -22,10 +25,13 @@ public class GetImageFromFaceBookForHobby extends AsyncTask<Object,Object,Object
 	private String filename;
 	private ProgressDialog dialog;
 	private Bitmap myBitmap;
-	public GetImageFromFaceBookForHobby (Activity activity, ImageView imgView, String filename){
+	private View rowView;
+	public GetImageFromFaceBookForHobby (Activity activity, ImageView imgView, String filename, ProgressDialog dialog, View rowView){
 		this.activity = activity;
 		this.imgView = imgView;
 		this.filename = filename;
+		this.dialog = dialog;
+		this.rowView = rowView;
 	}
 	@Override
 	protected Object doInBackground(Object... arg0) {
@@ -37,14 +43,14 @@ public class GetImageFromFaceBookForHobby extends AsyncTask<Object,Object,Object
 	protected void onPostExecute(Object result) {
 		// TODO Auto-generated method stub
 		super.onPostExecute(result);
-		dialog.dismiss();
+		imgView.setVisibility(View.VISIBLE);
 		imgView.setImageBitmap(myBitmap);
+		dialog.dismiss();
 	}
 
 	@Override
 	protected void onPreExecute() {
-		dialog = ProgressDialog.show(activity, "Getting Image", "Please wait...",
-				true);
+		imgView = (ImageView) rowView.findViewById(R.id.imageView);
 	}
 	
 	public String getImageFromFaceBook(){
@@ -61,6 +67,7 @@ public class GetImageFromFaceBookForHobby extends AsyncTask<Object,Object,Object
 			is.close();			
 			byte[] data = os.toByteArray();
 			myBitmap = BitmapFactory.decodeByteArray(data, 0, os.size());
+			
 		}catch(Exception e){
 			e.printStackTrace();
 			errorOnExecuting();

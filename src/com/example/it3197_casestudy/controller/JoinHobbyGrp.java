@@ -30,7 +30,7 @@ public class JoinHobbyGrp extends AsyncTask<Object, Object, Object> implements S
 	private ViewSingleHobby activity;
 	private HobbyMembers members;
 	private ProgressDialog dialog;
-	public JoinHobbyGrp(ViewSingleHobby activity, HobbyMembers member){
+	public JoinHobbyGrp(ViewSingleHobby activity, HobbyMembers member ){
 		this.activity = activity;
 		this.members = member;
 	}

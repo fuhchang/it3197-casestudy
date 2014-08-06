@@ -75,7 +75,7 @@ public class GetAllHobbyGroup extends AsyncTask<Object, Object, Object>
 	@Override
 	protected void onPostExecute(Object result) {
 		parseJSONResponse((String) result);
-		hobbyListView = new HobbyListView(activity.getActivity(), hobbyList);
+		hobbyListView = new HobbyListView(activity.getActivity(), hobbyList, dialog);
 		allList.setAdapter(hobbyListView);
 		allList.setOnItemClickListener(new OnItemClickListener(){
 
@@ -90,9 +90,7 @@ public class GetAllHobbyGroup extends AsyncTask<Object, Object, Object>
 				intent.putExtra("grpContent", hobbyList.get(position).getDescription());
 				intent.putExtra("Lat", hobbyList.get(position).getLat());
 				intent.putExtra("Lng", hobbyList.get(position).getLng());
-				intent.putExtra("adminNric", hobbyList.get(position).getAdminNric());
-				intent.putExtra("member", "none");
-				intent.putExtra("userNric", nric);
+				intent.putExtra("fbID", hobbyList.get(position).getHobbyFBPostID());
 				activity.startActivity(intent);
 			}
 			
@@ -140,6 +138,7 @@ public class GetAllHobbyGroup extends AsyncTask<Object, Object, Object>
 				hobby.setGrpImg(dataJob.getString("photo"));
 				hobby.setLat(dataJob.getDouble("Lat"));
 				hobby.setLng(dataJob.getDouble("Lng"));
+				hobby.setHobbyFBPostID(dataJob.getString("hobbyFBPostID"));
 				hobbyList.add(hobby);
 			}
 		} catch (Exception e) {
