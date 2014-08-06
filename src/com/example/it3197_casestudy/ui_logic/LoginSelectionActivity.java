@@ -8,6 +8,8 @@ import java.util.List;
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.controller.GetUserByName;
 import com.example.it3197_casestudy.util.CheckNetworkConnection;
+import com.example.it3197_casestudy.util.Settings;
+import com.facebook.AccessToken;
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
@@ -39,12 +41,12 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class LoginSelectionActivity extends FragmentActivity {
+public class LoginSelectionActivity extends FragmentActivity implements Settings{
 	private ActionBar loginActionBar;
 	private UiLifecycleHelper uiHelper;
 	private LoginButton authButton;
 
-	private static final List<String> PERMISSIONS = Arrays.asList("user_friends","user_about_me","read_friendlists");
+	private static final List<String> PERMISSIONS = Arrays.asList("user_activities","user_friends","user_about_me","read_friendlists","read_stream","read_mailbox","read_page_mailboxes");
 	private static final String PENDING_PUBLISH_KEY = "pendingPublishReauthorization";
 	private boolean pendingPublishReauthorization = false;
 	/**
@@ -90,7 +92,6 @@ public class LoginSelectionActivity extends FragmentActivity {
 				break;
 			case R.id.btn_login_facebook:
 				Session.openActiveSession(LoginSelectionActivity.this, true, callback);
-				//Session.openActiveSession(LoginSelectionActivity.this, true, callback);
 				break;
 			default:
 				LoginSelectionActivity.this.finish();

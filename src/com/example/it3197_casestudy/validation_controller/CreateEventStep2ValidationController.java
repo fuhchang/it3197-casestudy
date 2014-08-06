@@ -132,10 +132,10 @@ public class CreateEventStep2ValidationController implements Settings{
 	        postParams.putString("og:url", "localhost:8080/CommunityOutreach/");
 	        postParams.putString("og:image", posterFileName);
 	        if((posterFileName.length() > 0) && (posterFileName != null)){
-		        postParams.putString("event","{\"title\":\""+event.getEventName()+"\",\"type\":\"community_outreach:event\",\"image\":\""+posterFileName+"\",\"description\":\""+event.getEventDescription()+"\"}");	
+		        postParams.putString("object","{\"title\":\""+event.getEventName()+"\",\"type\":\"community_outreach:event\",\"image\":\""+posterFileName+"\",\"description\":\""+event.getEventDescription()+"\"}");	
 	        }
 	        else{
-	        	postParams.putString("event","{\"title\":\""+event.getEventName()+"\",\"type\":\"community_outreach:event\",\"description\":\""+event.getEventDescription()+"\"}");
+	        	postParams.putString("object","{\"title\":\""+event.getEventName()+"\",\"type\":\"community_outreach:event\",\"description\":\""+event.getEventDescription()+"\"}");
 	        }
 	        //System.out.println(event.getEventName() + "(" + event.getEventDateTimeFrom() + "-" + event.getEventDateTimeTo() + "), " + event.getEventDescription() + " -- " + posterFileName);
 	        Request.Callback callback= new Request.Callback() {
@@ -143,6 +143,7 @@ public class CreateEventStep2ValidationController implements Settings{
 	                try {
 	                	if(response != null){
 			                JSONObject graphResponse = response.getGraphObject().getInnerJSONObject();
+			                System.out.println(response.toString());
 		                	if(graphResponse.getString("id") != null){
 		                		event.setEventFBPostID(graphResponse.getString("id"));
 		                	}
@@ -164,7 +165,7 @@ public class CreateEventStep2ValidationController implements Settings{
 	                }
 	            }
 	        };
-	        Request request = new Request(session, "me/community_outreach:create", postParams, HttpMethod.POST, callback);
+	        Request request = new Request(session, "me/objects/community_outreach:event", postParams, HttpMethod.POST, callback);
 
 	        request.setBatchEntryName("object");
 

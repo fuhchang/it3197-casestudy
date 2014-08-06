@@ -311,7 +311,8 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 		btnCheckIn = (Button) getActivity().findViewById(R.id.btn_check_in);
 		
 		ivEventPoster = (ImageView) getActivity().findViewById(R.id.iv_event_poster);
-
+		
+		System.out.println("FB Post ID: " + event.getEventFBPostID());
 		if((Session.getActiveSession() != null) && (Session.getActiveSession().isOpened()) && (!event.getEventFBPostID().equals("0"))){
 			getPoster();
 		}
