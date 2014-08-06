@@ -91,7 +91,7 @@
 					  
 			</RelativeLayout>
 					
-	    		    
+	   
 	    		    
 	    		<!-- </RelativeLayout>-->
 	    		
@@ -107,11 +107,12 @@
 			android:layout_width="wrap_content" 
 			android:layout_height="wrap_content"
 			android:orientation="vertical">-->
+							
 					
 	   		<ScrollView
 			    android:id="@+id/SCROLLER_ID"
 			    android:layout_width="fill_parent"
-			    android:layout_height="fill_parent"
+			    android:layout_height="246dp"
 			    android:scrollbars="vertical"
 			    android:layout_marginRight="5dp"
 			    android:layout_marginBottom="5dp"
@@ -120,7 +121,7 @@
 		   		<TextView
 				    android:id="@+id/content"
 					android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
+			        android:layout_height="246dp"
 			        android:layout_marginTop="5dp"
 			        android:layout_marginLeft="10dp"
 			        android:layout_marginBottom="10dp"
@@ -138,42 +139,22 @@
    		
 		
    		
-   	<!-- 	<RelativeLayout
+   	 	<RelativeLayout
 		    android:layout_width="fill_parent"
 		    android:layout_height="wrap_content" 
 		    android:layout_gravity="bottom">
 			
-   		    <TextView 
-		         android:layout_width="fill_parent"
-		         android:layout_height="2dp"   
-		         android:layout_marginTop="5dp"  
-		         android:layout_above="@+id/add"
-		   		 android:background="#000"/>
    		    
-			<TextView
-			    android:id="@+id/add"
-				android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_marginTop="5dp"
+			<ImageView
+		        android:id="@+id/art_poster"
+		        android:layout_gravity="bottom"
 		        android:layout_marginLeft="5dp"
-		        android:textStyle="bold"
-		        android:layout_above="@+id/map"
-		        android:textSize="17sp">
-			</TextView>
-
-
-   		
-	   		<fragment  
-	          android:id="@+id/map"
-	          android:layout_gravity="bottom"
-	          android:layout_marginLeft="5dp"
-	          android:layout_marginRight="5dp"
-	          android:layout_width="fill_parent"
-	          android:layout_above="@+id/bottom"
-	          android:layout_height="200dp"
-	          android:name="com.google.android.gms.maps.MapFragment"
-	          />
-	   		
+		        android:layout_marginRight="5dp"
+		        android:layout_above="@+id/bottom"
+		        android:layout_width="match_parent"
+		        android:layout_height="150dp"
+		        android:layout_marginTop="5dp"
+		        android:textSize="@dimen/normal_font_size" /> 	
 	   		
 	   		<TextView 
 	   		     android:id="@+id/bottom"
@@ -182,6 +163,6 @@
 		         android:layout_marginTop="5dp"  
 		         android:layout_alignParentBottom="true"
 		   		 android:background="#FFF"/>
-   		</RelativeLayout>-->
+   		</RelativeLayout>
 
 </LinearLayout>

@@ -3,12 +3,20 @@ package com.example.it3197_casestudy.ui_logic;
 import java.util.List;
 import java.util.Locale;
 
+import org.json.JSONException;
+
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.R.id;
 import com.example.it3197_casestudy.R.layout;
 import com.example.it3197_casestudy.R.menu;
 import com.example.it3197_casestudy.controller.ArticleUpdateFeedbackStatus;
+import com.example.it3197_casestudy.controller.GetImageFromFacebook;
 import com.example.it3197_casestudy.model.Article;
+import com.facebook.HttpMethod;
+import com.facebook.Request;
+import com.facebook.RequestAsyncTask;
+import com.facebook.Response;
+import com.facebook.Session;
 
 import android.location.Address;
 import android.location.Geocoder;
@@ -23,6 +31,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +47,9 @@ public class ArticleSelectedFeedbackActivity extends Activity {
 	String Address;
 	String City;
 	
+	String postID;
+	private String pictureURL;
+	private ImageView artPoster;
 	
 	int articleIDForUpdate;
 	
@@ -58,6 +70,7 @@ public class ArticleSelectedFeedbackActivity extends Activity {
 		articleDateTv = (TextView) findViewById(R.id.date);
 		contentTv = (TextView)findViewById(R.id.content);
 		cat = (TextView)findViewById(R.id.cat);
+		artPoster = (ImageView)findViewById(R.id.art_poster);
 		
 		Bundle extras = this.getIntent().getExtras();
 		String title = extras.getString("title");
@@ -68,6 +81,7 @@ public class ArticleSelectedFeedbackActivity extends Activity {
 		String articleId = String.valueOf(extras.getInt("articleID"));
 		String catRetrieved = extras.getString("cat");
 		articleIDForUpdate = extras.getInt("articleID");
+		postID= extras.getString("postID");
 		
 	//	Toast.makeText(getApplicationContext(), articleId, Toast.LENGTH_SHORT).show();
 		
@@ -82,6 +96,15 @@ public class ArticleSelectedFeedbackActivity extends Activity {
 		iv.setImageResource(R.drawable.article123);
 		
 		getMyCurrentLocation();
+		
+		
+		
+		if(postID.equals("0")){
+			artPoster.setVisibility(View.GONE);
+		}
+		else{
+			getPoster();
+		}
 	}
 
 	@Override
@@ -249,4 +272,30 @@ public class ArticleSelectedFeedbackActivity extends Activity {
 	      
 	      
 	   }
+	   
+	   public void getPoster(){
+			Request request = new Request(Session.getActiveSession(), postID, null, HttpMethod.GET, new Request.Callback() {
+				public void onCompleted(Response response) {
+			    /* handle the result */
+					try {
+						if((response.getGraphObject().getInnerJSONObject().getJSONArray("image") != null) && (response.getGraphObject().getInnerJSONObject().getJSONArray("image").length() > 0)){
+							pictureURL = response.getGraphObject().getInnerJSONObject().getJSONArray("image").getJSONObject(0).getString("url").toString().replace("\"/", "/");
+							//System.out.println("Picture URL: " + pictureURL);
+							GetImageFromFacebook getImageFromFacebook = new GetImageFromFacebook(ArticleSelectedFeedbackActivity.this,artPoster,pictureURL);
+							getImageFromFacebook.execute();
+						}
+						else{
+							pictureURL = "";
+							artPoster.setVisibility(View.GONE);
+						}
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						artPoster.setVisibility(View.GONE);
+					}
+				}
+			});
+			RequestAsyncTask task = new RequestAsyncTask(request);
+	        task.execute();
+		}
 }

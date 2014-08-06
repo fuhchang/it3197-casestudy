@@ -209,7 +209,16 @@ public class ArticleMainActivity extends Activity {
 			GetApprovedLatestArticles gala = new GetApprovedLatestArticles(this, list, lat, lon,selectedDist, "normal");
 			gala.execute();
 		}
+		
 		*/
+		
+		if(id==R.id.linkToOfficerMain){
+			Intent art = new Intent(ArticleMainActivity.this, FeedbackArticleActivity.class);
+			ArticleMainActivity.this.startActivity(art);
+			ArticleMainActivity.this.finish();
+		}
+		
+		
 		if(id==R.id.distanceSelection){
 			
 

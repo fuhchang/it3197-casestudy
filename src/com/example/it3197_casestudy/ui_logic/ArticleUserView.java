@@ -63,11 +63,12 @@ public class ArticleUserView extends FragmentActivity implements
 		String address = extras.getString("address");
 		double dbLat = extras.getDouble("dbLat");
 		double dbLon = extras.getDouble("dbLon");
+		String postID = extras.getString("postID");
 		
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the app.
 		mSectionsPagerAdapter = new SectionsPagerAdapter(
-				getSupportFragmentManager(), title, author, date, content, address, dbLat, dbLon);
+				getSupportFragmentManager(), title, author, date, content, address, dbLat, dbLon, postID);
 
 		
 		
@@ -130,8 +131,9 @@ public class ArticleUserView extends FragmentActivity implements
 		private String address;
 		private double dbLat;
 		private double dbLon;
+		private String postID;
 		
-		public SectionsPagerAdapter(FragmentManager fm, String title, String author, String date, String content, String address, double dbLat, double dbLon) {
+		public SectionsPagerAdapter(FragmentManager fm, String title, String author, String date, String content, String address, double dbLat, double dbLon, String postID) {
 			super(fm);
 			this.title=title;
 			this.author=author;
@@ -139,7 +141,8 @@ public class ArticleUserView extends FragmentActivity implements
 			this.content=content;
 			this.address=address;
 			this.dbLat=dbLat;
-			this.dbLon=dbLon;		
+			this.dbLon=dbLon;
+			this.postID=postID;
 		}
 
 		@Override
@@ -158,11 +161,10 @@ public class ArticleUserView extends FragmentActivity implements
 					args.putString("articleDate", date);
 					args.putString("content", content);
 					args.putString("address", address);
-										
+					args.putString("postID", postID);
+					
 					fragment = new ArticleSelectedActivity();
 					fragment.setArguments(args);
-					
-					
 					break;
 				case 1:
 					
@@ -171,10 +173,11 @@ public class ArticleUserView extends FragmentActivity implements
 					args.putString("articleLoc", address);
 					args.putDouble("dbLat", dbLat);
 					args.putDouble("dbLon", dbLon);
-					
+						
 					fragment = new ArticleSelectedDisplay();
 					fragment.setArguments(args);
-					break;
+					break;				
+					
 				default:
 					break;
 					

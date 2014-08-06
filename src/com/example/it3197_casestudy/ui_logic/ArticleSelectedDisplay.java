@@ -1,6 +1,14 @@
 package com.example.it3197_casestudy.ui_logic;
 
+import org.json.JSONException;
+
 import com.example.it3197_casestudy.R;
+import com.example.it3197_casestudy.controller.GetImageFromFacebook;
+import com.facebook.HttpMethod;
+import com.facebook.Request;
+import com.facebook.RequestAsyncTask;
+import com.facebook.Response;
+import com.facebook.Session;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -15,6 +23,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,7 +50,6 @@ public class ArticleSelectedDisplay extends Fragment{
 	double dbLat;
 	double dbLon;
 	
-	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -53,7 +61,6 @@ public class ArticleSelectedDisplay extends Fragment{
 		address = bundle.getString("articleLoc");
 		dbLat = bundle.getDouble("dbLat");
 		dbLon = bundle.getDouble("dbLon");
-		
 		
 		return rootView;
 	}
@@ -88,9 +95,6 @@ public class ArticleSelectedDisplay extends Fragment{
 		  map.addMarker(artLoc).showInfoWindow();
 		  map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(dbLat, dbLon), 18));
 		
-		super.onActivityCreated(savedInstanceState);
+		  super.onActivityCreated(savedInstanceState);
 	}
-
-	
-	
 }

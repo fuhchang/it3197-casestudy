@@ -259,7 +259,7 @@ final SwipeRefreshLayout swipeView = (SwipeRefreshLayout) findViewById(R.id.swip
 	@Override
 	public void onBackPressed() {
 		// TODO Auto-generated method stub	
-		  AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+		 /* AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 	      alertDialogBuilder.setMessage("Logout?");
 	      alertDialogBuilder.setNegativeButton("Yes", 
 	      new DialogInterface.OnClickListener() {
@@ -268,7 +268,7 @@ final SwipeRefreshLayout swipeView = (SwipeRefreshLayout) findViewById(R.id.swip
 	         public void onClick(DialogInterface arg0, int arg1) {
 	        	Intent i = new Intent(FeedbackArticleActivity.this,LoginActivity.class);
 	     		startActivity(i);
-	     		FeedbackArticleActivity.this.finish();
+	     		
 	         }
 	      });
 	      alertDialogBuilder.setPositiveButton("No", 
@@ -281,7 +281,10 @@ final SwipeRefreshLayout swipeView = (SwipeRefreshLayout) findViewById(R.id.swip
 	      });
 		    
 	      AlertDialog alertDialog = alertDialogBuilder.create();
-	      alertDialog.show();		
+	      alertDialog.show();	*/
+		
+		FeedbackArticleActivity.this.finish();
+		
 	}
 	
 	

@@ -26,6 +26,8 @@
 	   android:layout_height="fill_parent"
 	   android:name="com.google.android.gms.maps.MapFragment"
 	   />
+	
+	
 
 	<TextView
 		android:layout_width="fill_parent"

@@ -102,6 +102,7 @@ public class GetApprovedLatestArticles extends AsyncTask<Object, Object, Object>
 				intent.putExtra("dbLat", articleList.get(pos).getDbLat());
 				intent.putExtra("dbLon", articleList.get(pos).getDbLon());
 				intent.putExtra("dist", articleList.get(pos).getDist());
+				intent.putExtra("postID", articleList.get(pos).getArticleFBPostID());
 				intent.putExtra("fromMain", "NO");
 				activity.startActivity(intent);
 				
@@ -162,6 +163,7 @@ public class GetApprovedLatestArticles extends AsyncTask<Object, Object, Object>
 				article.setDbLat(dataJob.getDouble("dbLat"));
 				article.setDbLon(dataJob.getDouble("dbLon"));
 				article.setArticleUser(dataJob.getString("articleUser"));
+				article.setArticleFBPostID(dataJob.getString("articleFBPostID"));
 				
 				Location loc1 = new Location("");
 				loc1.setLatitude(currentLatitude);
