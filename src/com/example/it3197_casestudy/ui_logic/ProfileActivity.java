@@ -31,7 +31,7 @@ public class ProfileActivity extends FragmentActivity {
 	TextView tv_username, tv_points, tv_address;
 	GoogleMap map;
 	LatLng location;
-	ArrayList<LatLng> locationList = new ArrayList<LatLng>();
+	ArrayList<LatLng> locationList;
 	
 	Bundle data;
 	User user;
@@ -43,12 +43,13 @@ public class ProfileActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_profile);
 		
-		intent = new Intent(ProfileActivity.this, LocationService.class);
-		startService(intent);
-		registerReceiver(broadcastReceiver, new IntentFilter(LocationService.BROADCAST_ACTION));
-		
 		data = getIntent().getExtras();
 		user = data.getParcelable("user");
+		
+		intent = new Intent(ProfileActivity.this, LocationService.class);
+		intent.putExtra("user", user);
+		startService(intent);
+		registerReceiver(broadcastReceiver, new IntentFilter(LocationService.BROADCAST_ACTION));
 		
 		tv_username = (TextView) findViewById(R.id.tv_username);
 		tv_points = (TextView) findViewById(R.id.tv_points);
@@ -63,6 +64,9 @@ public class ProfileActivity extends FragmentActivity {
 	private BroadcastReceiver broadcastReceiver = new BroadcastReceiver(){
 		@Override
 		public void onReceive(Context context, Intent intent) {
+			data = intent.getExtras();
+			user = data.getParcelable("user");
+			tv_points.setText(Integer.toString(user.getPoints()));
 			ProfileActivity.this.getLocationService(intent);
 		}
 	};
@@ -77,15 +81,16 @@ public class ProfileActivity extends FragmentActivity {
 		getAddress(polledLocation);
 		
 		location = new LatLng(polledLocation.getLatitude(), polledLocation.getLongitude());
-		/*locationList.add(location);
+		locationList = intent.getParcelableArrayListExtra("LocationList");
+		
 		map.clear();
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 18));
 		for(int i = 0; i < locationList.size(); i++) {
 			Marker marker = map.addMarker(new MarkerOptions().position(locationList.get(i)));
-		}*/
+		}
 		
 		// Temp
-		map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
+		/*map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
 		LatLng yck = new LatLng(1.381905000000000000, 103.844818000000030000);
 		LatLng cbgc = new LatLng(1.380646900000000000, 103.846514099999920000);
 		LatLng lvw = new LatLng(1.3796572, 103.84821290000002);
@@ -93,7 +98,7 @@ public class ProfileActivity extends FragmentActivity {
 		map.addMarker(new MarkerOptions().position(yck).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
 		map.addMarker(new MarkerOptions().position(cbgc).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
 		map.addMarker(new MarkerOptions().position(lvw).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
-		map.addMarker(new MarkerOptions().position(nyp));
+		map.addMarker(new MarkerOptions().position(nyp));*/
 	}
 	
 	public void getAddress(Location location) {

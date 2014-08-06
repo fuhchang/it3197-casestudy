@@ -158,7 +158,7 @@
     <!-- PROFILE -->
     <string name="tv_username">Username: </string>
     <string name="tv_points">Points: </string>
-    <string name="tv_address">Curren Location: </string>
+    <string name="tv_address">Current Location: </string>
 
     <!-- Location -->
 

@@ -7,6 +7,7 @@
     <color name="Red">#FFFF0000</color>
     <color name="Green">#FF00FF00</color>
     <color name="Blue">#FF0000FF</color>
+    <color name="Gray">#DDD</color>
     <color name="hexDEDEDE">#DEDEDE</color>
     <color name="actionBarColor">#0B173B</color>
 </resources>

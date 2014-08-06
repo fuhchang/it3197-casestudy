@@ -1,5 +1,11 @@
 package com.example.it3197_casestudy.util;
 
+import java.util.ArrayList;
+
+import com.example.it3197_casestudy.controller.UpdateUserPoints;
+import com.example.it3197_casestudy.model.User;
+import com.google.android.gms.maps.model.LatLng;
+
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -16,26 +22,35 @@ public class LocationService extends Service {
 	private static final int TWO_MINUTES = 1000 * 60 * 2;
 	public LocationManager locationManager;
 	public MyLocationListener listener;
-	public Location previousBestLocation = null;
+	public Location previousLocation;
 	
+	LatLng location;
+	ArrayList<LatLng> locationList;
+	
+	Bundle data;
+	User user;
 	Intent intent;
-	int counter = 0;
 	
 	@Override
 	public void onCreate() {
 	    super.onCreate();
-	    intent = new Intent(BROADCAST_ACTION);      
+	    intent = new Intent(BROADCAST_ACTION);
+
+		locationList = new ArrayList<LatLng>();
 	}
 	
 	@Override
 	public void onStart(Intent intent, int startId) {
 	    Log.v("START SERVICE", "STARTED");
+		data = intent.getExtras();
+		user = data.getParcelable("user");
+		
 	    locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 	    listener = new MyLocationListener();
 	    //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 4000, 0, listener);
 	    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 4000, 0, listener);
 	}
-	
+
 	@Override
 	public void onDestroy() {       
 	   // handler.removeCallbacks(sendUpdatesToUI);     
@@ -49,6 +64,7 @@ public class LocationService extends Service {
 		return null;
 	}
 	
+	/*
 	protected boolean isBetterLocation(Location location, Location currentBestLocation) {
 	    if (currentBestLocation == null) {
 	        // A new location is always better than no location
@@ -88,14 +104,15 @@ public class LocationService extends Service {
 	    }
 	    return false;
 	}
+	*/
 	
 	/* Checks whether two providers are the same */
-	private boolean isSameProvider(String provider1, String provider2) {
+	/*private boolean isSameProvider(String provider1, String provider2) {
 	    if (provider1 == null) {
 	      return provider2 == null;
 	    }
 	    return provider1.equals(provider2);
-	}
+	}*/
 	
 	public static Thread performOnBackgroundThread(final Runnable runnable) {
 	    final Thread t = new Thread() {
@@ -116,22 +133,52 @@ public class LocationService extends Service {
 	{
 		public void onLocationChanged(final Location loc)
 	    {
-	        Log.i("Location", "Location changed");
-	        if(isBetterLocation(loc, previousBestLocation)) {
-	            loc.getLatitude();
-	            loc.getLongitude();
-	            intent.putExtra("Latitude", loc.getLatitude());
-	            intent.putExtra("Longitude", loc.getLongitude());
-	            intent.putExtra("Provider", loc.getProvider());
-	            sendBroadcast(intent);
-	        }                               
+	        if(previousLocation == null) {
+	        	previousLocation = loc;
+	        	loc.getLatitude();
+	        	loc.getLongitude();
+	        	
+	        	location = new LatLng(loc.getLatitude(), loc.getLongitude());
+	        	locationList.add(location);
+	        	intent.putParcelableArrayListExtra("LocationList", locationList);
+	        }
+	        
+	        if(previousLocation.getLatitude() != loc.getLatitude() && previousLocation.getLongitude() != loc.getLongitude()) {
+		        Log.i("Location", "Location changed");
+		        
+	        	float distance = previousLocation.distanceTo(loc);
+	        	System.out.println(distance);
+	
+	        	if(distance >= 2) {
+		        	
+		        	System.out.println(previousLocation.getLatitude() + " " + previousLocation.getLongitude());
+		        	System.out.println(loc.getLatitude() + " " + loc.getLongitude());
+		        	
+		        	previousLocation = loc;
+		        	loc.getLatitude();
+		        	loc.getLongitude();
+		        	
+		            location = new LatLng(loc.getLatitude(), loc.getLongitude());
+		            locationList.add(location);
+		            intent.putParcelableArrayListExtra("LocationList", locationList);
+		            
+		            user.setPoints(user.getPoints() + 5);
+		            UpdateUserPoints updateUserPoints = new UpdateUserPoints(user);
+		            updateUserPoints.execute();
+	        	}
+	        }
+	        intent.putExtra("user", user);
+        	intent.putExtra("Latitude", loc.getLatitude());
+        	intent.putExtra("Longitude", loc.getLongitude());
+        	intent.putExtra("Provider", loc.getProvider());
+            sendBroadcast(intent);
 	    }
 	    
 	    public void onProviderDisabled(String provider)
 	    {
 	        Toast.makeText(getApplicationContext(), "GPS Disabled", Toast.LENGTH_SHORT).show();
-	        intent.putExtra("GPSstatus", "disabled");
-            sendBroadcast(intent);
+	        /*intent.putExtra("GPSstatus", "disabled");
+            sendBroadcast(intent);*/
 	    }
 	
 	    public void onProviderEnabled(String provider)

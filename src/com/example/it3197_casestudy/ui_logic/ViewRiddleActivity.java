@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
@@ -159,30 +160,32 @@ public class ViewRiddleActivity extends FragmentActivity {
 				}
 			}
 			
+			int red = Color.parseColor("#FF2400");
+			int green = Color.parseColor("#5FFB17");
 			switch(index) {
 				case 0 :
-					btn_riddleAns1.setBackgroundColor(getResources().getColor(R.color.Green));
-					btn_riddleAns2.setBackgroundColor(getResources().getColor(R.color.Red));
-					btn_riddleAns3.setBackgroundColor(getResources().getColor(R.color.Red));
-					btn_riddleAns4.setBackgroundColor(getResources().getColor(R.color.Red));
+					btn_riddleAns1.setBackgroundColor(green);
+					btn_riddleAns2.setBackgroundColor(red);
+					btn_riddleAns3.setBackgroundColor(red);
+					btn_riddleAns4.setBackgroundColor(red);
 					break;
 				case 1 :
-					btn_riddleAns1.setBackgroundColor(getResources().getColor(R.color.Red));
-					btn_riddleAns2.setBackgroundColor(getResources().getColor(R.color.Green));
-					btn_riddleAns3.setBackgroundColor(getResources().getColor(R.color.Red));
-					btn_riddleAns4.setBackgroundColor(getResources().getColor(R.color.Red));
+					btn_riddleAns1.setBackgroundColor(red);
+					btn_riddleAns2.setBackgroundColor(green);
+					btn_riddleAns3.setBackgroundColor(red);
+					btn_riddleAns4.setBackgroundColor(red);
 					break;
 				case 2 :
-					btn_riddleAns1.setBackgroundColor(getResources().getColor(R.color.Red));
-					btn_riddleAns2.setBackgroundColor(getResources().getColor(R.color.Red));
-					btn_riddleAns3.setBackgroundColor(getResources().getColor(R.color.Green));
-					btn_riddleAns4.setBackgroundColor(getResources().getColor(R.color.Red));
+					btn_riddleAns1.setBackgroundColor(red);
+					btn_riddleAns2.setBackgroundColor(red);
+					btn_riddleAns3.setBackgroundColor(green);
+					btn_riddleAns4.setBackgroundColor(red);
 					break;
 				case 3 :
-					btn_riddleAns1.setBackgroundColor(getResources().getColor(R.color.Red));
-					btn_riddleAns2.setBackgroundColor(getResources().getColor(R.color.Red));
-					btn_riddleAns3.setBackgroundColor(getResources().getColor(R.color.Red));
-					btn_riddleAns4.setBackgroundColor(getResources().getColor(R.color.Green));
+					btn_riddleAns1.setBackgroundColor(red);
+					btn_riddleAns2.setBackgroundColor(red);
+					btn_riddleAns3.setBackgroundColor(red);
+					btn_riddleAns4.setBackgroundColor(green);
 					break;
 			}
 		}

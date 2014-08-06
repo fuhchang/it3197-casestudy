@@ -79,7 +79,7 @@ public class MainLinkPage extends Activity {
 		//page = (ViewFlipper) findViewById(R.id.flipper);
 		//animFlipInForeward = AnimationUtils.loadAnimation(this, R.anim.f)
 		
-		//startService();
+		startService();
 		GridImageList adapter = new GridImageList(MainLinkPage.this, title,
 				imageID);
 		GridView gv = (GridView) findViewById(R.id.gridview);
@@ -126,9 +126,7 @@ public class MainLinkPage extends Activity {
 	
 	private BroadcastReceiver broadcastReceiver = new BroadcastReceiver(){
 		@Override
-		public void onReceive(Context context, Intent intent) {			
-			MainLinkPage.this.getLocationService(intent);
-			
+		public void onReceive(Context context, Intent intent) {
 			/*if(intent.getStringExtra("GPSstatus").equals("disabled")) {
 				AlertDialog.Builder builder = new AlertDialog.Builder(MainLinkPage.this);
 				builder.setTitle("GPS disabled").setMessage("Enable GPS setting to earn points while travelling");
@@ -149,17 +147,9 @@ public class MainLinkPage extends Activity {
 		}
 	};
 	
-	public void getLocationService(Intent intent) {
-		final double lat = intent.getDoubleExtra("Latitude", 0.00);
-		final double lng = intent.getDoubleExtra("Longitude", 0.00);
-		final String provider = intent.getStringExtra("Provider");
-		polledLocation = new Location(provider);
-		polledLocation.setLatitude(lat);
-		polledLocation.setLongitude(lng);
-	}
-	
 	private void startService() {
 		intent = new Intent(this, LocationService.class);
+		intent.putExtra("user", user);
 		startService(intent);
 		
 		registerReceiver(broadcastReceiver, new IntentFilter(LocationService.BROADCAST_ACTION));

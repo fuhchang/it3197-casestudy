@@ -74,7 +74,7 @@ public class RetrieveAllRiddleWithAnswers  extends AsyncTask<Object, Object, Obj
 	@Override
 	protected void onPostExecute(Object result) {
 		parseJSONResponse((String[]) result);
-		riddleAdapter = new RiddleListAdapter(activity, riddleList);
+		riddleAdapter = new RiddleListAdapter(activity, riddleList, answeredList, user);
 		riddleListView.setAdapter(riddleAdapter);
 		riddleListView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
