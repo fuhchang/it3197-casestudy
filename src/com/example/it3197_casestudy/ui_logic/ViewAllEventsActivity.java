@@ -5,10 +5,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.controller.GetAllEvents;
+import com.example.it3197_casestudy.geofencing.GeofenceRequester;
+import com.example.it3197_casestudy.geofencing.SimpleGeofence;
+import com.example.it3197_casestudy.geofencing.SimpleGeofenceStore;
 import com.example.it3197_casestudy.model.Event;
+import com.example.it3197_casestudy.model.EventLocationDetail;
+import com.example.it3197_casestudy.mysqlite.EventLocationDetailSQLController;
 import com.example.it3197_casestudy.mysqlite.EventSQLController;
 import com.example.it3197_casestudy.mysqlite.SavedEventSQLController;
 import com.example.it3197_casestudy.util.CheckNetworkConnection;
@@ -17,6 +23,7 @@ import com.example.it3197_casestudy.util.MySharedPreferences;
 import com.example.it3197_casestudy.util.PullToRefreshListView;
 import com.example.it3197_casestudy.util.PullToRefreshListView.OnRefreshListener;
 import com.example.it3197_casestudy.util.Settings;
+import com.google.android.gms.location.Geofence;
 
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -51,6 +58,10 @@ public class ViewAllEventsActivity extends Activity implements Settings{
 	ListView lvViewAllEvents;
 	SwipeRefreshLayout swipeLayout;
 	ProgressDialog dialog;
+
+	private SimpleGeofenceStore mPrefs;
+	private GeofenceRequester mGeofenceRequester;
+	List<Geofence> mCurrentGeofences;
 	
 	public SwipeRefreshLayout getSwipeLayout() {
 		return swipeLayout;
@@ -65,6 +76,10 @@ public class ViewAllEventsActivity extends Activity implements Settings{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_view_all_events);
 
+		mPrefs = new SimpleGeofenceStore(this);
+		mGeofenceRequester = new GeofenceRequester(this);
+		mCurrentGeofences = new ArrayList<Geofence>();
+		
 		lvViewAllEvents = (ListView) findViewById(R.id.lv_view_all_events);
 		
 		swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe);
@@ -148,7 +163,9 @@ public class ViewAllEventsActivity extends Activity implements Settings{
 	
 	public void getAllEventOffline(){
 		EventSQLController controller = new EventSQLController(ViewAllEventsActivity.this);
+		EventLocationDetailSQLController locationDetailsController = new EventLocationDetailSQLController(ViewAllEventsActivity.this);
 		final ArrayList<Event> eventArrList = controller.getAllEvent();
+		final ArrayList<EventLocationDetail> eventLocationArrList = locationDetailsController.getAllEventLocationDetails() ;
 		Event[] eventList = new Event[eventArrList.size()];
 		for(int i=0;i<eventArrList.size();i++){
 			eventList[i] = eventArrList.get(i);
@@ -173,7 +190,24 @@ public class ViewAllEventsActivity extends Activity implements Settings{
 		    }
 		}); 
 		
-		if(eventArrList.size() > 0){
+		if((eventArrList.size() > 0) && (eventLocationArrList.size() > 0)){
+			for(int i=0;i<eventLocationArrList.size();i++){
+				for(int j=0;j<eventArrList.size();j++){
+					if(eventLocationArrList.get(i).getEventID() == eventArrList.get(j).getEventID()){
+						SimpleGeofence UiGeofence = new SimpleGeofence("Event No " + String.valueOf(eventLocationArrList.get(i).getEventLocationID()) + ": " + eventArrList.get(j).getEventName(), eventLocationArrList.get(i).getEventLocationLat(), eventLocationArrList.get(i).getEventLocationLng(), 1000,Geofence.NEVER_EXPIRE, Geofence.GEOFENCE_TRANSITION_ENTER);
+						mPrefs.setGeofence(String.valueOf(eventLocationArrList.get(i).getEventLocationID()), UiGeofence);
+						mCurrentGeofences.add(UiGeofence.toGeofence());
+					}
+				}
+			}
+			try {
+		        // Try to add geofences
+				mGeofenceRequester.addGeofences(mCurrentGeofences," events within 1km","There is an event ");
+			} catch (UnsupportedOperationException e) {
+		            // Notify user that previous request hasn't finished.
+				Toast.makeText(this, R.string.add_geofences_already_requested_error, Toast.LENGTH_LONG).show();
+			}
+			
 			EventListAdapter adapter = new EventListAdapter(ViewAllEventsActivity.this,eventList);
 			lvViewAllEvents.setAdapter(adapter);
 			lvViewAllEvents.setOnItemClickListener(new OnItemClickListener() {

@@ -109,6 +109,12 @@ public class mySqLiteController {
 	public String getSavedEventTable(){
 		return database_user_saved_event;
 	}
+	public String getEventLocationDetailTable(){
+		return database_event_location_details;
+	}
+	public String getEventParticipantsTable(){
+		return database_particpants;
+	}
 	public String getHobbyTable(){
 		return database_hobby;
 	}

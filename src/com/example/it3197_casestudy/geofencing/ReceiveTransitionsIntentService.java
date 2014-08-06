@@ -3,6 +3,7 @@ package com.example.it3197_casestudy.geofencing;
 import java.util.List;
 
 import android.app.IntentService;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -84,15 +85,21 @@ public class ReceiveTransitionsIntentService extends IntentService {
                 // Post a notification
                 List<Geofence> geofences = LocationClient.getTriggeringGeofences(intent);
                 String[] geofenceIds = new String[geofences.size()];
+                int currentNoOfGeofences = 0;
+                String eol = System.getProperty("line.separator");  
+                String contentText = "";
                 for (int index = 0; index < geofences.size() ; index++) {
                     geofenceIds[index] = geofences.get(index).getRequestId();
+                    currentNoOfGeofences += 1;
+                    contentText += geofences.get(index).getRequestId() + eol;
                 }
                 String ids = TextUtils.join(GeofenceUtils.GEOFENCE_ID_DELIMITER,geofenceIds);
                 String transitionType = getTransitionString(transition);
+                System.out.println(currentNoOfGeofences);
+                String contentTitle = currentNoOfGeofences + intent.getExtras().getString("contentTitle");
+                //String contentText = intent.getExtras().getString("contentText");
                 
-                String contentTitle = intent.getExtras().getString("contentTitle");
-                String contentText = intent.getExtras().getString("contentText");
-                sendNotification(transitionType, ids, contentTitle,contentText);
+                sendNotification(transitionType, ids, contentTitle,geofenceIds);
 
                 // Log the transition type and a message
                 Log.d(GeofenceUtils.APPTAG,
@@ -118,22 +125,53 @@ public class ReceiveTransitionsIntentService extends IntentService {
      * @param transitionType The type of transition that occurred.
      *
      */
-    private void sendNotification(String transitionType, String ids, String contentTitle, String contentText) {
+    private void sendNotification(String transitionType, String ids, String contentTitle, String[] contentText) {
+    	NotificationCompat.Builder  mBuilder = 
+    		      new NotificationCompat.Builder(this);	
+
+    		      mBuilder.setContentTitle(contentTitle);
+    		      mBuilder.setContentText("Scroll down to view events");
+    		      mBuilder.setTicker("Events detected");
+    		      mBuilder.setSmallIcon(R.drawable.logo);
+
+    		      /* Increase notification number every time a new notification arrives */
 
 
-        // Get a notification builder that's compatible with platform versions >= 4
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+    		      /* Add Big View Specific Configuration */
+    		      NotificationCompat.InboxStyle inboxStyle =
+    		             new NotificationCompat.InboxStyle();
+    		      
+    		      // Sets a title for the Inbox style big view
+    		      inboxStyle.setBigContentTitle("Event within 1km:");
+    		      // Moves events into the big view
+    		      for (int i=0; i < contentText.length; i++) {
 
-        // Set the notification contents
-        builder.setSmallIcon(R.drawable.ic_launcher).setContentTitle(contentTitle).setContentText(contentText);
-               //.setContentIntent(notificationPendingIntent);
+    		         inboxStyle.addLine(contentText[i]);
+    		      }
+    		      mBuilder.setStyle(inboxStyle);
+    		       
+    		      
+    		      /* Creates an explicit intent for an Activity in your app */
+    		      Intent resultIntent = new Intent(this, ViewAllEventsActivity.class);
 
-        // Get an instance of the Notification manager
-        NotificationManager mNotificationManager =
-            (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+    		      TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+    		      stackBuilder.addParentStack(ViewAllEventsActivity.class);
 
-        // Issue the notification
-        mNotificationManager.notify(0, builder.build());
+    		      /* Adds the Intent that starts the Activity to the top of the stack */
+    		      stackBuilder.addNextIntent(resultIntent);
+    		      PendingIntent resultPendingIntent =
+    		         stackBuilder.getPendingIntent(
+    		            0,
+    		            PendingIntent.FLAG_UPDATE_CURRENT
+    		         );
+
+    		      mBuilder.setContentIntent(resultPendingIntent);
+
+    		      NotificationManager mNotificationManager =
+    		      (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+    		      /* notificationID allows you to update the notification later on. */
+    		      mNotificationManager.notify(0, mBuilder.build());
     }
 
     /**

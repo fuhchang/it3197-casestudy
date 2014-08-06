@@ -3,6 +3,7 @@ package com.example.it3197_casestudy.controller;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.StatusLine;
@@ -33,7 +34,13 @@ import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.example.it3197_casestudy.R;
+import com.example.it3197_casestudy.geofencing.GeofenceRequester;
+import com.example.it3197_casestudy.geofencing.SimpleGeofence;
+import com.example.it3197_casestudy.geofencing.SimpleGeofenceStore;
 import com.example.it3197_casestudy.model.Event;
+import com.example.it3197_casestudy.model.EventLocationDetail;
+import com.example.it3197_casestudy.mysqlite.EventLocationDetailSQLController;
 import com.example.it3197_casestudy.mysqlite.EventSQLController;
 import com.example.it3197_casestudy.ui_logic.MainLinkPage;
 import com.example.it3197_casestudy.ui_logic.ViewAllEventsActivity;
@@ -41,13 +48,18 @@ import com.example.it3197_casestudy.ui_logic.ViewEventsActivity;
 import com.example.it3197_casestudy.util.EventListAdapter;
 import com.example.it3197_casestudy.util.PullToRefreshListView;
 import com.example.it3197_casestudy.util.Settings;
+import com.google.android.gms.location.Geofence;
 
 public class GetAllEvents extends AsyncTask<Object, Object, Object> implements Settings{
 	private ArrayList<Event> eventArrList;
+	private ArrayList<EventLocationDetail> eventLocationArrList;
 	private Event[] eventList;
 	private ViewAllEventsActivity activity;
 	private ListView lvViewAllEvents;
-
+	private SimpleGeofenceStore mPrefs;
+	private GeofenceRequester mGeofenceRequester;
+	List<Geofence> mCurrentGeofences;
+	
 	private ProgressDialog dialog;
 	
 	public GetAllEvents(ViewAllEventsActivity activity,ListView lvViewAllEvents){
@@ -58,6 +70,10 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 	@Override
 	protected void onPreExecute() {
 		eventArrList = new ArrayList<Event>(); 
+		eventLocationArrList = new ArrayList<EventLocationDetail>();
+		mPrefs = new SimpleGeofenceStore(activity);
+		mGeofenceRequester = new GeofenceRequester(activity);
+		mCurrentGeofences = new ArrayList<Geofence>();
 		dialog = ProgressDialog.show(activity,
 				"Retrieving events", "Please wait...", true);
 	}
@@ -73,7 +89,9 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 		eventList = new Event[eventArrList.size()];
 
 		EventSQLController controller = new EventSQLController(activity);
+		EventLocationDetailSQLController locationDetailsController = new EventLocationDetailSQLController(activity);
 		int internalDBSize = controller.getAllEvent().size();
+		int internalLocationDBSize = locationDetailsController.getAllEventLocationDetails().size();
 		if(internalDBSize != eventArrList.size()){
 			for(int i=0;i<eventArrList.size();i++){
 				eventList[i] = eventArrList.get(i);
@@ -84,6 +102,28 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 			for(int i=0;i<eventArrList.size();i++){
 				eventList[i] = eventArrList.get(i);
 			}
+		}
+		if(internalLocationDBSize != eventLocationArrList.size()){
+			for(int i=0;i<eventLocationArrList.size();i++){	
+				locationDetailsController.insertEventLocationDetail(eventLocationArrList.get(i));
+			}
+		}
+
+		for(int i=0;i<eventLocationArrList.size();i++){
+			for(int j=0;j<eventArrList.size();j++){
+				if(eventLocationArrList.get(i).getEventID() == eventArrList.get(j).getEventID()){
+					SimpleGeofence UiGeofence = new SimpleGeofence("Event No " + String.valueOf(eventLocationArrList.get(i).getEventLocationID()) + ": " + eventArrList.get(j).getEventName(), eventLocationArrList.get(i).getEventLocationLat(), eventLocationArrList.get(i).getEventLocationLng(), 1000,Geofence.NEVER_EXPIRE, Geofence.GEOFENCE_TRANSITION_ENTER);
+					mPrefs.setGeofence(String.valueOf(eventLocationArrList.get(i).getEventLocationID()), UiGeofence);
+					mCurrentGeofences.add(UiGeofence.toGeofence());
+				}
+			}
+		}
+		try {
+	        // Try to add geofences
+			mGeofenceRequester.addGeofences(mCurrentGeofences," events within 1km","There is an event ");
+		} catch (UnsupportedOperationException e) {
+	            // Notify user that previous request hasn't finished.
+			Toast.makeText(activity, R.string.add_geofences_already_requested_error, Toast.LENGTH_LONG).show();
 		}
 		EventListAdapter adapter = new EventListAdapter(activity,eventList);
 		lvViewAllEvents.setAdapter(adapter);
@@ -136,13 +176,15 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 	}
 
 	public void parseJSONResponse(String responseBody) {
-		JSONArray data_array;
+		JSONArray data_array,data_array2;
 		JSONObject json;
 		Event event;
+		EventLocationDetail eventLocation;
 		try {
 			json = new JSONObject(responseBody);
 			System.out.println(responseBody);
 			data_array = json.getJSONArray("eventInfo");
+			data_array2 = json.getJSONArray("eventLocationInfo");
 			for (int i = 0; i < data_array.length(); i++) {
 				JSONObject dataJob = new JSONObject(data_array.getString(i));
 				int active = dataJob.getInt("active");
@@ -163,6 +205,18 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 					eventArrList.add(event);
 				}
 			}
+			for(int i=0;i<data_array2.length();i++){
+				JSONObject dataJob = new JSONObject(data_array2.getString(i));
+				eventLocation = new EventLocationDetail();
+				eventLocation.setEventLocationID(dataJob.getInt("eventLocationID"));
+				eventLocation.setEventID(dataJob.getInt("eventID"));
+				eventLocation.setEventLocationName(dataJob.getString("eventLocationName"));
+				eventLocation.setEventLocationAddress(dataJob.getString("eventLocationAddress"));
+				eventLocation.setEventLocationHyperLink(dataJob.getString("eventLocationHyperLink"));
+				eventLocation.setEventLocationLat(dataJob.getDouble("eventLocationLat"));
+				eventLocation.setEventLocationLng(dataJob.getDouble("eventLocationLng"));
+				eventLocationArrList.add(eventLocation);
+			}
 		} catch (Exception e) {
 			errorOnExecuting();
 			e.printStackTrace();
@@ -174,6 +228,7 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 		new Handler(Looper.getMainLooper()).post(new Runnable() {
 	        public void run() {
 	            dialog.dismiss();
+	    		activity.getSwipeLayout().setRefreshing(false);
 	            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 	            builder.setTitle("Error in retrieving events ");
 	            builder.setMessage("Unable to retrieve events. Please try again.");
