@@ -30,6 +30,7 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:textColor="#C35817"
+	        android:textSize="18sp"
 	        android:layout_marginLeft="5dp" />
 	
    	<View 
@@ -105,8 +106,8 @@
     
  		<LinearLayout
 			 android:id="@+id/expandable"
-			 android:layout_width="match_parent"
-			 android:layout_height="wrap_content"
+			 android:layout_width="fill_parent"
+			 android:layout_height="fill_parent"
 			 android:background="#D8D8D8"		        
 			 android:orientation="vertical" >
         
@@ -163,7 +164,7 @@
 				<ImageView
 			        android:id="@+id/article_post"
 			        android:layout_width="fill_parent"
-			        android:layout_height="150dp"
+			        android:layout_height="250dp"
 			        android:layout_marginTop="5dp"
 			        android:layout_below="@+id/imgHr"
 			        android:fontFamily="sans-serif-light"
@@ -171,7 +172,7 @@
 			        android:layout_marginBottom="5dp"
 			        android:textSize="@dimen/normal_font_size" />
 					     
-			    </RelativeLayout>
+		</RelativeLayout>
     
     
 			    
