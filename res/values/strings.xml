@@ -342,4 +342,7 @@
 
     <string name="select_theme"> Select theme </string>
     <string name="options"> Options </string>
+    
+    <string name="deselect_all_themes"> Deselect all theme(s) </string>
+    <string name="refresh_map"> Refresh Map </string>
 </resources>
