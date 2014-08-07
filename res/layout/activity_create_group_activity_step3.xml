@@ -30,8 +30,8 @@
 
     <ImageView
         android:id="@+id/gImg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:layout_below="@+id/uploadImg"
         android:paddingTop="10dp" />
 	

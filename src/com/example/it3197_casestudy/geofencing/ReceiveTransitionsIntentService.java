@@ -15,8 +15,12 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.example.it3197_casestudy.R;
+import com.example.it3197_casestudy.ui_logic.LoginSelectionActivity;
+import com.example.it3197_casestudy.ui_logic.MainLinkPage;
+import com.example.it3197_casestudy.ui_logic.SearchHobbyByMap;
 import com.example.it3197_casestudy.ui_logic.ViewAllEventsActivity;
 import com.example.it3197_casestudy.ui_logic.ViewEventsActivity;
+import com.example.it3197_casestudy.ui_logic.ViewHobbiesMain;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.LocationClient;
 
@@ -97,9 +101,10 @@ public class ReceiveTransitionsIntentService extends IntentService {
                 String transitionType = getTransitionString(transition);
                 System.out.println(currentNoOfGeofences);
                 String contentTitle = currentNoOfGeofences + intent.getExtras().getString("contentTitle");
+                int GeoFenceID = intent.getExtras().getInt("GeoFenceID");
                 //String contentText = intent.getExtras().getString("contentText");
                 
-                sendNotification(transitionType, ids, contentTitle,geofenceIds);
+                sendNotification(transitionType, ids, contentTitle,geofenceIds, GeoFenceID);
 
                 // Log the transition type and a message
                 Log.d(GeofenceUtils.APPTAG,
@@ -125,11 +130,101 @@ public class ReceiveTransitionsIntentService extends IntentService {
      * @param transitionType The type of transition that occurred.
      *
      */
-    private void sendNotification(String transitionType, String ids, String contentTitle, String[] contentText) {
+    private void sendNotification(String transitionType, String ids, String contentTitle, String[] contentText, int GeoFenceID) {
     	NotificationCompat.Builder  mBuilder = 
     		      new NotificationCompat.Builder(this);	
+    		if(GeoFenceID == 0){
+    			mBuilder.setContentTitle(contentTitle);
+  		      mBuilder.setContentText("Scroll down to view events");
+  		      mBuilder.setTicker("Events detected");
+  		      mBuilder.setSmallIcon(R.drawable.logo);
 
-    		      mBuilder.setContentTitle(contentTitle);
+  		      /* Increase notification number every time a new notification arrives */
+
+
+  		      /* Add Big View Specific Configuration */
+  		      NotificationCompat.InboxStyle inboxStyle =
+  		             new NotificationCompat.InboxStyle();
+  		      
+  		      // Sets a title for the Inbox style big view
+  		      inboxStyle.setBigContentTitle("Event within 1km:");
+  		      // Moves events into the big view
+  		      for (int i=0; i < contentText.length; i++) {
+
+  		         inboxStyle.addLine(contentText[i]);
+  		      }
+  		      mBuilder.setStyle(inboxStyle);
+  		       
+  		      
+  		      /* Creates an explicit intent for an Activity in your app */
+  		      Intent resultIntent = new Intent(this, ViewAllEventsActivity.class);
+
+  		      TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+  		      stackBuilder.addParentStack(ViewAllEventsActivity.class);
+
+  		      /* Adds the Intent that starts the Activity to the top of the stack */
+  		      stackBuilder.addNextIntent(resultIntent);
+  		      PendingIntent resultPendingIntent =
+  		         stackBuilder.getPendingIntent(
+  		            0,
+  		            PendingIntent.FLAG_UPDATE_CURRENT
+  		         );
+
+  		      mBuilder.setContentIntent(resultPendingIntent);
+
+  		      NotificationManager mNotificationManager =
+  		      (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+  		      /* notificationID allows you to update the notification later on. */
+  		      mNotificationManager.notify(0, mBuilder.build());
+    		}
+    		if(GeoFenceID == 1){
+    			mBuilder.setContentTitle(contentTitle);
+    		      mBuilder.setContentText("Scroll down to view hobby");
+    		      mBuilder.setTicker("Hobby detected");
+    		      mBuilder.setSmallIcon(R.drawable.logo);
+
+    		      /* Increase notification number every time a new notification arrives */
+
+
+    		      /* Add Big View Specific Configuration */
+    		      NotificationCompat.InboxStyle inboxStyle =
+    		             new NotificationCompat.InboxStyle();
+    		      
+    		      // Sets a title for the Inbox style big view
+    		      inboxStyle.setBigContentTitle("Hobby within 1km:");
+    		      // Moves events into the big view
+    		      for (int i=0; i < contentText.length; i++) {
+
+    		         inboxStyle.addLine(contentText[i]);
+    		      }
+    		      mBuilder.setStyle(inboxStyle);
+    		       
+    		      
+    		      /* Creates an explicit intent for an Activity in your app */
+    		      Intent resultIntent = new Intent(this, LoginSelectionActivity.class);
+
+    		      TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+    		      stackBuilder.addParentStack(ViewAllEventsActivity.class);
+
+    		      /* Adds the Intent that starts the Activity to the top of the stack */
+    		      stackBuilder.addNextIntent(resultIntent);
+    		      PendingIntent resultPendingIntent =
+    		         stackBuilder.getPendingIntent(
+    		            0,
+    		            PendingIntent.FLAG_UPDATE_CURRENT
+    		         );
+
+    		      mBuilder.setContentIntent(resultPendingIntent);
+
+    		      NotificationManager mNotificationManager =
+    		      (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+    		      /* notificationID allows you to update the notification later on. */
+    		      mNotificationManager.notify(0, mBuilder.build());
+    		}
+    		if(GeoFenceID == 2){
+    			mBuilder.setContentTitle(contentTitle);
     		      mBuilder.setContentText("Scroll down to view events");
     		      mBuilder.setTicker("Events detected");
     		      mBuilder.setSmallIcon(R.drawable.logo);
@@ -172,6 +267,8 @@ public class ReceiveTransitionsIntentService extends IntentService {
 
     		      /* notificationID allows you to update the notification later on. */
     		      mNotificationManager.notify(0, mBuilder.build());
+    		}
+    		      
     }
 
     /**

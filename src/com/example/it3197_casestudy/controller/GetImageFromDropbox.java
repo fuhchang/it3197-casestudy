@@ -74,7 +74,7 @@ public class GetImageFromDropbox extends AsyncTask<Object,Object,Object>{
 
 	public String getImageFromDropbox() {
 		int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-		if (currentapiVersion <= android.os.Build.VERSION_CODES.JELLY_BEAN_MR2){
+		if (currentapiVersion > android.os.Build.VERSION_CODES.JELLY_BEAN_MR2){
 			new Handler(Looper.getMainLooper()).post(new Runnable() {
 			    @Override
 			    public void run() {

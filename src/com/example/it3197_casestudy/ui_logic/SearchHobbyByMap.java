@@ -132,7 +132,7 @@ public class SearchHobbyByMap extends FragmentActivity implements LocationListen
 
 		 try {
 	            // Try to add geofences
-	            mGeofenceRequester.addGeofences(mCurrentGeofences,"Hi","There is a hobby group nearby");
+	            mGeofenceRequester.addGeofences(mCurrentGeofences,"Hi","There is a hobby group nearby", 1);
 	            
 	        } catch (UnsupportedOperationException e) {
 	            // Notify user that previous request hasn't finished.
