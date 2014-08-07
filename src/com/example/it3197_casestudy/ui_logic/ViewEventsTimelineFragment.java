@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -24,6 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +35,7 @@ import com.example.it3197_casestudy.controller.GetImageFromFacebook;
 import com.example.it3197_casestudy.controller.JoinEvent;
 import com.example.it3197_casestudy.controller.UnjoinEvent;
 import com.example.it3197_casestudy.model.EventParticipants;
+import com.example.it3197_casestudy.util.EventsTimelineListAdapter;
 import com.facebook.FacebookException;
 import com.facebook.FacebookRequestError;
 import com.facebook.HttpMethod;
@@ -51,8 +54,7 @@ import com.facebook.widget.WebDialog.OnCompleteListener;
  * dummy text.
  */
 public class ViewEventsTimelineFragment extends Fragment {
-	private TextView eventTimelineName, eventTimelineTime,
-			eventTimelineComments;
+	private ListView lvEventTimeline;
 	private UiLifecycleHelper uiHelper;
 	private MenuItem menuItemPost;
 
@@ -97,7 +99,7 @@ public class ViewEventsTimelineFragment extends Fragment {
 			// Set an EditText view to get user input
 			final EditText input = new EditText(this.getActivity());
 			input.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-			input.setMaxLines(3);
+			input.setMaxLines(2);
 			alert.setView(input);
 
 			alert.setPositiveButton("Ok",
@@ -136,15 +138,22 @@ public class ViewEventsTimelineFragment extends Fragment {
 		} else {
 			eventFBPostID = "0";
 		}
-		eventTimelineName = (TextView) getActivity().findViewById(
-				R.id.tv_event_timeline_name);
-		eventTimelineTime = (TextView) getActivity().findViewById(
-				R.id.tv_event_timeline_time);
-		eventTimelineComments = (TextView) getActivity().findViewById(
-				R.id.tv_event_timeline_comments);
+		return rootView;
+	}
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onActivityCreated(savedInstanceState);
+		lvEventTimeline = (ListView) getActivity().findViewById(R.id.lv_events_timeline);
+	}
+
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
 		ProgressDialog pDialog = ProgressDialog.show(ViewEventsTimelineFragment.this.getActivity(), "Retrieving comments","Please wait");
 		getComments(pDialog);
-		return rootView;
 	}
 
 	private void publishComments(final ProgressDialog dialog, final String value) {
@@ -181,8 +190,7 @@ public class ViewEventsTimelineFragment extends Fragment {
 										if (response != null) {
 											JSONObject graphResponse = response.getGraphObject().getInnerJSONObject();
 											System.out.println(response.toString());
-											ProgressDialog pDialog = ProgressDialog.show(ViewEventsTimelineFragment.this.getActivity(), "Retrieving comments","Please wait");
-											getComments(pDialog);
+											getComments(dialog);
 										}
 									} catch (Exception e) {
 										Log.i("Tag",
@@ -221,16 +229,35 @@ public class ViewEventsTimelineFragment extends Fragment {
 		}
 	}
 	
-	public void getComments(ProgressDialog dialog){
+	public void getComments(final ProgressDialog dialog){
 		Request request = new Request(Session.getActiveSession(), eventFBPostID, null, HttpMethod.GET, new Request.Callback() {
 			public void onCompleted(Response response) {
-				Toast.makeText(ViewEventsTimelineFragment.this.getActivity(),response.toString(),Toast.LENGTH_LONG).show();
+				System.out.println(response);
 				String postActionID = "0"; 
 				try {
 					postActionID = response.getGraphObject().getInnerJSONObject().getString("post_action_id");
 					Request request = new Request(Session.getActiveSession(), postActionID + "/comments", null, HttpMethod.GET, new Request.Callback() {
 						public void onCompleted(Response response) {
-
+							try {
+								JSONArray data = response.getGraphObject().getInnerJSONObject().getJSONArray("data");
+								String[][] timelineList = new String[data.length()][3]; 
+								for(int i=0;i<data.length();i++){
+									String comments = data.getJSONObject(i).getString("message");
+									String name = data.getJSONObject(i).getJSONObject("from").getString("name");
+									String time = data.getJSONObject(i).getString("created_time");
+									timelineList[i][0] = name;
+									timelineList[i][1] = time;
+									timelineList[i][2] = comments;
+								}
+								
+								EventsTimelineListAdapter adapter = new EventsTimelineListAdapter(ViewEventsTimelineFragment.this.getActivity(),timelineList);
+								lvEventTimeline.setAdapter(adapter);
+								dialog.dismiss();
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								dialog.dismiss();
+								e.printStackTrace();
+							}
 						}
 					});
 					RequestAsyncTask task = new RequestAsyncTask(request);

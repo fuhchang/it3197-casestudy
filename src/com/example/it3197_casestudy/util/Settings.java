@@ -17,4 +17,6 @@ public interface Settings {
 	//E.g. Jul 27, 2014 9:00:00 AM
 	SimpleDateFormat sqlDateTimeFormatter = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aa");
 	SimpleDateFormat sqliteDateTimeFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	
+	SimpleDateFormat fbDateTimeFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
 }
