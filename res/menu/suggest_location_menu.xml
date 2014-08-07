@@ -1,9 +1,26 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-
-    <item
-        android:id="@+id/action_settings"
+	<item
+        android:id="@+id/select_theme"
         android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/action_settings"/>
+        android:showAsAction="always"
+        android:icon="@drawable/ic_action_select_all"
+        android:title="@string/select_theme"/>
+	<item
+        android:id="@+id/options"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:icon="@drawable/ic_action_settings"
+        android:title="@string/options">
+        
+        <!-- "file" submenu -->
+        <menu>
+            <item android:id="@+id/suggest_location_for_event"
+                  android:title="@string/suggest_location" />
+            <item android:id="@+id/deselect_all_themes"
+                  android:title="@string/deselect_all_themes" />
+            <item android:id="@+id/refresh_map"
+                  android:title="@string/refresh_map" />
+        </menu>
+   	</item>
 
 </menu>

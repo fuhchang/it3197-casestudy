@@ -126,7 +126,7 @@ public class GetMashUpData extends AsyncTask<Object, Object, Object> implements 
 	    for(int i=0;i<myItemArrList.size();i++){
 	    	mClusterManager.addItem(myItemArrList.get(i));
 	    }
-	    
+	    activity.setMyItemArrList(myItemArrList);
 	    activity.setThings(mClusterManager);
 		dialog.dismiss();
 	}

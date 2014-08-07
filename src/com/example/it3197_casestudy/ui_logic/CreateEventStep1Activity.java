@@ -160,7 +160,19 @@ public class CreateEventStep1Activity extends Activity implements Settings{
 	        } else {
 	            // Failed or was cancelled by the user.
 	        }
-	    } else {
+	    } 
+	    else if(requestCode == 100){
+	        if (resultCode == RESULT_OK) {
+	        	String name = data.getStringExtra("eventLocationName");
+	        	String address = data.getStringExtra("eventLocationAddress");
+	        	String hyperlink = data.getStringExtra("eventLocationHyperLink");
+	        	double lat = data.getDoubleExtra("eventLocationLat", 0.00);
+	        	double lng = data.getDoubleExtra("eventLocationLng", 0.00);
+				eventLocationDetails = new EventLocationDetail(0,0,name,address,hyperlink,lat,lng);
+				etLocation.setText(address);
+	        }
+	    }
+	    else {
 	        super.onActivityResult(requestCode, resultCode, data);
 	    }
 	}
@@ -217,8 +229,8 @@ public class CreateEventStep1Activity extends Activity implements Settings{
 			switch (view.getId()) {
 			case R.id.btn_suggest_location:{
 				Intent i = new Intent(CreateEventStep1Activity.this,SuggestLocationActivity.class);
-				startActivity(i);
-				eventLocationDetails = new EventLocationDetail(0,0,"Test","Test","Test",1.0,2.0);
+				i.putExtra("category", spinnerCategory.getSelectedItem().toString());
+				startActivityForResult(i,100);
 				break;
 			}
 			default:
