@@ -14,6 +14,7 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
@@ -128,5 +129,12 @@ public class ViewEventsActivity extends FragmentActivity implements ActionBar.Ta
 	public void onTabReselected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
 	}
+	
+	 @Override
+	 public void onBackPressed(){
+		 Intent intent = new Intent(ViewEventsActivity.this, ViewAllEventsActivity.class);
+		 startActivity(intent);
+		 this.finish(); 
+	 }
 
 }
