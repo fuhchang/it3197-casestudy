@@ -15,6 +15,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.model.User;
@@ -31,12 +32,12 @@ public class ProfileActivity extends FragmentActivity {
 	TextView tv_username, tv_points, tv_address;
 	GoogleMap map;
 	LatLng location;
-	ArrayList<LatLng> locationList;
 	
 	Bundle data;
 	User user;
 	Intent intent;
 	Location polledLocation;
+	ArrayList<LatLng> locationList;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,13 +49,13 @@ public class ProfileActivity extends FragmentActivity {
 		
 		intent = new Intent(ProfileActivity.this, LocationService.class);
 		intent.putExtra("user", user);
-		startService(intent);
 		registerReceiver(broadcastReceiver, new IntentFilter(LocationService.BROADCAST_ACTION));
 		
 		tv_username = (TextView) findViewById(R.id.tv_username);
 		tv_points = (TextView) findViewById(R.id.tv_points);
 		tv_address = (TextView) findViewById(R.id.tv_address);
 		
+		Toast.makeText(getApplicationContext(), "Retrieving current location...", Toast.LENGTH_LONG).show();
 		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
 		
 		tv_username.setText(user.getName());
@@ -78,19 +79,22 @@ public class ProfileActivity extends FragmentActivity {
 		polledLocation = new Location(provider);
 		polledLocation.setLatitude(lat);
 		polledLocation.setLongitude(lng);
-		getAddress(polledLocation);
 		
+		// Get display current location
+		getAddress(polledLocation);
+		// Get current location coordinates (lat & lng)
 		location = new LatLng(polledLocation.getLatitude(), polledLocation.getLongitude());
+		// Get all the coordinates
 		locationList = intent.getParcelableArrayListExtra("LocationList");
 		
 		map.clear();
-		map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 18));
+		map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 17));
 		for(int i = 0; i < locationList.size(); i++) {
-			Marker marker = map.addMarker(new MarkerOptions().position(locationList.get(i)));
+			map.addMarker(new MarkerOptions().position(locationList.get(i)));
 		}
 		
 		// Temp
-		/*map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
+		/*map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 17));
 		LatLng yck = new LatLng(1.381905000000000000, 103.844818000000030000);
 		LatLng cbgc = new LatLng(1.380646900000000000, 103.846514099999920000);
 		LatLng lvw = new LatLng(1.3796572, 103.84821290000002);
@@ -113,14 +117,5 @@ public class ProfileActivity extends FragmentActivity {
 		}
 		catch (IOException e) {
 		}
-	}
-
-	@Override
-	protected void onDestroy() {
-		if(intent!=null){
-			unregisterReceiver(broadcastReceiver);
-			stopService(intent);
-		}
-		super.onDestroy();
 	}
 }

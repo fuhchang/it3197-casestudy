@@ -135,8 +135,6 @@ public class LocationService extends Service {
 	    {
 	        if(previousLocation == null) {
 	        	previousLocation = loc;
-	        	loc.getLatitude();
-	        	loc.getLongitude();
 	        	
 	        	location = new LatLng(loc.getLatitude(), loc.getLongitude());
 	        	locationList.add(location);
@@ -148,15 +146,13 @@ public class LocationService extends Service {
 		        
 	        	float distance = previousLocation.distanceTo(loc);
 	        	System.out.println(distance);
-	
-	        	if(distance >= 2) {
-		        	
+	        	
+	        	// distance >= 5
+	        	if(distance >= 2) {		        	
 		        	System.out.println(previousLocation.getLatitude() + " " + previousLocation.getLongitude());
 		        	System.out.println(loc.getLatitude() + " " + loc.getLongitude());
 		        	
 		        	previousLocation = loc;
-		        	loc.getLatitude();
-		        	loc.getLongitude();
 		        	
 		            location = new LatLng(loc.getLatitude(), loc.getLongitude());
 		            locationList.add(location);

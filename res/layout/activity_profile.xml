@@ -17,32 +17,25 @@
 		    android:layout_height="wrap_content" >
 		    
 		    <TextView
-		        android:id="@+id/label_username"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:paddingRight="5dp"
-		        android:text="@string/tv_username" />
-		    
-		    <TextView
 		        android:id="@+id/tv_username"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:layout_toRightOf="@+id/label_username" />
+		        android:textStyle="bold"
+		        android:textSize="20sp" />
 		    
 		    <TextView
 		        android:id="@+id/label_address"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:paddingRight="5dp"
-		        android:layout_below="@+id/label_username"
+		        android:paddingTop="3dp"
+		        android:layout_below="@+id/tv_username"
 		        android:text="@string/tv_address" />
 		    
 		    <TextView
 		        android:id="@+id/tv_address"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:layout_toRightOf="@+id/label_address"
-		        android:layout_below="@+id/tv_username" />
+		        android:layout_below="@+id/label_address" />
 	    </RelativeLayout>
 	    
 	    
@@ -58,6 +51,7 @@
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		  		android:layout_alignParentRight="true"
+	        	android:paddingRight="16dp"
 		        android:text="@string/tv_points" />
 		    
 		    <TextView
@@ -66,7 +60,8 @@
 		        android:layout_height="wrap_content"
 		  		android:layout_alignParentRight="true"
 		        android:layout_below="@+id/label_points"
-		        android:textSize="18sp"
+	        	android:paddingRight="5dp"
+		        android:textSize="30sp"
 		        android:textStyle="bold" />
 	    </RelativeLayout>
     </RelativeLayout>
