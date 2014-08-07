@@ -100,7 +100,7 @@ public class CreateGroupActivityStep4 extends Activity implements LocationListen
 		
 		MarkerOptions mp = new MarkerOptions();
 		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.gMap)).getMap();
-		map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+		map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 		
 		map.setOnMarkerDragListener(this);
 		

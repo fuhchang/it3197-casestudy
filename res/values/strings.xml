@@ -154,7 +154,7 @@
     <string name="et_hint_riddle_answer">Enter answer</string>
     <string name="btn_create_riddle">CREATE</string>
     <string name="btn_update_riddle">UPDATE</string>
-    
+
     <!-- PROFILE -->
     <string name="tv_username">Username: </string>
     <string name="tv_points">Points: </string>
@@ -328,7 +328,6 @@
     <string name="need_perms_alert_button_ok">OK</string>
     <string name="need_perms_alert_button_quit">Quit</string>
     <string name="title_activity_register_by_facebook">Register Account</string>
-
     <string name="fb_create_user_instructions"> Please fill in the user details. </string>
     <string name="fb_user_nric">NRIC: </string>
     <string name="fb_hint_user_nric"> Enter your nric </string>
@@ -336,7 +335,8 @@
     <string name="fb_hint_user_contact_no"> Enter your contact no </string>
     <string name="fb_user_address"> Address: </string>
     <string name="fb_hint_user_address"> Enter your address </string>
-    	
-	<string name="post_comments">Post Comments </string>
-<string name="google_places_api_key">AIzaSyC5mTsDhjayzCqXH87ggEYsfswR1cStfX8</string>
+    <string name="post_comments">Post Comments </string>
+    <string name="google_places_api_key">AIzaSyC5mTsDhjayzCqXH87ggEYsfswR1cStfX8</string>
+    <string name="title_activity_map_view">MapView</string>
+
 </resources>

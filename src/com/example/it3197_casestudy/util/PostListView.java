@@ -13,6 +13,12 @@ import com.example.it3197_casestudy.R.menu;
 import com.example.it3197_casestudy.controller.DeletePost;
 import com.example.it3197_casestudy.model.Hobby;
 import com.example.it3197_casestudy.model.HobbyPost;
+import com.example.it3197_casestudy.ui_logic.MapView;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.location.Address;
 import android.location.Geocoder;
@@ -20,6 +26,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -40,6 +47,8 @@ public class PostListView extends ArrayAdapter<HobbyPost> {
 	private int selectedPos = 0;
 	private String Address, City;
 	private SparseBooleanArray mSelectedItemsIds;
+	private GoogleMap map;
+	private LatLng current_location;
 	TextView addressTV ;
 	public PostListView(Context context, ArrayList<HobbyPost> postList,
 			int adminRight, String nric) {
@@ -64,6 +73,20 @@ public class PostListView extends ArrayAdapter<HobbyPost> {
 		TextView postDate = (TextView) rowView.findViewById(R.id.postDate);
 		TextView postContent = (TextView) rowView.findViewById(R.id.postContent);
 		addressTV = (TextView) rowView.findViewById(R.id.Address);
+	
+		current_location = new LatLng(resultArray.get(position).getLat(), resultArray.get(position).getLng());
+		addressTV.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(activity, MapView.class);
+				intent.putExtra("lat", resultArray.get(position).getLat());
+				intent.putExtra("lng", resultArray.get(position).getLng());
+				activity.startActivity(intent);
+			}
+			
+		});
 		postTitle.setTextSize(35);
 		postDate.setTextSize(20);
 		postContent.setTextSize(15);
@@ -123,4 +146,6 @@ public class PostListView extends ArrayAdapter<HobbyPost> {
 		}
 		 
 	}
+	
+
 }

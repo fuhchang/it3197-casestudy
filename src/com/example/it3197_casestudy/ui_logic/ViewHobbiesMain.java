@@ -9,7 +9,9 @@ import com.example.it3197_casestudy.util.viewHobbiesAdapter;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
@@ -32,10 +34,8 @@ public class ViewHobbiesMain extends FragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_view_events);
-		if(getIntent().getExtras().getString("viewid") != null){
-			
-		}
-		nric = getIntent().getExtras().getString("nric");
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+		nric = sp.getString("nric","");
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);

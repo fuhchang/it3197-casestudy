@@ -82,7 +82,7 @@ public class Demo extends AugmentedReality {
         
         
         for(int i=0; i<titleList.size();i++ ){
-        	Marker marker = new Marker(titleList.get(i) + contentList.get(i),latList.get(i),lngList.get(i),localData.getMarkers().get(0).getHeight(), localData.getMarkers().get(0).getColor());
+        	Marker marker = new Marker(titleList.get(i) +" : " +contentList.get(i),latList.get(i),lngList.get(i),localData.getMarkers().get(0).getHeight(), localData.getMarkers().get(0).getColor());
         	markerList.add(marker);
         }
         
