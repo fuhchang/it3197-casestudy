@@ -99,7 +99,7 @@ public class MainLinkPage extends Activity {
 					intent = new Intent(MainLinkPage.this, ViewHobbiesMain.class);
 					intent.putExtra("nric", nric);
 				}else if(position == 2){
-					intent = new Intent(MainLinkPage.this, SubmitArticle.class);
+					intent = new Intent(MainLinkPage.this, ArticleMainActivity.class);
 					intent.putExtra("nric", nric);
 				}else if (position == 3){
 					intent = new Intent(MainLinkPage.this, RiddleActivity.class);
