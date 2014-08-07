@@ -127,7 +127,7 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 		}
 		try {
 	        // Try to add geofences
-			mGeofenceRequester.addGeofences(mCurrentGeofences," events within 1km","There is an event ");
+			mGeofenceRequester.addGeofences(mCurrentGeofences," events within 1km","There is an event ",0);
 		} catch (UnsupportedOperationException e) {
 	            // Notify user that previous request hasn't finished.
 			Toast.makeText(activity, R.string.add_geofences_already_requested_error, Toast.LENGTH_LONG).show();
