@@ -90,6 +90,7 @@ public class GetAllHobbyGroup extends AsyncTask<Object, Object, Object>
 				intent.putExtra("grpContent", hobbyList.get(position).getDescription());
 				intent.putExtra("Lat", hobbyList.get(position).getLat());
 				intent.putExtra("Lng", hobbyList.get(position).getLng());
+				intent.putExtra("member", "none");
 				intent.putExtra("fbID", hobbyList.get(position).getHobbyFBPostID());
 				activity.startActivity(intent);
 			}
