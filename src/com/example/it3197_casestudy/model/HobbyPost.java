@@ -2,7 +2,10 @@ package com.example.it3197_casestudy.model;
 
 import java.util.Date;
 
-public class HobbyPost {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class HobbyPost implements Parcelable {
 	private int postID;
 	private Date datetime;
 	private String content;
@@ -11,6 +14,17 @@ public class HobbyPost {
 	private int grpID;
 	private String posterNric;
 	private String postTitle;
+	
+	public HobbyPost(int postID, Date datetime, String content, double Lat, double Lng, String nric, String postTitle ){
+		this.postID = postID;
+		this.content = content;
+		this.Lat = Lat;
+		this.Lng = Lng;
+		this.posterNric = nric;
+	}
+	public HobbyPost(){
+		
+	}
 	public int getPostID() {
 		return postID;
 	}
@@ -88,5 +102,46 @@ public class HobbyPost {
 	public void setPostTitle(String postTitle) {
 		this.postTitle = postTitle;
 	}
+	
+	public static final Parcelable.Creator<HobbyPost> CREATOR = new Parcelable.Creator<HobbyPost>(){
 
+		@Override
+		public HobbyPost createFromParcel(Parcel source) {
+			// TODO Auto-generated method stub
+			return new HobbyPost(source);
+		}
+
+		@Override
+		public HobbyPost[] newArray(int size) {
+			// TODO Auto-generated method stub
+			return new HobbyPost[size];
+		}
+		
+	};
+	@Override
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		// TODO Auto-generated method stub
+		dest.writeInt(postID);
+		dest.writeInt(grpID);
+		dest.writeString(postTitle);
+		dest.writeString(posterNric);
+		dest.writeString(content);
+		dest.writeDouble(Lat);
+		dest.writeDouble(Lng);
+	}
+	private HobbyPost(Parcel source) {
+		postID = source.readInt();
+		grpID = source.readInt();
+		postTitle = source.readString();
+		Lat = source.readDouble();
+		Lng = source.readDouble();
+		posterNric = source.readString();
+		content = source.readString();
+	}
 }

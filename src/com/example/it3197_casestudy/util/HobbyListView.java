@@ -60,7 +60,6 @@ public class HobbyListView extends ArrayAdapter<Hobby> {
 		TextView gDesc = (TextView) rowView.findViewById(R.id.gDesc);
 		
 		if((Session.getActiveSession() != null) && (Session.getActiveSession().isOpened()) && (!resultArray.get(position).getHobbyFBPostID().equals("0"))){
-			Toast.makeText(getContext(), "setting image in "+position + " with " +resultArray.get(position).getHobbyFBPostID() , Toast.LENGTH_LONG).show();
 				getImage(position, imgView, resultArray.get(position).getHobbyFBPostID(), rowView);
 		}else{
 			Toast.makeText(getContext(), "no session found", Toast.LENGTH_LONG).show();

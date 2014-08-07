@@ -21,4 +21,9 @@
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="View Request"/>
+	<item
+        android:id="@+id/action_AR"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="View hang out"/>
 </menu>

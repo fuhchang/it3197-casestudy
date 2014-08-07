@@ -57,7 +57,7 @@ public class CreatehobbyGroup extends AsyncTask<Object, Object, Object>
 	protected void onPostExecute(Object result) {
 		// TODO Auto-generated method stub
 		parseJSONResponse((String)result);
-		dialog.dismiss();
+		
 	}
 
 	public String createHobby(){

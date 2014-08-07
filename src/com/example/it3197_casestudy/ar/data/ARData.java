@@ -19,12 +19,6 @@ import android.location.Location;
 import android.util.Log;
 
 
-
-/**
- * Abstract class which should be used to set global data.
- * 
- * @author Justin Wetherell <phishman3579@gmail.com>
- */
 public abstract class ARData {
 
     private static final String TAG = "ARData";

@@ -91,6 +91,7 @@ implements Settings{
 
 	@Override
 	protected void onPreExecute() {
+		
 		allJoinedhobbyList = new ArrayList<Hobby>();
 		allJoinedhobbyList.clear();
 		dialog = ProgressDialog.show(activity.getActivity(),

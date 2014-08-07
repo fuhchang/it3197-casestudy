@@ -7,7 +7,9 @@ import com.dropbox.chooser.android.R.color;
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.R.layout;
 import com.example.it3197_casestudy.R.menu;
+import com.example.it3197_casestudy.ar.activity.Demo;
 import com.example.it3197_casestudy.controller.CheckMemberHobby;
+import com.example.it3197_casestudy.controller.GetHobbyPost;
 import com.example.it3197_casestudy.controller.JoinHobbyGrp;
 import com.example.it3197_casestudy.controller.getPostController;
 import com.example.it3197_casestudy.model.Hobby;
@@ -160,6 +162,10 @@ public class ViewSingleHobby extends Activity {
 			Intent requestIntent = new Intent(this, ViewRequest.class);
 			requestIntent.putExtra("hobbyID", getIntent().getExtras().getInt("grpID"));
 			startActivity(requestIntent);
+			break;
+		case R.id.action_AR:
+			GetHobbyPost ViewPost = new GetHobbyPost(this, getIntent().getExtras().getInt("grpID"));
+			ViewPost.execute();
 			break;
 		}
 		return super.onOptionsItemSelected(item);

@@ -12,6 +12,7 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
@@ -33,15 +34,9 @@ import com.example.it3197_casestudy.ar.data.WikipediaDataSource;
 import com.example.it3197_casestudy.ar.ui.IconMarker;
 import com.example.it3197_casestudy.ar.ui.Marker;
 import com.example.it3197_casestudy.ar.widgets.VerticalTextView;
+import com.example.it3197_casestudy.model.HobbyPost;
 
 
-
-/**
- * This class extends the AugmentedReality and is designed to be an example on
- * how to extends the AugmentedReality class to show multiple data sources.
- * 
- * @author Justin Wetherell <phishman3579@gmail.com>
- */
 public class Demo extends AugmentedReality {
 	
     private static final String TAG = "Demo";
@@ -52,14 +47,19 @@ public class Demo extends AugmentedReality {
 
     private static Toast myToast = null;
     private static VerticalTextView text = null;
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
+   
+    
+    @SuppressWarnings("unchecked")
+	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        
+        
+      ArrayList<String> contentList = (ArrayList<String>) getIntent().getSerializableExtra("contentList");
+      ArrayList<String> titleList = (ArrayList<String>) getIntent().getSerializableExtra("titleList");
+      ArrayList<Double> latList = (ArrayList<Double>) getIntent().getSerializableExtra("latList");
+      ArrayList<Double> lngList = (ArrayList<Double>) getIntent().getSerializableExtra("lngList");
+     
         // Create toast
         myToast = new Toast(getApplicationContext());
         myToast.setGravity(Gravity.CENTER, 0, 0);
@@ -73,24 +73,22 @@ public class Demo extends AugmentedReality {
         myToast.setView(text);
         // Setting duration and displaying the toast
         myToast.setDuration(Toast.LENGTH_SHORT);
-        /*
-        ArrayList<Marker> markerList = new ArrayList<Marker>();
-        for(int i=0; i< 3; i++){
-        	Marker m = new Marker("haha"+i, i+1, i+2, i+3, i);
-        	markerList.add(m);
-        }
-        ARData.addMarkers(markerList);
-        */
-        
-        // Local
-        LocalDataSource localData = new LocalDataSource(this.getResources());
-        Marker m = new Marker("nyp",1.3701752, 103.8344885,localData.getMarkers().get(0).getHeight(), localData.getMarkers().get(0).getColor());
-        Marker m2 = new Marker("amk hub",1.352083000000000000, 103.819836000000010000,localData.getMarkers().get(0).getHeight(), localData.getMarkers().get(3).getColor());
         
        
+        // Local
+        
         ArrayList<Marker> markerList = new ArrayList<Marker>();
-        markerList.add(m);
-       	markerList.add(m2);
+        LocalDataSource localData = new LocalDataSource(this.getResources());
+        
+        
+        for(int i=0; i<titleList.size();i++ ){
+        	Marker marker = new Marker(titleList.get(i) + contentList.get(i),latList.get(i),lngList.get(i),localData.getMarkers().get(0).getHeight(), localData.getMarkers().get(0).getColor());
+        	markerList.add(marker);
+        }
+        
+        
+      
+       
         ARData.addMarkers(markerList);
         ARData.addMarkers(localData.getMarkers());
         
