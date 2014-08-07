@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.controller.CreateEvent;
+import com.example.it3197_casestudy.controller.GetEventParticipants;
 import com.example.it3197_casestudy.controller.GetImageFromFacebook;
 import com.example.it3197_casestudy.controller.JoinEvent;
 import com.example.it3197_casestudy.controller.UnjoinEvent;
@@ -146,14 +147,9 @@ public class ViewEventsTimelineFragment extends Fragment {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
 		lvEventTimeline = (ListView) getActivity().findViewById(R.id.lv_events_timeline);
-	}
-
-	@Override
-	public void onResume() {
-		// TODO Auto-generated method stub
-		super.onResume();
 		ProgressDialog pDialog = ProgressDialog.show(ViewEventsTimelineFragment.this.getActivity(), "Retrieving comments","Please wait");
 		getComments(pDialog);
+
 	}
 
 	private void publishComments(final ProgressDialog dialog, final String value) {
@@ -235,33 +231,43 @@ public class ViewEventsTimelineFragment extends Fragment {
 				System.out.println(response);
 				String postActionID = "0"; 
 				try {
-					postActionID = response.getGraphObject().getInnerJSONObject().getString("post_action_id");
-					Request request = new Request(Session.getActiveSession(), postActionID + "/comments", null, HttpMethod.GET, new Request.Callback() {
-						public void onCompleted(Response response) {
-							try {
-								JSONArray data = response.getGraphObject().getInnerJSONObject().getJSONArray("data");
-								String[][] timelineList = new String[data.length()][3]; 
-								for(int i=0;i<data.length();i++){
-									String comments = data.getJSONObject(i).getString("message");
-									String name = data.getJSONObject(i).getJSONObject("from").getString("name");
-									String time = data.getJSONObject(i).getString("created_time");
-									timelineList[i][0] = name;
-									timelineList[i][1] = time;
-									timelineList[i][2] = comments;
+					if(response.getGraphObject() != null){
+						postActionID = response.getGraphObject().getInnerJSONObject().getString("post_action_id");
+						Request request = new Request(Session.getActiveSession(), postActionID + "/comments", null, HttpMethod.GET, new Request.Callback() {
+							public void onCompleted(Response response) {
+								try {
+									JSONArray data = response.getGraphObject().getInnerJSONObject().getJSONArray("data");
+									String[][] timelineList = new String[data.length()][3]; 
+									for(int i=0;i<data.length();i++){
+										String comments = data.getJSONObject(i).getString("message");
+										String name = data.getJSONObject(i).getJSONObject("from").getString("name");
+										String time = data.getJSONObject(i).getString("created_time");
+										timelineList[i][0] = name;
+										timelineList[i][1] = time;
+										timelineList[i][2] = comments;
+									}
+									
+									EventsTimelineListAdapter adapter = new EventsTimelineListAdapter(ViewEventsTimelineFragment.this.getActivity(),timelineList);
+									lvEventTimeline.setAdapter(adapter);
+									dialog.dismiss();
+								} catch (JSONException e) {
+									// TODO Auto-generated catch block
+									dialog.dismiss();
+									e.printStackTrace();
 								}
-								
-								EventsTimelineListAdapter adapter = new EventsTimelineListAdapter(ViewEventsTimelineFragment.this.getActivity(),timelineList);
-								lvEventTimeline.setAdapter(adapter);
-								dialog.dismiss();
-							} catch (JSONException e) {
-								// TODO Auto-generated catch block
-								dialog.dismiss();
-								e.printStackTrace();
 							}
+						});
+						RequestAsyncTask task = new RequestAsyncTask(request);
+					    task.execute();
+					}
+					else{
+						dialog.dismiss();
+						FacebookRequestError error = response.getError();
+						if (error != null) {
+							Toast.makeText(ViewEventsTimelineFragment.this.getActivity(),error.getErrorMessage(),Toast.LENGTH_SHORT).show();
+							Log.i("Tag","JSON error "+ error.getErrorMessage());
 						}
-					});
-					RequestAsyncTask task = new RequestAsyncTask(request);
-				    task.execute();
+					}
 				} catch (JSONException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

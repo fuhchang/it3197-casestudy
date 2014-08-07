@@ -40,12 +40,14 @@ import com.example.it3197_casestudy.geofencing.SimpleGeofence;
 import com.example.it3197_casestudy.geofencing.SimpleGeofenceStore;
 import com.example.it3197_casestudy.model.Event;
 import com.example.it3197_casestudy.model.EventLocationDetail;
+import com.example.it3197_casestudy.model.EventParticipants;
 import com.example.it3197_casestudy.mysqlite.EventLocationDetailSQLController;
 import com.example.it3197_casestudy.mysqlite.EventSQLController;
 import com.example.it3197_casestudy.ui_logic.MainLinkPage;
 import com.example.it3197_casestudy.ui_logic.ViewAllEventsActivity;
 import com.example.it3197_casestudy.ui_logic.ViewEventsActivity;
 import com.example.it3197_casestudy.util.EventListAdapter;
+import com.example.it3197_casestudy.util.MySharedPreferences;
 import com.example.it3197_casestudy.util.PullToRefreshListView;
 import com.example.it3197_casestudy.util.Settings;
 import com.google.android.gms.location.Geofence;
@@ -53,14 +55,16 @@ import com.google.android.gms.location.Geofence;
 public class GetAllEvents extends AsyncTask<Object, Object, Object> implements Settings{
 	private ArrayList<Event> eventArrList;
 	private ArrayList<EventLocationDetail> eventLocationArrList;
+	private ArrayList<EventParticipants> eventParticipantsArrList;
 	private Event[] eventList;
 	private ViewAllEventsActivity activity;
 	private ListView lvViewAllEvents;
 	private SimpleGeofenceStore mPrefs;
 	private GeofenceRequester mGeofenceRequester;
 	List<Geofence> mCurrentGeofences;
-	
+	private String nric;
 	private ProgressDialog dialog;
+	private MySharedPreferences p;
 	
 	public GetAllEvents(ViewAllEventsActivity activity,ListView lvViewAllEvents){
 		this.activity = activity;
@@ -71,9 +75,12 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 	protected void onPreExecute() {
 		eventArrList = new ArrayList<Event>(); 
 		eventLocationArrList = new ArrayList<EventLocationDetail>();
+		eventParticipantsArrList = new ArrayList<EventParticipants>();
 		mPrefs = new SimpleGeofenceStore(activity);
 		mGeofenceRequester = new GeofenceRequester(activity);
 		mCurrentGeofences = new ArrayList<Geofence>();
+		p = new MySharedPreferences(activity);
+		nric = p.getPreferences("nric", "");
 		dialog = ProgressDialog.show(activity,
 				"Retrieving events", "Please wait...", true);
 	}
@@ -120,7 +127,7 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 		}
 		try {
 	        // Try to add geofences
-			mGeofenceRequester.addGeofences(mCurrentGeofences," events within 1km","There is an event ", 0);
+			mGeofenceRequester.addGeofences(mCurrentGeofences," events within 1km","There is an event ");
 		} catch (UnsupportedOperationException e) {
 	            // Notify user that previous request hasn't finished.
 			Toast.makeText(activity, R.string.add_geofences_already_requested_error, Toast.LENGTH_LONG).show();
@@ -133,9 +140,15 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 		        Intent intent = new Intent(activity,ViewEventsActivity.class);
 		        intent.putExtra("eventID", view.getId());
 		        Event event = new Event();
+		        boolean joined = false;
 		        for(int i=0;i<eventArrList.size();i++){
 		        	if(eventArrList.get(i).getEventID() == view.getId()){
 		        		event = eventArrList.get(i);
+				        for(int j=0;j<eventParticipantsArrList.size();j++){
+				        	if(nric.equals(eventParticipantsArrList.get(j).getUserNRIC())){
+				        		joined = true;
+				        	}
+				        }
 		        	}
 		        }
 				intent.putExtra("eventAdminNRIC", event.getEventAdminNRIC());
@@ -148,6 +161,7 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 				intent.putExtra("noOfParticipants", event.getNoOfParticipantsAllowed());
 				intent.putExtra("active", event.getActive());
 				intent.putExtra("eventFBPostID", event.getEventFBPostID());
+				intent.putExtra("joined", joined);
 		        activity.startActivity(intent);
 		        activity.finish();
 			}
@@ -163,6 +177,7 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 		HttpPost httppost = new HttpPost(API_URL + "retrieveAllEvents");
 		ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
 		postParameters.add(new BasicNameValuePair("web","false"));
+		postParameters.add(new BasicNameValuePair("userNRIC",nric));
 		// Instantiate a POST HTTP method
 		try {
 			httppost.setEntity(new UrlEncodedFormEntity(postParameters));
@@ -177,15 +192,17 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 	}
 
 	public void parseJSONResponse(String responseBody) {
-		JSONArray data_array,data_array2;
+		JSONArray data_array,data_array2,data_array3;
 		JSONObject json;
 		Event event;
 		EventLocationDetail eventLocation;
+		EventParticipants eventParticipants;
 		try {
 			json = new JSONObject(responseBody);
 			System.out.println(responseBody);
 			data_array = json.getJSONArray("eventInfo");
 			data_array2 = json.getJSONArray("eventLocationInfo");
+			data_array3 = json.getJSONArray("eventParticipantsInfo");
 			for (int i = 0; i < data_array.length(); i++) {
 				JSONObject dataJob = new JSONObject(data_array.getString(i));
 				int active = dataJob.getInt("active");
@@ -217,6 +234,14 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 				eventLocation.setEventLocationLat(dataJob.getDouble("eventLocationLat"));
 				eventLocation.setEventLocationLng(dataJob.getDouble("eventLocationLng"));
 				eventLocationArrList.add(eventLocation);
+			}
+			for(int i=0;i<data_array3.length();i++){
+				JSONObject dataJob = new JSONObject(data_array3.getString(i));
+				System.out.println("Job 3: " + dataJob);
+				eventParticipants = new EventParticipants();
+				eventParticipants.setEventID(dataJob.getInt("eventID"));
+				eventParticipants.setUserNRIC(dataJob.getString("userNRIC"));
+				eventParticipantsArrList.add(eventParticipants);
 			}
 		} catch (Exception e) {
 			errorOnExecuting();

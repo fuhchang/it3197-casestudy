@@ -21,10 +21,12 @@ import com.example.it3197_casestudy.ui_logic.ViewEventsTimelineFragment;
  */
 public class ViewEventsAdapter extends FragmentPagerAdapter implements Settings{
 	private Event event = new Event();
+	private boolean joined;
 	
-	public ViewEventsAdapter(FragmentManager fm, Event event) {
+	public ViewEventsAdapter(FragmentManager fm, Event event, boolean joined) {
 		super(fm);
 		this.event = event;
+		this.joined = joined;
 	}
 	
 	@Override
@@ -50,7 +52,9 @@ public class ViewEventsAdapter extends FragmentPagerAdapter implements Settings{
 			args.putInt("noOfParticipants", event.getNoOfParticipantsAllowed());
 			args.putInt("active", event.getActive());
 			args.putString("eventFBPostID", event.getEventFBPostID());
+			args.putBoolean("joined", joined);
 			fragment.setArguments(args);
+
 			break;
 		case 1:
 			fragment = new ViewEventsTimelineFragment();

@@ -4,6 +4,7 @@ import java.text.ParseException;
 
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.controller.GetEvent;
+import com.example.it3197_casestudy.controller.GetEventParticipants;
 import com.example.it3197_casestudy.model.Event;
 import com.example.it3197_casestudy.util.Settings;
 import com.example.it3197_casestudy.util.ViewEventsAdapter;
@@ -12,6 +13,7 @@ import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.app.Fragment;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
@@ -36,7 +38,7 @@ public class ViewEventsActivity extends FragmentActivity implements ActionBar.Ta
 	ViewPager mViewPager;
 
 	private Event event = new Event();
-	
+	private boolean joined;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -68,8 +70,9 @@ public class ViewEventsActivity extends FragmentActivity implements ActionBar.Ta
 			event.setNoOfParticipantsAllowed(savedInstanceState.getInt("noOfParticipants"));
 			event.setActive(savedInstanceState.getInt("active"));
 			event.setEventFBPostID(savedInstanceState.getString("eventFBPostID"));
+			joined = savedInstanceState.getBoolean("joined");
 		}
-		mViewEventsPagerAdapter = new ViewEventsAdapter(getSupportFragmentManager(),event);
+		mViewEventsPagerAdapter = new ViewEventsAdapter(getSupportFragmentManager(),event,joined);
 
 		// Set up the ViewPager with the sections adapter.
 		mViewPager = (ViewPager) findViewById(R.id.pager);
@@ -114,7 +117,6 @@ public class ViewEventsActivity extends FragmentActivity implements ActionBar.Ta
 		// When the given tab is selected, switch to the corresponding page in
 		// the ViewPager.
 		mViewPager.setCurrentItem(tab.getPosition());
-
 	}
 
 	@Override

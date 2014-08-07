@@ -80,6 +80,7 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 	private ImageView ivEventPoster;
 	private Button btnCheckIn;
 	private Event event = new Event();
+	private boolean joined;
 	private String nric;
 	private ArrayList<EventParticipants> eventParticipantsArrList = new ArrayList<EventParticipants>();
 	private String nricList[] = new String[10];
@@ -159,6 +160,7 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 	}
 
 	public ViewEventsDetailsFragment(){}
+	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -175,6 +177,20 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 		menuItemJoin = menu.findItem(R.id.join);
 		menuItemUnjoin = menu.findItem(R.id.unjoin);
 		menuItemUpdate = menu.findItem(R.id.update);
+		Bundle bundle = getArguments();
+		joined = bundle.getBoolean("joined");
+		System.out.println("Joined: " + joined);
+		if(!joined){
+			menuItemJoin.setVisible(true);
+			menuItemUnjoin.setVisible(false);
+		}
+		else{
+			menuItemJoin.setVisible(false);
+			menuItemUnjoin.setVisible(true);
+		}
+		if(!nric.equals(event.getEventAdminNRIC())){
+			menuItemUpdate.setVisible(false);
+		}
 	}
 
 	@Override
@@ -291,9 +307,10 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 		else{
 			event.setEventFBPostID("0");
 		}
-		
+		joined = bundle.getBoolean("joined");
 		MySharedPreferences preferences = new MySharedPreferences(this.getActivity());
 		nric = preferences.getPreferences("nric","");
+
 		return rootView;
 	}
 
@@ -314,8 +331,7 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 		btnCheckIn = (Button) getActivity().findViewById(R.id.btn_check_in);
 		
 		ivEventPoster = (ImageView) getActivity().findViewById(R.id.iv_event_poster);
-		
-		System.out.println("FB Post ID: " + event.getEventFBPostID());
+
 		if((Session.getActiveSession() != null) && (Session.getActiveSession().isOpened()) && (!event.getEventFBPostID().equals("0"))){
 			getPoster();
 		}
@@ -323,6 +339,7 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 			pictureURL = "";
 			ivEventPoster.setVisibility(View.GONE);
 		}
+		
         Calendar todayDate = Calendar.getInstance();
         Calendar eventDateTimeFrom = Calendar.getInstance();
         eventDateTimeFrom.setTime(event.getEventDateTimeFrom());
@@ -335,11 +352,14 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 		tvEventDateTimeTo.setText("To: \n" + dateTimeFormatter.format(event.getEventDateTimeTo()));
 		tvEventOccur.setText("Occurs: \n" + event.getOccurence());
 		tvEventNoOfParticipants.setText("No of participants allowed: \n" + event.getNoOfParticipantsAllowed());
-
-		GetEventParticipants getEventParticipants = new GetEventParticipants(ViewEventsDetailsFragment.this, event.getEventID());
-		getEventParticipants.execute();
 	}
-	
+
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+	}
+
 	public void getPoster(){
 			Request request = new Request(Session.getActiveSession(), event.getEventFBPostID(), null, HttpMethod.GET, new Request.Callback() {
 				public void onCompleted(Response response) {
