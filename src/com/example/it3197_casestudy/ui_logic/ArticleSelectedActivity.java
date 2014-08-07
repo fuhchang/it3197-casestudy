@@ -4,6 +4,7 @@ import org.json.JSONException;
 
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.controller.GetImageFromFacebook;
+import com.example.it3197_casestudy.controller.GetImageFromFacebookArticle;
 import com.facebook.HttpMethod;
 import com.facebook.Request;
 import com.facebook.RequestAsyncTask;
@@ -89,7 +90,7 @@ public class ArticleSelectedActivity extends Fragment {
 					if((response.getGraphObject().getInnerJSONObject().getJSONArray("image") != null) && (response.getGraphObject().getInnerJSONObject().getJSONArray("image").length() > 0)){
 						pictureURL = response.getGraphObject().getInnerJSONObject().getJSONArray("image").getJSONObject(0).getString("url").toString().replace("\"/", "/");
 						//System.out.println("Picture URL: " + pictureURL);
-						GetImageFromFacebook getImageFromFacebook = new GetImageFromFacebook(ArticleSelectedActivity.this.getActivity(),artPoster,pictureURL);
+						GetImageFromFacebookArticle getImageFromFacebook = new GetImageFromFacebookArticle(ArticleSelectedActivity.this.getActivity(),artPoster,pictureURL);
 						getImageFromFacebook.execute();
 					}
 					else{

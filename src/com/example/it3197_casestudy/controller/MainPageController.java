@@ -131,7 +131,7 @@ public class MainPageController extends AsyncTask<Object, Object, Object> implem
 				
 				if(pos ==2){
 					//intent to article
-					Intent intent = new Intent(activity, SubmitArticle.class);
+					Intent intent = new Intent(activity, ArticleUserView.class);
 					intent.putExtra("title", articleList.get(0).getTitle());
 					intent.putExtra("author", articleList.get(0).getArticleUser());
 					intent.putExtra("articleDate", articleList.get(0).getArticleDate());
