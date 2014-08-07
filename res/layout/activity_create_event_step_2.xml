@@ -27,55 +27,72 @@
             android:textSize="@dimen/normal_font_size"
             android:text="@string/from" />
 
-        <Button
-            android:id="@+id/btn_date_from"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/linear_layout_from"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="onClick"
-            android:fontFamily="sans-serif-light"
-            android:textSize="@dimen/normal_font_size"
-            android:layout_below="@+id/tv_from" />
+            android:layout_below="@+id/tv_from"
+            android:gravity="bottom"
+            android:orientation="horizontal" >
 
-        <Button
-            android:id="@+id/btn_time_from"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" 
-            android:layout_toRightOf="@+id/btn_date_from"
-            android:layout_marginLeft="10dp"
-            android:onClick="onClick"
-            android:fontFamily="sans-serif-light"
-            android:textSize="@dimen/normal_font_size"
-            android:layout_below="@+id/tv_from"/>
+            <Button
+                android:id="@+id/btn_date_from"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:layout_gravity="left"
+                android:fontFamily="sans-serif-light"
+                android:onClick="onClick"
+                android:textSize="@dimen/normal_font_size" />
+
+            <Button
+                android:id="@+id/btn_time_from"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:layout_gravity="left"
+                android:fontFamily="sans-serif-light"
+                android:onClick="onClick"
+                android:textSize="@dimen/normal_font_size" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tv_to"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/btn_date_from"
+            android:layout_below="@+id/linear_layout_from"
             android:fontFamily="sans-serif-light"
             android:textSize="@dimen/normal_font_size"
             android:text="@string/to" />
-
-        <Button
-            android:id="@+id/btn_date_to"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onClick"
-            android:fontFamily="sans-serif-light"
-            android:textSize="@dimen/normal_font_size"
-            android:layout_below="@+id/tv_to"/>
-        
-        <Button
-            android:id="@+id/btn_time_to"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/btn_time_from"
-            android:onClick="onClick"
-            android:layout_marginTop="24dp"
-            android:fontFamily="sans-serif-light"
-            android:textSize="@dimen/normal_font_size"
-            android:layout_alignLeft="@+id/btn_time_from" />
-
+        <LinearLayout
+            android:id="@+id/linear_layout_to"
+            android:layout_width="match_parent"
+        	android:layout_height="wrap_content"
+        	android:gravity="bottom"
+	       	android:layout_below="@+id/tv_to" 
+        	android:orientation="horizontal" >
+	        
+	        <Button
+	            android:id="@+id/btn_date_to"
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:onClick="onClick"
+	            android:layout_weight="1.0"
+                android:layout_gravity="left"
+	            android:fontFamily="sans-serif-light"
+	            android:textSize="@dimen/normal_font_size"/>
+	        
+	        <Button
+	            android:id="@+id/btn_time_to"
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:onClick="onClick"
+	            android:layout_weight="1.0"
+                android:layout_gravity="left"
+	            android:fontFamily="sans-serif-light"
+	            android:textSize="@dimen/normal_font_size"/>
+	        
+	   	</LinearLayout>
         <TextView
             android:id="@+id/tv_repeats"
             android:layout_width="wrap_content"
@@ -84,7 +101,7 @@
             android:text="@string/repeats" 
             android:fontFamily="sans-serif-light"
             android:textSize="@dimen/normal_font_size"
-            android:layout_below="@+id/btn_date_to"/>
+            android:layout_below="@+id/linear_layout_to"/>
 
         <Spinner
             android:id="@+id/spinner_repeats"
