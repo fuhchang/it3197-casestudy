@@ -11,6 +11,7 @@ import com.example.it3197_casestudy.R.layout;
 import com.example.it3197_casestudy.R.menu;
 import com.example.it3197_casestudy.controller.ArticleUpdateFeedbackStatus;
 import com.example.it3197_casestudy.controller.GetImageFromFacebook;
+import com.example.it3197_casestudy.controller.GetImageFromFacebookArticle;
 import com.example.it3197_casestudy.model.Article;
 import com.facebook.HttpMethod;
 import com.facebook.Request;
@@ -281,7 +282,7 @@ public class ArticleSelectedFeedbackActivity extends Activity {
 						if((response.getGraphObject().getInnerJSONObject().getJSONArray("image") != null) && (response.getGraphObject().getInnerJSONObject().getJSONArray("image").length() > 0)){
 							pictureURL = response.getGraphObject().getInnerJSONObject().getJSONArray("image").getJSONObject(0).getString("url").toString().replace("\"/", "/");
 							//System.out.println("Picture URL: " + pictureURL);
-							GetImageFromFacebook getImageFromFacebook = new GetImageFromFacebook(ArticleSelectedFeedbackActivity.this,artPoster,pictureURL);
+							GetImageFromFacebookArticle getImageFromFacebook = new GetImageFromFacebookArticle(ArticleSelectedFeedbackActivity.this,artPoster,pictureURL);
 							getImageFromFacebook.execute();
 						}
 						else{
