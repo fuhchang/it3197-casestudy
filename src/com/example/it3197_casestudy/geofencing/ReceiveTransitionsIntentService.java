@@ -11,10 +11,12 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.example.it3197_casestudy.R;
+import com.example.it3197_casestudy.ui_logic.ArticleMainActivity;
 import com.example.it3197_casestudy.ui_logic.LoginSelectionActivity;
 import com.example.it3197_casestudy.ui_logic.MainLinkPage;
 import com.example.it3197_casestudy.ui_logic.SearchHobbyByMap;
@@ -205,7 +207,7 @@ public class ReceiveTransitionsIntentService extends IntentService {
     		      Intent resultIntent = new Intent(this, LoginSelectionActivity.class);
 
     		      TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-    		      stackBuilder.addParentStack(ViewAllEventsActivity.class);
+    		      stackBuilder.addParentStack(LoginSelectionActivity.class);
 
     		      /* Adds the Intent that starts the Activity to the top of the stack */
     		      stackBuilder.addNextIntent(resultIntent);
@@ -225,8 +227,8 @@ public class ReceiveTransitionsIntentService extends IntentService {
     		}
     		if(GeoFenceID == 2){
     			mBuilder.setContentTitle(contentTitle);
-    		      mBuilder.setContentText("Scroll down to view events");
-    		      mBuilder.setTicker("Events detected");
+    		      mBuilder.setContentText("Slide down for more details");
+    		      mBuilder.setTicker("Article(s) detected");
     		      mBuilder.setSmallIcon(R.drawable.logo);
 
     		      /* Increase notification number every time a new notification arrives */
@@ -237,20 +239,26 @@ public class ReceiveTransitionsIntentService extends IntentService {
     		             new NotificationCompat.InboxStyle();
     		      
     		      // Sets a title for the Inbox style big view
-    		      inboxStyle.setBigContentTitle("Event within 1km:");
+    		      inboxStyle.setBigContentTitle("Article(s) within 1km:");
+    		      inboxStyle.addLine("");
+    		      inboxStyle.addLine("");
     		      // Moves events into the big view
     		      for (int i=0; i < contentText.length; i++) {
 
-    		         inboxStyle.addLine(contentText[i]);
+    		         inboxStyle.addLine(" - " + contentText[i]);
     		      }
+    		      inboxStyle.addLine("");
+    		      inboxStyle.addLine("");
+    		      String artString = "<h3><b><u>Tap To View</u></b></h3>";
+    		      inboxStyle.addLine(Html.fromHtml(artString));
     		      mBuilder.setStyle(inboxStyle);
     		       
     		      
     		      /* Creates an explicit intent for an Activity in your app */
-    		      Intent resultIntent = new Intent(this, ViewAllEventsActivity.class);
+    		      Intent resultIntent = new Intent(this, ArticleMainActivity.class);
 
     		      TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-    		      stackBuilder.addParentStack(ViewAllEventsActivity.class);
+    		      stackBuilder.addParentStack(ArticleMainActivity.class);
 
     		      /* Adds the Intent that starts the Activity to the top of the stack */
     		      stackBuilder.addNextIntent(resultIntent);

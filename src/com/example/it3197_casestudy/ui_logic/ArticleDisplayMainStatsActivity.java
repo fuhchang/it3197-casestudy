@@ -1,10 +1,15 @@
 package com.example.it3197_casestudy.ui_logic;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.R.layout;
 import com.example.it3197_casestudy.R.menu;
+import com.example.it3197_casestudy.geofencing.GeofenceRequester;
+import com.example.it3197_casestudy.geofencing.SimpleGeofence;
+import com.example.it3197_casestudy.geofencing.SimpleGeofenceStore;
+import com.google.android.gms.location.Geofence;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -25,12 +30,18 @@ public class ArticleDisplayMainStatsActivity extends Activity {
 	
 	MarkerOptions mp = new MarkerOptions();
 	
+	private SimpleGeofenceStore mPrefs;
+	private GeofenceRequester mGeofenceRequester;
+	List<Geofence> mCurrentGeofences;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_article_display_main_stats);
 		
-		
+		mPrefs = new SimpleGeofenceStore(this);
+		mGeofenceRequester = new GeofenceRequester(this);
+		mCurrentGeofences = new ArrayList<Geofence>();
 		
 		
 		 Bundle extras = this.getIntent().getExtras();
@@ -70,7 +81,24 @@ public class ArticleDisplayMainStatsActivity extends Activity {
 	        	.position(new LatLng(artLatitude.get(i), artLongitude.get(i)))
 	        	.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
 	        	.title(artTitle.get(i)));
+			
+			SimpleGeofence UiGeofence = new SimpleGeofence(artTitle.get(i),artLatitude.get(i), artLongitude.get(i), 1000,Geofence.NEVER_EXPIRE, Geofence.GEOFENCE_TRANSITION_ENTER);
+			mPrefs.setGeofence(artTitle.get(i), UiGeofence);
+			
+			mCurrentGeofences.add(UiGeofence.toGeofence());
 		}
+		
+		 try {
+	            // Try to add geofences
+	            mGeofenceRequester.addGeofences(mCurrentGeofences," Article(s) Found ","Article(s) found near you.",2);
+	            
+	        } catch (UnsupportedOperationException e) {
+	            // Notify user that previous request hasn't finished.
+	            Toast.makeText(this, R.string.add_geofences_already_requested_error,
+	                        Toast.LENGTH_LONG).show();
+	        }
+		
+		
 		
 	}
 /*
