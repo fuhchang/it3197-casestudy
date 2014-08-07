@@ -21,6 +21,7 @@ import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.View;
 
 import com.example.it3197_casestudy.geofencing.GeofenceRequester;
 import com.example.it3197_casestudy.geofencing.SimpleGeofenceStore;
@@ -33,13 +34,19 @@ import com.example.it3197_casestudy.util.MySharedPreferences;
 import com.example.it3197_casestudy.util.Settings;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.clustering.Cluster;
+import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
+import com.google.maps.android.clustering.ClusterManager.OnClusterClickListener;
+import com.google.maps.android.clustering.ClusterManager.OnClusterItemClickListener;
 
 public class GetMashUpData extends AsyncTask<Object, Object, Object> implements Settings{
 	private ProgressDialog dialog;
-	private SuggestLocationActivity activity;
+	final private SuggestLocationActivity activity;
 	private ArrayList<MashUpData> mashUpDataArrList;
 	private String themeName;
     // Declare a variable for the cluster manager.
@@ -68,7 +75,12 @@ public class GetMashUpData extends AsyncTask<Object, Object, Object> implements 
 	    // Initialize the manager with the context and the map.
 	    // (Activity extends context, so we can pass 'this' in the constructor.)
 	    mClusterManager = new ClusterManager<MyItem>(activity, activity.getMap());
+	    activity.getMap().setInfoWindowAdapter(mClusterManager.getMarkerManager());
+	    
+	    //mClusterManager.getClusterMarkerCollection().setOnInfoWindowAdapter(new MyCustomAdapterForClusters());
+	    //mClusterManager.getMarkerCollection().setOnInfoWindowAdapter(new MyCustomAdapterForItems());
 
+	    
 	    ArrayList<MyItem> myItemArrList = new ArrayList<MyItem>();
 		for(int i=0;i<mashUpDataArrList.size();i++){
 			try {
@@ -78,7 +90,7 @@ public class GetMashUpData extends AsyncTask<Object, Object, Object> implements 
 				double lat = currentCoordinates.asLatLon().getLatitude();
 				double lng = currentCoordinates.asLatLon().getLongitude();
 				
-		        MyItem offsetItem = new MyItem(lat, lng);
+		        MyItem offsetItem = new MyItem(mashUpDataArrList.get(i).getName(), mashUpDataArrList.get(i).getAddressStreetName(), mashUpDataArrList.get(i).getHyperlink(), lat, lng);
 		        myItemArrList.add(offsetItem);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -89,9 +101,33 @@ public class GetMashUpData extends AsyncTask<Object, Object, Object> implements 
 	    // manager.
 	    activity.getMap().setOnCameraChangeListener(mClusterManager);
 	    activity.getMap().setOnMarkerClickListener(mClusterManager);
+	    mClusterManager.setOnClusterClickListener(new OnClusterClickListener<MyItem>() {
+	        @Override
+	        public boolean onClusterClick(Cluster<MyItem> cluster) {
+	            //clickedCluster = cluster; // remember for use later in the Adapter
+	    		activity.getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(cluster.getPosition(), activity.getMap().getCameraPosition().zoom + 1));
+	            return false;
+	        }
+	    });
+	    mClusterManager.setOnClusterItemClickListener(new OnClusterItemClickListener<MyItem>(){
+			@Override
+			public boolean onClusterItemClick(MyItem item) {
+				// TODO Auto-generated method stub
+				activity.getTvEventLocationName().setText(item.getTitle());
+				activity.getTvEventLocationAddress().setText(item.getAddress());
+				activity.getTvEventLocationHyperlink().setText(item.getHyperLink());
+				activity.getTvEventLocationLat().setText(String.valueOf(item.getPosition().latitude));
+				activity.getTvEventLocationLng().setText(String.valueOf(item.getPosition().longitude));
+				activity.getTableLayoutEventLocationInformation().setVisibility(View.VISIBLE);
+				return false;
+			}
+	    });
+	    
 	    for(int i=0;i<myItemArrList.size();i++){
 	    	mClusterManager.addItem(myItemArrList.get(i));
 	    }
+	    
+	    activity.setThings(mClusterManager);
 		dialog.dismiss();
 	}
 	
