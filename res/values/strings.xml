@@ -340,4 +340,6 @@
     <string name="google_places_api_key">AIzaSyC5mTsDhjayzCqXH87ggEYsfswR1cStfX8</string>
     <string name="title_activity_map_view">MapView</string>
 
+    <string name="select_theme"> Select theme </string>
+    <string name="options"> Options </string>
 </resources>
