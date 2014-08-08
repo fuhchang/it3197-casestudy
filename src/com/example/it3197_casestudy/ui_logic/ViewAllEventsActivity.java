@@ -14,7 +14,9 @@ import com.example.it3197_casestudy.geofencing.SimpleGeofence;
 import com.example.it3197_casestudy.geofencing.SimpleGeofenceStore;
 import com.example.it3197_casestudy.model.Event;
 import com.example.it3197_casestudy.model.EventLocationDetail;
+import com.example.it3197_casestudy.model.EventParticipants;
 import com.example.it3197_casestudy.mysqlite.EventLocationDetailSQLController;
+import com.example.it3197_casestudy.mysqlite.EventParticipantsSQLController;
 import com.example.it3197_casestudy.mysqlite.EventSQLController;
 import com.example.it3197_casestudy.mysqlite.SavedEventSQLController;
 import com.example.it3197_casestudy.util.CheckNetworkConnection;
@@ -164,8 +166,12 @@ public class ViewAllEventsActivity extends Activity implements Settings{
 	public void getAllEventOffline(){
 		EventSQLController controller = new EventSQLController(ViewAllEventsActivity.this);
 		EventLocationDetailSQLController locationDetailsController = new EventLocationDetailSQLController(ViewAllEventsActivity.this);
+		EventParticipantsSQLController participantsController = new EventParticipantsSQLController(ViewAllEventsActivity.this);
+		
 		final ArrayList<Event> eventArrList = controller.getAllEvent();
 		final ArrayList<EventLocationDetail> eventLocationArrList = locationDetailsController.getAllEventLocationDetails() ;
+		final ArrayList<EventParticipants> eventParticipantsArrList = participantsController.getAllEventParticipants();
+		
 		Event[] eventList = new Event[eventArrList.size()];
 		for(int i=0;i<eventArrList.size();i++){
 			eventList[i] = eventArrList.get(i);
@@ -202,12 +208,14 @@ public class ViewAllEventsActivity extends Activity implements Settings{
 			}
 			try {
 		        // Try to add geofences
-				mGeofenceRequester.addGeofences(mCurrentGeofences," events within 1km","There is an event ", 0);
+				mGeofenceRequester.addGeofences(mCurrentGeofences," events within 1km","There is an event ",0);
 			} catch (UnsupportedOperationException e) {
 		            // Notify user that previous request hasn't finished.
 				Toast.makeText(this, R.string.add_geofences_already_requested_error, Toast.LENGTH_LONG).show();
 			}
-			
+
+			MySharedPreferences p = new MySharedPreferences(ViewAllEventsActivity.this);
+			final String nric = p.getPreferences("nric", "");
 			EventListAdapter adapter = new EventListAdapter(ViewAllEventsActivity.this,eventList);
 			lvViewAllEvents.setAdapter(adapter);
 			lvViewAllEvents.setOnItemClickListener(new OnItemClickListener() {
@@ -216,9 +224,15 @@ public class ViewAllEventsActivity extends Activity implements Settings{
 			        Intent intent = new Intent(ViewAllEventsActivity.this,ViewEventsActivity.class);
 			        intent.putExtra("eventID", view.getId());
 			        Event event = new Event();
+			        boolean joined = false;
 			        for(int i=0;i<eventArrList.size();i++){
 			        	if(eventArrList.get(i).getEventID() == view.getId()){
 			        		event = eventArrList.get(i);
+					        for(int j=0;j<eventParticipantsArrList.size();j++){
+					        	if(nric.equals(eventParticipantsArrList.get(j).getUserNRIC())){
+					        		joined = true;
+					        	}
+					        }
 			        	}
 			        }
 					intent.putExtra("eventAdminNRIC", event.getEventAdminNRIC());
@@ -231,6 +245,7 @@ public class ViewAllEventsActivity extends Activity implements Settings{
 					intent.putExtra("noOfParticipants", event.getNoOfParticipantsAllowed());
 					intent.putExtra("active", event.getActive());
 					intent.putExtra("eventFBPostID", event.getEventFBPostID());
+					intent.putExtra("joined", joined);
 					ViewAllEventsActivity.this.startActivity(intent);
 					ViewAllEventsActivity.this.finish();
 				}

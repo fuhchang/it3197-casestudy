@@ -71,4 +71,10 @@ public class EventLocationDetailSQLController {
 			conn.close();
 			return eventLocationDetails;
 		}
+		
+		public void deleteAllEventLocationDetails(){
+			conn.open();
+			conn.getDB().delete(conn.getEventLocationDetailTable(), null, null);
+			conn.close();
+		}
 }

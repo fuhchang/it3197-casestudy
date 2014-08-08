@@ -109,5 +109,11 @@ public class EventSQLController implements Settings{
 		conn.close();
 		return event;
 	}
+	
+	public void deleteAllEvents(){
+		conn.open();
+		conn.getDB().delete(conn.getEventTable(), null, null);
+		conn.close();
+	}
 }
 

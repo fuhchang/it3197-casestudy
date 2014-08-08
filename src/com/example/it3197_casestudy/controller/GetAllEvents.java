@@ -42,6 +42,7 @@ import com.example.it3197_casestudy.model.Event;
 import com.example.it3197_casestudy.model.EventLocationDetail;
 import com.example.it3197_casestudy.model.EventParticipants;
 import com.example.it3197_casestudy.mysqlite.EventLocationDetailSQLController;
+import com.example.it3197_casestudy.mysqlite.EventParticipantsSQLController;
 import com.example.it3197_casestudy.mysqlite.EventSQLController;
 import com.example.it3197_casestudy.ui_logic.MainLinkPage;
 import com.example.it3197_casestudy.ui_logic.ViewAllEventsActivity;
@@ -65,6 +66,7 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 	private String nric;
 	private ProgressDialog dialog;
 	private MySharedPreferences p;
+	private boolean checkParticipantsInfo = false;
 	
 	public GetAllEvents(ViewAllEventsActivity activity,ListView lvViewAllEvents){
 		this.activity = activity;
@@ -97,27 +99,26 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 
 		EventSQLController controller = new EventSQLController(activity);
 		EventLocationDetailSQLController locationDetailsController = new EventLocationDetailSQLController(activity);
-		int internalDBSize = controller.getAllEvent().size();
-		int internalLocationDBSize = locationDetailsController.getAllEventLocationDetails().size();
-		if(internalDBSize != eventArrList.size()){
-			//controller.deleteAllEvents();
-			for(int i=0;i<eventArrList.size();i++){
-				eventList[i] = eventArrList.get(i);
-				controller.insertEvent(eventArrList.get(i));
+		EventParticipantsSQLController participantsController = new EventParticipantsSQLController(activity);
+		
+		controller.deleteAllEvents();
+		for(int i=0;i<eventArrList.size();i++){
+			eventList[i] = eventArrList.get(i);
+			controller.insertEvent(eventArrList.get(i));
+		}
+		
+		locationDetailsController.deleteAllEventLocationDetails();
+		for(int i=0;i<eventLocationArrList.size();i++){	
+			locationDetailsController.insertEventLocationDetail(eventLocationArrList.get(i));
+		}
+		
+		if(checkParticipantsInfo){
+			participantsController.deleteAllEventParticipants();
+			for(int i=0;i<eventParticipantsArrList.size();i++){	
+				participantsController.insertEventParticipant(eventParticipantsArrList.get(i));
 			}
 		}
-		else{
-			for(int i=0;i<eventArrList.size();i++){
-				eventList[i] = eventArrList.get(i);
-			}
-		}
-		if(internalLocationDBSize != eventLocationArrList.size()){
-			//locationDetailsController.deleteAllEventLocationDetails();
-			for(int i=0;i<eventLocationArrList.size();i++){	
-				locationDetailsController.insertEventLocationDetail(eventLocationArrList.get(i));
-			}
-		}
-
+		
 		for(int i=0;i<eventLocationArrList.size();i++){
 			for(int j=0;j<eventArrList.size();j++){
 				if(eventLocationArrList.get(i).getEventID() == eventArrList.get(j).getEventID()){
@@ -239,6 +240,7 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 			}
 
 			if(json.has("eventParticipantsInfo")){
+				checkParticipantsInfo = true;
 				data_array3 = json.getJSONArray("eventParticipantsInfo");
 				for(int i=0;i<data_array3.length();i++){
 					JSONObject dataJob = new JSONObject(data_array3.getString(i));
@@ -246,6 +248,8 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 					eventParticipants = new EventParticipants();
 					eventParticipants.setEventID(dataJob.getInt("eventID"));
 					eventParticipants.setUserNRIC(dataJob.getString("userNRIC"));
+					eventParticipants.setDateTimeJoined(sqlDateTimeFormatter.parse(dataJob.getString("dateTimeJoined")));
+					eventParticipants.setCheckIn(dataJob.getInt("checkIn"));
 					eventParticipantsArrList.add(eventParticipants);
 				}
 			}
