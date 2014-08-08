@@ -3,6 +3,6 @@
         android:id="@+id/post_comments"
         android:orderInCategory="100"
         android:showAsAction="always"
-        android:icon="@drawable/ic_action_share"
+        android:icon="@drawable/ic_action_new"
         android:title="@string/post_comments"/>
 </menu>

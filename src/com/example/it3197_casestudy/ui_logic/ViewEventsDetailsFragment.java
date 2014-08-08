@@ -39,6 +39,7 @@ import android.widget.Toast;
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.controller.CheckInEvent;
 import com.example.it3197_casestudy.controller.CreateEvent;
+import com.example.it3197_casestudy.controller.GetAllEvents;
 import com.example.it3197_casestudy.controller.GetEvent;
 import com.example.it3197_casestudy.controller.GetEventParticipants;
 import com.example.it3197_casestudy.controller.GetImageFromFacebook;
@@ -46,6 +47,7 @@ import com.example.it3197_casestudy.controller.JoinEvent;
 import com.example.it3197_casestudy.controller.UnjoinEvent;
 import com.example.it3197_casestudy.model.Event;
 import com.example.it3197_casestudy.model.EventParticipants;
+import com.example.it3197_casestudy.util.CheckNetworkConnection;
 import com.example.it3197_casestudy.util.FriendPickerApplication;
 import com.example.it3197_casestudy.util.MySharedPreferences;
 import com.example.it3197_casestudy.util.Settings;
@@ -91,6 +93,7 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 	private String pictureURL;
 	private UiLifecycleHelper uiHelper;
 
+	ProgressDialog dialog;
 	private static final List<String> PERMISSIONS = Arrays.asList("publish_actions");
 	private static final String PENDING_PUBLISH_KEY = "pendingPublishReauthorization";
 	private boolean pendingPublishReauthorization = false;
@@ -200,51 +203,78 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 		
 		switch(item.getItemId()){
 		case R.id.update:
-			if(!nric.equals(event.getEventAdminNRIC())){
-	            AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
-	            builder.setTitle("Access denied");
-	            builder.setMessage("You do not have the permissions to update the event");
-	            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						// TODO Auto-generated method stub
-			            
-					}
-				});
-	            builder.create().show();
+			if(!CheckNetworkConnection.haveNetworkConnection(ViewEventsDetailsFragment.this.getActivity())){
+				AlertDialog.Builder builder = new AlertDialog.Builder(ViewEventsDetailsFragment.this.getActivity());
+				builder.setTitle("You are in offline mode");
+				builder.setMessage("Please check your internet connection and try again.");
+				builder.setPositiveButton("OK", null);
+				builder.create().show();
 			}
 			else{
-				Intent i = new Intent(ViewEventsDetailsFragment.this.getActivity(), UpdateEventStep1Activity.class);
-				i.putExtra("eventID", String.valueOf(event.getEventID()));
-				i.putExtra("eventName", event.getEventName());
-				i.putExtra("eventCategory", event.getEventCategory());
-				i.putExtra("eventDescription", event.getEventDescription());
-				i.putExtra("eventDateTimeFrom", sqlDateTimeFormatter.format(event.getEventDateTimeFrom()));
-				i.putExtra("eventDateTimeTo", sqlDateTimeFormatter.format(event.getEventDateTimeTo()));
-				i.putExtra("occurence", event.getOccurence());
-				i.putExtra("noOfParticipants", String.valueOf(event.getNoOfParticipantsAllowed()));
-				i.putExtra("pictureURL", pictureURL);
-				startActivity(i);
-				ViewEventsDetailsFragment.this.getActivity().finish();
+				if(!nric.equals(event.getEventAdminNRIC())){
+		            AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
+		            builder.setTitle("Access denied");
+		            builder.setMessage("You do not have the permissions to update the event");
+		            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO Auto-generated method stub
+				            
+						}
+					});
+		            builder.create().show();
+				}
+				else{
+					Intent i = new Intent(ViewEventsDetailsFragment.this.getActivity(), UpdateEventStep1Activity.class);
+					i.putExtra("eventID", String.valueOf(event.getEventID()));
+					i.putExtra("eventName", event.getEventName());
+					i.putExtra("eventCategory", event.getEventCategory());
+					i.putExtra("eventDescription", event.getEventDescription());
+					i.putExtra("eventDateTimeFrom", sqlDateTimeFormatter.format(event.getEventDateTimeFrom()));
+					i.putExtra("eventDateTimeTo", sqlDateTimeFormatter.format(event.getEventDateTimeTo()));
+					i.putExtra("occurence", event.getOccurence());
+					i.putExtra("noOfParticipants", String.valueOf(event.getNoOfParticipantsAllowed()));
+					i.putExtra("pictureURL", pictureURL);
+					startActivity(i);
+					ViewEventsDetailsFragment.this.getActivity().finish();
+				}
 			}
 			break;
 		case R.id.join : 
-			Calendar todayDate = Calendar.getInstance();
-			EventParticipants eventParticipants = new EventParticipants(event.getEventID(),nric,todayDate.getTime(),0);
-			JoinEvent joinEvent = new JoinEvent(ViewEventsDetailsFragment.this,eventParticipants);
-			joinEvent.execute();
-			break;
-		case R.id.unjoin:
-			if((eventParticipantsArrList.size() >= 3) && (nric.equals(event.getEventAdminNRIC()))){
-				Intent intent = new Intent(ViewEventsDetailsFragment.this.getActivity(), SelectNewEventAdminActivity.class);
-				intent.putExtra("eventID", event.getEventID());
-				intent.putExtra("nricList", nricList);
-				intent.putExtra("userNRIC", nric);
-				this.getActivity().startActivityFromFragment(ViewEventsDetailsFragment.this, intent, 1);
+			if(!CheckNetworkConnection.haveNetworkConnection(ViewEventsDetailsFragment.this.getActivity())){
+				AlertDialog.Builder builder = new AlertDialog.Builder(ViewEventsDetailsFragment.this.getActivity());
+				builder.setTitle("You are in offline mode");
+				builder.setMessage("Please check your internet connection and try again.");
+				builder.setPositiveButton("OK", null);
+				builder.create().show();
 			}
 			else{
-				UnjoinEvent unjoinEvent = new UnjoinEvent(ViewEventsDetailsFragment.this,event.getEventID(), nric, "");
-				unjoinEvent.execute();
+				Calendar todayDate = Calendar.getInstance();
+				EventParticipants eventParticipants = new EventParticipants(event.getEventID(),nric,todayDate.getTime(),0);
+				JoinEvent joinEvent = new JoinEvent(ViewEventsDetailsFragment.this,eventParticipants);
+				joinEvent.execute();
+			}
+			break;
+		case R.id.unjoin:
+			if(!CheckNetworkConnection.haveNetworkConnection(ViewEventsDetailsFragment.this.getActivity())){
+				AlertDialog.Builder builder = new AlertDialog.Builder(ViewEventsDetailsFragment.this.getActivity());
+				builder.setTitle("You are in offline mode");
+				builder.setMessage("Please check your internet connection and try again.");
+				builder.setPositiveButton("OK", null);
+				builder.create().show();
+			}
+			else{
+				if((eventParticipantsArrList.size() >= 3) && (nric.equals(event.getEventAdminNRIC()))){
+					Intent intent = new Intent(ViewEventsDetailsFragment.this.getActivity(), SelectNewEventAdminActivity.class);
+					intent.putExtra("eventID", event.getEventID());
+					intent.putExtra("nricList", nricList);
+					intent.putExtra("userNRIC", nric);
+					this.getActivity().startActivityFromFragment(ViewEventsDetailsFragment.this, intent, 1);
+				}
+				else{
+					UnjoinEvent unjoinEvent = new UnjoinEvent(ViewEventsDetailsFragment.this,event.getEventID(), nric, "");
+					unjoinEvent.execute();
+				}
 			}
 			break;
 
@@ -253,29 +283,36 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
             /*Intent intent = new Intent(this.getActivity(), PickFriendsActivity.class);
             PickFriendsActivity.populateParameters(intent, "me", true, true);
             startActivityForResult(intent, 100);*/
-
-            if (FacebookDialog.canPresentOpenGraphActionDialog(this.getActivity().getApplicationContext(), FacebookDialog.OpenGraphActionDialogFeature.OG_ACTION_DIALOG)) {
-            	publishStory();
-            }
-            else{
-            	Bundle postParams = new Bundle();
-    	        postParams.putString("title", event.getEventName());
-    	        postParams.putString("type", "community_outreach:event");
-    	        postParams.putString("description", event.getEventDescription());
-    	        postParams.putString("url", "localhost:8080/CommunityOutreach/");
-    	        postParams.putString("image", pictureURL);
-    	        postParams.putString("to", "947027648641504");
-                WebDialog feedDialog = new WebDialog.FeedDialogBuilder(this.getActivity(), Session.getActiveSession(),postParams).setOnCompleteListener(new OnCompleteListener() {
-					@Override
-					public void onComplete(Bundle values,
-							FacebookException error) {
-						// TODO Auto-generated method stub
-						
-					}
-                }).build();
-                feedDialog.show();
-            }
-            
+			if(!CheckNetworkConnection.haveNetworkConnection(ViewEventsDetailsFragment.this.getActivity())){
+				AlertDialog.Builder builder = new AlertDialog.Builder(ViewEventsDetailsFragment.this.getActivity());
+				builder.setTitle("You are in offline mode");
+				builder.setMessage("Please check your internet connection and try again.");
+				builder.setPositiveButton("OK", null);
+				builder.create().show();
+			}
+			else{
+	            if (FacebookDialog.canPresentOpenGraphActionDialog(this.getActivity().getApplicationContext(), FacebookDialog.OpenGraphActionDialogFeature.OG_ACTION_DIALOG)) {
+	            	publishStory();
+	            }
+	            else{
+	            	Bundle postParams = new Bundle();
+	    	        postParams.putString("title", event.getEventName());
+	    	        postParams.putString("type", "community_outreach:event");
+	    	        postParams.putString("description", event.getEventDescription());
+	    	        postParams.putString("url", "localhost:8080/CommunityOutreach/");
+	    	        postParams.putString("image", pictureURL);
+	    	        postParams.putString("to", "947027648641504");
+	                WebDialog feedDialog = new WebDialog.FeedDialogBuilder(this.getActivity(), Session.getActiveSession(),postParams).setOnCompleteListener(new OnCompleteListener() {
+						@Override
+						public void onComplete(Bundle values,
+								FacebookException error) {
+							// TODO Auto-generated method stub
+							
+						}
+	                }).build();
+	                feedDialog.show();
+	            }
+			}
 			break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -334,8 +371,17 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				CheckInEvent checkInEvent = new CheckInEvent(ViewEventsDetailsFragment.this.getActivity(),event);
-				checkInEvent.execute();
+				if(!CheckNetworkConnection.haveNetworkConnection(ViewEventsDetailsFragment.this.getActivity())){
+					AlertDialog.Builder builder = new AlertDialog.Builder(ViewEventsDetailsFragment.this.getActivity());
+					builder.setTitle("You are in offline mode");
+					builder.setMessage("Please check your internet connection and try again.");
+					builder.setPositiveButton("OK", null);
+					builder.create().show();
+				}
+				else{
+					CheckInEvent checkInEvent = new CheckInEvent(ViewEventsDetailsFragment.this.getActivity(),event);
+					checkInEvent.execute();
+				}
 			}
 		});
 		
@@ -362,13 +408,18 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 		tvEventDateTimeTo.setText("To: \n" + dateTimeFormatter.format(event.getEventDateTimeTo()));
 		tvEventOccur.setText("Occurs: \n" + event.getOccurence());
 		tvEventNoOfParticipants.setText("No of participants allowed: \n" + event.getNoOfParticipantsAllowed());
-
-		if((Session.getActiveSession() != null) && (Session.getActiveSession().isOpened()) && (!event.getEventFBPostID().equals("0"))){
-			getPoster();
+		
+		if(!CheckNetworkConnection.haveNetworkConnection(ViewEventsDetailsFragment.this.getActivity())){
+			ivEventPoster.setVisibility(View.GONE);
 		}
 		else{
-			pictureURL = "";
-			ivEventPoster.setVisibility(View.GONE);
+			if((Session.getActiveSession() != null) && (Session.getActiveSession().isOpened()) && (!event.getEventFBPostID().equals("0"))){
+				getPoster();
+			}
+			else{
+				pictureURL = "";
+				ivEventPoster.setVisibility(View.GONE);
+			}
 		}
 	}
 

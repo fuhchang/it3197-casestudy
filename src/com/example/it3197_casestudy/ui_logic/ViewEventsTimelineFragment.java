@@ -36,6 +36,7 @@ import com.example.it3197_casestudy.controller.GetImageFromFacebook;
 import com.example.it3197_casestudy.controller.JoinEvent;
 import com.example.it3197_casestudy.controller.UnjoinEvent;
 import com.example.it3197_casestudy.model.EventParticipants;
+import com.example.it3197_casestudy.util.CheckNetworkConnection;
 import com.example.it3197_casestudy.util.EventsTimelineListAdapter;
 import com.facebook.FacebookException;
 import com.facebook.FacebookRequestError;
@@ -91,38 +92,39 @@ public class ViewEventsTimelineFragment extends Fragment {
 
 		switch (item.getItemId()) {
 		case R.id.post_comments:
-			AlertDialog.Builder alert = new AlertDialog.Builder(
-					this.getActivity());
-
-			alert.setTitle("Post Comments");
-			alert.setMessage("Enter your comments");
-
-			// Set an EditText view to get user input
-			final EditText input = new EditText(this.getActivity());
-			input.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-			input.setMaxLines(2);
-			alert.setView(input);
-
-			alert.setPositiveButton("Ok",
-					new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog,
-								int whichButton) {
-							String value = input.getText().toString();
-							// Do something with value!
-							ProgressDialog pDialog = ProgressDialog.show(ViewEventsTimelineFragment.this.getActivity(), "Posting comments","Please wait");
-							publishComments(pDialog, value);
-						}
-					});
-
-			alert.setNegativeButton("Cancel",
-					new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog,
-								int whichButton) {
-							// Canceled.
-						}
-					});
-
-			alert.show();
+			if(!CheckNetworkConnection.haveNetworkConnection(ViewEventsTimelineFragment.this.getActivity())){
+				
+			}
+			else{
+				AlertDialog.Builder alert = new AlertDialog.Builder(
+						this.getActivity());
+	
+				alert.setTitle("Post Comments");
+				alert.setMessage("Enter your comments");
+	
+				// Set an EditText view to get user input
+				final EditText input = new EditText(this.getActivity());
+				input.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+				input.setMaxLines(2);
+				alert.setView(input);
+	
+				alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int whichButton) {
+								String value = input.getText().toString();
+								// Do something with value!
+								ProgressDialog pDialog = ProgressDialog.show(ViewEventsTimelineFragment.this.getActivity(), "Posting comments","Please wait");
+								publishComments(pDialog, value);
+							}
+						});
+	
+				alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int whichButton) {
+								// Canceled.
+							}
+						});
+	
+				alert.show();
+			}
 			break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -147,8 +149,13 @@ public class ViewEventsTimelineFragment extends Fragment {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
 		lvEventTimeline = (ListView) getActivity().findViewById(R.id.lv_events_timeline);
-		ProgressDialog pDialog = ProgressDialog.show(ViewEventsTimelineFragment.this.getActivity(), "Retrieving comments","Please wait");
-		getComments(pDialog);
+		if(!CheckNetworkConnection.haveNetworkConnection(ViewEventsTimelineFragment.this.getActivity())){
+			
+		}
+		else{
+			ProgressDialog pDialog = ProgressDialog.show(ViewEventsTimelineFragment.this.getActivity(), "Retrieving comments","Please wait");
+			getComments(pDialog);
+		}
 
 	}
 
