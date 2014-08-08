@@ -28,6 +28,7 @@ import com.example.it3197_casestudy.model.Hobby;
 import com.example.it3197_casestudy.model.User;
 import com.example.it3197_casestudy.ui_logic.FeedbackArticleActivity;
 import com.example.it3197_casestudy.ui_logic.LoginActivity;
+import com.example.it3197_casestudy.ui_logic.MainActivity;
 import com.example.it3197_casestudy.ui_logic.MainLinkPage;
 import com.example.it3197_casestudy.util.MySharedPreferences;
 import com.example.it3197_casestudy.util.Settings;
@@ -149,7 +150,7 @@ implements Settings{
 				preferences.addPreferences("points", checkUser.getPoints());
 				
 				if(checkUser.getType().equals("User")){
-					Intent intent = new Intent(activity, MainLinkPage.class);
+					Intent intent = new Intent(activity, MainActivity.class);
 					intent.putExtra("nric", user.getNric());
 					intent.putExtra("user", checkUser);
 					System.out.println("Line 72: " + checkUser.getPoints());

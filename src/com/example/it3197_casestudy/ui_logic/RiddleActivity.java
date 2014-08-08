@@ -53,7 +53,7 @@ public class RiddleActivity extends FragmentActivity {
 			case R.id.action_create_riddle:
 				if(user.getPoints() >= 50) {
 					AlertDialog.Builder builder = new AlertDialog.Builder(RiddleActivity.this);
-					builder.setTitle("Points").setMessage("50 points will be deducted for the creation of riddle.");
+					builder.setTitle("Points").setMessage("50 points will be used for the creation of riddle.");
 					builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {							

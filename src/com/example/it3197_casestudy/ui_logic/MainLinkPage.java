@@ -58,7 +58,6 @@ public class MainLinkPage extends Activity {
 	Bundle data;
 	User user;
 	Intent intent;
-	Location polledLocation;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +78,7 @@ public class MainLinkPage extends Activity {
 		//page = (ViewFlipper) findViewById(R.id.flipper);
 		//animFlipInForeward = AnimationUtils.loadAnimation(this, R.anim.f)
 		
-		//startService();
+		startService();
 		GridImageList adapter = new GridImageList(MainLinkPage.this, title,
 				imageID);
 		GridView gv = (GridView) findViewById(R.id.gridview);
@@ -127,7 +126,7 @@ public class MainLinkPage extends Activity {
 	private BroadcastReceiver broadcastReceiver = new BroadcastReceiver(){
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			/*if(intent.getStringExtra("GPSstatus").equals("disabled")) {
+			if(intent.getStringExtra("GPSstatus").equals("disabled")) {
 				AlertDialog.Builder builder = new AlertDialog.Builder(MainLinkPage.this);
 				builder.setTitle("GPS disabled").setMessage("Enable GPS setting to earn points while travelling");
 				builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -143,7 +142,7 @@ public class MainLinkPage extends Activity {
 					}
 				});
 				builder.create().show();
-			}*/
+			}
 		}
 	};
 	
@@ -174,6 +173,7 @@ public class MainLinkPage extends Activity {
 		
 		if(id==R.id.action_settings){
 			Intent intent = new Intent(MainLinkPage.this, MainActivity.class);
+			intent.putExtra("user", user);
 			startActivity(intent);
 		}
 		

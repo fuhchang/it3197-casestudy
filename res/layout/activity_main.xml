@@ -57,6 +57,7 @@
 		android:layout_marginTop="5dp"
 		android:background="#FFFFFF" 
 		android:dividerHeight="7dp"
+		android:layout_marginBottom="7dp"
 	/>
 
         

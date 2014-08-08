@@ -18,6 +18,7 @@ import com.example.it3197_casestudy.model.Article;
 import com.example.it3197_casestudy.model.Combined;
 import com.example.it3197_casestudy.model.Event;
 import com.example.it3197_casestudy.model.Hobby;
+import com.example.it3197_casestudy.model.Riddle;
 import com.example.it3197_casestudy.util.Settings;
 
 public class MainPageAdapter extends ArrayAdapter<Combined> implements Settings{
@@ -25,16 +26,18 @@ public class MainPageAdapter extends ArrayAdapter<Combined> implements Settings{
 	private ArrayList<Article> articleArray = new ArrayList<Article>();
 	private ArrayList<Event> eventArray = new ArrayList<Event>();
 	private ArrayList<Hobby> hobbyArray = new ArrayList<Hobby>();
+	private ArrayList<Riddle> riddleArray = new ArrayList<Riddle>();
 	
 	private ArrayList<Combined> combinedArray = new ArrayList<Combined>();
 	
-	public MainPageAdapter(Context context, ArrayList<Article> articleList, ArrayList<Event> eventList, ArrayList<Hobby> hobbyList, ArrayList<Combined> combinedList) {
+	public MainPageAdapter(Context context, ArrayList<Article> articleList, ArrayList<Event> eventList, ArrayList<Hobby> hobbyList, ArrayList<Riddle> riddleList, ArrayList<Combined> combinedList) {
 		super(context, R.layout.main_page_adapter_layout, combinedList);
 		// TODO Auto-generated constructor stub
 		this.context = (Activity) context;
 		this.articleArray = articleList;
 		this.eventArray = eventList;
 		this.hobbyArray=hobbyList;
+		this.riddleArray=riddleList;
 		this.combinedArray=combinedList;
 	}
 	
@@ -116,9 +119,20 @@ public class MainPageAdapter extends ArrayAdapter<Combined> implements Settings{
 				
 				if(position==3){
 					txtType.setText(" Riddle: ");
-					txtTitle.setText("Riddle Title Here");
-					txtDate.setText("Date here");
-					txtDesc.setText("Latest riddle here");
+					txtTitle.setText(riddleArray.get(riddleArray.size()-1).getRiddleTitle());
+					int points = riddleArray.get(riddleArray.size()-1).getRiddlePoint();
+					if(points == 5)
+						txtDate.setText("Difficulty : EASY");
+					else if(points == 10)
+						txtDate.setText("Difficulty : MEDIUM");
+					else if(points == 20)
+						txtDate.setText("Difficulty : HARD");
+					
+					String content = riddleArray.get(riddleArray.size()-1).getRiddleContent();
+					if(content.length() > 100)
+						txtDesc.setText(content.substring(0, 99) + "...");
+					else
+						txtDesc.setText(content);
 					
 					iv.setImageResource(R.drawable.riddle_main2);
 				}

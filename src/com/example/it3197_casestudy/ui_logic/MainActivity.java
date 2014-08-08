@@ -9,13 +9,18 @@ import com.example.it3197_casestudy.R.id;
 import com.example.it3197_casestudy.R.layout;
 import com.example.it3197_casestudy.R.menu;
 import com.example.it3197_casestudy.controller.MainPageController;
+import com.example.it3197_casestudy.model.User;
+import com.example.it3197_casestudy.util.LocationService;
 import com.facebook.Session;
 
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -24,6 +29,11 @@ import android.widget.TextView;
 public class MainActivity extends Activity {
 
 	ListView list;
+	
+	Bundle data;
+	User user;
+	Intent intent;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -31,6 +41,9 @@ public class MainActivity extends Activity {
 		
 		getActionBar().setTitle("Home");
 		
+		data = getIntent().getExtras();
+		user = data.getParcelable("user");		
+		startService();
 		
 		TextView latest = (TextView)findViewById(R.id.current);
 		TextView latestDate = (TextView)findViewById(R.id.currentDateTime);
@@ -43,7 +56,7 @@ public class MainActivity extends Activity {
 		
 		list = (ListView) findViewById(R.id.mainListView);
 		//list.setBackgroundColor(Color.WHITE);
-		MainPageController mpc = new MainPageController(this, list);
+		MainPageController mpc = new MainPageController(this, list, user);
 		mpc.execute();
 	}
 
@@ -93,12 +106,18 @@ public class MainActivity extends Activity {
 		      alertDialog.show();
 		}
 		if(id==R.id.refresh){
-			MainPageController mpc = new MainPageController(this, list);
+			MainPageController mpc = new MainPageController(this, list, user);
 			mpc.execute();
 		}
 		
 		if(id==R.id.article_main){
 			Intent intent = new Intent(MainActivity.this, ArticleMainActivity.class);
+			startActivity(intent);
+		}
+		
+		if(id==R.id.profile){
+			Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+			intent.putExtra("user", user);
 			startActivity(intent);
 		}
 		return super.onOptionsItemSelected(item);
@@ -137,10 +156,46 @@ public class MainActivity extends Activity {
 	      });
 		    
 	      AlertDialog alertDialog = alertDialogBuilder.create();
-	      alertDialog.show();
+	      alertDialog.show();		
+	}
+	
+	private BroadcastReceiver broadcastReceiver = new BroadcastReceiver(){
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			/*if(intent.getStringExtra("GPSstatus").equals("disabled")) {
+				AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+				builder.setTitle("GPS disabled").setMessage("Enable GPS setting to earn points while travelling");
+				builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						Intent gpsOptionsIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);  
+						startActivity(gpsOptionsIntent);
+					}
+				});
+				builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+					}
+				});
+				builder.create().show();
+			}*/
+		}
+	};
+	
+	private void startService() {
+		intent = new Intent(this, LocationService.class);
+		intent.putExtra("user", user);
+		startService(intent);
 		
-		
-		
-		
+		registerReceiver(broadcastReceiver, new IntentFilter(LocationService.BROADCAST_ACTION));
+	}
+
+	@Override
+	protected void onDestroy() {
+		if(intent!=null){
+			unregisterReceiver(broadcastReceiver);
+			stopService(intent);
+		}
+		super.onDestroy();
 	}
 }

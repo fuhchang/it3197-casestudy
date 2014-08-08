@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -27,8 +28,11 @@ import com.example.it3197_casestudy.util.LocationService;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 public class ProfileActivity extends FragmentActivity {
 	TextView tv_username, tv_points, tv_address;
@@ -50,7 +54,7 @@ public class ProfileActivity extends FragmentActivity {
 		user = data.getParcelable("user");
 		
 		intent = new Intent(ProfileActivity.this, LocationService.class);
-		intent.putExtra("user", user);
+		//intent.putExtra("user", user);
 		
 		tv_username = (TextView) findViewById(R.id.tv_username);
 		tv_points = (TextView) findViewById(R.id.tv_points);
@@ -76,7 +80,7 @@ public class ProfileActivity extends FragmentActivity {
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		switch(item.getItemId()){
 		case R.id.action_heatmap:
-			location =  new LatLng(1.4327564, 103.83992660000001); 
+			//location =  new LatLng(1.4327564, 103.83992660000001); 
 			if(location == null) {
 				AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
 				builder.setTitle("Unable to get current location").setMessage("Please try again.");
@@ -95,9 +99,9 @@ public class ProfileActivity extends FragmentActivity {
 			}
 			break;
 	}
-	return super.onOptionsItemSelected(item);
+		return super.onOptionsItemSelected(item);
 	}
-	
+
 	private BroadcastReceiver broadcastReceiver = new BroadcastReceiver(){
 		@Override
 		public void onReceive(Context context, Intent intent) {
@@ -124,17 +128,23 @@ public class ProfileActivity extends FragmentActivity {
 		locationList = intent.getParcelableArrayListExtra("LocationList");
 		
 		map.clear();
-		map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 17));
-		for(int i = 0; i < locationList.size(); i++) {
-			map.addMarker(new MarkerOptions().position(locationList.get(i)));
-			
-			/*if(locationList.size() > 1 && i > 0) {
-				String url = makeURL(locationList.get(i-1).latitude, locationList.get(i-1).longitude, locationList.get(i).latitude, locationList.get(i).longitude);
-				JSONParser jParser = new JSONParser();
-				String json = jParser.getJSONFromUrl(url);
-				DrawPath drawPath = new DrawPath(intent, ProfileActivity.this, map, json);
-				drawPath.execute();
-			}*/
+		map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 18));
+		
+		PolylineOptions options = new PolylineOptions().width(5).color(Color.BLUE).geodesic(true);
+		Marker marker;
+		marker = map.addMarker(new MarkerOptions().position(locationList.get(0)).title("Start").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+		marker.showInfoWindow();
+		options.add(locationList.get(0));
+		for(int i = 1; i < locationList.size(); i++) {
+			if(i != locationList.size() - 1) {
+				map.addMarker(new MarkerOptions().position(locationList.get(i)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+			}
+			else {
+				Marker mark = map.addMarker(new MarkerOptions().position(locationList.get(i)).title("You are here"));
+				mark.showInfoWindow();
+			}
+			options.add(locationList.get(i));
+			map.addPolyline(options);
 		}
 		
 		// Temp

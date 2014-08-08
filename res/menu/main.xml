@@ -6,13 +6,6 @@
         android:showAsAction="never"
         android:title="Profile"/>
     
-    
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="Settings"/>
-    
      <item
         android:id="@+id/logout"
         android:orderInCategory="100"

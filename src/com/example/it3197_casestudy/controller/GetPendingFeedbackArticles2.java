@@ -238,7 +238,7 @@ public class GetPendingFeedbackArticles2 extends AsyncTask<Object, Object, Objec
         this.cancel(true);
 		new Handler(Looper.getMainLooper()).post(new Runnable() {
 	        public void run() {
-	            dialog.dismiss();
+	            //dialog.dismiss();
 	            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 	            builder.setTitle("Error in retrieving articles ");
 	            builder.setMessage("Unable to retrieve articles, check your connection.");

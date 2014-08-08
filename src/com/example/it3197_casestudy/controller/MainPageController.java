@@ -34,9 +34,12 @@ import com.example.it3197_casestudy.model.Article;
 import com.example.it3197_casestudy.model.Combined;
 import com.example.it3197_casestudy.model.Event;
 import com.example.it3197_casestudy.model.Hobby;
+import com.example.it3197_casestudy.model.Riddle;
+import com.example.it3197_casestudy.model.User;
 import com.example.it3197_casestudy.ui_logic.ArticleUserView;
 import com.example.it3197_casestudy.ui_logic.MainActivity;
 import com.example.it3197_casestudy.ui_logic.MainPageAdapter;
+import com.example.it3197_casestudy.ui_logic.RiddleActivity;
 import com.example.it3197_casestudy.ui_logic.SubmitArticle;
 import com.example.it3197_casestudy.ui_logic.ViewAllEventsActivity;
 import com.example.it3197_casestudy.ui_logic.ViewEventsActivity;
@@ -48,29 +51,32 @@ public class MainPageController extends AsyncTask<Object, Object, Object> implem
 	private ArrayList<Hobby> hobbyList;
 	private ArrayList<Event> eventList;
 	private ArrayList<Article> articleList;
+	private ArrayList<Riddle> riddleList;
 	private ArrayList<Combined> combinedList;
 	private MainActivity activity;
 	private ListView listView;
 
 	MainPageAdapter mpa;
+	User user;
 	
 	private ProgressDialog dialog;
 	
 	
-	public MainPageController(MainActivity activity, ListView listView){
+	public MainPageController(MainActivity activity, ListView listView, User user){
 		this.activity = activity;
 		this.listView = listView;
+		this.user = user;
 	}
 	
 	
 	@Override
 	protected void onPreExecute() {
 		eventList = new ArrayList<Event>();
-		hobbyList=new ArrayList<Hobby>();	
+		hobbyList = new ArrayList<Hobby>();	
 		articleList = new ArrayList<Article>();
+		riddleList = new ArrayList<Riddle>();
 		combinedList = new ArrayList<Combined>();
-		dialog = ProgressDialog.show(activity,
-				"Loading", "Please wait...", true);
+		dialog = ProgressDialog.show(activity, "Loading", "Please wait...", true);
 	}
 	
 	
@@ -84,11 +90,12 @@ public class MainPageController extends AsyncTask<Object, Object, Object> implem
 	protected void onPostExecute(Object result) {
 		parseJSONResponse((String) result);
 
-		Toast.makeText(activity, "EventList: " + String.valueOf(eventList.size()) , Toast.LENGTH_SHORT).show();
+		/*Toast.makeText(activity, "EventList: " + String.valueOf(eventList.size()) , Toast.LENGTH_SHORT).show();
 		Toast.makeText(activity, "ArtList: " + String.valueOf(articleList.size()) , Toast.LENGTH_SHORT).show();
 		Toast.makeText(activity, "HobbyList: " + String.valueOf(hobbyList.size()) , Toast.LENGTH_SHORT).show();
-		
-		mpa = new MainPageAdapter(activity,articleList, eventList, hobbyList, combinedList);
+		Toast.makeText(activity, "RiddleList: " + String.valueOf(riddleList.size()) , Toast.LENGTH_SHORT).show();
+		*/
+		mpa = new MainPageAdapter(activity,articleList, eventList, hobbyList, riddleList, combinedList);
 		listView.setAdapter(mpa);
 		listView.setOnItemClickListener(new OnItemClickListener(){
 
@@ -147,6 +154,12 @@ public class MainPageController extends AsyncTask<Object, Object, Object> implem
 					//Toast.makeText(activity, "Link to Article", Toast.LENGTH_SHORT).show();
 					
 				}
+				if(pos == 3){
+					// Intent to RiddleActivity
+					Intent intent = new Intent(activity, RiddleActivity.class);
+					intent.putExtra("user", user);
+					activity.startActivity(intent);
+				}
 			}
 		});
 		dialog.dismiss();
@@ -177,12 +190,15 @@ public class MainPageController extends AsyncTask<Object, Object, Object> implem
 		JSONArray art_array;
 		JSONArray event_array;
 		JSONArray hobby_array;
+		JSONArray riddle_array;
 		JSONObject artJson;
 		JSONObject eventJson;
 		JSONObject hobbyJson;
+		JSONObject riddleJson;
 		Article article;
 		Event event;
 		Hobby hobby;
+		Riddle riddle;
 		//Combined combined = new Combined();
 		try {
 			artJson = new JSONObject(responseBody);
@@ -243,6 +259,22 @@ public class MainPageController extends AsyncTask<Object, Object, Object> implem
 				
 				
 				hobbyList.add(hobby);
+			}
+			
+			riddleJson = new JSONObject(responseBody);
+			System.out.println(responseBody);
+			riddle_array =riddleJson.getJSONArray("riddleList");
+			for(int i =0; i<riddle_array.length();i++){
+				JSONObject data = new JSONObject (riddle_array.getString(i));
+				riddle = new Riddle();
+				riddle.setRiddleID(data.getInt("riddleID"));
+				JSONObject userObj = data.getJSONObject("user");
+				riddle.setUser(new User(userObj.getString("nric"), userObj.getString("name"), userObj.getString("type"), userObj.getString("password"), userObj.getString("contactNo"), userObj.getString("address"), userObj.getString("email"), userObj.getInt("active"), userObj.getInt("points")));
+				riddle.setRiddleTitle(data.getString("riddleTitle"));
+				riddle.setRiddleContent(data.getString("riddleContent"));
+				riddle.setRiddleStatus(data.getString("riddleStatus"));
+				riddle.setRiddlePoint(data.getInt("riddlePoint"));				
+				riddleList.add(riddle);
 			}
 			
 			
