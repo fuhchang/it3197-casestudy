@@ -100,6 +100,7 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 		int internalDBSize = controller.getAllEvent().size();
 		int internalLocationDBSize = locationDetailsController.getAllEventLocationDetails().size();
 		if(internalDBSize != eventArrList.size()){
+			//controller.deleteAllEvents();
 			for(int i=0;i<eventArrList.size();i++){
 				eventList[i] = eventArrList.get(i);
 				controller.insertEvent(eventArrList.get(i));
@@ -111,6 +112,7 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 			}
 		}
 		if(internalLocationDBSize != eventLocationArrList.size()){
+			//locationDetailsController.deleteAllEventLocationDetails();
 			for(int i=0;i<eventLocationArrList.size();i++){	
 				locationDetailsController.insertEventLocationDetail(eventLocationArrList.get(i));
 			}
@@ -202,7 +204,7 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 			System.out.println(responseBody);
 			data_array = json.getJSONArray("eventInfo");
 			data_array2 = json.getJSONArray("eventLocationInfo");
-			data_array3 = json.getJSONArray("eventParticipantsInfo");
+
 			for (int i = 0; i < data_array.length(); i++) {
 				JSONObject dataJob = new JSONObject(data_array.getString(i));
 				int active = dataJob.getInt("active");
@@ -235,13 +237,17 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 				eventLocation.setEventLocationLng(dataJob.getDouble("eventLocationLng"));
 				eventLocationArrList.add(eventLocation);
 			}
-			for(int i=0;i<data_array3.length();i++){
-				JSONObject dataJob = new JSONObject(data_array3.getString(i));
-				System.out.println("Job 3: " + dataJob);
-				eventParticipants = new EventParticipants();
-				eventParticipants.setEventID(dataJob.getInt("eventID"));
-				eventParticipants.setUserNRIC(dataJob.getString("userNRIC"));
-				eventParticipantsArrList.add(eventParticipants);
+
+			if(json.has("eventParticipantsInfo")){
+				data_array3 = json.getJSONArray("eventParticipantsInfo");
+				for(int i=0;i<data_array3.length();i++){
+					JSONObject dataJob = new JSONObject(data_array3.getString(i));
+					System.out.println("Job 3: " + dataJob);
+					eventParticipants = new EventParticipants();
+					eventParticipants.setEventID(dataJob.getInt("eventID"));
+					eventParticipants.setUserNRIC(dataJob.getString("userNRIC"));
+					eventParticipantsArrList.add(eventParticipants);
+				}
 			}
 		} catch (Exception e) {
 			errorOnExecuting();
