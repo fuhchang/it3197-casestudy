@@ -6,17 +6,10 @@
     android:background="@color/hexDEDEDE" 
     android:id="@+id/swipe"> 
     
-    <ListView
+    <ExpandableListView
         android:id="@+id/lv_view_all_events"
         android:layout_height="fill_parent"
         android:layout_width="fill_parent"
-       	android:paddingBottom="5dp"
-        android:paddingTop="5dp"
-       	android:scrollbars="none"
-        android:divider="@android:color/transparent"
-  		android:dividerHeight="15dp"
-       	android:paddingLeft="5dp"
-        android:paddingRight="5dp" 
         />
     
 </android.support.v4.widget.SwipeRefreshLayout>

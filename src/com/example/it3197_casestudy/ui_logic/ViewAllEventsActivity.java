@@ -1,11 +1,29 @@
 package com.example.it3197_casestudy.ui_logic;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.controller.GetAllEvents;
@@ -20,47 +38,17 @@ import com.example.it3197_casestudy.mysqlite.EventParticipantsSQLController;
 import com.example.it3197_casestudy.mysqlite.EventSQLController;
 import com.example.it3197_casestudy.mysqlite.SavedEventSQLController;
 import com.example.it3197_casestudy.util.CheckNetworkConnection;
-import com.example.it3197_casestudy.util.EventListAdapter;
+import com.example.it3197_casestudy.util.EventExpandedListAdapter;
 import com.example.it3197_casestudy.util.MySharedPreferences;
-import com.example.it3197_casestudy.util.PullToRefreshListView;
-import com.example.it3197_casestudy.util.PullToRefreshListView.OnRefreshListener;
 import com.example.it3197_casestudy.util.Settings;
 import com.google.android.gms.location.Geofence;
 
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.Bundle;
-import android.os.Handler;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.FragmentManager;
-import android.app.ListActivity;
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Typeface;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
-import android.widget.TextView;
-
 public class ViewAllEventsActivity extends Activity implements Settings{
-	ListView lvViewAllEvents;
+	ExpandableListView lvViewAllEvents;
 	SwipeRefreshLayout swipeLayout;
 	ProgressDialog dialog;
-
+	MenuItem menuItemCreate;
+	
 	private SimpleGeofenceStore mPrefs;
 	private GeofenceRequester mGeofenceRequester;
 	List<Geofence> mCurrentGeofences;
@@ -82,7 +70,7 @@ public class ViewAllEventsActivity extends Activity implements Settings{
 		mGeofenceRequester = new GeofenceRequester(this);
 		mCurrentGeofences = new ArrayList<Geofence>();
 		
-		lvViewAllEvents = (ListView) findViewById(R.id.lv_view_all_events);
+		lvViewAllEvents = (ExpandableListView) findViewById(R.id.lv_view_all_events);
 		
 		swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe);
 		swipeLayout.setColorScheme(android.R.color.holo_blue_bright,android.R.color.holo_green_light,android.R.color.holo_orange_light,android.R.color.holo_red_light);
@@ -116,6 +104,7 @@ public class ViewAllEventsActivity extends Activity implements Settings{
 					swipeLayout.setEnabled(false);
 			}
 		});
+
 		getAllEvents();
 	}
 
@@ -123,23 +112,20 @@ public class ViewAllEventsActivity extends Activity implements Settings{
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.view_all_events_menu, menu);
-		if(!CheckNetworkConnection.haveNetworkConnection(ViewAllEventsActivity.this)){
-			return false;
-		}
-		else{
-			return true;
-		}
+		return true;
 	}
 
 	@Override
-	protected void onStart() {
+	public boolean onPrepareOptionsMenu(Menu menu) {
 		// TODO Auto-generated method stub
-		super.onStart();
-		/*if(!CheckNetworkConnection.haveNetworkConnection(ViewAllEventsActivity.this)){
-			return false;
+		menuItemCreate = menu.findItem(R.id.create_event);
+		if(!CheckNetworkConnection.haveNetworkConnection(ViewAllEventsActivity.this)){
+			menuItemCreate.setVisible(false);
+		}
 		else{
-			return true;
-		}*/
+			menuItemCreate.setVisible(true);
+		}
+		return super.onPrepareOptionsMenu(menu);
 	}
 
 	@Override
@@ -178,11 +164,13 @@ public class ViewAllEventsActivity extends Activity implements Settings{
 		EventSQLController controller = new EventSQLController(ViewAllEventsActivity.this);
 		EventLocationDetailSQLController locationDetailsController = new EventLocationDetailSQLController(ViewAllEventsActivity.this);
 		EventParticipantsSQLController participantsController = new EventParticipantsSQLController(ViewAllEventsActivity.this);
+		SavedEventSQLController savedEventController = new SavedEventSQLController(ViewAllEventsActivity.this);
 		
 		final ArrayList<Event> eventArrList = controller.getAllEvent();
 		final ArrayList<EventLocationDetail> eventLocationArrList = locationDetailsController.getAllEventLocationDetails() ;
 		final ArrayList<EventParticipants> eventParticipantsArrList = participantsController.getAllEventParticipants();
-		
+        ArrayList<Event> savedEventArrList = savedEventController.getAllSavedEvent();
+        
 		Event[] eventList = new Event[eventArrList.size()];
 		for(int i=0;i<eventArrList.size();i++){
 			eventList[i] = eventArrList.get(i);
@@ -227,11 +215,33 @@ public class ViewAllEventsActivity extends Activity implements Settings{
 
 			MySharedPreferences p = new MySharedPreferences(ViewAllEventsActivity.this);
 			final String nric = p.getPreferences("nric", "");
-			EventListAdapter adapter = new EventListAdapter(ViewAllEventsActivity.this,eventList);
+			ArrayList<String> listDataHeader = new ArrayList<String>();
+			HashMap<String, List<Event>> listDataChild = new HashMap<String, List<Event>>();
+	 
+	        // Adding child data
+	        listDataHeader.add("Saved Events");
+	        listDataHeader.add("Upcoming Events");
+	 
+	        // Adding child data
+	        List<Event> savedEvents = new ArrayList<Event>();
+	        for(int i=0;i<savedEventArrList.size();i++){
+	        	savedEvents.add(savedEventArrList.get(i));
+	        }
+	 
+	        List<Event> upcomingEvents = new ArrayList<Event>();
+	        for(int i=0;i<eventArrList.size();i++){
+	        	upcomingEvents.add(eventArrList.get(i));
+	        }
+	 
+	        listDataChild.put(listDataHeader.get(0), savedEvents); // Header, Child data
+	        listDataChild.put(listDataHeader.get(1), upcomingEvents);
+	        
+			EventExpandedListAdapter adapter = new EventExpandedListAdapter(ViewAllEventsActivity.this,listDataHeader, listDataChild);
 			lvViewAllEvents.setAdapter(adapter);
-			lvViewAllEvents.setOnItemClickListener(new OnItemClickListener() {
+			
+			lvViewAllEvents.setOnChildClickListener(new OnChildClickListener() {
 				@Override
-				public void onItemClick(AdapterView<?> parent, View view, int position,long arg3) {
+				public boolean onChildClick(ExpandableListView parent, View view, int groupPosition, int childPosition, long id) {
 			        Intent intent = new Intent(ViewAllEventsActivity.this,ViewEventsActivity.class);
 			        intent.putExtra("eventID", view.getId());
 			        Event event = new Event();
@@ -267,6 +277,7 @@ public class ViewAllEventsActivity extends Activity implements Settings{
 					intent.putExtra("lng", eventLocationDetails.getEventLocationLng());
 					ViewAllEventsActivity.this.startActivity(intent);
 					ViewAllEventsActivity.this.finish();
+					return false;
 				}
 			});
 		}

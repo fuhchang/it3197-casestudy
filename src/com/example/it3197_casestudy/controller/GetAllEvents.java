@@ -3,6 +3,7 @@ package com.example.it3197_casestudy.controller;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.http.NameValuePair;
@@ -30,9 +31,11 @@ import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ExpandableListView.OnChildClickListener;
 
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.geofencing.GeofenceRequester;
@@ -44,10 +47,11 @@ import com.example.it3197_casestudy.model.EventParticipants;
 import com.example.it3197_casestudy.mysqlite.EventLocationDetailSQLController;
 import com.example.it3197_casestudy.mysqlite.EventParticipantsSQLController;
 import com.example.it3197_casestudy.mysqlite.EventSQLController;
+import com.example.it3197_casestudy.mysqlite.SavedEventSQLController;
 import com.example.it3197_casestudy.ui_logic.MainLinkPage;
 import com.example.it3197_casestudy.ui_logic.ViewAllEventsActivity;
 import com.example.it3197_casestudy.ui_logic.ViewEventsActivity;
-import com.example.it3197_casestudy.util.EventListAdapter;
+import com.example.it3197_casestudy.util.EventExpandedListAdapter;
 import com.example.it3197_casestudy.util.MySharedPreferences;
 import com.example.it3197_casestudy.util.PullToRefreshListView;
 import com.example.it3197_casestudy.util.Settings;
@@ -59,7 +63,7 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 	private ArrayList<EventParticipants> eventParticipantsArrList;
 	private Event[] eventList;
 	private ViewAllEventsActivity activity;
-	private ListView lvViewAllEvents;
+	private ExpandableListView lvViewAllEvents;
 	private SimpleGeofenceStore mPrefs;
 	private GeofenceRequester mGeofenceRequester;
 	List<Geofence> mCurrentGeofences;
@@ -68,7 +72,7 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 	private MySharedPreferences p;
 	private boolean checkParticipantsInfo = false;
 	
-	public GetAllEvents(ViewAllEventsActivity activity,ListView lvViewAllEvents){
+	public GetAllEvents(ViewAllEventsActivity activity,ExpandableListView lvViewAllEvents){
 		this.activity = activity;
 		this.lvViewAllEvents = lvViewAllEvents;
 	}
@@ -100,6 +104,7 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 		EventSQLController controller = new EventSQLController(activity);
 		EventLocationDetailSQLController locationDetailsController = new EventLocationDetailSQLController(activity);
 		EventParticipantsSQLController participantsController = new EventParticipantsSQLController(activity);
+		SavedEventSQLController savedEventController = new SavedEventSQLController(activity);
 		
 		controller.deleteAllEvents();
 		for(int i=0;i<eventArrList.size();i++){
@@ -135,11 +140,35 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 	            // Notify user that previous request hasn't finished.
 			Toast.makeText(activity, R.string.add_geofences_already_requested_error, Toast.LENGTH_LONG).show();
 		}
-		EventListAdapter adapter = new EventListAdapter(activity,eventList);
+		
+		ArrayList<String> listDataHeader = new ArrayList<String>();
+		HashMap<String, List<Event>> listDataChild = new HashMap<String, List<Event>>();
+ 
+        // Adding child data
+        listDataHeader.add("Saved Events");
+        listDataHeader.add("Upcoming Events");
+ 
+        // Adding child data
+        List<Event> savedEvents = new ArrayList<Event>();
+        ArrayList<Event> savedEventArrList = savedEventController.getAllSavedEvent();
+        for(int i=0;i<savedEventArrList.size();i++){
+        	savedEvents.add(savedEventArrList.get(i));
+        }
+ 
+        List<Event> upcomingEvents = new ArrayList<Event>();
+        for(int i=0;i<eventArrList.size();i++){
+        	upcomingEvents.add(eventArrList.get(i));
+        }
+ 
+        listDataChild.put(listDataHeader.get(0), savedEvents); // Header, Child data
+        listDataChild.put(listDataHeader.get(1), upcomingEvents);
+        
+		EventExpandedListAdapter adapter = new EventExpandedListAdapter(activity,listDataHeader, listDataChild);
 		lvViewAllEvents.setAdapter(adapter);
-		lvViewAllEvents.setOnItemClickListener(new OnItemClickListener() {
+		
+		lvViewAllEvents.setOnChildClickListener(new OnChildClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position,long arg3) {
+			public boolean onChildClick(ExpandableListView parent, View view, int groupPosition, int childPosition, long id) {
 		        Intent intent = new Intent(activity,ViewEventsActivity.class);
 		        intent.putExtra("eventID", view.getId());
 		        Event event = new Event();
@@ -173,8 +202,9 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 				intent.putExtra("joined", joined);
 				intent.putExtra("lat", eventLocationDetails.getEventLocationLat());
 				intent.putExtra("lng", eventLocationDetails.getEventLocationLng());
-		        activity.startActivity(intent);
-		        activity.finish();
+				activity.startActivity(intent);
+				activity.finish();
+				return false;
 			}
 		});
 		dialog.dismiss();
