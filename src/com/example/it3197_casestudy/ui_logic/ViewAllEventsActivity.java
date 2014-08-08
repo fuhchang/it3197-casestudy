@@ -117,14 +117,29 @@ public class ViewAllEventsActivity extends Activity implements Settings{
 			}
 		});
 		getAllEvents();
-		executeGeofencing();
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.view_all_events_menu, menu);
-		return true;
+		if(!CheckNetworkConnection.haveNetworkConnection(ViewAllEventsActivity.this)){
+			return false;
+		}
+		else{
+			return true;
+		}
+	}
+
+	@Override
+	protected void onStart() {
+		// TODO Auto-generated method stub
+		super.onStart();
+		/*if(!CheckNetworkConnection.haveNetworkConnection(ViewAllEventsActivity.this)){
+			return false;
+		else{
+			return true;
+		}*/
 	}
 
 	@Override
@@ -157,10 +172,6 @@ public class ViewAllEventsActivity extends Activity implements Settings{
 			dialog = ProgressDialog.show(ViewAllEventsActivity.this,"Retrieving events", "Please wait...", true);
 			getAllEventOffline();
 		}
-	}
-	
-	public void executeGeofencing(){
-		
 	}
 	
 	public void getAllEventOffline(){
@@ -224,6 +235,7 @@ public class ViewAllEventsActivity extends Activity implements Settings{
 			        Intent intent = new Intent(ViewAllEventsActivity.this,ViewEventsActivity.class);
 			        intent.putExtra("eventID", view.getId());
 			        Event event = new Event();
+			        EventLocationDetail eventLocationDetails = new EventLocationDetail();
 			        boolean joined = false;
 			        for(int i=0;i<eventArrList.size();i++){
 			        	if(eventArrList.get(i).getEventID() == view.getId()){
@@ -233,6 +245,11 @@ public class ViewAllEventsActivity extends Activity implements Settings{
 					        		joined = true;
 					        	}
 					        }
+			        	}
+			        }
+			        for(int i=0;i<eventLocationArrList.size();i++){
+			        	if(event.getEventID() == eventLocationArrList.get(i).getEventID()){
+			        		eventLocationDetails = eventLocationArrList.get(i);
 			        	}
 			        }
 					intent.putExtra("eventAdminNRIC", event.getEventAdminNRIC());
@@ -246,6 +263,8 @@ public class ViewAllEventsActivity extends Activity implements Settings{
 					intent.putExtra("active", event.getActive());
 					intent.putExtra("eventFBPostID", event.getEventFBPostID());
 					intent.putExtra("joined", joined);
+					intent.putExtra("lat", eventLocationDetails.getEventLocationLat());
+					intent.putExtra("lng", eventLocationDetails.getEventLocationLng());
 					ViewAllEventsActivity.this.startActivity(intent);
 					ViewAllEventsActivity.this.finish();
 				}

@@ -143,6 +143,7 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 		        Intent intent = new Intent(activity,ViewEventsActivity.class);
 		        intent.putExtra("eventID", view.getId());
 		        Event event = new Event();
+		        EventLocationDetail eventLocationDetails = new EventLocationDetail();
 		        boolean joined = false;
 		        for(int i=0;i<eventArrList.size();i++){
 		        	if(eventArrList.get(i).getEventID() == view.getId()){
@@ -152,6 +153,11 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 				        		joined = true;
 				        	}
 				        }
+		        	}
+		        }
+		        for(int i=0;i<eventLocationArrList.size();i++){
+		        	if(event.getEventID() == eventLocationArrList.get(i).getEventID()){
+		        		eventLocationDetails = eventLocationArrList.get(i);
 		        	}
 		        }
 				intent.putExtra("eventAdminNRIC", event.getEventAdminNRIC());
@@ -165,6 +171,8 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 				intent.putExtra("active", event.getActive());
 				intent.putExtra("eventFBPostID", event.getEventFBPostID());
 				intent.putExtra("joined", joined);
+				intent.putExtra("lat", eventLocationDetails.getEventLocationLat());
+				intent.putExtra("lng", eventLocationDetails.getEventLocationLng());
 		        activity.startActivity(intent);
 		        activity.finish();
 			}

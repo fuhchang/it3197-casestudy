@@ -18,6 +18,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.location.Location;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -49,6 +50,8 @@ import com.example.it3197_casestudy.model.Event;
 import com.example.it3197_casestudy.model.EventParticipants;
 import com.example.it3197_casestudy.util.CheckNetworkConnection;
 import com.example.it3197_casestudy.util.FriendPickerApplication;
+import com.example.it3197_casestudy.util.MyLocation;
+import com.example.it3197_casestudy.util.MyLocation.LocationResult;
 import com.example.it3197_casestudy.util.MySharedPreferences;
 import com.example.it3197_casestudy.util.Settings;
 import com.facebook.AppEventsLogger;
@@ -90,9 +93,13 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 	MenuItem menuItemJoin;
 	MenuItem menuItemUnjoin;
 	MenuItem menuItemUpdate;
+	MenuItem menuItemShare;
 	private String pictureURL;
 	private UiLifecycleHelper uiHelper;
 
+	private double lat,lng;
+	private Location center;
+	
 	ProgressDialog dialog;
 	private static final List<String> PERMISSIONS = Arrays.asList("publish_actions");
 	private static final String PENDING_PUBLISH_KEY = "pendingPublishReauthorization";
@@ -181,19 +188,28 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 		menuItemJoin = menu.findItem(R.id.join);
 		menuItemUnjoin = menu.findItem(R.id.unjoin);
 		menuItemUpdate = menu.findItem(R.id.update);
+		menuItemShare = menu.findItem(R.id.share);
 		Bundle bundle = getArguments();
 		joined = bundle.getBoolean("joined");
 		System.out.println("Joined: " + joined);
-		if(!joined){
-			menuItemJoin.setVisible(true);
+		if(!CheckNetworkConnection.haveNetworkConnection(ViewEventsDetailsFragment.this.getActivity())){
+			menuItemJoin.setVisible(false);
 			menuItemUnjoin.setVisible(false);
+			menuItemUpdate.setVisible(false);
+			menuItemShare.setVisible(false);
 		}
 		else{
-			menuItemJoin.setVisible(false);
-			menuItemUnjoin.setVisible(true);
-		}
-		if(!nric.equals(event.getEventAdminNRIC())){
-			menuItemUpdate.setVisible(false);
+			if(!joined){
+				menuItemJoin.setVisible(true);
+				menuItemUnjoin.setVisible(false);
+			}
+			else{
+				menuItemJoin.setVisible(false);
+				menuItemUnjoin.setVisible(true);
+			}
+			if(!nric.equals(event.getEventAdminNRIC())){
+				menuItemUpdate.setVisible(false);
+			}
 		}
 	}
 
@@ -349,6 +365,7 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 		MySharedPreferences preferences = new MySharedPreferences(this.getActivity());
 		nric = preferences.getPreferences("nric","");
 
+		
 		return rootView;
 	}
 
@@ -366,6 +383,7 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 		tvEventDateTimeTo = (TextView) getActivity().findViewById(R.id.tv_event_date_time_to);
 		tvEventOccur = (TextView) getActivity().findViewById(R.id.tv_event_occur);
 		tvEventNoOfParticipants = (TextView) getActivity().findViewById(R.id.tv_event_no_of_participants);
+
 		btnCheckIn = (Button) getActivity().findViewById(R.id.btn_check_in);
 		btnCheckIn.setOnClickListener(new OnClickListener(){
 			@Override
@@ -384,21 +402,36 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 				}
 			}
 		});
-		
+
+		if(!CheckNetworkConnection.haveNetworkConnection(ViewEventsDetailsFragment.this.getActivity())){
+			btnCheckIn.setVisibility(View.GONE);
+		}
+		else{
+			btnCheckIn.setVisibility(View.VISIBLE);
+		}
 		ivEventPoster = (ImageView) getActivity().findViewById(R.id.iv_event_poster);
 
-        Calendar todayDate = Calendar.getInstance();
-        Calendar eventDateTimeFrom = Calendar.getInstance();
-        eventDateTimeFrom.setTime(event.getEventDateTimeFrom());
-        
-        long minutesDifference = eventDateTimeFrom.getTimeInMillis() - todayDate.getTimeInMillis();
-        System.out.println(minutesDifference);
-        if(minutesDifference > 600000){
-        	btnCheckIn.setVisibility(View.GONE);
-        }
-        else{
-        	btnCheckIn.setVisibility(View.VISIBLE);
-        }
+		LocationResult locationResult = new LocationResult(){
+		    @Override
+		    public void gotLocation(Location location){
+		        //Got the location!
+		    	//Toast.makeText(ViewEventsDetailsFragment.this.getActivity(), location.getLatitude() + "," + location.getLongitude(), Toast.LENGTH_LONG).show();
+		    	center = new Location(location);
+				float[] results = new float[1];
+				Location.distanceBetween(center.getLatitude(), center.getLongitude(), lat, lng, results);
+				float distanceInMeters = results[0];
+				boolean isWithin100m = distanceInMeters < 100;
+		        if(!isWithin100m){
+		        	btnCheckIn.setVisibility(View.GONE);
+		        }
+		        else{
+		        	btnCheckIn.setVisibility(View.VISIBLE);
+		        }
+		    }
+		};
+		MyLocation myLocation = new MyLocation();
+		myLocation.getLocation(ViewEventsDetailsFragment.this.getActivity(), locationResult);
+		
 
 		tvEventID.setText("Event No: #" + event.getEventID());
 		tvEventName.setText(event.getEventName());

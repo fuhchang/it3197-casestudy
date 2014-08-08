@@ -40,6 +40,8 @@ public class ViewEventsActivity extends FragmentActivity implements ActionBar.Ta
 
 	private Event event = new Event();
 	private boolean joined;
+	private double lat;
+	private double lng;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -72,8 +74,11 @@ public class ViewEventsActivity extends FragmentActivity implements ActionBar.Ta
 			event.setActive(savedInstanceState.getInt("active"));
 			event.setEventFBPostID(savedInstanceState.getString("eventFBPostID"));
 			joined = savedInstanceState.getBoolean("joined");
+
+			lat = savedInstanceState.getDouble("lat");
+			lng = savedInstanceState.getDouble("lng");
 		}
-		mViewEventsPagerAdapter = new ViewEventsAdapter(getSupportFragmentManager(),event,joined);
+		mViewEventsPagerAdapter = new ViewEventsAdapter(getSupportFragmentManager(),event,joined,lat,lng);
 
 		// Set up the ViewPager with the sections adapter.
 		mViewPager = (ViewPager) findViewById(R.id.pager);

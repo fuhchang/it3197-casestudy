@@ -84,6 +84,12 @@ public class ViewEventsTimelineFragment extends Fragment {
 		super.onCreateOptionsMenu(menu, inflater);
 		inflater.inflate(R.menu.view_events_timeline_fragment_menu, menu);
 		menuItemPost = menu.findItem(R.id.post_comments);
+		if(!CheckNetworkConnection.haveNetworkConnection(ViewEventsTimelineFragment.this.getActivity())){
+			menuItemPost.setVisible(false);
+		}
+		else{
+			menuItemPost.setVisible(true);
+		}
 	}
 
 	@Override
