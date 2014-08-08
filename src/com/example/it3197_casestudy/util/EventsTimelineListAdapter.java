@@ -18,6 +18,7 @@ import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.model.Event;
 import com.example.it3197_casestudy.mysqlite.EventSQLController;
 import com.example.it3197_casestudy.mysqlite.SavedEventSQLController;
+import com.example.it3197_casestudy.ui_logic.ViewEventsTimelineFragment;
 
 public class EventsTimelineListAdapter  extends ArrayAdapter<String[]> implements Settings{
 	private TextView eventTimelineName, eventTimelineTime,eventTimelineComments;
@@ -41,7 +42,12 @@ public class EventsTimelineListAdapter  extends ArrayAdapter<String[]> implement
 		eventTimelineTime = (TextView) rowView.findViewById(R.id.tv_event_timeline_time);
 		Date timeCommented = null;
 		try{
-			timeCommented = fbDateTimeFormatter.parse(eventTimelineList[position][1]);
+			if(CheckNetworkConnection.haveNetworkConnection(context)){
+				timeCommented = fbDateTimeFormatter.parse(eventTimelineList[position][1]);
+			}
+			else{
+				timeCommented = dateTimeFormatter.parse(eventTimelineList[position][1]);
+			}
 		}
 		catch(Exception e){
 			e.printStackTrace();

@@ -1,8 +1,11 @@
 package com.example.it3197_casestudy.ui_logic;
 
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -36,8 +39,11 @@ import com.example.it3197_casestudy.controller.GetImageFromFacebook;
 import com.example.it3197_casestudy.controller.JoinEvent;
 import com.example.it3197_casestudy.controller.UnjoinEvent;
 import com.example.it3197_casestudy.model.EventParticipants;
+import com.example.it3197_casestudy.model.FBComments;
+import com.example.it3197_casestudy.mysqlite.FBCommentsSQLController;
 import com.example.it3197_casestudy.util.CheckNetworkConnection;
 import com.example.it3197_casestudy.util.EventsTimelineListAdapter;
+import com.example.it3197_casestudy.util.Settings;
 import com.facebook.FacebookException;
 import com.facebook.FacebookRequestError;
 import com.facebook.HttpMethod;
@@ -55,7 +61,7 @@ import com.facebook.widget.WebDialog.OnCompleteListener;
  * A dummy fragment representing a section of the app, but that simply displays
  * dummy text.
  */
-public class ViewEventsTimelineFragment extends Fragment {
+public class ViewEventsTimelineFragment extends Fragment implements Settings{
 	private ListView lvEventTimeline;
 	private UiLifecycleHelper uiHelper;
 	private MenuItem menuItemPost;
@@ -167,15 +173,25 @@ public class ViewEventsTimelineFragment extends Fragment {
 		super.onActivityCreated(savedInstanceState);
 		lvEventTimeline = (ListView) getActivity().findViewById(R.id.lv_events_timeline);
 		if(!CheckNetworkConnection.haveNetworkConnection(ViewEventsTimelineFragment.this.getActivity())){
-			AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
-			builder.setTitle("Unable to retrieve comment");
-			builder.setMessage("Please try again later or contact the event organizer.");
-			builder.setPositiveButton("OK", null);
-			builder.create().show();
+			FBCommentsSQLController controller = new FBCommentsSQLController(ViewEventsTimelineFragment.this.getActivity());
+			
+			ArrayList<FBComments> fbCommentsList = controller.getAllFBComments();
+
+			String[][] timelineList = new String[fbCommentsList.size()][3]; 
+			for(int i=0;i<fbCommentsList.size();i++){
+				String comments = fbCommentsList.get(i).getComment();
+				String name = fbCommentsList.get(i).getName();
+				String time = dateTimeFormatter.format(fbCommentsList.get(i).getDateTimeMade());
+				timelineList[i][0] = name;
+				timelineList[i][1] = time;
+				timelineList[i][2] = comments;
+			}
+			EventsTimelineListAdapter adapter = new EventsTimelineListAdapter(ViewEventsTimelineFragment.this.getActivity(),timelineList);
+			lvEventTimeline.setAdapter(adapter);
 		}			
 		else if(eventFBPostID.equals("0")){
 			AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
-			builder.setTitle("Unable to post comment");
+			builder.setTitle("Unable to retrieve comment");
 			builder.setMessage("Please try again later or contact the event organizer.");
 			builder.setPositiveButton("OK", null);
 			builder.create().show();
@@ -274,6 +290,9 @@ public class ViewEventsTimelineFragment extends Fragment {
 							public void onCompleted(Response response) {
 								try {
 									JSONArray data = response.getGraphObject().getInnerJSONObject().getJSONArray("data");
+									FBCommentsSQLController controller = new FBCommentsSQLController(ViewEventsTimelineFragment.this.getActivity());
+									
+									controller.deleteAllFBComments();
 									String[][] timelineList = new String[data.length()][3]; 
 									for(int i=0;i<data.length();i++){
 										String comments = data.getJSONObject(i).getString("message");
@@ -282,6 +301,14 @@ public class ViewEventsTimelineFragment extends Fragment {
 										timelineList[i][0] = name;
 										timelineList[i][1] = time;
 										timelineList[i][2] = comments;
+										Date timeX;
+										try {
+											timeX = fbDateTimeFormatter.parse(time);
+											controller.insertComments(new FBComments(eventFBPostID,name,comments,timeX));
+										} catch (ParseException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
 									}
 									
 									EventsTimelineListAdapter adapter = new EventsTimelineListAdapter(ViewEventsTimelineFragment.this.getActivity(),timelineList);

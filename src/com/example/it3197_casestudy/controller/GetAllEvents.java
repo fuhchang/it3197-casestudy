@@ -106,19 +106,25 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 		EventParticipantsSQLController participantsController = new EventParticipantsSQLController(activity);
 		SavedEventSQLController savedEventController = new SavedEventSQLController(activity);
 		
-		controller.deleteAllEvents();
+		if(eventArrList.size() > 0){
+			controller.deleteAllEvents();
+		}
 		for(int i=0;i<eventArrList.size();i++){
 			eventList[i] = eventArrList.get(i);
 			controller.insertEvent(eventArrList.get(i));
 		}
 		
-		locationDetailsController.deleteAllEventLocationDetails();
+		if(eventLocationArrList.size() > 0){
+			locationDetailsController.deleteAllEventLocationDetails();
+		}
 		for(int i=0;i<eventLocationArrList.size();i++){	
 			locationDetailsController.insertEventLocationDetail(eventLocationArrList.get(i));
 		}
 		
 		if(checkParticipantsInfo){
-			participantsController.deleteAllEventParticipants();
+			if(eventParticipantsArrList.size() > 0){
+				participantsController.deleteAllEventParticipants();
+			}
 			for(int i=0;i<eventParticipantsArrList.size();i++){	
 				participantsController.insertEventParticipant(eventParticipantsArrList.get(i));
 			}

@@ -13,10 +13,13 @@ public class mySqLiteController {
 	private static final String database_name = "community_outreach";
 	private static final String database_article = "article";
 	private static final String database_comments = "comments";
+	
 	private static final String database_event = "event";
 	private static final String database_user_saved_event = "user_saved_event";
 	private static final String database_event_location_details = "event_location_details";
 	private static final String database_particpants = "event_Particpant";
+	private static final String database_fb_comments = "event_timeline";
+	
 	private static final String database_groupmember = "hobbies_group_members";
 	private static final String database_post = "post";
 	private static final String database_user = "user";
@@ -60,6 +63,9 @@ public class mySqLiteController {
 			db.execSQL("CREATE TABLE "
 					+ database_particpants
 					+ "(eventID INTEGER PRIMARY KEY, userNRIC TEXT, dateTImeJoined DATETIME , checkIn INTEGER)");
+			db.execSQL("CREATE TABLE "
+					+ database_fb_comments
+					+ "(fbPostID TEXT PRIMARY KEY, name TEXT, comment TEXT, time DATETIME)");
 			db.execSQL("CREATE TABLE "
 					+ database_groupmember
 					+ "(groupID INTEGER PRIMARY KEY, userNRIC TEXT, dateTImeJoined DATETIME , active INTEGER)");
@@ -114,6 +120,9 @@ public class mySqLiteController {
 	}
 	public String getEventParticipantsTable(){
 		return database_particpants;
+	}
+	public String getFBCommentsTable(){
+		return database_fb_comments;
 	}
 	public String getHobbyTable(){
 		return database_hobby;
