@@ -1,17 +1,162 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".SuggestLocationActivity" >
+    android:layout_height="match_parent" >
 
 	<fragment
-          android:id="@+id/map"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:name="com.google.android.gms.maps.MapFragment"/>
+	    android:id="@+id/map"
+	    android:name="com.google.android.gms.maps.MapFragment"
+	    android:layout_width="match_parent"
+	    android:layout_height="350dp" />
 
+	<ScrollView
+		android:id="@+id/scroll_view_event_location_table"
+		android:layout_below="@+id/map"
+		android:paddingTop="5dp"
+		android:paddingBottom="5dp"
+		android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+		android:descendantFocusability="blocksDescendants">
+		   	<HorizontalScrollView
+			android:id="@+id/horizontal_scroll_view_event_location_table"
+			android:layout_below="@+id/map"
+			android:paddingTop="5dp"
+			android:paddingBottom="5dp"
+			android:layout_width="match_parent"
+		    android:layout_height="match_parent"
+			android:descendantFocusability="blocksDescendants">
+				<TableLayout
+				    android:id="@+id/table_layout_event_location_information"
+				    android:layout_width="match_parent"
+				    android:padding="5dp"
+				    android:stretchColumns="*"
+				    android:layout_height="wrap_content">
+				    
+				    <TableRow
+				        android:id="@+id/tr_information"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:background="@color/actionBarColor" >
+				        
+				      	<TextView
+					        android:id="@+id/tv_information"
+					        android:layout_width="wrap_content"
+					        android:layout_height="wrap_content"
+					        android:fontFamily="sans-serif-bold"
+					        android:layout_marginTop="10dp"
+						        android:layout_marginLeft="10dp"
+				        	android:textColor="@color/White"
+					        android:textSize="@dimen/normal_font_size" 
+					        android:text="Information"/>
+				        
+				    </TableRow>
+				    
+				    <TableRow
+				        android:id="@+id/tr_name"
+				        android:layout_width="wrap_content"
+			            android:background="@drawable/event_location_information_border"
+				        android:layout_height="wrap_content" >
+				        
+				      	<TextView
+					        android:id="@+id/tv_event_location_name"
+					        android:layout_width="wrap_content"
+					        android:layout_height="wrap_content"
+					        android:fontFamily="sans-serif-light"
+					        android:layout_marginTop="10dp"
+						   	android:layout_marginLeft="10dp"
+					        android:textSize="@dimen/normal_font_size" />
+				        
+				    </TableRow>
+			
+				    <TableRow
+				        android:id="@+id/tr_event_location_address"
+				        android:layout_width="wrap_content"
+			            android:background="@drawable/event_location_information_border"
+				        android:layout_height="wrap_content" >
+				      		
+				      		<TextView
+						        android:id="@+id/tv_event_location_address"
+						        android:layout_width="wrap_content"
+						        android:layout_height="wrap_content"
+						        android:fontFamily="sans-serif-light"
+						        android:layout_marginTop="10dp"
+						        android:layout_marginLeft="10dp"
+						        android:textSize="@dimen/normal_font_size" />
+				    </TableRow>
+			
+				    <TableRow
+				        android:id="@+id/tr_event_location_hyperlink"
+				        android:layout_width="wrap_content"
+			            android:background="@drawable/event_location_information_border"
+				        android:layout_height="wrap_content" >	      		
+				      		<TextView
+						        android:id="@+id/tv_event_location_hyperlink"
+						        android:layout_width="wrap_content"
+						        android:layout_height="wrap_content"
+						        android:fontFamily="sans-serif-light"
+						        android:layout_marginTop="10dp"
+						        android:layout_marginLeft="10dp"
+						        android:textSize="@dimen/normal_font_size" />
+				    </TableRow>
+			
+				    <TableRow
+				        android:id="@+id/tr_lat"
+				        android:layout_width="wrap_content"
+			            android:background="@drawable/event_location_information_border"
+				        android:layout_height="wrap_content" >
+				      		<TextView
+						        android:layout_width="25dp"
+						        android:layout_height="wrap_content"
+						        android:fontFamily="sans-serif-light"
+						        android:layout_marginLeft="10dp"
+						        android:textSize="@dimen/normal_font_size"
+						        android:text="Latitude: " />
+				      		
+				      		<TextView
+						        android:id="@+id/tv_event_location_lat"
+						        android:layout_width="wrap_content"
+						        android:layout_height="wrap_content"
+						        android:layout_marginRight="10dp"
+						        android:fontFamily="sans-serif-light"
+						        android:textSize="@dimen/normal_font_size" />
+				   	</TableRow>
+					<TableRow
+				        android:id="@+id/tr_lng"
+				        android:layout_width="wrap_content"
+			            android:background="@drawable/event_location_information_border"
+				        android:layout_height="wrap_content" >		
+							<TextView
+						        android:layout_width="25dp"
+						        android:layout_height="wrap_content"
+						        android:fontFamily="sans-serif-light"
+						        android:layout_marginLeft="10dp"
+						        android:textSize="@dimen/normal_font_size"
+						        android:text="Longtitude: " />
+							
+				      		<TextView
+						        android:id="@+id/tv_event_location_lng"
+						        android:layout_width="wrap_content"
+						        android:layout_height="wrap_content"
+						        android:layout_marginRight="10dp"
+						        android:fontFamily="sans-serif-light"
+						        android:textSize="@dimen/normal_font_size" />	      			      		
+				    </TableRow>
+				   	<TableRow
+				        android:id="@+id/tr_btn_select_location"
+				        android:layout_width="wrap_content"
+			            android:background="@drawable/event_location_information_border"
+				        android:layout_height="wrap_content" >		
+							<Button
+					            android:id="@+id/btn_select_location"
+					            android:layout_width="match_parent"
+					            android:layout_height="wrap_content"
+					            android:layout_marginTop="10dp"
+						        android:layout_marginLeft="10dp"
+					            android:fontFamily="sans-serif-light"
+					            android:textSize="@dimen/normal_font_size"
+					            android:text="@string/select_location" />	    			      		
+				    </TableRow>
+				</TableLayout>
+			</HorizontalScrollView>
+	</ScrollView>
 </RelativeLayout>

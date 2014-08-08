@@ -18,5 +18,18 @@
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="Logout"/>
+     
+     <item
+        android:id="@+id/refresh"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:icon="@drawable/article_refresh"/>
+     
+     <item
+        android:id="@+id/article_main"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="Article - For Presentation"/>
+     
 
 </menu>

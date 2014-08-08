@@ -62,7 +62,7 @@ public class ArticleSelectedActivity extends Fragment {
 		contentTv = (TextView)getActivity().findViewById(R.id.content);
 		
 		titleTv.setText(title);
-		authorTv.setText("Posted By: " + author);
+		authorTv.setText("Author: " + author);
 		articleDateTv.setText(date);
 		contentTv.setText(content);
 		

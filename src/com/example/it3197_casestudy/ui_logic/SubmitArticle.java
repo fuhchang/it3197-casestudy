@@ -866,6 +866,11 @@ public class SubmitArticle extends Activity implements Settings{
 			mChooser.forResultType(DbxChooser.ResultType.PREVIEW_LINK).launch(SubmitArticle.this, DBX_CHOOSER_REQUEST);
 		}
 		
+		if(id==R.id.magicArtBtn){
+			articleTitle.setText("Construction Noise");
+			articleContent.setText("Having looked at the National Environment Agency(NEA)'s website, it states that construction works that have residential buildings located less than 150m from the construction site should be kept at a minimal after the hours of 7am - 7pm. However the construction works at Ang Mo Kio by ABC Construction company did not abide by the rules. You can see from my feedback that we are being disturbed by noise outside these hours. I would be grateful if you could ensure that noisy works are contained within the approved hours. If after two weeks from the date of this letter there has been no improvement, I will have no option but to involve the Environmental Health & Licensing Division at NYP Council.");
+		}
+		
 		return super.onOptionsItemSelected(item);
 	}
 
