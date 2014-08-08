@@ -124,7 +124,7 @@
 	   		<ScrollView
 			    android:id="@+id/SCROLLER_ID"
 			    android:layout_width="fill_parent"
-			    android:layout_height="246dp"
+			    android:layout_height="266dp"
 			    android:scrollbars="vertical"
 			    android:layout_marginRight="5dp"
 			    android:layout_marginBottom="5dp"
@@ -133,7 +133,7 @@
 		   		<TextView
 				    android:id="@+id/content"
 					android:layout_width="wrap_content"
-			        android:layout_height="246dp"
+			        android:layout_height="266dp"
 			        android:layout_marginTop="5dp"
 			        android:layout_marginLeft="10dp"
 			        android:layout_marginBottom="10dp"
@@ -151,7 +151,7 @@
    		
 		
    		
-   		<RelativeLayout
+   	 	<RelativeLayout
 		    android:layout_width="fill_parent"
 		    android:layout_height="wrap_content" 
 		    android:layout_gravity="bottom">

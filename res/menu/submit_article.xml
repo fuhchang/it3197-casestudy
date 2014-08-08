@@ -12,6 +12,13 @@
         android:showAsAction="always"
         android:title="Submit"/>
     
+    
+    <item
+        android:id="@+id/magicArtBtn"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="For Presentation"/>
+    
    <!--   
     <item
         android:id="@+id/backToMain"
