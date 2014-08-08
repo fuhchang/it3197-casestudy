@@ -32,7 +32,6 @@ import com.example.it3197_casestudy.ui_logic.MainLinkPage;
 import com.example.it3197_casestudy.ui_logic.ViewAllEventsActivity;
 import com.example.it3197_casestudy.ui_logic.ViewEventsActivity;
 import com.example.it3197_casestudy.ui_logic.ViewEventsDetailsFragment;
-import com.example.it3197_casestudy.util.EventListAdapter;
 import com.example.it3197_casestudy.util.Settings;
 import com.example.it3197_casestudy.util.ViewEventsAdapter;
 

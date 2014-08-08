@@ -33,7 +33,6 @@ import com.example.it3197_casestudy.ui_logic.CreateEventStep2Activity;
 import com.example.it3197_casestudy.ui_logic.MainLinkPage;
 import com.example.it3197_casestudy.ui_logic.ViewAllEventsActivity;
 import com.example.it3197_casestudy.ui_logic.ViewAvaliableHobby;
-import com.example.it3197_casestudy.util.EventListAdapter;
 import com.example.it3197_casestudy.util.MySharedPreferences;
 import com.example.it3197_casestudy.util.Settings;
 
