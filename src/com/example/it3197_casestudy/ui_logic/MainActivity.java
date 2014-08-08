@@ -92,6 +92,10 @@ public class MainActivity extends Activity {
 		      AlertDialog alertDialog = alertDialogBuilder.create();
 		      alertDialog.show();
 		}
+		if(id==R.id.refresh){
+			MainPageController mpc = new MainPageController(this, list);
+			mpc.execute();
+		}
 		
 		return super.onOptionsItemSelected(item);
 	}
@@ -133,6 +137,6 @@ public class MainActivity extends Activity {
 		
 		
 		
-		super.onBackPressed();
+		
 	}
 }
