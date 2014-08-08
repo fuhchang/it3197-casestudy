@@ -63,8 +63,8 @@ public class ViewEventsActivity extends FragmentActivity implements ActionBar.Ta
 			event.setEventCategory(savedInstanceState.getString("eventCategory"));
 			event.setEventDescription(savedInstanceState.getString("eventDescription"));
 			try {
-				event.setEventDateTimeFrom(sqlDateTimeFormatter.parse(savedInstanceState.getString("eventDateTimeTo")));
-				event.setEventDateTimeTo(sqlDateTimeFormatter.parse(savedInstanceState.getString("eventDateTimeFrom")));
+				event.setEventDateTimeFrom(sqlDateTimeFormatter.parse(savedInstanceState.getString("eventDateTimeFrom")));
+				event.setEventDateTimeTo(sqlDateTimeFormatter.parse(savedInstanceState.getString("eventDateTimeTo")));
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

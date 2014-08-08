@@ -1,5 +1,6 @@
 package com.example.it3197_casestudy.ui_logic;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -203,12 +204,15 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 				menuItemJoin.setVisible(true);
 				menuItemUnjoin.setVisible(false);
 			}
-			else{
+			if(joined){
 				menuItemJoin.setVisible(false);
 				menuItemUnjoin.setVisible(true);
 			}
 			if(!nric.equals(event.getEventAdminNRIC())){
 				menuItemUpdate.setVisible(false);
+			}
+			if(event.getEventFBPostID().equals("0")){
+				menuItemShare.setVisible(false);
 			}
 		}
 	}
@@ -346,8 +350,8 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 		event.setEventCategory(bundle.getString("eventCategory"));
 		event.setEventDescription(bundle.getString("eventDescription"));
 		try {
-			event.setEventDateTimeFrom(sqlDateTimeFormatter.parse(bundle.getString("eventDateTimeTo")));
-			event.setEventDateTimeTo(sqlDateTimeFormatter.parse(bundle.getString("eventDateTimeFrom")));
+			event.setEventDateTimeFrom(sqlDateTimeFormatter.parse(bundle.getString("eventDateTimeFrom")));
+			event.setEventDateTimeTo(sqlDateTimeFormatter.parse(bundle.getString("eventDateTimeTo")));
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -362,6 +366,9 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 			event.setEventFBPostID("0");
 		}
 		joined = bundle.getBoolean("joined");
+
+		lat = bundle.getDouble("lat");
+		lng = bundle.getDouble("lng");
 		MySharedPreferences preferences = new MySharedPreferences(this.getActivity());
 		nric = preferences.getPreferences("nric","");
 
@@ -402,13 +409,6 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 				}
 			}
 		});
-
-		if(!CheckNetworkConnection.haveNetworkConnection(ViewEventsDetailsFragment.this.getActivity())){
-			btnCheckIn.setVisibility(View.GONE);
-		}
-		else{
-			btnCheckIn.setVisibility(View.VISIBLE);
-		}
 		ivEventPoster = (ImageView) getActivity().findViewById(R.id.iv_event_poster);
 
 		LocationResult locationResult = new LocationResult(){
@@ -419,9 +419,12 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 		    	center = new Location(location);
 				float[] results = new float[1];
 				Location.distanceBetween(center.getLatitude(), center.getLongitude(), lat, lng, results);
+		        DecimalFormat df = new DecimalFormat("#.###");
 				float distanceInMeters = results[0];
-				boolean isWithin100m = distanceInMeters < 100;
-		        if(!isWithin100m){
+				distanceInMeters = Float.parseFloat(df.format(distanceInMeters));
+				
+				boolean isWithin1km = distanceInMeters < 1000.000f;
+		        if(!isWithin1km){
 		        	btnCheckIn.setVisibility(View.GONE);
 		        }
 		        else{

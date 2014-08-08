@@ -7,6 +7,7 @@ import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.model.Event;
 import com.example.it3197_casestudy.mysqlite.EventSQLController;
 import com.example.it3197_casestudy.mysqlite.SavedEventSQLController;
+import com.example.it3197_casestudy.ui_logic.ViewAllEventsActivity;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -16,21 +17,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnTouchListener;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class EventExpandedListAdapter extends BaseExpandableListAdapter implements Settings{
-	 
+	private ExpandableListView lvViewAllEvents;
+	private ViewAllEventsActivity activity;
     private Context _context;
     private List<String> _listDataHeader; // header titles
     // child data in format of header title, child title
     private HashMap<String, List<Event>> _listDataChild;
  
-    public EventExpandedListAdapter(Context context, List<String> listDataHeader,HashMap<String, List<Event>> listChildData) {
+    public EventExpandedListAdapter(Context context, ViewAllEventsActivity activity, List<String> listDataHeader,HashMap<String, List<Event>> listChildData, ExpandableListView lvViewAllEvents) {
         this._context = context;
+        this.activity = activity;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
+        this.lvViewAllEvents = lvViewAllEvents;
     }
  
     @Override
@@ -81,12 +86,14 @@ public class EventExpandedListAdapter extends BaseExpandableListAdapter implemen
 						savedEventController.deleteEvent(eventID);
 						btnFavourite.setImageResource(android.R.drawable.btn_star_big_off);
 						Toast.makeText(_context, "Event unsaved", Toast.LENGTH_LONG).show();
+						activity.getAllEvents();
 					}
 					else{
 						Event newSavedEvent = eventController.getEvent(eventID);
 						savedEventController.insertEvent(newSavedEvent);
 						btnFavourite.setImageResource(android.R.drawable.btn_star_big_on);
 						Toast.makeText(_context, "Event saved", Toast.LENGTH_LONG).show();
+						activity.getAllEvents();
 					}
 					return true;
 				}
@@ -129,7 +136,7 @@ public class EventExpandedListAdapter extends BaseExpandableListAdapter implemen
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_events_header, null);
         }
- 
+        //convertView
         TextView lblListHeader = (TextView) convertView.findViewById(R.id.tv_header);
         lblListHeader.setTypeface(null, Typeface.BOLD);
         lblListHeader.setText(headerTitle);

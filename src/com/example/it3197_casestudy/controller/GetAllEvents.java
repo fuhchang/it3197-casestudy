@@ -141,72 +141,22 @@ public class GetAllEvents extends AsyncTask<Object, Object, Object> implements S
 			Toast.makeText(activity, R.string.add_geofences_already_requested_error, Toast.LENGTH_LONG).show();
 		}
 		
-		ArrayList<String> listDataHeader = new ArrayList<String>();
-		HashMap<String, List<Event>> listDataChild = new HashMap<String, List<Event>>();
- 
-        // Adding child data
-        listDataHeader.add("Saved Events");
-        listDataHeader.add("Upcoming Events");
- 
-        // Adding child data
-        List<Event> savedEvents = new ArrayList<Event>();
         ArrayList<Event> savedEventArrList = savedEventController.getAllSavedEvent();
+        ArrayList<Event> eventArrList = controller.getAllEvent();
+
         for(int i=0;i<savedEventArrList.size();i++){
-        	savedEvents.add(savedEventArrList.get(i));
+        	boolean checkMatch = false;
+        	for(int j=0;j<eventArrList.size();j++){
+        		if(savedEventArrList.get(i).getEventID() == eventArrList.get(j).getEventID()){
+        			checkMatch = true;
+        		}
+        	}
+        	if(!checkMatch){
+        		savedEventController.deleteEvent(savedEventArrList.get(i).getEventID());
+        		savedEventArrList.remove(i);
+        	}
         }
- 
-        List<Event> upcomingEvents = new ArrayList<Event>();
-        for(int i=0;i<eventArrList.size();i++){
-        	upcomingEvents.add(eventArrList.get(i));
-        }
- 
-        listDataChild.put(listDataHeader.get(0), savedEvents); // Header, Child data
-        listDataChild.put(listDataHeader.get(1), upcomingEvents);
-        
-		EventExpandedListAdapter adapter = new EventExpandedListAdapter(activity,listDataHeader, listDataChild);
-		lvViewAllEvents.setAdapter(adapter);
-		
-		lvViewAllEvents.setOnChildClickListener(new OnChildClickListener() {
-			@Override
-			public boolean onChildClick(ExpandableListView parent, View view, int groupPosition, int childPosition, long id) {
-		        Intent intent = new Intent(activity,ViewEventsActivity.class);
-		        intent.putExtra("eventID", view.getId());
-		        Event event = new Event();
-		        EventLocationDetail eventLocationDetails = new EventLocationDetail();
-		        boolean joined = false;
-		        for(int i=0;i<eventArrList.size();i++){
-		        	if(eventArrList.get(i).getEventID() == view.getId()){
-		        		event = eventArrList.get(i);
-				        for(int j=0;j<eventParticipantsArrList.size();j++){
-				        	if(nric.equals(eventParticipantsArrList.get(j).getUserNRIC())){
-				        		joined = true;
-				        	}
-				        }
-		        	}
-		        }
-		        for(int i=0;i<eventLocationArrList.size();i++){
-		        	if(event.getEventID() == eventLocationArrList.get(i).getEventID()){
-		        		eventLocationDetails = eventLocationArrList.get(i);
-		        	}
-		        }
-				intent.putExtra("eventAdminNRIC", event.getEventAdminNRIC());
-				intent.putExtra("eventName", event.getEventName());
-				intent.putExtra("eventCategory", event.getEventCategory());
-				intent.putExtra("eventDescription", event.getEventDescription());
-				intent.putExtra("eventDateTimeFrom", sqlDateTimeFormatter.format(event.getEventDateTimeFrom()));
-				intent.putExtra("eventDateTimeTo", sqlDateTimeFormatter.format(event.getEventDateTimeTo()));
-				intent.putExtra("occurence", event.getOccurence());
-				intent.putExtra("noOfParticipants", event.getNoOfParticipantsAllowed());
-				intent.putExtra("active", event.getActive());
-				intent.putExtra("eventFBPostID", event.getEventFBPostID());
-				intent.putExtra("joined", joined);
-				intent.putExtra("lat", eventLocationDetails.getEventLocationLat());
-				intent.putExtra("lng", eventLocationDetails.getEventLocationLng());
-				activity.startActivity(intent);
-				activity.finish();
-				return false;
-			}
-		});
+		activity.populateList(savedEventArrList, eventArrList,eventLocationArrList,eventParticipantsArrList);
 		dialog.dismiss();
 		activity.getSwipeLayout().setRefreshing(false);
 	}

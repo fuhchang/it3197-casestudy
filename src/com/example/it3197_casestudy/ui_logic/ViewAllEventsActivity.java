@@ -22,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -190,7 +191,7 @@ public class ViewAllEventsActivity extends Activity implements Settings{
 		        }
 
 
-		        return (d1.getTime() > d2.getTime() ? -1 : 1);     //descending
+		        return (d1.getTime() < d2.getTime() ? -1 : 1);     //descending
 		    //  return (d1.getTime() > d2.getTime() ? 1 : -1);     //ascending
 		    }
 		}); 
@@ -212,74 +213,21 @@ public class ViewAllEventsActivity extends Activity implements Settings{
 		            // Notify user that previous request hasn't finished.
 				Toast.makeText(this, R.string.add_geofences_already_requested_error, Toast.LENGTH_LONG).show();
 			}
-
-			MySharedPreferences p = new MySharedPreferences(ViewAllEventsActivity.this);
-			final String nric = p.getPreferences("nric", "");
-			ArrayList<String> listDataHeader = new ArrayList<String>();
-			HashMap<String, List<Event>> listDataChild = new HashMap<String, List<Event>>();
-	 
-	        // Adding child data
-	        listDataHeader.add("Saved Events");
-	        listDataHeader.add("Upcoming Events");
-	 
-	        // Adding child data
-	        List<Event> savedEvents = new ArrayList<Event>();
-	        for(int i=0;i<savedEventArrList.size();i++){
-	        	savedEvents.add(savedEventArrList.get(i));
-	        }
-	 
-	        List<Event> upcomingEvents = new ArrayList<Event>();
-	        for(int i=0;i<eventArrList.size();i++){
-	        	upcomingEvents.add(eventArrList.get(i));
-	        }
-	 
-	        listDataChild.put(listDataHeader.get(0), savedEvents); // Header, Child data
-	        listDataChild.put(listDataHeader.get(1), upcomingEvents);
-	        
-			EventExpandedListAdapter adapter = new EventExpandedListAdapter(ViewAllEventsActivity.this,listDataHeader, listDataChild);
-			lvViewAllEvents.setAdapter(adapter);
 			
-			lvViewAllEvents.setOnChildClickListener(new OnChildClickListener() {
-				@Override
-				public boolean onChildClick(ExpandableListView parent, View view, int groupPosition, int childPosition, long id) {
-			        Intent intent = new Intent(ViewAllEventsActivity.this,ViewEventsActivity.class);
-			        intent.putExtra("eventID", view.getId());
-			        Event event = new Event();
-			        EventLocationDetail eventLocationDetails = new EventLocationDetail();
-			        boolean joined = false;
-			        for(int i=0;i<eventArrList.size();i++){
-			        	if(eventArrList.get(i).getEventID() == view.getId()){
-			        		event = eventArrList.get(i);
-					        for(int j=0;j<eventParticipantsArrList.size();j++){
-					        	if(nric.equals(eventParticipantsArrList.get(j).getUserNRIC())){
-					        		joined = true;
-					        	}
-					        }
-			        	}
-			        }
-			        for(int i=0;i<eventLocationArrList.size();i++){
-			        	if(event.getEventID() == eventLocationArrList.get(i).getEventID()){
-			        		eventLocationDetails = eventLocationArrList.get(i);
-			        	}
-			        }
-					intent.putExtra("eventAdminNRIC", event.getEventAdminNRIC());
-					intent.putExtra("eventName", event.getEventName());
-					intent.putExtra("eventCategory", event.getEventCategory());
-					intent.putExtra("eventDescription", event.getEventDescription());
-					intent.putExtra("eventDateTimeFrom", sqlDateTimeFormatter.format(event.getEventDateTimeFrom()));
-					intent.putExtra("eventDateTimeTo", sqlDateTimeFormatter.format(event.getEventDateTimeTo()));
-					intent.putExtra("occurence", event.getOccurence());
-					intent.putExtra("noOfParticipants", event.getNoOfParticipantsAllowed());
-					intent.putExtra("active", event.getActive());
-					intent.putExtra("eventFBPostID", event.getEventFBPostID());
-					intent.putExtra("joined", joined);
-					intent.putExtra("lat", eventLocationDetails.getEventLocationLat());
-					intent.putExtra("lng", eventLocationDetails.getEventLocationLng());
-					ViewAllEventsActivity.this.startActivity(intent);
-					ViewAllEventsActivity.this.finish();
-					return false;
-				}
-			});
+	        for(int i=0;i<savedEventArrList.size();i++){
+	        	boolean checkMatch = false;
+	        	for(int j=0;j<eventArrList.size();j++){
+	        		if(savedEventArrList.get(i).getEventID() == eventArrList.get(j).getEventID()){
+	        			checkMatch = true;
+	        		}
+	        	}
+	        	if(!checkMatch){
+	        		savedEventController.deleteEvent(savedEventArrList.get(i).getEventID());
+	        		savedEventArrList.remove(i);
+	        	}
+	        }
+			
+			populateList(savedEventArrList, eventArrList,eventLocationArrList,eventParticipantsArrList);
 		}
 		dialog.dismiss();
 		swipeLayout.setRefreshing(false);
@@ -295,4 +243,85 @@ public class ViewAllEventsActivity extends Activity implements Settings{
 	 * this.finish(); }
 	 */
 
+	public void populateList(ArrayList<Event> savedEventArrList, final ArrayList<Event> eventArrList, final ArrayList<EventLocationDetail> eventLocationArrList, final ArrayList<EventParticipants> eventParticipantsArrList){
+		MySharedPreferences p = new MySharedPreferences(ViewAllEventsActivity.this);
+		final String nric = p.getPreferences("nric", "");
+		
+		ArrayList<String> listDataHeader = new ArrayList<String>();
+		HashMap<String, List<Event>> listDataChild = new HashMap<String, List<Event>>();
+ 
+        if(savedEventArrList.size() <= 0){
+	        listDataHeader.add("Upcoming Events");
+            listDataChild.put(listDataHeader.get(0), eventArrList);
+        }
+        else if(eventArrList.size() <= 0){
+            listDataHeader.add("Saved Events");
+            listDataChild.put(listDataHeader.get(0), savedEventArrList); // Header, Child data
+        }
+        else{
+            listDataHeader.add("Saved Events");
+            listDataHeader.add("Upcoming Events");
+     
+            listDataChild.put(listDataHeader.get(0), savedEventArrList); // Header, Child data
+            listDataChild.put(listDataHeader.get(1), eventArrList);
+        }
+        
+		EventExpandedListAdapter adapter = new EventExpandedListAdapter(ViewAllEventsActivity.this,ViewAllEventsActivity.this,listDataHeader, listDataChild, lvViewAllEvents);
+		lvViewAllEvents.setAdapter(adapter);
+
+		if(listDataHeader.size() == 2){
+			lvViewAllEvents.expandGroup(1);
+		}
+		else{
+			if(listDataHeader.get(0).equals("Upcoming Events")){
+				lvViewAllEvents.expandGroup(0);	
+			}
+		}
+		lvViewAllEvents.setOnChildClickListener(new OnChildClickListener() {
+			@Override
+			public boolean onChildClick(ExpandableListView parent, View view, int groupPosition, int childPosition, long id) {
+		        Intent intent = new Intent(ViewAllEventsActivity.this,ViewEventsActivity.class);
+		        intent.putExtra("eventID", view.getId());
+		        Event event = new Event();
+		        EventLocationDetail eventLocationDetails = new EventLocationDetail();
+		        boolean joined = false;
+		        for(int i=0;i<eventArrList.size();i++){
+		        	if(eventArrList.get(i).getEventID() == view.getId()){
+		        		event = eventArrList.get(i);
+				        for(int j=0;j<eventParticipantsArrList.size();j++){
+				        	if(nric.equals(eventParticipantsArrList.get(j).getUserNRIC())){
+				        		if(eventParticipantsArrList.get(j).getEventID() == view.getId()){
+				        			joined = true;
+				        		}
+				        	}
+				        	System.out.println("User NRIC: " + nric);
+				        	System.out.println("Current NRIC: " + eventParticipantsArrList.get(j).getUserNRIC());
+				        	System.out.println("Joined: " + joined);
+				        }
+		        	}
+		        }
+		        for(int i=0;i<eventLocationArrList.size();i++){
+		        	if(event.getEventID() == eventLocationArrList.get(i).getEventID()){
+		        		eventLocationDetails = eventLocationArrList.get(i);
+		        	}
+		        }
+				intent.putExtra("eventAdminNRIC", event.getEventAdminNRIC());
+				intent.putExtra("eventName", event.getEventName());
+				intent.putExtra("eventCategory", event.getEventCategory());
+				intent.putExtra("eventDescription", event.getEventDescription());
+				intent.putExtra("eventDateTimeFrom", sqlDateTimeFormatter.format(event.getEventDateTimeFrom()));
+				intent.putExtra("eventDateTimeTo", sqlDateTimeFormatter.format(event.getEventDateTimeTo()));
+				intent.putExtra("occurence", event.getOccurence());
+				intent.putExtra("noOfParticipants", event.getNoOfParticipantsAllowed());
+				intent.putExtra("active", event.getActive());
+				intent.putExtra("eventFBPostID", event.getEventFBPostID());
+				intent.putExtra("joined", joined);
+				intent.putExtra("lat", eventLocationDetails.getEventLocationLat());
+				intent.putExtra("lng", eventLocationDetails.getEventLocationLng());
+				ViewAllEventsActivity.this.startActivity(intent);
+				ViewAllEventsActivity.this.finish();
+				return false;
+			}
+		});
+	}
 }

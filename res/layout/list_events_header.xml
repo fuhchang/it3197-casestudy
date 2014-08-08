@@ -9,7 +9,7 @@
         android:id="@+id/tv_header"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@color/actionBarColor"
+        android:background="@color/Black"
         android:textColor="@color/White"
         android:padding="10dp"
         android:textSize="@dimen/normal_font_size" />

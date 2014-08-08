@@ -84,7 +84,7 @@ public class ViewEventsTimelineFragment extends Fragment {
 		super.onCreateOptionsMenu(menu, inflater);
 		inflater.inflate(R.menu.view_events_timeline_fragment_menu, menu);
 		menuItemPost = menu.findItem(R.id.post_comments);
-		if(!CheckNetworkConnection.haveNetworkConnection(ViewEventsTimelineFragment.this.getActivity())){
+		if(!CheckNetworkConnection.haveNetworkConnection(ViewEventsTimelineFragment.this.getActivity()) || (eventFBPostID.equals("0"))){
 			menuItemPost.setVisible(false);
 		}
 		else{
@@ -99,7 +99,18 @@ public class ViewEventsTimelineFragment extends Fragment {
 		switch (item.getItemId()) {
 		case R.id.post_comments:
 			if(!CheckNetworkConnection.haveNetworkConnection(ViewEventsTimelineFragment.this.getActivity())){
-				
+				AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
+				builder.setTitle("Unable to post comment");
+				builder.setMessage("Please try again later or contact the event organizer.");
+				builder.setPositiveButton("OK", null);
+				builder.create().show();
+			}
+			else if(eventFBPostID.equals("0")){
+				AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
+				builder.setTitle("Unable to post comment");
+				builder.setMessage("Please try again later or contact the event organizer.");
+				builder.setPositiveButton("OK", null);
+				builder.create().show();
 			}
 			else{
 				AlertDialog.Builder alert = new AlertDialog.Builder(
@@ -156,11 +167,24 @@ public class ViewEventsTimelineFragment extends Fragment {
 		super.onActivityCreated(savedInstanceState);
 		lvEventTimeline = (ListView) getActivity().findViewById(R.id.lv_events_timeline);
 		if(!CheckNetworkConnection.haveNetworkConnection(ViewEventsTimelineFragment.this.getActivity())){
-			
+			AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
+			builder.setTitle("Unable to retrieve comment");
+			builder.setMessage("Please try again later or contact the event organizer.");
+			builder.setPositiveButton("OK", null);
+			builder.create().show();
+		}			
+		else if(eventFBPostID.equals("0")){
+			AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
+			builder.setTitle("Unable to post comment");
+			builder.setMessage("Please try again later or contact the event organizer.");
+			builder.setPositiveButton("OK", null);
+			builder.create().show();
 		}
 		else{
-			ProgressDialog pDialog = ProgressDialog.show(ViewEventsTimelineFragment.this.getActivity(), "Retrieving comments","Please wait");
-			getComments(pDialog);
+			if((Session.getActiveSession() != null) && (Session.getActiveSession().isOpened()) && (!eventFBPostID.equals("0"))){
+				ProgressDialog pDialog = ProgressDialog.show(ViewEventsTimelineFragment.this.getActivity(), "Retrieving comments","Please wait");
+				getComments(pDialog);
+			}
 		}
 
 	}
