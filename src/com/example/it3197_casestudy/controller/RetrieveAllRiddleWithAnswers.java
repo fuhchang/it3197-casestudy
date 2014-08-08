@@ -32,7 +32,7 @@ import com.example.it3197_casestudy.ui_logic.ViewRiddleActivity;
 import com.example.it3197_casestudy.util.RiddleListAdapter;
 import com.example.it3197_casestudy.util.Settings;
 
-public class RetrieveAllRiddleWithAnswers  extends AsyncTask<Object, Object, Object> implements Settings {
+public class RetrieveAllRiddleWithAnswers extends AsyncTask<Object, Object, Object> implements Settings {
 	RiddleActivity activity;
 	ArrayList<Riddle> riddleList;
 	ArrayList<RiddleAnswer> riddleAnsList;

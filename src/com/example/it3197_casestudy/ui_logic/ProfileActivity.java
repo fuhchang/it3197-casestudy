@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.location.Address;
@@ -14,6 +16,8 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,9 +27,7 @@ import com.example.it3197_casestudy.util.LocationService;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class ProfileActivity extends FragmentActivity {
@@ -49,17 +51,51 @@ public class ProfileActivity extends FragmentActivity {
 		
 		intent = new Intent(ProfileActivity.this, LocationService.class);
 		intent.putExtra("user", user);
-		registerReceiver(broadcastReceiver, new IntentFilter(LocationService.BROADCAST_ACTION));
 		
 		tv_username = (TextView) findViewById(R.id.tv_username);
 		tv_points = (TextView) findViewById(R.id.tv_points);
 		tv_address = (TextView) findViewById(R.id.tv_address);
-		
-		Toast.makeText(getApplicationContext(), "Retrieving current location...", Toast.LENGTH_LONG).show();
-		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+
+		//if(!intent.getStringExtra("GPSstatus").equals("disabled")) {
+			registerReceiver(broadcastReceiver, new IntentFilter(LocationService.BROADCAST_ACTION));
+			Toast.makeText(getApplicationContext(), "Retrieving current location...", Toast.LENGTH_LONG).show();
+			map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+		//}
 		
 		tv_username.setText(user.getName());
 		tv_points.setText(Integer.toString(user.getPoints()));
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.profile, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		switch(item.getItemId()){
+		case R.id.action_heatmap:
+			location =  new LatLng(1.4327564, 103.83992660000001); 
+			if(location == null) {
+				AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
+				builder.setTitle("Unable to get current location").setMessage("Please try again.");
+				builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+					}
+				});
+				builder.create().show();
+			}
+			else {
+				Intent heatMapIntent = new Intent(ProfileActivity.this, HeatMapActivity.class);
+				heatMapIntent.putExtra("lat", location.latitude);
+				heatMapIntent.putExtra("lng", location.longitude);
+				startActivity(heatMapIntent);
+			}
+			break;
+	}
+	return super.onOptionsItemSelected(item);
 	}
 	
 	private BroadcastReceiver broadcastReceiver = new BroadcastReceiver(){
@@ -84,13 +120,21 @@ public class ProfileActivity extends FragmentActivity {
 		getAddress(polledLocation);
 		// Get current location coordinates (lat & lng)
 		location = new LatLng(polledLocation.getLatitude(), polledLocation.getLongitude());
-		// Get all the coordinates
+		// Get all the locations
 		locationList = intent.getParcelableArrayListExtra("LocationList");
 		
 		map.clear();
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 17));
 		for(int i = 0; i < locationList.size(); i++) {
 			map.addMarker(new MarkerOptions().position(locationList.get(i)));
+			
+			/*if(locationList.size() > 1 && i > 0) {
+				String url = makeURL(locationList.get(i-1).latitude, locationList.get(i-1).longitude, locationList.get(i).latitude, locationList.get(i).longitude);
+				JSONParser jParser = new JSONParser();
+				String json = jParser.getJSONFromUrl(url);
+				DrawPath drawPath = new DrawPath(intent, ProfileActivity.this, map, json);
+				drawPath.execute();
+			}*/
 		}
 		
 		// Temp

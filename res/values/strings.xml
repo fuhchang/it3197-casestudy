@@ -132,6 +132,7 @@
     <string name="title_activity_article_loc_selection">ArticleLocSelection</string>
     <string name="title_activity_create_group_activity_step4">CreateGroup</string>
     <string name="title_activity_profile">Profile</string>
+    <string name="title_activity_heatmap">Heatmap</string>
     <string name="title_activity_riddle">Riddle</string>
     <string name="title_activity_create_riddle">Create Riddle</string>
     <string name="title_activity_update_riddle">Update Riddle</string>
@@ -174,6 +175,7 @@
 
     <!-- Menu title -->
     <string name="action_settings">Settings</string>
+    <string name="action_heatmap">Heatmap</string>
 
     <!-- Labels -->
     <string name="latlng">Latitude/Longitude:</string>

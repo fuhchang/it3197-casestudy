@@ -2,6 +2,7 @@ package com.example.it3197_casestudy.util;
 
 import java.util.ArrayList;
 
+import com.example.it3197_casestudy.controller.InsertUserLocation;
 import com.example.it3197_casestudy.controller.UpdateUserPoints;
 import com.example.it3197_casestudy.model.User;
 import com.google.android.gms.maps.model.LatLng;
@@ -18,7 +19,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 public class LocationService extends Service {
-	public static final String BROADCAST_ACTION = "Hello World";
+	public static final String BROADCAST_ACTION = "LOCATION SERVICE";
 	private static final int TWO_MINUTES = 1000 * 60 * 2;
 	public LocationManager locationManager;
 	public MyLocationListener listener;
@@ -139,6 +140,9 @@ public class LocationService extends Service {
 	        	location = new LatLng(loc.getLatitude(), loc.getLongitude());
 	        	locationList.add(location);
 	        	intent.putParcelableArrayListExtra("LocationList", locationList);
+	            
+	            InsertUserLocation insertUserLocation = new InsertUserLocation(user, location);
+	            insertUserLocation.execute();
 	        }
 	        
 	        if(previousLocation.getLatitude() != loc.getLatitude() && previousLocation.getLongitude() != loc.getLongitude()) {
@@ -157,6 +161,9 @@ public class LocationService extends Service {
 		            location = new LatLng(loc.getLatitude(), loc.getLongitude());
 		            locationList.add(location);
 		            intent.putParcelableArrayListExtra("LocationList", locationList);
+		            
+		            InsertUserLocation insertUserLocation = new InsertUserLocation(user, location);
+		            insertUserLocation.execute();
 		            
 		            user.setPoints(user.getPoints() + 5);
 		            UpdateUserPoints updateUserPoints = new UpdateUserPoints(user);

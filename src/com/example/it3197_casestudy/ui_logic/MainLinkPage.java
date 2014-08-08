@@ -79,7 +79,7 @@ public class MainLinkPage extends Activity {
 		//page = (ViewFlipper) findViewById(R.id.flipper);
 		//animFlipInForeward = AnimationUtils.loadAnimation(this, R.anim.f)
 		
-		startService();
+		//startService();
 		GridImageList adapter = new GridImageList(MainLinkPage.this, title,
 				imageID);
 		GridView gv = (GridView) findViewById(R.id.gridview);

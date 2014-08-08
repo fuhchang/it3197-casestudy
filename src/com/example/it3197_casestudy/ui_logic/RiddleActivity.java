@@ -1,7 +1,5 @@
 package com.example.it3197_casestudy.ui_logic;
 
-import java.util.ArrayList;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,14 +11,12 @@ import android.widget.ListView;
 
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.controller.RetrieveAllRiddleWithAnswers;
-import com.example.it3197_casestudy.model.Riddle;
 import com.example.it3197_casestudy.model.User;
 import com.example.it3197_casestudy.util.RiddleListAdapter;
 
 public class RiddleActivity extends FragmentActivity {
 	ListView lv_riddle;
 	RiddleListAdapter riddleAdapter;
-	ArrayList<Riddle> riddleList;
 	
 	Bundle data;
 	User user;
@@ -56,9 +52,23 @@ public class RiddleActivity extends FragmentActivity {
 		switch(item.getItemId()){
 			case R.id.action_create_riddle:
 				if(user.getPoints() >= 50) {
-					Intent createRiddleIntent = new Intent(RiddleActivity.this, CreateRiddleActivity.class);
-					createRiddleIntent.putExtra("user", user);
-					startActivity(createRiddleIntent);
+					AlertDialog.Builder builder = new AlertDialog.Builder(RiddleActivity.this);
+					builder.setTitle("Points").setMessage("50 points will be deducted for the creation of riddle.");
+					builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {							
+							Intent createRiddleIntent = new Intent(RiddleActivity.this, CreateRiddleActivity.class);
+							createRiddleIntent.putExtra("user", user);
+							startActivity(createRiddleIntent);
+						}
+					});
+					builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							
+						}
+					});
+					builder.create().show();
 				}
 				else {
 					AlertDialog.Builder builder = new AlertDialog.Builder(RiddleActivity.this);
