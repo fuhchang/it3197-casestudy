@@ -97,6 +97,10 @@ public class MainActivity extends Activity {
 			mpc.execute();
 		}
 		
+		if(id==R.id.article_main){
+			Intent intent = new Intent(MainActivity.this, ArticleMainActivity.class);
+			startActivity(intent);
+		}
 		return super.onOptionsItemSelected(item);
 	}
 
