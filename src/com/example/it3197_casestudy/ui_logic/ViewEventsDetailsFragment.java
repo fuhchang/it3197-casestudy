@@ -29,6 +29,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -36,6 +37,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.it3197_casestudy.R;
+import com.example.it3197_casestudy.controller.CheckInEvent;
 import com.example.it3197_casestudy.controller.CreateEvent;
 import com.example.it3197_casestudy.controller.GetEvent;
 import com.example.it3197_casestudy.controller.GetEventParticipants;
@@ -69,8 +71,7 @@ import com.facebook.widget.WebDialog;
 import com.facebook.widget.WebDialog.OnCompleteListener;
 
 /**
- * A dummy fragment representing a section of the app, but that simply
- * displays dummy text.
+ * A fragment to ddisplay event details
  * 
  * @author Lee Zhuo Xun
  */
@@ -329,21 +330,30 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 		tvEventOccur = (TextView) getActivity().findViewById(R.id.tv_event_occur);
 		tvEventNoOfParticipants = (TextView) getActivity().findViewById(R.id.tv_event_no_of_participants);
 		btnCheckIn = (Button) getActivity().findViewById(R.id.btn_check_in);
+		btnCheckIn.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				CheckInEvent checkInEvent = new CheckInEvent(ViewEventsDetailsFragment.this.getActivity(),event);
+				checkInEvent.execute();
+			}
+		});
 		
 		ivEventPoster = (ImageView) getActivity().findViewById(R.id.iv_event_poster);
 
-		if((Session.getActiveSession() != null) && (Session.getActiveSession().isOpened()) && (!event.getEventFBPostID().equals("0"))){
-			getPoster();
-		}
-		else{
-			pictureURL = "";
-			ivEventPoster.setVisibility(View.GONE);
-		}
-		
         Calendar todayDate = Calendar.getInstance();
         Calendar eventDateTimeFrom = Calendar.getInstance();
         eventDateTimeFrom.setTime(event.getEventDateTimeFrom());
         
+        long minutesDifference = eventDateTimeFrom.getTimeInMillis() - todayDate.getTimeInMillis();
+        System.out.println(minutesDifference);
+        if(minutesDifference > 600000){
+        	btnCheckIn.setVisibility(View.GONE);
+        }
+        else{
+        	btnCheckIn.setVisibility(View.VISIBLE);
+        }
+
 		tvEventID.setText("Event No: #" + event.getEventID());
 		tvEventName.setText(event.getEventName());
 		tvEventCategory.setText("Category: \n" + event.getEventCategory());
@@ -352,6 +362,14 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 		tvEventDateTimeTo.setText("To: \n" + dateTimeFormatter.format(event.getEventDateTimeTo()));
 		tvEventOccur.setText("Occurs: \n" + event.getOccurence());
 		tvEventNoOfParticipants.setText("No of participants allowed: \n" + event.getNoOfParticipantsAllowed());
+
+		if((Session.getActiveSession() != null) && (Session.getActiveSession().isOpened()) && (!event.getEventFBPostID().equals("0"))){
+			getPoster();
+		}
+		else{
+			pictureURL = "";
+			ivEventPoster.setVisibility(View.GONE);
+		}
 	}
 
 	@Override
