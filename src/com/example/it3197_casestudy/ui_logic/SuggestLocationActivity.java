@@ -1,13 +1,30 @@
 package com.example.it3197_casestudy.ui_logic;
 
-import java.util.ArrayList;
+import java.text.DecimalFormat;
+import java.util.*;
 
+import com.androidmapsextensions.ClusteringSettings;
+import com.androidmapsextensions.DefaultClusterOptionsProvider;
+import com.androidmapsextensions.GoogleMap;
+import com.androidmapsextensions.MapFragment;
+import com.androidmapsextensions.Marker;
+import com.androidmapsextensions.SupportMapFragment;
+import com.example.it3197_casestudy.R;
+import com.example.it3197_casestudy.model.MashUpData;
+import com.example.it3197_casestudy.model.MyItem;
+import com.example.it3197_casestudy.one_map_controller.GetMashUpData;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.LatLng;
+
+import android.location.Location;
+import android.os.Bundle;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,16 +33,8 @@ import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.it3197_casestudy.R;
-import com.example.it3197_casestudy.model.MyItem;
-import com.example.it3197_casestudy.one_map_controller.GetMashUpData;
-import com.example.it3197_casestudy.util.MyClusterRenderer;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.maps.android.clustering.ClusterManager;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.NavUtils;
 
 public class SuggestLocationActivity extends Activity {
 	GoogleMap map;
@@ -47,9 +56,10 @@ public class SuggestLocationActivity extends Activity {
 	String[] finalList = new String[3];
 	String[] finalOneMapList = new String [3];
 	
-	ClusterManager<MyItem> mClusterManager;
     ArrayList<MyItem> myItemArrList = new ArrayList<MyItem>();
-	
+
+    private MapFragment mapFragment;
+    
 	public GoogleMap getMap() {
 		return map;
 	}
@@ -138,11 +148,18 @@ public class SuggestLocationActivity extends Activity {
 				passInArr(healthThemeList,healthThemeOneMapList);
 			}
 		}
-		
-		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+
+        mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+		map = mapFragment.getExtendedMap();
 		map.setBuildingsEnabled(true);
 		map.setIndoorEnabled(true);
 
+        ClusteringSettings settings = new ClusteringSettings();
+
+        settings.clusterOptionsProvider(new DefaultClusterOptionsProvider(getResources())).addMarkersDynamically(true);
+
+        map.setClustering(settings);
+        
 		tableLayoutEventLocationInformation = (TableLayout) findViewById(R.id.table_layout_event_location_information);
 		
 		tvEventLocationName = (TextView) findViewById(R.id.tv_event_location_name);
@@ -187,10 +204,6 @@ public class SuggestLocationActivity extends Activity {
 		
 	}
 	
-	public void setThings(ClusterManager<MyItem> mClusterManager){
-		this.mClusterManager = mClusterManager;
-        mClusterManager.setRenderer(new MyClusterRenderer(SuggestLocationActivity.this,map,mClusterManager));
-	}
 	
 	/**
 	 * Set up the {@link android.app.ActionBar}.
@@ -237,6 +250,36 @@ public class SuggestLocationActivity extends Activity {
 			});
 			builder.create().show();
 			break;
+		case R.id.suggest_location_for_event:
+			//myItemArrList.get(0).get
+
+			if(myItemArrList.size() > 0){
+				double currentLat = map.getMyLocation().getLatitude();
+				double currentLng = map.getMyLocation().getLongitude();
+				
+
+				double currentDist = 0.00;
+				int closest = -1;
+				for(int i = 0;i<myItemArrList.size();i++){
+					double testLat = myItemArrList.get(i).getPosition().latitude;
+					double testLng = myItemArrList.get(i).getPosition().latitude;
+	
+					double distanceInMeters = distanceFrom(currentLat, currentLng, testLat, testLng);
+					if((closest == -1) || (currentDist > distanceInMeters)){
+						currentDist = distanceInMeters;
+						closest = i;
+					}
+				}
+				
+				List<Marker> markersArrList = map.getMarkers();
+		        
+		        markersArrList.get(closest).showInfoWindow();
+		        map.moveCamera(CameraUpdateFactory.newLatLngZoom(markersArrList.get(closest).getPosition(), 15));
+			}
+			else{
+				Toast.makeText(this,"Please select a theme.", Toast.LENGTH_LONG).show();
+			}
+			break;
 		case R.id.deselect_all_themes:
 			if(myItemArrList.size() > 0){
 				for(int i=0;i<myItemArrList.size();i++){
@@ -278,5 +321,17 @@ public class SuggestLocationActivity extends Activity {
 		for(int i=0;i<finalOneMapList.length;i++){
 			finalOneMapList[i] = themesOneMapArr[i];
 		}
+	}
+	
+	@SuppressLint("UseValueOf")
+	public double distanceFrom(double lat1, double lng1, double lat2, double lng2) {
+	    double earthRadius = 3958.75;
+	    double dLat = Math.toRadians(lat2-lat1);
+	    double dLng = Math.toRadians(lng2-lng1);
+	    double a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.sin(dLng/2) * Math.sin(dLng/2);
+	    double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+	    double dist = earthRadius * c;
+	    int meterConversion = 1609;
+	    return new Double(dist * meterConversion).floatValue();    // this will return distance
 	}
 }

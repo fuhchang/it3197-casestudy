@@ -1,7 +1,11 @@
 package com.example.it3197_casestudy.one_map_controller;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
@@ -23,6 +27,14 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 
+import com.androidmapsextensions.ClusterGroup;
+import com.androidmapsextensions.ClusterOptions;
+import com.androidmapsextensions.ClusterOptionsProvider;
+import com.androidmapsextensions.ClusteringSettings;
+import com.androidmapsextensions.GoogleMap;
+import com.androidmapsextensions.GoogleMap.OnMarkerClickListener;
+import com.androidmapsextensions.Marker;
+import com.androidmapsextensions.MarkerOptions;
 import com.example.it3197_casestudy.geofencing.GeofenceRequester;
 import com.example.it3197_casestudy.geofencing.SimpleGeofenceStore;
 import com.example.it3197_casestudy.model.Event;
@@ -32,17 +44,9 @@ import com.example.it3197_casestudy.model.MyItem;
 import com.example.it3197_casestudy.ui_logic.SuggestLocationActivity;
 import com.example.it3197_casestudy.util.MySharedPreferences;
 import com.example.it3197_casestudy.util.Settings;
-import com.google.android.gms.location.Geofence;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.maps.android.clustering.Cluster;
-import com.google.maps.android.clustering.ClusterItem;
-import com.google.maps.android.clustering.ClusterManager;
-import com.google.maps.android.clustering.ClusterManager.OnClusterClickListener;
-import com.google.maps.android.clustering.ClusterManager.OnClusterItemClickListener;
 
 public class GetMashUpData extends AsyncTask<Object, Object, Object> implements Settings{
 	private ProgressDialog dialog;
@@ -50,7 +54,6 @@ public class GetMashUpData extends AsyncTask<Object, Object, Object> implements 
 	private ArrayList<MashUpData> mashUpDataArrList;
 	private String themeName;
     // Declare a variable for the cluster manager.
-    private ClusterManager<MyItem> mClusterManager;
     
 	public GetMashUpData(SuggestLocationActivity activity, String themeName){
 		this.activity = activity;
@@ -74,8 +77,7 @@ public class GetMashUpData extends AsyncTask<Object, Object, Object> implements 
 
 	    // Initialize the manager with the context and the map.
 	    // (Activity extends context, so we can pass 'this' in the constructor.)
-	    mClusterManager = new ClusterManager<MyItem>(activity, activity.getMap());
-	    activity.getMap().setInfoWindowAdapter(mClusterManager.getMarkerManager());
+
 	    
 	    //mClusterManager.getClusterMarkerCollection().setOnInfoWindowAdapter(new MyCustomAdapterForClusters());
 	    //mClusterManager.getMarkerCollection().setOnInfoWindowAdapter(new MyCustomAdapterForItems());
@@ -87,47 +89,33 @@ public class GetMashUpData extends AsyncTask<Object, Object, Object> implements 
 	        	/*CoordinateConvertor coordinateConvertor = new CoordinateConvertor(activity,mashUpDataArrList.get(i).getLat(),mashUpDataArrList.get(i).getLng());
 	        	coordinateConvertor.execute();*/
 				SVY21Coordinate currentCoordinates = new SVY21Coordinate(mashUpDataArrList.get(i).getLat(),mashUpDataArrList.get(i).getLng());
-				double lat = currentCoordinates.asLatLon().getLatitude();
-				double lng = currentCoordinates.asLatLon().getLongitude();
-				
-		        MyItem offsetItem = new MyItem(mashUpDataArrList.get(i).getName(), mashUpDataArrList.get(i).getAddressStreetName(), mashUpDataArrList.get(i).getHyperlink(), lat, lng);
-		        myItemArrList.add(offsetItem);
+				final String address = mashUpDataArrList.get(i).getAddressStreetName();
+				final double lat = currentCoordinates.asLatLon().getLatitude();
+				final double lng = currentCoordinates.asLatLon().getLongitude();
+				activity.getMap().addMarker(new MarkerOptions().title(mashUpDataArrList.get(i).getName()).snippet(mashUpDataArrList.get(i).getHyperlink()).position(new LatLng(lat,lng)));
+				activity.getMap().setOnMarkerClickListener(new OnMarkerClickListener(){
+
+					@Override
+					public boolean onMarkerClick(Marker marker) {
+						// TODO Auto-generated method stub
+						activity.getTvEventLocationName().setText(marker.getTitle());
+						activity.getTvEventLocationAddress().setText(address);
+						activity.getTvEventLocationHyperlink().setText(marker.getSnippet());
+						activity.getTvEventLocationLat().setText(String.valueOf(lat));
+						activity.getTvEventLocationLng().setText(String.valueOf(lng));
+						activity.getTableLayoutEventLocationInformation().setVisibility(View.VISIBLE);
+						return false;
+					}
+					
+				});
+		        /*MyItem offsetItem = new MyItem(mashUpDataArrList.get(i).getName(), mashUpDataArrList.get(i).getAddressStreetName(), mashUpDataArrList.get(i).getHyperlink(), lat, lng);
+		        myItemArrList.add(offsetItem);*/
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 
-	    // Point the map's listeners at the listeners implemented by the cluster
-	    // manager.
-	    activity.getMap().setOnCameraChangeListener(mClusterManager);
-	    activity.getMap().setOnMarkerClickListener(mClusterManager);
-	    mClusterManager.setOnClusterClickListener(new OnClusterClickListener<MyItem>() {
-	        @Override
-	        public boolean onClusterClick(Cluster<MyItem> cluster) {
-	            //clickedCluster = cluster; // remember for use later in the Adapter
-	    		activity.getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(cluster.getPosition(), activity.getMap().getCameraPosition().zoom + 1));
-	            return false;
-	        }
-	    });
-	    mClusterManager.setOnClusterItemClickListener(new OnClusterItemClickListener<MyItem>(){
-			@Override
-			public boolean onClusterItemClick(MyItem item) {
-				// TODO Auto-generated method stub
-				activity.getTvEventLocationName().setText(item.getTitle());
-				activity.getTvEventLocationAddress().setText(item.getAddress());
-				activity.getTvEventLocationHyperlink().setText(item.getHyperLink());
-				activity.getTvEventLocationLat().setText(String.valueOf(item.getPosition().latitude));
-				activity.getTvEventLocationLng().setText(String.valueOf(item.getPosition().longitude));
-				activity.getTableLayoutEventLocationInformation().setVisibility(View.VISIBLE);
-				return false;
-			}
-	    });
-	    
-	    for(int i=0;i<myItemArrList.size();i++){
-	    	mClusterManager.addItem(myItemArrList.get(i));
-	    }
 	    activity.setMyItemArrList(myItemArrList);
-	    activity.setThings(mClusterManager);
 		dialog.dismiss();
 	}
 	
@@ -155,54 +143,58 @@ public class GetMashUpData extends AsyncTask<Object, Object, Object> implements 
 		try{
 			json = new JSONObject(responseBody);
 			data_array = json.getJSONArray("SrchResults");
-			int size = data_array.getJSONObject(0).getInt("FeatCount");
-			
+			//int size = data_array.getJSONObject(0).getInt("FeatCount");
+
 			mashUpDataArrList = new ArrayList<MashUpData>();
-			
-			for(int i=1;i<data_array.length();i++){
-				JSONObject dataJob = new JSONObject(data_array.getString(i));
-				mashUpData = new MashUpData();
-				if(dataJob.has("NAME")){
-					mashUpData.setName(dataJob.getString("NAME"));
+			if(!data_array.getJSONObject(0).has("ErrorMessage")){
+				for(int i=1;i<data_array.length();i++){
+					JSONObject dataJob = new JSONObject(data_array.getString(i));
+					mashUpData = new MashUpData();
+					if(dataJob.has("NAME")){
+						mashUpData.setName(dataJob.getString("NAME"));
+					}
+					if(dataJob.has("ADDRESSSTREETNAME")){
+						mashUpData.setAddressStreetName(dataJob.getString("ADDRESSSTREETNAME"));
+					}
+					if(dataJob.has("ADDRESSBLOCKHOUSENUMBER")){
+						mashUpData.setAddressBlkHouseNumber(dataJob.getString("ADDRESSBLOCKHOUSENUMBER"));
+					}
+					if(dataJob.has("ADDRESSBUILDINGNAME")){
+						mashUpData.setAddressBuildingName(dataJob.getString("ADDRESSBUILDINGNAME"));
+					}
+					if(dataJob.has("ADDRESSFLOORNUMBER")){
+						mashUpData.setAddressFloorNumber(dataJob.getString("ADDRESSFLOORNUMBER"));
+					}
+					if(dataJob.has("ADDRESSUNITNUMBER")){
+						mashUpData.setAddressUnitNumber(dataJob.getString("ADDRESSUNITNUMBER"));
+					}
+					if(dataJob.has("ADDRESSPOSTALCODE")){
+						mashUpData.setAddressPostalCode(dataJob.getString("ADDRESSPOSTALCODE"));
+					}
+					if(dataJob.has("DESCRIPTION")){
+						mashUpData.setDescription(dataJob.getString("DESCRIPTION"));
+					}
+					if(dataJob.has("HYPERLINK")){
+						mashUpData.setHyperlink(dataJob.getString("HYPERLINK"));
+					}
+					if(dataJob.has("XY")){
+						String XY = dataJob.getString("XY");
+						double X = Double.parseDouble(XY.substring(0, XY.indexOf(",")));
+						double Y = Double.parseDouble(XY.substring(XY.indexOf(",") + 1, XY.length()));
+						mashUpData.setLat(Y);
+						mashUpData.setLng(X);
+					}
+					if(dataJob.has("ICON_NAME")){
+						mashUpData.setIconName(dataJob.getString("ICON_NAME"));
+					}
+					if(dataJob.has("PHOTOURL")){
+						mashUpData.setPhotoUrl(dataJob.getString("PHOTOURL"));
+					}
+					mashUpDataArrList.add(mashUpData);
 				}
-				if(dataJob.has("ADDRESSSTREETNAME")){
-					mashUpData.setAddressStreetName(dataJob.getString("ADDRESSSTREETNAME"));
-				}
-				if(dataJob.has("ADDRESSBLOCKHOUSENUMBER")){
-					mashUpData.setAddressBlkHouseNumber(dataJob.getString("ADDRESSBLOCKHOUSENUMBER"));
-				}
-				if(dataJob.has("ADDRESSBUILDINGNAME")){
-					mashUpData.setAddressBuildingName(dataJob.getString("ADDRESSBUILDINGNAME"));
-				}
-				if(dataJob.has("ADDRESSFLOORNUMBER")){
-					mashUpData.setAddressFloorNumber(dataJob.getString("ADDRESSFLOORNUMBER"));
-				}
-				if(dataJob.has("ADDRESSUNITNUMBER")){
-					mashUpData.setAddressUnitNumber(dataJob.getString("ADDRESSUNITNUMBER"));
-				}
-				if(dataJob.has("ADDRESSPOSTALCODE")){
-					mashUpData.setAddressPostalCode(dataJob.getString("ADDRESSPOSTALCODE"));
-				}
-				if(dataJob.has("DESCRIPTION")){
-					mashUpData.setDescription(dataJob.getString("DESCRIPTION"));
-				}
-				if(dataJob.has("HYPERLINK")){
-					mashUpData.setHyperlink(dataJob.getString("HYPERLINK"));
-				}
-				if(dataJob.has("XY")){
-					String XY = dataJob.getString("XY");
-					double X = Double.parseDouble(XY.substring(0, XY.indexOf(",")));
-					double Y = Double.parseDouble(XY.substring(XY.indexOf(",") + 1, XY.length()));
-					mashUpData.setLat(Y);
-					mashUpData.setLng(X);
-				}
-				if(dataJob.has("ICON_NAME")){
-					mashUpData.setIconName(dataJob.getString("ICON_NAME"));
-				}
-				if(dataJob.has("PHOTOURL")){
-					mashUpData.setPhotoUrl(dataJob.getString("PHOTOURL"));
-				}
-				mashUpDataArrList.add(mashUpData);
+			}
+			else{
+				errorOnExecuting();	
 			}
 		}
 		catch(Exception ex){
