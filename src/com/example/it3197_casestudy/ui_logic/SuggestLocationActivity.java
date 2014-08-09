@@ -10,6 +10,7 @@ import com.androidmapsextensions.MapFragment;
 import com.androidmapsextensions.Marker;
 import com.androidmapsextensions.SupportMapFragment;
 import com.example.it3197_casestudy.R;
+import com.example.it3197_casestudy.googlePlaces.GetPlaces;
 import com.example.it3197_casestudy.model.MashUpData;
 import com.example.it3197_casestudy.model.MyItem;
 import com.example.it3197_casestudy.one_map_controller.GetMashUpData;
@@ -30,6 +31,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -39,6 +41,7 @@ import android.support.v4.app.NavUtils;
 
 public class SuggestLocationActivity extends Activity {
 	GoogleMap map;
+	ExpandableListView lvRecommendedLocations;
 
 	ArrayList<Integer> selectedIndex = new ArrayList<Integer>();
 	private String artsThemeList[] = {"Monuments","Parks","Tourism"};
@@ -55,6 +58,7 @@ public class SuggestLocationActivity extends Activity {
 	
 	String[] finalList = new String[3];
 	String[] finalOneMapList = new String [3];
+	String finalCategory = "";
 	
     ArrayList<MyItem> myItemArrList = new ArrayList<MyItem>();
 
@@ -76,6 +80,14 @@ public class SuggestLocationActivity extends Activity {
 		this.myItemArrList = myItemArrList;
 	}
 
+	public ExpandableListView getLvRecommendedLocations() {
+		return lvRecommendedLocations;
+	}
+
+	public void setLvRecommendedLocations(ExpandableListView lvRecommendedLocations) {
+		this.lvRecommendedLocations = lvRecommendedLocations;
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -87,20 +99,21 @@ public class SuggestLocationActivity extends Activity {
 			category = savedInstanceState.getString("category");
 			System.out.println("Category:"+category);
 			if(category.equals("Arts")){
-				passInArr(artsThemeList,artsThemeOneMapList);
+				passInArr(artsThemeList,artsThemeOneMapList,category);
 			}
 			else if(category.equals("Education")){
-				passInArr(educationThemeList,educationThemeOneMapList);
+				passInArr(educationThemeList,educationThemeOneMapList,category);
 			}
 			else if(category.equals("Family")){
-				passInArr(familyThemeList,familyThemeOneMapList);
+				passInArr(familyThemeList,familyThemeOneMapList,category);
 			}
 			else if(category.equals("Health")){
-				passInArr(healthThemeList,healthThemeOneMapList);
+				passInArr(healthThemeList,healthThemeOneMapList,category);
 			}
 		}
 
         mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+        lvRecommendedLocations = (ExpandableListView) findViewById(R.id.lv_view_all_recommended_locations);
 		map = mapFragment.getExtendedMap();
 		map.setBuildingsEnabled(true);
 		map.setIndoorEnabled(true);
@@ -117,6 +130,7 @@ public class SuggestLocationActivity extends Activity {
 		
 		// Show the Up button in the action bar.
 		setupActionBar();
+
 	}
 	
 	
@@ -166,7 +180,7 @@ public class SuggestLocationActivity extends Activity {
 					if(!selectedAlready){
 						String theme = finalOneMapList[which];
 						selectedIndex.add(which);
-						GetMashUpData getMashUpData = new GetMashUpData(SuggestLocationActivity.this, theme);
+						GetMashUpData getMashUpData = new GetMashUpData(SuggestLocationActivity.this, theme, finalCategory);
 						getMashUpData.execute();
 					}
 					else{
@@ -211,7 +225,7 @@ public class SuggestLocationActivity extends Activity {
 				map.clear();
 				for(int i=0;i<selectedIndex.size();i++){
 					String theme = finalOneMapList[selectedIndex.get(i)];
-					GetMashUpData getMashUpData = new GetMashUpData(SuggestLocationActivity.this, theme);
+					GetMashUpData getMashUpData = new GetMashUpData(SuggestLocationActivity.this, theme,finalCategory);
 					getMashUpData.execute();
 				}
 			}
@@ -223,7 +237,7 @@ public class SuggestLocationActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	public void passInArr(String[] themesArr,String[] themesOneMapArr){
+	public void passInArr(String[] themesArr,String[] themesOneMapArr, String category){
 		for(int i=0;i<finalList.length;i++){
 			finalList[i] = themesArr[i];
 			System.out.println(themesArr[i]);
@@ -231,6 +245,7 @@ public class SuggestLocationActivity extends Activity {
 		for(int i=0;i<finalOneMapList.length;i++){
 			finalOneMapList[i] = themesOneMapArr[i];
 		}
+		finalCategory = category;
 	}
 		
 	//Find the closest marker to the current location

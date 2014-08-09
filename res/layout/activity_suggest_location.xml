@@ -7,7 +7,12 @@
 	    android:id="@+id/map"
 	    android:name="com.androidmapsextensions.MapFragment"
 	    android:layout_width="match_parent"
-	    android:layout_height="match_parent" />
+	    android:layout_height="350dp" />
 
-	
+	<ExpandableListView
+        android:id="@+id/lv_view_all_recommended_locations"
+        android:layout_below="@+id/map"
+        android:layout_height="fill_parent"
+        android:layout_width="fill_parent"
+        />
 </RelativeLayout>

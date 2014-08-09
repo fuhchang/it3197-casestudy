@@ -24,6 +24,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
@@ -40,6 +43,7 @@ import com.androidmapsextensions.Marker;
 import com.androidmapsextensions.MarkerOptions;
 import com.example.it3197_casestudy.geofencing.GeofenceRequester;
 import com.example.it3197_casestudy.geofencing.SimpleGeofenceStore;
+import com.example.it3197_casestudy.googlePlaces.GetPlaces;
 import com.example.it3197_casestudy.model.Event;
 import com.example.it3197_casestudy.model.EventLocationDetail;
 import com.example.it3197_casestudy.model.MashUpData;
@@ -56,11 +60,12 @@ public class GetMashUpData extends AsyncTask<Object, Object, Object> implements 
 	final private SuggestLocationActivity activity;
 	private ArrayList<MashUpData> mashUpDataArrList;
 	private String themeName;
-    // Declare a variable for the cluster manager.
+    private String category;
     
-	public GetMashUpData(SuggestLocationActivity activity, String themeName){
+	public GetMashUpData(SuggestLocationActivity activity, String themeName, String category){
 		this.activity = activity;
 		this.themeName = themeName;
+		this.category = category;
 	}
 	
 	@Override
@@ -75,8 +80,10 @@ public class GetMashUpData extends AsyncTask<Object, Object, Object> implements 
 	}
 	@Override
 	protected void onPostExecute(Object result) {
-		parseJSONResponse((String) result);
-		
+		parseJSONResponse((String) result); 
+		LocationManager locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
+
+		final String provider = locationManager.getBestProvider(new Criteria(), false);
 	    ArrayList<MyItem> myItemArrList = new ArrayList<MyItem>();
 		for(int i=0;i<mashUpDataArrList.size();i++){
 			try {
@@ -85,6 +92,29 @@ public class GetMashUpData extends AsyncTask<Object, Object, Object> implements 
 				final double lat = currentCoordinates.asLatLon().getLatitude();
 				final double lng = currentCoordinates.asLatLon().getLongitude();
 				activity.getMap().addMarker(new MarkerOptions().title(mashUpDataArrList.get(i).getName()).snippet(mashUpDataArrList.get(i).getAddressStreetName()).position(new LatLng(lat,lng)));
+				activity.getMap().setOnMarkerClickListener(new OnMarkerClickListener(){
+
+					@Override
+					public boolean onMarkerClick(Marker marker) {
+						// TODO Auto-generated method stub
+
+						Location location = new Location(provider);
+						location.setLatitude(marker.getPosition().latitude);
+						location.setLongitude(marker.getPosition().longitude);
+						GetPlaces getPlaces = null;
+						if(category.equals("Arts")){
+							String recommended = "airport|art_gallery|campground|city_hall|library|museum|painter|park|shopping_mall|stadium|zoo";
+							String notRecommended = "bar|casino|church|cemetery|courthouse|embassy|funeral_home|night_club|spa";
+							getPlaces = new GetPlaces(activity,recommended,notRecommended,activity.getMap(),location);
+						}
+						else if(category.equals("Education")){
+							getPlaces = new GetPlaces(activity,"library","",activity.getMap(),location);
+						}
+						getPlaces.execute();
+						return false;
+					}
+					
+				});
 				activity.getMap().setOnInfoWindowClickListener(new OnInfoWindowClickListener(){
 
 					@Override
