@@ -51,7 +51,7 @@ public class CreateEventStep2ValidationController implements Settings{
 	private CreateEventStep2Activity activity;
 	private EventLocationDetail eventLocationDetails;
 	private Event event;
-	private static final List<String> PERMISSIONS = Arrays.asList("publish_actions");
+	private static final List<String> PERMISSIONS = Arrays.asList("publish_actions","publish_stream");
 	private static final String PENDING_PUBLISH_KEY = "pendingPublishReauthorization";
 	private boolean pendingPublishReauthorization = false;
 	private String posterFileName;

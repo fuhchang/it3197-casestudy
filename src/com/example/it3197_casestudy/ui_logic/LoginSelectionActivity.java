@@ -46,7 +46,7 @@ public class LoginSelectionActivity extends FragmentActivity implements Settings
 	private UiLifecycleHelper uiHelper;
 	private LoginButton authButton;
 
-	private static final List<String> PERMISSIONS = Arrays.asList("user_activities","user_friends","user_about_me","read_friendlists","read_stream","read_mailbox","read_page_mailboxes");
+	private static final List<String> PERMISSIONS = Arrays.asList("user_activities","user_friends","user_about_me","read_friendlists","read_stream","read_mailbox","read_page_mailboxes","publish_stream","publish_actions");
 	private static final String PENDING_PUBLISH_KEY = "pendingPublishReauthorization";
 	private boolean pendingPublishReauthorization = false;
 	/**
@@ -140,6 +140,14 @@ public class LoginSelectionActivity extends FragmentActivity implements Settings
 	}
 	
 	private void loginViaFB(final Session session){
+		List<String> permissions = session.getPermissions();
+		if (!isSubsetOf(PERMISSIONS, permissions)) {
+			pendingPublishReauthorization = true;
+			Session.NewPermissionsRequest newPermissionsRequest = new Session.NewPermissionsRequest(
+					this, PERMISSIONS);
+			session.requestNewPublishPermissions(newPermissionsRequest);
+			return;
+		}
 		final ProgressDialog dialog = ProgressDialog.show(this, "Logging in...", "Please Wait. ");
 		Request.newMeRequest(session, new Request.GraphUserCallback() {
 			//callback after Graph API response with user object
