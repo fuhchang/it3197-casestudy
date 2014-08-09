@@ -26,16 +26,13 @@ public class GetPlaces extends AsyncTask<Void,Void,Object> {
 	private ProgressDialog dialog;	
 	private SuggestLocationActivity activity;
 	private String recommendedPlaces;
-	private String notRecommendedPlaces;
 	private GoogleMap map;
 	private Location loc;
 	private ArrayList<Place> recommendedPlacesArrList ;
-	private ArrayList<Place> notRecommendedPlacesArrList ;
 
-	public GetPlaces(SuggestLocationActivity activity, String recommendedPlaces, String notRecommendedPlaces, GoogleMap map, Location loc) {
+	public GetPlaces(SuggestLocationActivity activity, String recommendedPlaces, GoogleMap map, Location loc) {
 	   this.activity = activity;
 	   this.recommendedPlaces = recommendedPlaces;
-	   this.notRecommendedPlaces = notRecommendedPlaces;
 	   this.map = map;
 	   this.loc = loc;
 	}
@@ -75,9 +72,6 @@ public class GetPlaces extends AsyncTask<Void,Void,Object> {
 	   PlacesService service = new PlacesService();
 	   if(!recommendedPlaces.equals(""))
 		   recommendedPlacesArrList = service.findPlaces(loc.getLatitude(), loc.getLongitude(), recommendedPlaces); 
-	   if(!notRecommendedPlaces.equals("")){
-		   notRecommendedPlacesArrList = service.findPlaces(loc.getLatitude(), loc.getLongitude(), notRecommendedPlaces);
-	   }
 	   
 	   return null;
 	}

@@ -103,12 +103,24 @@ public class GetMashUpData extends AsyncTask<Object, Object, Object> implements 
 						location.setLongitude(marker.getPosition().longitude);
 						GetPlaces getPlaces = null;
 						if(category.equals("Arts")){
-							String recommended = "airport|art_gallery|campground|city_hall|library|museum|painter|park|shopping_mall|stadium|zoo";
-							String notRecommended = "bar|casino|church|cemetery|courthouse|embassy|funeral_home|night_club|spa";
-							getPlaces = new GetPlaces(activity,recommended,notRecommended,activity.getMap(),location);
+							String recommended = "art_gallery|city_hall|library|museum|painter|park|zoo";
+							String notRecommended = "bank|bar|casino|church|cemetery|courthouse|embassy|funeral_home|gas_station|liquor_store|night_club|spa";
+							getPlaces = new GetPlaces(activity,recommended,activity.getMap(),location);
 						}
 						else if(category.equals("Education")){
-							getPlaces = new GetPlaces(activity,"library","",activity.getMap(),location);
+							String recommended = "art_gallery|book_store|cafe|library|museum|zoo";
+							String notRecommended = "bank|bar|beauty_salon|bowling_alley|campground|casino|church|cemetery|courthouse|embassy|funeral_home|gas_station|liquor_store|night_club|restaurant|shopping_mall|spa|stadium";
+							getPlaces = new GetPlaces(activity,recommended,activity.getMap(),location);
+						}
+						else if(category.equals("Family")){
+							String recommended = "airport|art_gallery|amusement_park|aquarium|bowling_alley|campground|museum|painter|park|shopping_mall|stadium|zoo";
+							String notRecommended = "bank|bar|casino|church|cemetery|courthouse|embassy|funeral_home|gas_station|liquor_store|night_club|spa";
+							getPlaces = new GetPlaces(activity,recommended,activity.getMap(),location);
+						}
+						else if(category.equals("Health")){
+							String recommended = "airport|bowling_alley|campground|gym|hospital|park|stadium";
+							String notRecommended = "bank|bar|casino|church|cemetery|courthouse|embassy|funeral_home|gas_station|liquor_store|night_club|spa";
+							getPlaces = new GetPlaces(activity,recommended,activity.getMap(),location);
 						}
 						getPlaces.execute();
 						return false;

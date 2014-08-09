@@ -9,7 +9,7 @@ public interface Settings {
 	String DROPBOX_API_KEY = "cqvf3nim3klslqb";
 	//Put your ip address
 	//String API_URL = "http://172.27.178.193:8080/CommunityOutreach/";
-	String API_URL = "http://192.168.1.2:8080/CommunityOutreach/";
+	String API_URL = "http://192.168.1.4:8080/CommunityOutreach/";
 	//String API_URL = "http://127.6.36.3:8080/";
 	SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy");
 	SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm a");

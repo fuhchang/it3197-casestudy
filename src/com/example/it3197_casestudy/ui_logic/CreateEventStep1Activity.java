@@ -9,11 +9,18 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Address;
+import android.location.Criteria;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.transition.Visibility;
@@ -34,6 +41,9 @@ import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.controller.GetImageFromDropbox;
 import com.example.it3197_casestudy.crouton.Crouton;
 import com.example.it3197_casestudy.crouton.Style;
+import com.example.it3197_casestudy.googlePlaces.CheckPlaces;
+import com.example.it3197_casestudy.googlePlaces.GetPlaces;
+import com.example.it3197_casestudy.googlePlaces.Place;
 import com.example.it3197_casestudy.model.EventLocationDetail;
 import com.example.it3197_casestudy.util.Settings;
 import com.example.it3197_casestudy.validation.Form;
@@ -54,6 +64,8 @@ public class CreateEventStep1Activity extends Activity implements Settings{
 	Button btnUploadEventPoster,btnSuggestLocation;
 	private DbxChooser mChooser;
 	private String posterFileName;
+	
+	private ArrayList<Place> notRecommendedPlacesArrList ;
 	
 	public EditText getEtEventName() {
 		return etEventName;
@@ -111,6 +123,15 @@ public class CreateEventStep1Activity extends Activity implements Settings{
 		this.cBoxRequestHelp = cBoxRequestHelp;
 	}
 
+	public ArrayList<Place> getNotRecommendedPlacesArrList() {
+		return notRecommendedPlacesArrList;
+	}
+
+	public void setNotRecommendedPlacesArrList(
+			ArrayList<Place> notRecommendedPlacesArrList) {
+		this.notRecommendedPlacesArrList = notRecommendedPlacesArrList;
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -140,6 +161,7 @@ public class CreateEventStep1Activity extends Activity implements Settings{
 		ivPoster.setVisibility(View.GONE);
 		tvPoster.setVisibility(View.GONE);
 		tvLocationAlt.setVisibility(View.GONE);
+		
 	}
 	
 	@Override
@@ -209,8 +231,39 @@ public class CreateEventStep1Activity extends Activity implements Settings{
 			validatorsArrList.add(eventDescriptionField);
 			validatorsArrList.add(eventLocationField);
 			
+			LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+			String provider = locationManager.getBestProvider(new Criteria(), false);
+			Location location = new Location(provider);
+			Geocoder geoCoder = new Geocoder(CreateEventStep1Activity.this);
+			List<Address> addressList = null;
+			try {
+				 addressList = geoCoder.getFromLocationName(etLocation.getText().toString(), 1);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(eventLocationDetails.getEventLocationLat() != 0.00){
+				location.setLatitude(eventLocationDetails.getEventLocationLat());
+			}
+			else{
+				for(int i=0;i<addressList.size();i++){
+					location.setLatitude(addressList.get(i).getLatitude());
+				}	
+			}
+			if(eventLocationDetails.getEventLocationLng() != 0.00){
+				location.setLongitude(eventLocationDetails.getEventLocationLng());
+			}
+			else{
+				for(int i=0;i<addressList.size();i++){
+					location.setLongitude(addressList.get(i).getLongitude());
+				}	
+			}
+			String notRecommended = "bank|bar|casino|church|cemetery|courthouse|embassy|funeral_home|gas_station|liquor_store|night_club|spa";
+
 			CreateEventStep1ValidationController validationController = new CreateEventStep1ValidationController(CreateEventStep1Activity.this,eventLocationDetails);
-			validationController.validateForm(intent, mForm, validatorsArrList,posterFileName);
+			CheckPlaces checkPlaces = new CheckPlaces(CreateEventStep1Activity.this,notRecommended,location,intent,mForm,validatorsArrList,posterFileName,validationController);
+			checkPlaces.execute();
+
 			break;
 
 		case R.id.cancel:
