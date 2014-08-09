@@ -35,6 +35,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dropbox.chooser.android.DbxChooser;
 import com.example.it3197_casestudy.R;
@@ -258,12 +259,17 @@ public class CreateEventStep1Activity extends Activity implements Settings{
 					location.setLongitude(addressList.get(i).getLongitude());
 				}	
 			}
-			String notRecommended = "bank|bar|casino|church|cemetery|courthouse|embassy|funeral_home|gas_station|liquor_store|night_club|spa";
-
-			CreateEventStep1ValidationController validationController = new CreateEventStep1ValidationController(CreateEventStep1Activity.this,eventLocationDetails);
-			CheckPlaces checkPlaces = new CheckPlaces(CreateEventStep1Activity.this,notRecommended,location,intent,mForm,validatorsArrList,posterFileName,validationController);
-			checkPlaces.execute();
-
+			
+			if((location.getLatitude() == 0) && (location.getLongitude() == 0)){
+				Toast.makeText(this, "Invalid address. Please put a valid address", Toast.LENGTH_LONG).show();
+			}
+			else{
+				String notRecommended = "bank|bar|casino|church|cemetery|courthouse|embassy|funeral_home|gas_station|liquor_store|night_club|spa";
+	
+				CreateEventStep1ValidationController validationController = new CreateEventStep1ValidationController(CreateEventStep1Activity.this,eventLocationDetails);
+				CheckPlaces checkPlaces = new CheckPlaces(CreateEventStep1Activity.this,notRecommended,location,intent,mForm,validatorsArrList,posterFileName,validationController);
+				checkPlaces.execute();
+			}
 			break;
 
 		case R.id.cancel:

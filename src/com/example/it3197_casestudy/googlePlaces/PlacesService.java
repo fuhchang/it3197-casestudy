@@ -35,8 +35,7 @@ public class PlacesService {
 			ArrayList<Place> arrayList = new ArrayList<Place>();
 			for (int i = 0; i < array.length(); i++) {
 				try {
-					Place place = Place
-							.jsonToPontoReferencia((JSONObject) array.get(i));
+					Place place = Place.jsonToPontoReferencia((JSONObject) array.get(i));
 					Log.v("Places Services ", "" + place);
 					arrayList.add(place);
 				} catch (Exception e) {

@@ -61,7 +61,9 @@ public class RecommendedLocationListAdapter extends BaseExpandableListAdapter im
         }
  
         TextView tvRecommendedLocations = (TextView) convertView.findViewById(R.id.tv_recommended_locations);
-        tvRecommendedLocations.setText(place.getName());
+        if(place.getName() != null){
+        	tvRecommendedLocations.setText(place.getName());
+        }
         //txtListChild.setText(childText);
         return convertView;
     }

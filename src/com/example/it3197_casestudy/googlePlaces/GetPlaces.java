@@ -53,15 +53,13 @@ public class GetPlaces extends AsyncTask<Void,Void,Object> {
 		 
 			    listDataHeader.add("Nearby Places within 1km");
 			    listDataChild.put(listDataHeader.get(0), recommendedPlacesArrList);
-		        
+		        System.out.println(recommendedPlacesArrList.get(i).getName());
 			    RecommendedLocationListAdapter adapter = new RecommendedLocationListAdapter(activity,activity,listDataHeader, listDataChild, activity.getLvRecommendedLocations());
 			    activity.getLvRecommendedLocations().setAdapter(adapter);
 			    activity.getLvRecommendedLocations().expandGroup(0);
 			    activity.getLvRecommendedLocations().setOnGroupClickListener(new OnGroupClickListener() {
 					@Override
-					public boolean onGroupClick(ExpandableListView arg0,
-							View arg1, int arg2, long arg3) {
-						// TODO Auto-generated method stub
+					public boolean onGroupClick(ExpandableListView arg0,View arg1, int arg2, long arg3) {
 						return true;
 					}
 			    });

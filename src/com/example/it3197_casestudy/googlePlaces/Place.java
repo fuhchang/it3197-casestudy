@@ -60,7 +60,9 @@ public class Place {
             result.setLongitude((Double) location.get("lng"));
             result.setIcon(pontoReferencia.getString("icon"));
             result.setName(pontoReferencia.getString("name"));
-            result.setVicinity(pontoReferencia.getString("vicinity"));
+            if(pontoReferencia.has("vicinity")){
+            	result.setVicinity(pontoReferencia.getString("vicinity"));
+            }
             result.setId(pontoReferencia.getString("id"));
             return result;
         } catch (JSONException ex) {

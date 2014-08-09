@@ -26,6 +26,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 public class CheckPlaces extends AsyncTask<Void,Void,Object> {
 	private ProgressDialog dialog;	
@@ -61,6 +62,9 @@ public class CheckPlaces extends AsyncTask<Void,Void,Object> {
 		   activity.setNotRecommendedPlacesArrList(notRecommendedPlacesArrList);
 
 		   validationController.validateForm(intent, mForm, validatorsArrList,posterFileName,notRecommendedPlacesArrList);
+	   }
+	   else{
+			Toast.makeText(activity, "Invalid address. Please put a valid address", Toast.LENGTH_LONG).show();
 	   }
 	}
 
