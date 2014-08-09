@@ -44,13 +44,15 @@ public class CreateHobbyPostController extends
 	private ViewSingleHobby vsh;
 	private ListView listView;
 	private String grpName;
+	private String fbID;
 	Hobby hobby;
 	public CreateHobbyPostController(CreateHobbyPost activity,
-			HobbyPost hobbypost, int adminRight, ViewSingleHobby vsh) {
+			HobbyPost hobbypost, int adminRight, ViewSingleHobby vsh, String fbID) {
 		this.activity = activity;
 		this.hobbypost = hobbypost;
 		this.adminRight = adminRight;
 		this.vsh = vsh;
+		this.fbID = fbID;
 	}
 
 	@Override
@@ -68,6 +70,7 @@ public class CreateHobbyPostController extends
 		intent.putExtra("grpID", hobby.getGroupID());
 		intent.putExtra("adminNric", hobby.getAdminNric());
 		intent.putExtra("userNric", hobbypost.getPosterNric());
+		intent.putExtra("fbID", fbID);
 		activity.finish();
 		activity.startActivity(intent);
 		

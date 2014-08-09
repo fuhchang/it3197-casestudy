@@ -80,6 +80,7 @@ implements Settings{
 				intent.putExtra("Lng", allJoinedhobbyList.get(position).getLng());
 				intent.putExtra("adminNric", allJoinedhobbyList.get(position).getAdminNric());
 				intent.putExtra("grpImg", allJoinedhobbyList.get(position).getGrpImg());
+				intent.putExtra("fbID", allJoinedhobbyList.get(position).getHobbyFBPostID());
 				intent.putExtra("member", "member");
 				intent.putExtra("userNric", nric);
 				activity.startActivity(intent);

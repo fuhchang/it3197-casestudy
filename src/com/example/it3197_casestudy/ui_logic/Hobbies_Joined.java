@@ -43,7 +43,7 @@ public class Hobbies_Joined extends Fragment {
 		
 		
 		joinedList = (ListView) rootView.findViewById(R.id.hobbyJoinedList);
-		joinedList.setBackgroundColor(Color.GRAY);
+		joinedList.setBackgroundColor(Color.LTGRAY);
 		GetAllJoinedHobbyGroup getJoined = new GetAllJoinedHobbyGroup(this, joinedList, nric);
 		getJoined.execute();
 		return rootView;

@@ -1,5 +1,7 @@
 package com.example.it3197_casestudy.ui_logic;
 
+import java.util.Date;
+
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.R.id;
 import com.example.it3197_casestudy.R.layout;
@@ -15,13 +17,17 @@ import android.widget.ListView;
 public class ViewAvaliableHobby extends Activity {
 	private ListView listView;
 	private int eventID = 1;
+	private String date1, date2;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_view_avaliable_hobby);
 		listView = (ListView) findViewById(R.id.avaliableHobbyList);
 		listView.setBackgroundColor(Color.LTGRAY);
-		GetAvaliableHobby gethobby = new GetAvaliableHobby(this, listView,  eventID);
+		eventID = getIntent().getExtras().getInt("eventID");
+		date1 = getIntent().getExtras().getString("date1");
+		date2 = getIntent().getExtras().getString("date2");
+		GetAvaliableHobby gethobby = new GetAvaliableHobby(this, listView,  eventID, date1, date2);
 		gethobby.execute();
 	}
 

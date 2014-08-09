@@ -74,6 +74,7 @@ public class SearchHobbyByMap extends FragmentActivity implements LocationListen
 	private SimpleGeofenceStore mPrefs;
 	private GeofenceRequester mGeofenceRequester;
 	private String userName;
+	private int raidus = 50;
 	 List<Geofence> mCurrentGeofences;
 	
 	 BitmapDescriptor iconDance;
@@ -104,6 +105,7 @@ public class SearchHobbyByMap extends FragmentActivity implements LocationListen
 		MarkerOptions mp = new MarkerOptions();
 		mp.title("Your location");
 		map.addMarker(new MarkerOptions().position(current_location).title("Your location")).showInfoWindow();
+		map.addMarker(new MarkerOptions().position(current_location).title("Your location")).showInfoWindow();
 		for (int i = 0; i < hobbyList.size(); i++) {
 			
 			MarkerOptions marker = new MarkerOptions();
@@ -120,9 +122,9 @@ public class SearchHobbyByMap extends FragmentActivity implements LocationListen
 			}else{
 				
 			}
-			CircleOptions co = new CircleOptions().center(new LatLng(hobbyList.get(i).getLat(), hobbyList.get(i).getLng())).radius(2000).fillColor(0x40ff0000).strokeColor(Color.TRANSPARENT).strokeWidth(2);
+			CircleOptions co = new CircleOptions().center(new LatLng(hobbyList.get(i).getLat(), hobbyList.get(i).getLng())).radius(raidus).fillColor(0x40ff0000).strokeColor(Color.TRANSPARENT).strokeWidth(2);
 			Circle circle = map.addCircle(co);
-			SimpleGeofence UiGeofence = new SimpleGeofence(hobbyList.get(i).getGroupName(), hobbyList.get(i).getLat(), hobbyList.get(i).getLng(), 1000,Geofence.NEVER_EXPIRE, Geofence.GEOFENCE_TRANSITION_ENTER);
+			SimpleGeofence UiGeofence = new SimpleGeofence(hobbyList.get(i).getGroupName(), hobbyList.get(i).getLat(), hobbyList.get(i).getLng(), raidus,Geofence.NEVER_EXPIRE, Geofence.GEOFENCE_TRANSITION_ENTER);
 			mPrefs.setGeofence(hobbyList.get(i).getGroupName(), UiGeofence);
 			
 			mCurrentGeofences.add(UiGeofence.toGeofence());
@@ -148,9 +150,9 @@ public class SearchHobbyByMap extends FragmentActivity implements LocationListen
 				Hobby hobby = new Hobby();
 				Intent intent = new Intent(SearchHobbyByMap.this, ViewSingleHobby.class);
 				for(int i=0; i<hobbyList.size(); i++){
+					
 					if(hobbyList.get(i).getGroupName().equals(mp.getTitle())){
 		
-						Toast.makeText(getApplicationContext(), hobbyList.get(i).getAdminNric() +"-"+ userName, Toast.LENGTH_LONG).show();
 						if (hobbyList.get(i).getAdminNric().equals(userName)){
 							intent.putExtra("adminNric", hobbyList.get(i).getAdminNric());
 							intent.putExtra("member", "none");
@@ -184,6 +186,8 @@ public class SearchHobbyByMap extends FragmentActivity implements LocationListen
 					}
 					*/
 					}
+					intent.putExtra("grpID", hobbyList.get(i).getGroupID());
+					intent.putExtra("fbID", hobbyList.get(i).getHobbyFBPostID());
 				}
 				intent.putExtra("grpName", mp.getTitle());
 				
@@ -321,7 +325,7 @@ public class SearchHobbyByMap extends FragmentActivity implements LocationListen
 		}
 
 		current_location = new LatLng(lat, Lng);
-
+	
 	}
 
 	@Override

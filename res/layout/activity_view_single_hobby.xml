@@ -5,8 +5,7 @@
 	    android:id="@+id/grpImg"
 	    android:layout_width="fill_parent"
 	    android:layout_height="150dp"
-	    android:layout_alignParentLeft="true"
-	    android:background="@drawable/test"/>
+	    android:layout_alignParentLeft="true"/>
 	<TextView 
 	    android:id="@+id/grpTile"
 	    android:layout_width="fill_parent"

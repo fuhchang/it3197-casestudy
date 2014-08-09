@@ -3,6 +3,8 @@ package com.example.it3197_casestudy.ui_logic;
 import java.io.File;
 import java.util.ArrayList;
 
+import org.json.JSONException;
+
 import com.dropbox.chooser.android.R.color;
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.R.layout;
@@ -10,6 +12,8 @@ import com.example.it3197_casestudy.R.menu;
 import com.example.it3197_casestudy.ar.activity.Demo;
 import com.example.it3197_casestudy.controller.CheckMemberHobby;
 import com.example.it3197_casestudy.controller.GetHobbyPost;
+import com.example.it3197_casestudy.controller.GetImageFromFaceBookForHobby;
+import com.example.it3197_casestudy.controller.GetImageFromFacebookArticle;
 import com.example.it3197_casestudy.controller.JoinHobbyGrp;
 import com.example.it3197_casestudy.controller.getPostController;
 import com.example.it3197_casestudy.model.Hobby;
@@ -18,11 +22,14 @@ import com.example.it3197_casestudy.util.HobbyListView;
 import com.example.it3197_casestudy.util.MySharedPreferences;
 import com.facebook.HttpMethod;
 import com.facebook.Request;
+import com.facebook.RequestAsyncTask;
+import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.UiLifecycleHelper;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -45,7 +52,10 @@ public class ViewSingleHobby extends Activity {
 	int adminRight = 0;
 	String memberCheck;
 	String grpImg;
+	private String pictureURL;
 	private UiLifecycleHelper uiHelper;
+	private ImageView imgView;
+	private String fbID;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -54,7 +64,7 @@ public class ViewSingleHobby extends Activity {
 		uiHelper.onCreate(savedInstanceState);
 		String grpName = getIntent().getExtras().getString("grpName");
 		int id = getIntent().getExtras().getInt("grpID");
-		String fbID = getIntent().getExtras().getString("fbID");
+		fbID = getIntent().getExtras().getString("fbID");
 		MySharedPreferences preferences = new MySharedPreferences(this);
 		userNric = preferences.getPreferences("nric", "S000000E");
 		grpTitle = (TextView) findViewById(R.id.grpTile);
@@ -79,6 +89,7 @@ public class ViewSingleHobby extends Activity {
 		    myImage.setImageBitmap(myBitmap);
 
 		}
+
 		getPostController getPostList = new getPostController(this, id,itemList, adminRight, userNric, adminNric, grpName);
 		getPostList.execute();
 	}
@@ -129,6 +140,7 @@ public class ViewSingleHobby extends Activity {
 			newPost.putExtra("grpID", grpID);
 			newPost.putExtra("userNric", userNric);
 			newPost.putExtra("adminRight", adminRight);
+			newPost.putExtra("fbID", fbID);
 			//CreateHobbyPost createPost = new CreateHobbyPost(ViewSingleHobby.this,itemList);
 			startActivity(newPost);
 			break;

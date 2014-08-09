@@ -1,21 +1,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@drawable/my_custom_background"
     android:orientation="vertical" >
-	
-    <TextView
-        android:id="@+id/gName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:text="@string/gName" />
+
     <EditText 
         android:id="@+id/gTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="5dp"
-        android:layout_alignRight="@+id/gName"
-        android:hint="@string/gTitleHint" />
+        android:padding="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:hint="@string/gTitleHint"
+        android:layout_marginTop="80dp"
+         android:background="@drawable/rounded_edittext" />
     
     <TextView 
         android:id="@+id/gType"
@@ -24,6 +23,8 @@
         android:layout_below="@+id/gTitle"
         android:layout_marginTop="30dp"
         android:paddingTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:text="@string/gType"/>
     
 	 <Spinner
@@ -33,6 +34,9 @@
         android:layout_alignRight="@+id/gType"
         android:layout_below="@+id/gTitle"
         android:paddingTop="20dp"
+        android:padding="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:entries="@array/country_arrays"
         android:prompt="@string/country_prompt" />
 	 

@@ -1,6 +1,7 @@
 package com.example.it3197_casestudy.controller;
 
 import java.text.DateFormat;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -44,11 +45,14 @@ public class GetAvaliableHobby extends AsyncTask<Object, Object, Object>implemen
 	private Activity activity;
 	private ArrayList<Hobby> hobbyList;
 	private int eventID;
+	private String date1, date2;
 	
-	public GetAvaliableHobby(Activity activity, ListView allList, int  eventID){
+	public GetAvaliableHobby(Activity activity, ListView allList, int  eventID, String date1, String date2){
 		this.activity = activity;
 		this.allList = allList;
 		this.eventID = eventID;
+		this.date1 = date1;
+		this.date2 = date2;
 	}
 	@Override
 	protected Object doInBackground(Object... arg0) {
@@ -101,9 +105,8 @@ public class GetAvaliableHobby extends AsyncTask<Object, Object, Object>implemen
 					Builder.setButton(AlertDialog.BUTTON_NEGATIVE, "Request", new DialogInterface.OnClickListener() {
 
 					      public void onClick(DialogInterface dialog, int id) {
-					    	  DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-					    	  Date date = new Date();
-					    	  CreateRequest request = new CreateRequest(activity, eventID, hobbyList.get(tempt).getGroupID(), dateFormat.format(date), dateFormat.format(date),hobbyList.get(tempt).getGroupName());
+					    	 // DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+					    	  CreateRequest request = new CreateRequest(activity, eventID, hobbyList.get(tempt).getGroupID(), date1,date2,hobbyList.get(tempt).getGroupName());
 					    	  request.execute();
 					    } 
 					   }); 
@@ -165,6 +168,7 @@ public class GetAvaliableHobby extends AsyncTask<Object, Object, Object>implemen
 				//hobby.setGrpImg(dataJob.getString("photo"));
 				hobby.setLat(dataJob.getDouble("Lat"));
 				hobby.setLng(dataJob.getDouble("Lng"));
+				hobby.setHobbyFBPostID(dataJob.getString("hobbyFBPostID"));
 				hobbyList.add(hobby);
 			}
 		} catch (Exception e) {
