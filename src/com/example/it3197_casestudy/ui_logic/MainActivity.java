@@ -114,6 +114,10 @@ public class MainActivity extends Activity {
 			Intent intent = new Intent(MainActivity.this, ArticleMainActivity.class);
 			startActivity(intent);
 		}
+		if(id==R.id.events_main){
+			Intent intent = new Intent(MainActivity.this, ViewAllEventsActivity.class);
+			startActivity(intent);
+		}
 		
 		if(id==R.id.profile){
 			Intent intent = new Intent(MainActivity.this, ProfileActivity.class);

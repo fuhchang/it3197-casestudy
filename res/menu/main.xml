@@ -16,7 +16,8 @@
         android:id="@+id/refresh"
         android:orderInCategory="100"
         android:showAsAction="always"
-        android:icon="@drawable/article_refresh"/>
+        android:icon="@drawable/article_refresh"
+        android:title="Refresh"/>
      
      <item
         android:id="@+id/article_main"
@@ -24,5 +25,10 @@
         android:showAsAction="never"
         android:title="Article - For Presentation"/>
      
-
+     <item
+        android:id="@+id/events_main"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="Events - For Presentation"/>
+     
 </menu>
