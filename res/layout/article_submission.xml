@@ -108,7 +108,7 @@
 			 android:id="@+id/expandable"
 			 android:layout_width="fill_parent"
 			 android:layout_height="fill_parent"
-			 android:background="#D8D8D8"		        
+			 android:background="#6E6E6E"		        
 			 android:orientation="vertical" >
         
 		    <RelativeLayout
@@ -152,21 +152,34 @@
 			        android:layout_below="@+id/chooseLoc"
 			        android:layout_marginLeft="5dp"
 			        android:layout_marginBottom="5dp"
+			        android:textColor="#D8D8D8"
 			        />
 			    
 			     <View 
 		    	    android:id="@+id/imgHr"
 		    	    android:layout_below="@+id/storingLoc"
 					android:layout_width="fill_parent"
-					android:layout_height="2dp"     
+					android:layout_height="1dp" 
+					android:layout_marginLeft="5dp"
+					android:layout_marginRight="5dp"    
 					android:background="#000"/>
+			     
+			     <TextView
+			     	android:id="@+id/tvImg"
+			     	android:layout_below="@+id/imgHr"
+			     	android:layout_marginLeft="5dp"
+			     	android:layout_width="fill_parent"
+			     	android:layout_height="wrap_content"
+			     	android:textStyle="bold"
+			     	android:textColor="#D8D8D8"
+			     	android:textSize="20sp"/>	
 					    
 				<ImageView
 			        android:id="@+id/article_post"
 			        android:layout_width="fill_parent"
 			        android:layout_height="150dp"
 			        android:layout_marginTop="5dp"
-			        android:layout_below="@+id/imgHr"
+			        android:layout_below="@+id/tvImg"
 			        android:fontFamily="sans-serif-light"
 			        android:layout_gravity="center"
 			        android:layout_marginBottom="5dp"
@@ -199,7 +212,7 @@
 	    android:layout_marginTop="5dp"
 	    android:background="@drawable/article_styling"
 	    android:gravity="top"
-	    android:textSize="20sp"
+	    android:textSize="17sp"
 	    android:hint="Short description"
 	    android:inputType="textMultiLine" />
 

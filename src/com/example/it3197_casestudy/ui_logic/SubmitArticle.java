@@ -60,6 +60,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -102,6 +103,7 @@ public class SubmitArticle extends Activity implements Settings{
 	
 	ImageView iv;
 	View v,hrTv, middle, imgHr;
+	TextView tvImg;
 	
 	Article article = new Article();
 	
@@ -248,7 +250,10 @@ public class SubmitArticle extends Activity implements Settings{
 			  
 			  imgHr = (View)findViewById(R.id.imgHr);
 			  imgHr.setVisibility(View.GONE);
-			  
+			  tvImg = (TextView)findViewById(R.id.tvImg);
+			  String tvImgString = "<u>Image Selected: </u>";
+			  tvImg.setText(Html.fromHtml(tvImgString));
+			  tvImg.setVisibility(View.GONE);
 			  
 			  middle = (View) findViewById(R.id.middle);
 			  middle.setVisibility(View.GONE);
@@ -593,6 +598,7 @@ public class SubmitArticle extends Activity implements Settings{
 	            GetImageFromDropbox getImageFromDropbox = new GetImageFromDropbox(SubmitArticle.this,iv, posterFileName);
 	            getImageFromDropbox.execute();  
 	            imgHr.setVisibility(View.VISIBLE);
+	            tvImg.setVisibility(View.VISIBLE);
 	            // Handle the result
 	            
 	            
