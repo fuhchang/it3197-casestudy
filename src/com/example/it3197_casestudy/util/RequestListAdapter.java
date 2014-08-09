@@ -25,7 +25,7 @@ import android.widget.TextView;
 public class RequestListAdapter extends ArrayAdapter<RequestHobby> {
 	private Activity context;
 	private ArrayList<RequestHobby> requestList;
-
+	
 	public RequestListAdapter(Activity context, ArrayList<RequestHobby> requestList) {
 		super(context, R.layout.activity_request_list_adapter, requestList);
 		this.context = context;
@@ -41,6 +41,13 @@ public class RequestListAdapter extends ArrayAdapter<RequestHobby> {
 		TextView date1 = (TextView) rowView.findViewById(R.id.date1);
 		TextView date2 = (TextView) rowView.findViewById(R.id.date2);
 		TextView status = (TextView) rowView.findViewById(R.id.status);
+		ImageView iconImg = (ImageView) rowView.findViewById(R.id.image);
+		if(requestList.get(position).getRequestStatus().equals("accept")){
+		iconImg.setImageResource(R.drawable.com_facebook_button_check_on);
+		}else{
+			iconImg.setImageResource(R.drawable.com_facebook_button_check_off);
+		}
+		
 		grpname.setText(requestList.get(position).getGroupname());
 		DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 		String startDate = df.format(requestList.get(position).getRequestDateStart());

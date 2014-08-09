@@ -151,8 +151,8 @@ public class LocationService extends Service {
 	        	float distance = previousLocation.distanceTo(loc);
 	        	System.out.println(distance);
 	        	
-	        	// distance >= 2
-	        	if(distance >= 5) {		        	
+	        	// distance >= 5
+	        	if(distance >= 2) {		        	
 		        	System.out.println(previousLocation.getLatitude() + " " + previousLocation.getLongitude());
 		        	System.out.println(loc.getLatitude() + " " + loc.getLongitude());
 		        	

@@ -4,13 +4,14 @@
 	<ImageView 
 	    android:id="@+id/grpImg"
 	    android:layout_width="fill_parent"
-	    android:layout_height="150dp"
+	    android:layout_height="75dp"
+	    android:src="@drawable/banner"
 	    android:layout_alignParentLeft="true"/>
 	<TextView 
 	    android:id="@+id/grpTile"
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
-	    android:paddingTop="50dp"
+	    android:paddingTop="20dp"
 	    android:gravity="center"/>
 	<View
 	    android:id="@+id/hr"

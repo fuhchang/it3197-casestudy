@@ -74,7 +74,7 @@ public class SearchHobbyByMap extends FragmentActivity implements LocationListen
 	private SimpleGeofenceStore mPrefs;
 	private GeofenceRequester mGeofenceRequester;
 	private String userName;
-	private int raidus = 50;
+	private int raidus = 1000;
 	 List<Geofence> mCurrentGeofences;
 	
 	 BitmapDescriptor iconDance;

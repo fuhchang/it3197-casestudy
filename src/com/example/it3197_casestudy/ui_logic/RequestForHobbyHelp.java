@@ -19,7 +19,7 @@ import android.widget.ListView;
 public class RequestForHobbyHelp extends Activity {
 	private ListView requestList;
 	ArrayList<Hobby> hobbyList;
-	private int eventID =1;
+	private int eventID = 66;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

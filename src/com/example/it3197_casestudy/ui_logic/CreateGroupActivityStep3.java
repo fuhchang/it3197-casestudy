@@ -94,6 +94,7 @@ public class CreateGroupActivityStep3 extends Activity implements Settings{
 				intent.putExtra("imgPath", posterFileName);
 				intent.putExtra("nric", getIntent().getExtras().getString("nric"));
 				startActivity(intent);
+				this.finish();
 			}
 			/*
 			try {

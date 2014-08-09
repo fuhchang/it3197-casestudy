@@ -143,6 +143,7 @@ public class ViewSingleHobby extends Activity {
 			newPost.putExtra("fbID", fbID);
 			//CreateHobbyPost createPost = new CreateHobbyPost(ViewSingleHobby.this,itemList);
 			startActivity(newPost);
+			this.finish();
 			break;
 		case R.id.action_update_group:
 			if(userNric.equals(adminNric)){

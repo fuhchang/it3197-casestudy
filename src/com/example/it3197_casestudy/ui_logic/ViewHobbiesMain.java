@@ -86,12 +86,13 @@ public class ViewHobbiesMain extends FragmentActivity implements
 			startActivity(intentNewGrp);
 			break;
 		case R.id.action_requestHelp:
+			/*
 			Intent demoIntent = new Intent(this, Demo.class);
 			startActivity(demoIntent);
-			/*
+			*/
 			Intent intentRequest = new Intent(this, RequestForHobbyHelp.class);
 			startActivity(intentRequest);
-			
+			/*
 			Intent intentAva = new Intent(this, ViewAvaliableHobby.class);
 			startActivity(intentAva);
 			*/
