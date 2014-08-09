@@ -90,8 +90,6 @@ public class ViewHobbiesMain extends FragmentActivity implements
 			Intent demoIntent = new Intent(this, Demo.class);
 			startActivity(demoIntent);
 			*/
-			Intent intentRequest = new Intent(this, RequestForHobbyHelp.class);
-			startActivity(intentRequest);
 			/*
 			Intent intentAva = new Intent(this, ViewAvaliableHobby.class);
 			startActivity(intentAva);

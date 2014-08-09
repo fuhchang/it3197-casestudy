@@ -26,8 +26,8 @@ public class RequestForHobbyHelp extends Activity {
 		setContentView(R.layout.activity_request_for_hobby_help);
 		requestList = (ListView) findViewById(R.id.requestList);
 		requestList.setBackgroundColor(Color.LTGRAY);
-		GetRequestList getRequestList = new GetRequestList(this,requestList, eventID);
-		getRequestList.execute();
+		/*GetRequestList getRequestList = new GetRequestList(this,requestList, eventID);
+		getRequestList.execute();*/
 		
 	}
 

@@ -95,7 +95,6 @@ public class ViewEventsActivity extends FragmentActivity implements ActionBar.Ta
 		});
 		actionBar.addTab(actionBar.newTab().setText("Details").setTabListener(this));
 		actionBar.addTab(actionBar.newTab().setText("Timeline").setTabListener(this));
-		actionBar.addTab(actionBar.newTab().setText("Gallery").setTabListener(this));
 		
 	}
 

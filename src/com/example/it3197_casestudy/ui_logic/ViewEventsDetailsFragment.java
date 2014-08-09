@@ -335,6 +335,12 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 	            }
 			}
 			break;
+		case R.id.view_request:
+
+			Intent intentRequest = new Intent(this.getActivity(), RequestForHobbyHelp.class);
+			intentRequest.putExtra("eventID", event.getEventID());
+			startActivity(intentRequest);
+			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}

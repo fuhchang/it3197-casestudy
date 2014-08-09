@@ -66,9 +66,6 @@ public class ViewEventsAdapter extends FragmentPagerAdapter implements Settings{
 			args.putString("eventFBPostID", event.getEventFBPostID());
 			fragment.setArguments(args);
 			break;
-		case 2:
-			fragment = new ViewEventsGalleryFragment();
-			break;
 		default:
 			break;
 		}
@@ -77,7 +74,7 @@ public class ViewEventsAdapter extends FragmentPagerAdapter implements Settings{
 
 	@Override
 	public int getCount() {
-		// Show 3 total pages.
-		return 3;
+		// Show 2 total pages.
+		return 2;
 	}
 }
