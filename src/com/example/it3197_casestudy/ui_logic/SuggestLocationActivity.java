@@ -31,6 +31,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v4.app.FragmentManager;
@@ -38,9 +39,6 @@ import android.support.v4.app.NavUtils;
 
 public class SuggestLocationActivity extends Activity {
 	GoogleMap map;
-	TextView tvEventLocationName,tvEventLocationAddress,tvEventLocationHyperlink,tvEventLocationLat,tvEventLocationLng;
-	TableLayout tableLayoutEventLocationInformation;
-	Button btnSelectLocation;
 
 	ArrayList<Integer> selectedIndex = new ArrayList<Integer>();
 	private String artsThemeList[] = {"Monuments","Parks","Tourism"};
@@ -53,6 +51,8 @@ public class SuggestLocationActivity extends Activity {
 	private String healthThemeOneMapList[] = {"EXERCISEFACILITIES","REGISTERED_PHARMACY","RelaxSG"};
 	private String category;
 
+	private List<Marker> markersArrList;
+	
 	String[] finalList = new String[3];
 	String[] finalOneMapList = new String [3];
 	
@@ -66,55 +66,6 @@ public class SuggestLocationActivity extends Activity {
 
 	public void setMap(GoogleMap map) {
 		this.map = map;
-	}
-
-	public TextView getTvEventLocationName() {
-		return tvEventLocationName;
-	}
-
-	public void setTvEventLocationName(TextView tvEventLocationName) {
-		this.tvEventLocationName = tvEventLocationName;
-	}
-
-	public TextView getTvEventLocationAddress() {
-		return tvEventLocationAddress;
-	}
-
-	public void setTvEventLocationAddress(TextView tvEventLocationAddress) {
-		this.tvEventLocationAddress = tvEventLocationAddress;
-	}
-
-	public TextView getTvEventLocationHyperlink() {
-		return tvEventLocationHyperlink;
-	}
-
-	public void setTvEventLocationHyperlink(TextView tvEventLocationHyperlink) {
-		this.tvEventLocationHyperlink = tvEventLocationHyperlink;
-	}
-
-	public TextView getTvEventLocationLat() {
-		return tvEventLocationLat;
-	}
-
-	public void setTvEventLocationLat(TextView tvEventLocationLat) {
-		this.tvEventLocationLat = tvEventLocationLat;
-	}
-
-	public TextView getTvEventLocationLng() {
-		return tvEventLocationLng;
-	}
-
-	public void setTvEventLocationLng(TextView tvEventLocationLng) {
-		this.tvEventLocationLng = tvEventLocationLng;
-	}
-
-	public TableLayout getTableLayoutEventLocationInformation() {
-		return tableLayoutEventLocationInformation;
-	}
-
-	public void setTableLayoutEventLocationInformation(
-			TableLayout tableLayoutEventLocationInformation) {
-		this.tableLayoutEventLocationInformation = tableLayoutEventLocationInformation;
 	}
 
 	public ArrayList<MyItem> getMyItemArrList() {
@@ -157,51 +108,15 @@ public class SuggestLocationActivity extends Activity {
         ClusteringSettings settings = new ClusteringSettings();
 
         settings.clusterOptionsProvider(new DefaultClusterOptionsProvider(getResources())).addMarkersDynamically(true);
-
         map.setClustering(settings);
-        
-		tableLayoutEventLocationInformation = (TableLayout) findViewById(R.id.table_layout_event_location_information);
-		
-		tvEventLocationName = (TextView) findViewById(R.id.tv_event_location_name);
-		tvEventLocationAddress = (TextView) findViewById(R.id.tv_event_location_address);
-		tvEventLocationHyperlink = (TextView) findViewById(R.id.tv_event_location_hyperlink);
-		tvEventLocationLat = (TextView) findViewById(R.id.tv_event_location_lat);
-		tvEventLocationLng = (TextView) findViewById(R.id.tv_event_location_lng);
-		
-		btnSelectLocation = (Button) findViewById(R.id.btn_select_location);
-		
-		btnSelectLocation.setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-
-				String name = tvEventLocationName.getText().toString();
-				String address = tvEventLocationAddress.getText().toString();
-				String hyperlink = tvEventLocationHyperlink.getText().toString();
-				double lat = Double.parseDouble(tvEventLocationLat.getText().toString());
-				double lng = Double.parseDouble(tvEventLocationLng.getText().toString());
-				Intent output = new Intent();
-				output.putExtra("eventLocationName", name);
-				output.putExtra("eventLocationAddress", address);
-				output.putExtra("eventLocationHyperLink", hyperlink);
-				output.putExtra("eventLocationLat", lat);
-				output.putExtra("eventLocationLng", lng);
-				setResult(RESULT_OK,output);
-				finish();
-			}
-			
-		});
 		
 		LatLng singapore = new LatLng(1.3450, 103.8250);
 
 		map.setMyLocationEnabled(true);
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(singapore, 10));  
-
+		
 		// Show the Up button in the action bar.
 		setupActionBar();
-		tableLayoutEventLocationInformation.setVisibility(View.GONE);
-		
 	}
 	
 	
@@ -237,15 +152,26 @@ public class SuggestLocationActivity extends Activity {
 		case R.id.select_theme:
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle("Select Theme");
-		
 			builder.setItems(finalList, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					// TODO Auto-generated method stub{
-					String theme = finalOneMapList[which];
-					selectedIndex.add(which);
-					GetMashUpData getMashUpData = new GetMashUpData(SuggestLocationActivity.this, theme);
-					getMashUpData.execute();
+					// TODO Auto-generated method stub
+					boolean selectedAlready = false;
+					for(int i = 0;i<selectedIndex.size();i++){
+						if(selectedIndex.get(i) == which){
+							selectedAlready = true;
+							break;
+						}
+					}
+					if(!selectedAlready){
+						String theme = finalOneMapList[which];
+						selectedIndex.add(which);
+						GetMashUpData getMashUpData = new GetMashUpData(SuggestLocationActivity.this, theme);
+						getMashUpData.execute();
+					}
+					else{
+						Toast.makeText(SuggestLocationActivity.this,"This theme has been selected already.", Toast.LENGTH_LONG).show();
+					}
 				}
 			});
 			builder.create().show();
@@ -253,35 +179,19 @@ public class SuggestLocationActivity extends Activity {
 		case R.id.suggest_location_for_event:
 			//myItemArrList.get(0).get
 
-			if(myItemArrList.size() > 0){
-				double currentLat = map.getMyLocation().getLatitude();
-				double currentLng = map.getMyLocation().getLongitude();
-				
-
-				double currentDist = 0.00;
-				int closest = -1;
-				for(int i = 0;i<myItemArrList.size();i++){
-					double testLat = myItemArrList.get(i).getPosition().latitude;
-					double testLng = myItemArrList.get(i).getPosition().latitude;
-	
-					double distanceInMeters = distanceFrom(currentLat, currentLng, testLat, testLng);
-					if((closest == -1) || (currentDist > distanceInMeters)){
-						currentDist = distanceInMeters;
-						closest = i;
-					}
-				}
-				
-				List<Marker> markersArrList = map.getMarkers();
+			if(selectedIndex.size() > 0){				
+				markersArrList = map.getMarkers();
+				int closest = findClosestMarker();
 		        
+		        map.moveCamera(CameraUpdateFactory.newLatLngZoom(markersArrList.get(closest).getPosition(), 18));
 		        markersArrList.get(closest).showInfoWindow();
-		        map.moveCamera(CameraUpdateFactory.newLatLngZoom(markersArrList.get(closest).getPosition(), 15));
 			}
 			else{
 				Toast.makeText(this,"Please select a theme.", Toast.LENGTH_LONG).show();
 			}
 			break;
 		case R.id.deselect_all_themes:
-			if(myItemArrList.size() > 0){
+			if(selectedIndex.size() > 0){
 				for(int i=0;i<myItemArrList.size();i++){
 					myItemArrList.remove(i);
 					
@@ -297,7 +207,7 @@ public class SuggestLocationActivity extends Activity {
 			break;
 
 		case R.id.refresh_map:
-			if(myItemArrList.size() > 0){
+			if(selectedIndex.size() > 0){
 				map.clear();
 				for(int i=0;i<selectedIndex.size();i++){
 					String theme = finalOneMapList[selectedIndex.get(i)];
@@ -322,16 +232,41 @@ public class SuggestLocationActivity extends Activity {
 			finalOneMapList[i] = themesOneMapArr[i];
 		}
 	}
-	
-	@SuppressLint("UseValueOf")
-	public double distanceFrom(double lat1, double lng1, double lat2, double lng2) {
-	    double earthRadius = 3958.75;
-	    double dLat = Math.toRadians(lat2-lat1);
-	    double dLng = Math.toRadians(lng2-lng1);
-	    double a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.sin(dLng/2) * Math.sin(dLng/2);
-	    double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-	    double dist = earthRadius * c;
-	    int meterConversion = 1609;
-	    return new Double(dist * meterConversion).floatValue();    // this will return distance
+		
+	//Find the closest marker to the current location
+	public int findClosestMarker() {
+
+		double lat1 = map.getMyLocation().getLatitude();
+		double lon1 = map.getMyLocation().getLongitude();
+		
+		double pi = Math.PI;
+		double R = 6371; //equatorial radius
+	    double[] distances = new double[markersArrList.size()];
+	    int closest = -1;
+
+	    for(int i=0;i<markersArrList.size(); i++ ) {  
+	    	double lat2 = markersArrList.get(i).getPosition().latitude;
+	    	double lon2 = markersArrList.get(i).getPosition().longitude;
+
+	    	double chLat = lat2-lat1;
+	    	double chLon = lon2-lon1;
+
+	    	double dLat = chLat*(pi/180);
+	    	double dLon = chLon*(pi/180);
+
+	    	double rLat1 = lat1*(pi/180);
+	    	double rLat2 = lat2*(pi/180);
+
+	    	double a = Math.sin(dLat/2) * Math.sin(dLat/2) + 
+	                    Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(rLat1) * Math.cos(rLat2); 
+	    	double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+	    	double d = R * c;
+
+	        distances[i] = d;
+	        if ( closest == -1 || d < distances[closest] ) {
+	            closest = i;
+	        }
+	    }
+	    return closest;
 	}
 }

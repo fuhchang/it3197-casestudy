@@ -18,10 +18,12 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
@@ -32,6 +34,7 @@ import com.androidmapsextensions.ClusterOptions;
 import com.androidmapsextensions.ClusterOptionsProvider;
 import com.androidmapsextensions.ClusteringSettings;
 import com.androidmapsextensions.GoogleMap;
+import com.androidmapsextensions.GoogleMap.OnInfoWindowClickListener;
 import com.androidmapsextensions.GoogleMap.OnMarkerClickListener;
 import com.androidmapsextensions.Marker;
 import com.androidmapsextensions.MarkerOptions;
@@ -73,43 +76,38 @@ public class GetMashUpData extends AsyncTask<Object, Object, Object> implements 
 	@Override
 	protected void onPostExecute(Object result) {
 		parseJSONResponse((String) result);
-		//((SuggestLocationActivity) activity).setMashUpDataArrList(mashUpDataArrList);
-
-	    // Initialize the manager with the context and the map.
-	    // (Activity extends context, so we can pass 'this' in the constructor.)
-
-	    
-	    //mClusterManager.getClusterMarkerCollection().setOnInfoWindowAdapter(new MyCustomAdapterForClusters());
-	    //mClusterManager.getMarkerCollection().setOnInfoWindowAdapter(new MyCustomAdapterForItems());
-
-	    
+		
 	    ArrayList<MyItem> myItemArrList = new ArrayList<MyItem>();
 		for(int i=0;i<mashUpDataArrList.size();i++){
 			try {
-	        	/*CoordinateConvertor coordinateConvertor = new CoordinateConvertor(activity,mashUpDataArrList.get(i).getLat(),mashUpDataArrList.get(i).getLng());
-	        	coordinateConvertor.execute();*/
 				SVY21Coordinate currentCoordinates = new SVY21Coordinate(mashUpDataArrList.get(i).getLat(),mashUpDataArrList.get(i).getLng());
-				final String address = mashUpDataArrList.get(i).getAddressStreetName();
+
 				final double lat = currentCoordinates.asLatLon().getLatitude();
 				final double lng = currentCoordinates.asLatLon().getLongitude();
-				activity.getMap().addMarker(new MarkerOptions().title(mashUpDataArrList.get(i).getName()).snippet(mashUpDataArrList.get(i).getHyperlink()).position(new LatLng(lat,lng)));
-				activity.getMap().setOnMarkerClickListener(new OnMarkerClickListener(){
+				activity.getMap().addMarker(new MarkerOptions().title(mashUpDataArrList.get(i).getName()).snippet(mashUpDataArrList.get(i).getAddressStreetName()).position(new LatLng(lat,lng)));
+				activity.getMap().setOnInfoWindowClickListener(new OnInfoWindowClickListener(){
 
 					@Override
-					public boolean onMarkerClick(Marker marker) {
+					public void onInfoWindowClick(Marker marker) {
 						// TODO Auto-generated method stub
-						activity.getTvEventLocationName().setText(marker.getTitle());
-						activity.getTvEventLocationAddress().setText(address);
-						activity.getTvEventLocationHyperlink().setText(marker.getSnippet());
-						activity.getTvEventLocationLat().setText(String.valueOf(lat));
-						activity.getTvEventLocationLng().setText(String.valueOf(lng));
-						activity.getTableLayoutEventLocationInformation().setVisibility(View.VISIBLE);
-						return false;
+						String name = marker.getTitle();
+						String address = marker.getSnippet();
+						String hyperlink = "";
+						double lat = marker.getPosition().latitude;
+						double lng = marker.getPosition().longitude;
+						Intent output = new Intent();
+						output.putExtra("eventLocationName", name);
+						output.putExtra("eventLocationAddress", address);
+						output.putExtra("eventLocationHyperLink", hyperlink);
+						output.putExtra("eventLocationLat", lat);
+						output.putExtra("eventLocationLng", lng);
+						activity.setResult(Activity.RESULT_OK,output);
+						activity.finish();
 					}
-					
 				});
-		        /*MyItem offsetItem = new MyItem(mashUpDataArrList.get(i).getName(), mashUpDataArrList.get(i).getAddressStreetName(), mashUpDataArrList.get(i).getHyperlink(), lat, lng);
-		        myItemArrList.add(offsetItem);*/
+				
+		        MyItem offsetItem = new MyItem(mashUpDataArrList.get(i).getName(), mashUpDataArrList.get(i).getAddressStreetName(), mashUpDataArrList.get(i).getHyperlink(), lat, lng);
+		        myItemArrList.add(offsetItem);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
