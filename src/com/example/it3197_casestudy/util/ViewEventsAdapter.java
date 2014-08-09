@@ -69,9 +69,6 @@ public class ViewEventsAdapter extends FragmentPagerAdapter implements Settings{
 		case 2:
 			fragment = new ViewEventsGalleryFragment();
 			break;
-		case 3:
-			fragment = new ViewEventsLocationFragment();
-			break;
 		default:
 			break;
 		}
@@ -80,7 +77,7 @@ public class ViewEventsAdapter extends FragmentPagerAdapter implements Settings{
 
 	@Override
 	public int getCount() {
-		// Show 4 total pages.
-		return 4;
+		// Show 3 total pages.
+		return 3;
 	}
 }

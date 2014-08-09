@@ -66,7 +66,7 @@ public class ViewEventsTimelineFragment extends Fragment implements Settings{
 	private UiLifecycleHelper uiHelper;
 	private MenuItem menuItemPost;
 
-	private static final List<String> PERMISSIONS = Arrays.asList("publish_actions","publish_stream");
+	private static final List<String> PERMISSIONS = Arrays.asList("publish_actions");
 	private static final String PENDING_PUBLISH_KEY = "pendingPublishReauthorization";
 	private boolean pendingPublishReauthorization = false;
 
@@ -216,6 +216,7 @@ public class ViewEventsTimelineFragment extends Fragment implements Settings{
 				Session.NewPermissionsRequest newPermissionsRequest = new Session.NewPermissionsRequest(
 						this.getActivity(), PERMISSIONS);
 				session.requestNewPublishPermissions(newPermissionsRequest);
+				return;
 			}
 			Request request = new Request(Session.getActiveSession(),eventFBPostID, null, HttpMethod.GET,new Request.Callback() {
 						public void onCompleted(Response response) {

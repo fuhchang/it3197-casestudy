@@ -43,8 +43,10 @@ public class LocationService extends Service {
 	@Override
 	public void onStart(Intent intent, int startId) {
 	    Log.v("START SERVICE", "STARTED");
-		data = intent.getExtras();
-		user = data.getParcelable("user");
+	    if(intent != null){
+	    	data = intent.getExtras();
+	    	user = data.getParcelable("user");
+	    }
 		
 	    locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 	    listener = new MyLocationListener();
