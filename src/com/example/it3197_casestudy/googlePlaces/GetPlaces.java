@@ -21,6 +21,9 @@ import android.content.Context;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
+import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnGroupClickListener;
 
 public class GetPlaces extends AsyncTask<Void,Void,Object> {
 	private ProgressDialog dialog;	
@@ -53,6 +56,15 @@ public class GetPlaces extends AsyncTask<Void,Void,Object> {
 		        
 			    RecommendedLocationListAdapter adapter = new RecommendedLocationListAdapter(activity,activity,listDataHeader, listDataChild, activity.getLvRecommendedLocations());
 			    activity.getLvRecommendedLocations().setAdapter(adapter);
+			    activity.getLvRecommendedLocations().expandGroup(0);
+			    activity.getLvRecommendedLocations().setOnGroupClickListener(new OnGroupClickListener() {
+					@Override
+					public boolean onGroupClick(ExpandableListView arg0,
+							View arg1, int arg2, long arg3) {
+						// TODO Auto-generated method stub
+						return true;
+					}
+			    });
 		   }
 	   }
 	}
