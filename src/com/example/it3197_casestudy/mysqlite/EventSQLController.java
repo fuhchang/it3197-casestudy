@@ -34,6 +34,7 @@ public class EventSQLController implements Settings{
 		cv.put("noOfParticipantsAllowed", event.getNoOfParticipantsAllowed());
 		cv.put("active", event.getActive());
 		cv.put("eventFBPostID", event.getEventFBPostID());
+		//cv.put("poster", Utility.getBytes(employee.getBitmap()));
 		
 		conn.getDB().insert(conn.getEventTable(), null, cv);
 		conn.close();

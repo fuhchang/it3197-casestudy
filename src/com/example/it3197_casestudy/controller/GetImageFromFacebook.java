@@ -6,6 +6,8 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.URL;
 
+import com.example.it3197_casestudy.mysqlite.EventSQLController;
+
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -22,14 +24,15 @@ import android.widget.ImageView;
 
 public class GetImageFromFacebook extends AsyncTask<Object,Object,Object>{
 	private Context context;
+	private int eventID;
 	private ImageView ivEventPoster;
 	private String posterFileName;
 	private Bitmap myBitmap;
 	private ProgressDialog dialog;
 	private String simplifiedPosterFileName;
 	
-	
-	public GetImageFromFacebook(Context context,ImageView ivEventPoster, String posterFileName){
+	public GetImageFromFacebook(int eventID, Context context,ImageView ivEventPoster, String posterFileName){
+		this.eventID = eventID;
 		this.context = context;
 		this.ivEventPoster = ivEventPoster;
 		this.posterFileName = posterFileName;
@@ -67,6 +70,7 @@ public class GetImageFromFacebook extends AsyncTask<Object,Object,Object>{
 			os.close();
 			is.close();			
 			byte[] data = os.toByteArray();
+
 			myBitmap = BitmapFactory.decodeByteArray(data, 0, os.size());
 			
 		}catch(Exception e){

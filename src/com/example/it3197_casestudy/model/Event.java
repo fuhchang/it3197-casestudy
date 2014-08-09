@@ -134,4 +134,5 @@ public class Event{
 	public void setEventFBPostID(String eventFBPostID) {
 		this.eventFBPostID = eventFBPostID;
 	}
+
 }

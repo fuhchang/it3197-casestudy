@@ -49,6 +49,7 @@ import com.example.it3197_casestudy.controller.JoinEvent;
 import com.example.it3197_casestudy.controller.UnjoinEvent;
 import com.example.it3197_casestudy.model.Event;
 import com.example.it3197_casestudy.model.EventParticipants;
+import com.example.it3197_casestudy.mysqlite.EventSQLController;
 import com.example.it3197_casestudy.util.CheckNetworkConnection;
 import com.example.it3197_casestudy.util.FriendPickerApplication;
 import com.example.it3197_casestudy.util.MyLocation;
@@ -474,7 +475,7 @@ public class ViewEventsDetailsFragment extends Fragment implements Settings{
 							pictureURL = response.getGraphObject().getInnerJSONObject().getJSONArray("image").getJSONObject(0).getString("url").toString().replace("\"/", "/");
 							//System.out.println("Picture URL: " + pictureURL);
 
-							GetImageFromFacebook getImageFromFacebook = new GetImageFromFacebook(ViewEventsDetailsFragment.this.getActivity(),ivEventPoster,pictureURL);
+							GetImageFromFacebook getImageFromFacebook = new GetImageFromFacebook(event.getEventID(), ViewEventsDetailsFragment.this.getActivity(),ivEventPoster,pictureURL);
 							getImageFromFacebook.execute();
 						}
 						else{
