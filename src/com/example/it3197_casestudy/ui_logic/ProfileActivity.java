@@ -54,22 +54,58 @@ public class ProfileActivity extends FragmentActivity {
 		user = data.getParcelable("user");
 		
 		intent = new Intent(ProfileActivity.this, LocationService.class);
-		//intent.putExtra("user", user);
 		
 		tv_username = (TextView) findViewById(R.id.tv_username);
 		tv_points = (TextView) findViewById(R.id.tv_points);
 		tv_address = (TextView) findViewById(R.id.tv_address);
-
-		//if(!intent.getStringExtra("GPSstatus").equals("disabled")) {
-			registerReceiver(broadcastReceiver, new IntentFilter(LocationService.BROADCAST_ACTION));
-			Toast.makeText(getApplicationContext(), "Retrieving current location...", Toast.LENGTH_LONG).show();
-			map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
-		//}
+		
+		// Commended out for presentation purpose //
+		//registerReceiver(broadcastReceiver, new IntentFilter(LocationService.BROADCAST_ACTION));
+		Toast.makeText(getApplicationContext(), "Retrieving current location...", Toast.LENGTH_LONG).show();
+		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
 		
 		tv_username.setText(user.getName());
 		tv_points.setText(Integer.toString(user.getPoints()));
+		
+		/************* (Start) For presentation purpose ********************/
+		location = new LatLng(1.379348000000000000, 103.849876000000000000);
+		polledLocation = new Location("dummyprovider");
+		polledLocation.setLatitude(location.latitude);
+		polledLocation.setLongitude(location.longitude);
+		// Get display current location
+		getAddress(polledLocation);
+		// Get current location coordinates (lat & lng)
+		location = new LatLng(polledLocation.getLatitude(), polledLocation.getLongitude());
+		// Get all the locations
+		locationList = new ArrayList<LatLng>();
+		
+		map.clear();
+		map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 16));
+		
+		locationList.add(new LatLng(1.381905000000000000, 103.844818000000030000));
+		locationList.add(new LatLng(1.380646900000000000, 103.846514099999920000));
+		locationList.add(new LatLng(1.3796572, 103.84821290000002));
+		locationList.add(new LatLng(1.379348000000000000, 103.849876000000000000));
+		
+		PolylineOptions options = new PolylineOptions().width(5).color(Color.BLUE).geodesic(true);
+		Marker marker;
+		marker = map.addMarker(new MarkerOptions().position(locationList.get(0)).title("Start").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+		marker.showInfoWindow();
+		options.add(locationList.get(0));
+		for(int i = 1; i < locationList.size(); i++) {
+			if(i != locationList.size() - 1) {
+				map.addMarker(new MarkerOptions().position(locationList.get(i)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+			}
+			else {
+				Marker mark = map.addMarker(new MarkerOptions().position(locationList.get(i)).title("You are here"));
+				mark.showInfoWindow();
+			}
+			options.add(locationList.get(i));
+			map.addPolyline(options);
+		}
+		/************* (End) For presentation purpose **********************/
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.profile, menu);
@@ -80,7 +116,6 @@ public class ProfileActivity extends FragmentActivity {
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		switch(item.getItemId()){
 		case R.id.action_heatmap:
-			//location =  new LatLng(1.4327564, 103.83992660000001); 
 			if(location == null) {
 				AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
 				builder.setTitle("Unable to get current location").setMessage("Please try again.");
@@ -146,17 +181,6 @@ public class ProfileActivity extends FragmentActivity {
 			options.add(locationList.get(i));
 			map.addPolyline(options);
 		}
-		
-		// Temp
-		/*map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 17));
-		LatLng yck = new LatLng(1.381905000000000000, 103.844818000000030000);
-		LatLng cbgc = new LatLng(1.380646900000000000, 103.846514099999920000);
-		LatLng lvw = new LatLng(1.3796572, 103.84821290000002);
-		LatLng nyp = new LatLng(1.379348000000000000, 103.849876000000000000);
-		map.addMarker(new MarkerOptions().position(yck).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-		map.addMarker(new MarkerOptions().position(cbgc).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
-		map.addMarker(new MarkerOptions().position(lvw).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
-		map.addMarker(new MarkerOptions().position(nyp));*/
 	}
 	
 	public void getAddress(Location location) {
@@ -172,4 +196,15 @@ public class ProfileActivity extends FragmentActivity {
 		catch (IOException e) {
 		}
 	}
+	
+	// Commended out for presentation purpose //
+	/*
+	@Override
+	protected void onDestroy() {
+		if(intent!=null){
+			unregisterReceiver(broadcastReceiver);
+		}
+		super.onDestroy();
+	}
+	*/
 }

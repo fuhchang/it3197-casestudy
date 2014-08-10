@@ -81,7 +81,10 @@ public class RetrieveAllRiddleWithAnswers extends AsyncTask<Object, Object, Obje
 	protected void onPostExecute(Object result) {
 		parseJSONResponse((String[]) result);
 		tv_points.setText("Points: " + user.getPoints());
-		riddleAdapter = new RiddleListAdapter(activity, riddleList, answeredList, user);
+		if(answeredList != null)
+			riddleAdapter = new RiddleListAdapter(activity, riddleList, answeredList, user);
+		else
+			riddleAdapter = new RiddleListAdapter(activity, riddleList, user);
 		riddleListView.setAdapter(riddleAdapter);
 		riddleListView.setOnItemClickListener(new OnItemClickListener() {
 			@Override

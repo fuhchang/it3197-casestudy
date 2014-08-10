@@ -50,8 +50,8 @@ public class LocationService extends Service {
 		
 	    locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 	    listener = new MyLocationListener();
-	    //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 4000, 0, listener);
-	    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 4000, 0, listener);
+	    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 4000, 0, listener);
+	    //locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 4000, 0, listener);
 	}
 
 	@Override
@@ -153,8 +153,7 @@ public class LocationService extends Service {
 	        	float distance = previousLocation.distanceTo(loc);
 	        	System.out.println(distance);
 	        	
-	        	// distance >= 5
-	        	if(distance >= 2) {		        	
+	        	if(distance >= 5) {		        	
 		        	System.out.println(previousLocation.getLatitude() + " " + previousLocation.getLongitude());
 		        	System.out.println(loc.getLatitude() + " " + loc.getLongitude());
 		        	
@@ -182,13 +181,15 @@ public class LocationService extends Service {
 	    public void onProviderDisabled(String provider)
 	    {
 	        Toast.makeText(getApplicationContext(), "GPS Disabled", Toast.LENGTH_SHORT).show();
-	        /*intent.putExtra("GPSstatus", "disabled");
-            sendBroadcast(intent);*/
+	        intent.putExtra("GPSstatus", "disabled");
+            sendBroadcast(intent);
 	    }
 	
 	    public void onProviderEnabled(String provider)
 	    {
 	        Toast.makeText(getApplicationContext(), "GPS Enabled", Toast.LENGTH_SHORT).show();
+	        intent.putExtra("GPSstatus", "enabled");
+            sendBroadcast(intent);
 	    }
 
 		@Override

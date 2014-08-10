@@ -1,7 +1,11 @@
 package com.example.it3197_casestudy.ui_logic;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
+import android.app.ActionBar;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -30,13 +34,22 @@ public class HeatMapActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_heatmap);
 		
+	    Calendar cal = Calendar.getInstance();
+	    ActionBar ab = getActionBar();
+	    ab.setSubtitle(new SimpleDateFormat("MMM", Locale.ENGLISH).format(cal.getTime())); 
+		
 		data = getIntent().getExtras();
 		currentLocation = new LatLng(data.getDouble("lat"), data.getDouble("lng"));
-		registerReceiver(broadcastReceiver, new IntentFilter(LocationService.BROADCAST_ACTION));
+		// Commended out for presentation purpose //
+		//registerReceiver(broadcastReceiver, new IntentFilter(LocationService.BROADCAST_ACTION));
 		
 		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15));
-		map.addMarker(new MarkerOptions().position(currentLocation));
+		map.addMarker(new MarkerOptions().position(currentLocation).title("You are here")).showInfoWindow();
+
+		/************* (Start) For presentation purpose ********************/
+		map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, map.getCameraPosition().zoom));
+		/************* (End) For presentation purpose **********************/
 		
 		RetrieveAllUserLocation retrieveAllUserLocation = new RetrieveAllUserLocation(this, map);
 		retrieveAllUserLocation.execute();
@@ -55,4 +68,13 @@ public class HeatMapActivity extends FragmentActivity {
 		currentLocation = new LatLng(lat, lng);
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, map.getCameraPosition().zoom));
 	}
+	
+	// Commended out for presentation purpose //
+	/*
+	@Override
+	protected void onDestroy() {
+		unregisterReceiver(broadcastReceiver);
+		super.onDestroy();
+	}
+	*/
 }

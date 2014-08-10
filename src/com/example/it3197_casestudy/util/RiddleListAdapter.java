@@ -30,6 +30,13 @@ public class RiddleListAdapter extends ArrayAdapter<Riddle>{
 		this.answeredList = answeredList;
 		this.user = user;
 	}
+	
+	public RiddleListAdapter(Activity context, ArrayList<Riddle> riddleList, User user){
+		super(context, R.layout.riddle_row, riddleList);
+		this.context = context;
+		this.riddleList = riddleList;
+		this.user = user;
+	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -46,7 +53,7 @@ public class RiddleListAdapter extends ArrayAdapter<Riddle>{
 		else if(riddleList.get(position).getRiddlePoint() == 5) {
 			gd = new GradientDrawable();
 			gd.setColor(Color.WHITE);
-			gd.setStroke(10, Color.GREEN);
+			gd.setStroke(10, Color.parseColor("#55e114"));
 			rowView.setBackground(gd);
 		}
 		else if(riddleList.get(position).getRiddlePoint() == 10) {
@@ -58,15 +65,18 @@ public class RiddleListAdapter extends ArrayAdapter<Riddle>{
 		else if(riddleList.get(position).getRiddlePoint() == 20) {
 			gd = new GradientDrawable();
 			gd.setColor(Color.WHITE);
-			gd.setStroke(10, Color.RED);
+			gd.setStroke(10, Color.parseColor("#e52000"));
 			rowView.setBackground(gd);
 		}
-		for(int i = 0; i < answeredList.size(); i++) {
-			if(riddleList.get(position).getRiddleID() == answeredList.get(i).getRiddle().getRiddleID()) {
-				gd = new GradientDrawable();
-				gd.setColor(Color.WHITE);
-				gd.setStroke(10, Color.GRAY);
-				rowView.setBackground(gd);
+		
+		if(answeredList != null) {
+			for(int i = 0; i < answeredList.size(); i++) {
+				if(riddleList.get(position).getRiddleID() == answeredList.get(i).getRiddle().getRiddleID()) {
+					gd = new GradientDrawable();
+					gd.setColor(Color.WHITE);
+					gd.setStroke(10, Color.GRAY);
+					rowView.setBackground(gd);
+				}
 			}
 		}
 		

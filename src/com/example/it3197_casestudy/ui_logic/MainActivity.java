@@ -25,10 +25,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
-
 	ListView list;
+	String GPSstatus;
 	
 	Bundle data;
 	User user;
@@ -42,7 +43,7 @@ public class MainActivity extends Activity {
 		getActionBar().setTitle("Home");
 		
 		data = getIntent().getExtras();
-		user = data.getParcelable("user");		
+		user = data.getParcelable("user");
 		startService();
 		
 		TextView latest = (TextView)findViewById(R.id.current);
@@ -166,7 +167,8 @@ public class MainActivity extends Activity {
 	private BroadcastReceiver broadcastReceiver = new BroadcastReceiver(){
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			/*if(intent.getStringExtra("GPSstatus").equals("disabled")) {
+			if(intent.getStringExtra("GPSstatus").equals("disabled")) {
+				GPSstatus = "disabled";
 				AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 				builder.setTitle("GPS disabled").setMessage("Enable GPS setting to earn points while travelling");
 				builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -182,7 +184,10 @@ public class MainActivity extends Activity {
 					}
 				});
 				builder.create().show();
-			}*/
+			}
+			else {
+				GPSstatus = "enabled";
+			}
 		}
 	};
 	

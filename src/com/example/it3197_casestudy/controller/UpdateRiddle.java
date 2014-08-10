@@ -18,8 +18,9 @@ import org.json.JSONObject;
 
 import com.example.it3197_casestudy.model.Riddle;
 import com.example.it3197_casestudy.model.RiddleAnswer;
-import com.example.it3197_casestudy.ui_logic.RiddleActivity;
+import com.example.it3197_casestudy.model.User;
 import com.example.it3197_casestudy.ui_logic.UpdateRiddleActivity;
+import com.example.it3197_casestudy.ui_logic.ViewRiddleActivity;
 import com.example.it3197_casestudy.util.Settings;
 
 import android.app.ProgressDialog;
@@ -29,15 +30,17 @@ import android.widget.Toast;
 
 public class UpdateRiddle extends AsyncTask<Object, Object, Object> implements Settings	{
 	UpdateRiddleActivity activity;
+	User user;
 	Riddle riddle;
 	RiddleAnswer[] riddleChoices;
 	ArrayList<RiddleAnswer> riddleAnswerList;
 	ProgressDialog dialog;
 	
-	public UpdateRiddle(UpdateRiddleActivity activity, Riddle riddle, RiddleAnswer[] riddleChoices){
+	public UpdateRiddle(UpdateRiddleActivity activity, Riddle riddle, RiddleAnswer[] riddleChoices, User user){
 		this.activity = activity;
 		this.riddle = riddle;
 		this.riddleChoices = riddleChoices;
+		this.user = user;
 	}
 
 	@Override
@@ -57,7 +60,8 @@ public class UpdateRiddle extends AsyncTask<Object, Object, Object> implements S
 		parseJSONResponse((String) result);
 		Toast.makeText(activity, "Update successful", Toast.LENGTH_SHORT).show();
 		dialog.dismiss();
-		Intent intent = new Intent(activity, RiddleActivity.class);
+		Intent intent = new Intent(activity, ViewRiddleActivity.class);
+		intent.putExtra("user", user);
 		intent.putExtra("riddle", riddle);
 		for(int i = 0; i < riddleChoices.length; i++) {
 			riddleAnswerList.add(riddleChoices[i]);
@@ -74,7 +78,6 @@ public class UpdateRiddle extends AsyncTask<Object, Object, Object> implements S
 			boolean success = json.getBoolean("success");
 			if(success){
 				dialog.dismiss();
-				activity.finish();
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();

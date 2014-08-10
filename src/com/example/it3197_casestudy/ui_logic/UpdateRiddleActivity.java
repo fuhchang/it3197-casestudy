@@ -14,6 +14,7 @@ import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.controller.UpdateRiddle;
 import com.example.it3197_casestudy.model.Riddle;
 import com.example.it3197_casestudy.model.RiddleAnswer;
+import com.example.it3197_casestudy.model.User;
 
 public class UpdateRiddleActivity extends FragmentActivity {
 	RadioButton rbtn_riddleAns1, rbtn_riddleAns2, rbtn_riddleAns3, rbtn_riddleAns4;
@@ -23,6 +24,7 @@ public class UpdateRiddleActivity extends FragmentActivity {
 	int checked;
 	RadioButton[] ansBtn = {rbtn_riddleAns1, rbtn_riddleAns2, rbtn_riddleAns3, rbtn_riddleAns4};
 	Bundle data;
+	User user;
 	Riddle riddle;
 	ArrayList<RiddleAnswer> riddleAnswerList;
 	
@@ -32,6 +34,7 @@ public class UpdateRiddleActivity extends FragmentActivity {
 		setContentView(R.layout.activity_update_riddle);
 
 		data = getIntent().getExtras();
+		user = data.getParcelable("user");
 		riddle = data.getParcelable("riddle");
 		riddleAnswerList = data.getParcelableArrayList("riddleAnswerList");
 		
@@ -157,7 +160,7 @@ public class UpdateRiddleActivity extends FragmentActivity {
 					riddleChoices[i] = answer;
 				}
 				
-				UpdateRiddle updateRiddle = new UpdateRiddle(UpdateRiddleActivity.this, setRiddle, riddleChoices);
+				UpdateRiddle updateRiddle = new UpdateRiddle(UpdateRiddleActivity.this, setRiddle, riddleChoices, user);
 				updateRiddle.execute();
 			}
 		});
