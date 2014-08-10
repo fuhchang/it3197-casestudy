@@ -13,6 +13,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,12 +28,13 @@ import com.example.it3197_casestudy.model.User;
 import com.example.it3197_casestudy.ui_logic.ViewRiddleActivity;
 import com.example.it3197_casestudy.util.Settings;
 
-public class InsertChoice  extends AsyncTask<Object, Object, Object> implements Settings {
+public class InsertChoice extends AsyncTask<Object, Object, Object> implements Settings {
 	ViewRiddleActivity activity;
 	Riddle riddle;
 	ArrayList<RiddleAnswer> riddleAnswerList;
 	RiddleAnswer riddleAnswer;
 	User user;
+	String rating;
 	
 	ProgressDialog dialog;
 	String[] responses;
@@ -45,16 +47,32 @@ public class InsertChoice  extends AsyncTask<Object, Object, Object> implements 
 		this.user = user;
 	}
 	
+	public InsertChoice(ViewRiddleActivity activity, Riddle riddle, ArrayList<RiddleAnswer> riddleAnswerList, RiddleAnswer riddleAnswer, User user, String rating){
+		this.activity = activity;
+		this.riddle = riddle;
+		this.riddleAnswerList = riddleAnswerList;
+		this.riddleAnswer = riddleAnswer;
+		this.user = user;
+		this.rating = rating;
+	}
+	
 	@Override
 	protected Object doInBackground(Object... arg0) {
+		if(!rating.equals("NULL"))
+			return updateChoiceUpdatePoints();
 		return insertChoiceUpdatePoints();
 	}
 	
 	@Override
 	protected void onPreExecute() {
-		responses = new String[2];
+		responses = new String[3];
 		
-		dialog = ProgressDialog.show(activity, null, "Checking answer...", true);
+		if(rating != null)
+			dialog = ProgressDialog.show(activity, null, "Adding rating...", true);
+		else {
+			rating = "NULL";
+			dialog = ProgressDialog.show(activity, null, "Checking answer...", true);
+		}
 	}
 	
 	@Override
@@ -65,7 +83,7 @@ public class InsertChoice  extends AsyncTask<Object, Object, Object> implements 
 		intent.putExtra("user", user);
 		intent.putExtra("riddle", riddle);
 		intent.putParcelableArrayListExtra("riddleAnswerList", riddleAnswerList);
-		intent.putExtra("userAnswer", new RiddleUserAnswered(riddle, riddleAnswer, user, "NULL"));
+		intent.putExtra("userAnswer", new RiddleUserAnswered(riddle, riddleAnswer, user, rating));
 		activity.startActivity(intent);
 	}
 	
@@ -76,6 +94,18 @@ public class InsertChoice  extends AsyncTask<Object, Object, Object> implements 
 			String userResponseBody = updateUserPoints();
 			responses[1] = userResponseBody;
 		}
+		String getUserResponseBody = getUser();
+		responses[2] = getUserResponseBody;
+		return responses;
+	}
+	
+	public String[] updateChoiceUpdatePoints() {
+		String updateChoiceResponseBody = updateChoice();
+		responses[0] = updateChoiceResponseBody;
+		String userResponseBody = updateUserPoints();
+		responses[1] = userResponseBody;
+		String getUserResponseBody = getUser();
+		responses[2] = getUserResponseBody;
 		return responses;
 	}
 	
@@ -98,6 +128,26 @@ public class InsertChoice  extends AsyncTask<Object, Object, Object> implements 
 					dialog.dismiss();
 				}
 			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+		if(responseBody[2] != null) {
+			JSONArray data_array;
+			JSONObject userJson;
+			try {
+				userJson = new JSONObject(responseBody[2]);
+				data_array = userJson.getJSONArray("user");
+				JSONObject dataObj = new JSONObject(data_array.getString(0));
+				user.setNric(dataObj.getString("nric"));
+				user.setName(dataObj.getString("name"));
+				user.setType(dataObj.getString("type"));
+				user.setPassword(dataObj.getString("password"));
+				user.setContactNo(dataObj.getString("contactNo"));
+				user.setAddress(dataObj.getString("address"));
+				user.setEmail(dataObj.getString("email"));
+				user.setActive(dataObj.getInt("active"));
+				user.setPoints(dataObj.getInt("points"));
+			}catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
@@ -127,6 +177,30 @@ public class InsertChoice  extends AsyncTask<Object, Object, Object> implements 
 		return responseBody;
 	}
 	
+	public String updateChoice() {
+		String responseBody = "";
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpPost httpPost = new HttpPost(API_URL + "InsertChoiceServlet");
+		ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+		
+		postParameters.add(new BasicNameValuePair("riddleID", Integer.toString(riddle.getRiddleID())));
+		postParameters.add(new BasicNameValuePair("userNRIC", user.getNric()));
+		postParameters.add(new BasicNameValuePair("rating", rating));
+		
+		try {
+			httpPost.setEntity(new UrlEncodedFormEntity(postParameters));
+			ResponseHandler<String> responseHandler = new BasicResponseHandler();
+			responseBody = httpClient.execute(httpPost, responseHandler);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return responseBody;
+	}
+	
 	public String updateUserPoints() {
 		String responseBody = "";
 		HttpClient httpClient = new DefaultHttpClient();
@@ -134,7 +208,32 @@ public class InsertChoice  extends AsyncTask<Object, Object, Object> implements 
 		ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
 		
 		postParameters.add(new BasicNameValuePair("userNRIC", user.getNric()));
-		postParameters.add(new BasicNameValuePair("userPoints", Integer.toString(user.getPoints()+riddle.getRiddlePoint())));
+		if(!rating.equals("NULL"))
+			postParameters.add(new BasicNameValuePair("userPoints", Integer.toString(user.getPoints()+1)));
+		else
+			postParameters.add(new BasicNameValuePair("userPoints", Integer.toString(user.getPoints()+riddle.getRiddlePoint())));
+		
+		try {
+			httpPost.setEntity(new UrlEncodedFormEntity(postParameters));
+			ResponseHandler<String> responseHandler = new BasicResponseHandler();
+			responseBody = httpClient.execute(httpPost, responseHandler);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return responseBody;
+	}
+	
+	public String getUser() {
+		String responseBody = "";
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpPost httpPost = new HttpPost(API_URL + "GetUserByNameServlet");
+		ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+		
+		postParameters.add(new BasicNameValuePair("username", user.getName()));
 		
 		try {
 			httpPost.setEntity(new UrlEncodedFormEntity(postParameters));

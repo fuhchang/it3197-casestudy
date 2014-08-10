@@ -55,7 +55,7 @@ public class ViewRiddleActivity extends FragmentActivity {
 		if(data.getParcelable("userAnswer") != null) {
 			userAnswer = data.getParcelable("userAnswer");
 		}
-			
+		
 		tv_riddleTitle = (TextView) findViewById(R.id.tv_riddle_title);
 		tv_riddleUser = (TextView) findViewById(R.id.tv_riddle_user);
 		tv_riddleContent = (TextView) findViewById(R.id.tv_riddle_content);
@@ -117,8 +117,7 @@ public class ViewRiddleActivity extends FragmentActivity {
 			btn_riddleAns3.setClickable(false);
 			btn_riddleAns4.setClickable(false);
 			
-			if(!user.getNric().equals(riddle.getUser().getNric())) {
-				rating = "NULL";
+			if(!user.getNric().equals(riddle.getUser().getNric()) && userAnswer.getAnsweredRate().equals("NULL")) {
 				btn_rate.setVisibility(1);
 				btn_rate.setOnClickListener(new OnClickListener(){
 					@Override
@@ -201,7 +200,8 @@ public class ViewRiddleActivity extends FragmentActivity {
 								    builder.create().show();
 								}
 								else {
-									
+									InsertChoice insertChoice = new InsertChoice(ViewRiddleActivity.this, riddle, riddleAnswerList, userAnswer.getRiddleAnswer(), user, rating);
+									insertChoice.execute();
 								}
 							}
 						});

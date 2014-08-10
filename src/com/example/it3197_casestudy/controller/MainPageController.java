@@ -213,7 +213,6 @@ public class MainPageController extends AsyncTask<Object, Object, Object> implem
 			errorOnExecuting();
 			e.printStackTrace();
 		}
-		System.out.println(responseBody);
 		return responseBody;
 	}
 
@@ -235,7 +234,6 @@ public class MainPageController extends AsyncTask<Object, Object, Object> implem
 		//Combined combined = new Combined();
 		try {
 			artJson = new JSONObject(responseBody);
-			System.out.println(responseBody);
 			art_array = artJson.getJSONArray("artList");
 			for (int i = 0; i < art_array.length(); i++) {
 				JSONObject dataJob = new JSONObject(art_array.getString(i));
@@ -259,7 +257,6 @@ public class MainPageController extends AsyncTask<Object, Object, Object> implem
 			}
 			
 			eventJson = new JSONObject(responseBody);
-			System.out.println(responseBody);
 			event_array = eventJson.getJSONArray("eventList");
 			for(int i = 0 ; i< event_array.length(); i++){
 				JSONObject dataJob = new JSONObject(event_array.getString(i));
@@ -297,7 +294,6 @@ public class MainPageController extends AsyncTask<Object, Object, Object> implem
 			}
 			
 			eventParticipantsJSON = new JSONObject(responseBody);
-			System.out.println(responseBody);
 			if(eventParticipantsJSON.has("eventParticipantsList")){
 				eventParticipants_array = eventParticipantsJSON.getJSONArray("eventParticipantsList");
 				if(eventParticipants_array.length() > 0){
@@ -324,7 +320,6 @@ public class MainPageController extends AsyncTask<Object, Object, Object> implem
 			}
 			
 			hobbyJson = new JSONObject(responseBody);
-			System.out.println(responseBody);
 			hobby_array =hobbyJson.getJSONArray("hobbyList");
 			for(int i =0; i<hobby_array.length();i++){
 				JSONObject dataJob = new JSONObject (hobby_array.getString(i));
@@ -338,7 +333,6 @@ public class MainPageController extends AsyncTask<Object, Object, Object> implem
 			}
 			
 			riddleJson = new JSONObject(responseBody);
-			System.out.println(responseBody);
 			riddle_array =riddleJson.getJSONArray("riddleList");
 			for(int i =0; i<riddle_array.length();i++){
 				JSONObject data = new JSONObject (riddle_array.getString(i));

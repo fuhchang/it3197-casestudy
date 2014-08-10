@@ -1,8 +1,11 @@
 package com.example.it3197_casestudy.controller;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -22,6 +25,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.it3197_casestudy.model.Riddle;
 import com.example.it3197_casestudy.model.RiddleAnswer;
@@ -45,13 +49,15 @@ public class RetrieveAllRiddleWithAnswers extends AsyncTask<Object, Object, Obje
 	
 	RiddleListAdapter riddleAdapter;
 	ListView riddleListView;
+	TextView tv_points;
 
 	ProgressDialog dialog;
 	String[] responses;
 	
-	public RetrieveAllRiddleWithAnswers(RiddleActivity activity, ListView riddleListView, User user) {
+	public RetrieveAllRiddleWithAnswers(RiddleActivity activity, ListView riddleListView, TextView tv_points, User user) {
 		this.activity = activity;
 		this.riddleListView = riddleListView;
+		this.tv_points = tv_points;
 		this.user = user;
 	}
 	
@@ -62,7 +68,7 @@ public class RetrieveAllRiddleWithAnswers extends AsyncTask<Object, Object, Obje
 
 	@Override
 	protected void onPreExecute() {
-		responses = new String[3];
+		responses = new String[4];
 		riddleList = new ArrayList<Riddle>();
 		riddleAnsList = new ArrayList<RiddleAnswer>();
 		riddleAnswerList = new ArrayList<RiddleAnswer>();
@@ -74,6 +80,7 @@ public class RetrieveAllRiddleWithAnswers extends AsyncTask<Object, Object, Obje
 	@Override
 	protected void onPostExecute(Object result) {
 		parseJSONResponse((String[]) result);
+		tv_points.setText("Points: " + user.getPoints());
 		riddleAdapter = new RiddleListAdapter(activity, riddleList, answeredList, user);
 		riddleListView.setAdapter(riddleAdapter);
 		riddleListView.setOnItemClickListener(new OnItemClickListener() {
@@ -104,9 +111,11 @@ public class RetrieveAllRiddleWithAnswers extends AsyncTask<Object, Object, Obje
 		String riddleResponseBody = retrieveAllRiddle();
 		String answersResponseBody = retrieveAllRiddleAnswer();
 		String userAnsResponseBody = retrieveAllUserAnswer();
+		String getUserResponseBody = getUser();
 		responses[0] = riddleResponseBody;
 		responses[1] = answersResponseBody;
 		responses[2] = userAnsResponseBody;
+		responses[3] = getUserResponseBody;
 		
 		return responses;
 	}
@@ -172,8 +181,27 @@ public class RetrieveAllRiddleWithAnswers extends AsyncTask<Object, Object, Obje
 				userAns.setRiddleAnswer(new RiddleAnswer(riddleAnsObj.getInt("riddleAnswerID")));
 				JSONObject userObj = data.getJSONObject("user");
 				userAns.setUser(new User(userObj.getString("nric")));
+				userAns.setAnsweredRate(data.getString("answeredRate"));
 				answeredList.add(userAns);
 			}			
+		} catch (Exception e) {
+			e.printStackTrace();
+			errorOnExecuting();
+		}
+		
+		try {
+			jsonObj = new JSONObject(responseBody[3]);
+			dataArray = jsonObj.getJSONArray("user");
+			JSONObject dataObj = new JSONObject(dataArray.getString(0));
+			user.setNric(dataObj.getString("nric"));
+			user.setName(dataObj.getString("name"));
+			user.setType(dataObj.getString("type"));
+			user.setPassword(dataObj.getString("password"));
+			user.setContactNo(dataObj.getString("contactNo"));
+			user.setAddress(dataObj.getString("address"));
+			user.setEmail(dataObj.getString("email"));
+			user.setActive(dataObj.getInt("active"));
+			user.setPoints(dataObj.getInt("points"));		
 		} catch (Exception e) {
 			e.printStackTrace();
 			errorOnExecuting();
@@ -225,6 +253,28 @@ public class RetrieveAllRiddleWithAnswers extends AsyncTask<Object, Object, Obje
 			ResponseHandler<String> responseHandler = new BasicResponseHandler();
 			responseBody = httpClient.execute(httpPost, responseHandler);			
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return responseBody;
+	}
+	
+	public String getUser() {
+		String responseBody = "";
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpPost httpPost = new HttpPost(API_URL + "GetUserByNameServlet");
+		ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+		
+		postParameters.add(new BasicNameValuePair("username", user.getName()));
+		
+		try {
+			httpPost.setEntity(new UrlEncodedFormEntity(postParameters));
+			ResponseHandler<String> responseHandler = new BasicResponseHandler();
+			responseBody = httpClient.execute(httpPost, responseHandler);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return responseBody;

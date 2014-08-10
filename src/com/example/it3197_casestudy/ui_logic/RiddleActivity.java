@@ -38,7 +38,7 @@ public class RiddleActivity extends FragmentActivity {
 		tv_username.setText("Welcome, " + user.getName());
 		tv_points.setText("Points: " + user.getPoints());
 		
-		RetrieveAllRiddleWithAnswers retrieveAllRiddleWithAnswers = new RetrieveAllRiddleWithAnswers(this, lv_riddle, user);
+		RetrieveAllRiddleWithAnswers retrieveAllRiddleWithAnswers = new RetrieveAllRiddleWithAnswers(this, lv_riddle, tv_points, user);
 		retrieveAllRiddleWithAnswers.execute();
 	}
 
@@ -50,7 +50,7 @@ public class RiddleActivity extends FragmentActivity {
 
 	@Override
 	protected void onRestart() {
-		RetrieveAllRiddleWithAnswers retrieveAllRiddleWithAnswers = new RetrieveAllRiddleWithAnswers(this, lv_riddle, user);
+		RetrieveAllRiddleWithAnswers retrieveAllRiddleWithAnswers = new RetrieveAllRiddleWithAnswers(this, lv_riddle, tv_points, user);
 		retrieveAllRiddleWithAnswers.execute();
 		super.onRestart();
 	}
