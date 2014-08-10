@@ -54,7 +54,7 @@ public class EventSQLController implements Settings{
 				event.setEventDescription(cursor.getString(cursor.getColumnIndex("eventDescription")));
 				try {
 					Date dateTimeFrom = sqliteDateTimeFormatter.parse(cursor.getString(cursor.getColumnIndex("eventDateTimeFrom")));
-					Date dateTimeTo = sqliteDateTimeFormatter.parse(cursor.getString(cursor.getColumnIndex("eventDateTimeFrom")));
+					Date dateTimeTo = sqliteDateTimeFormatter.parse(cursor.getString(cursor.getColumnIndex("eventDateTimeTo")));
 					
 					String stringFrom = dateTimeFormatter.format(dateTimeFrom);
 					String stringTo = dateTimeFormatter.format(dateTimeTo);
@@ -88,7 +88,7 @@ public class EventSQLController implements Settings{
 			event.setEventDescription(cursor.getString(cursor.getColumnIndex("eventDescription")));
 			try {
 				Date dateTimeFrom = sqliteDateTimeFormatter.parse(cursor.getString(cursor.getColumnIndex("eventDateTimeFrom")));
-				Date dateTimeTo = sqliteDateTimeFormatter.parse(cursor.getString(cursor.getColumnIndex("eventDateTimeFrom")));
+				Date dateTimeTo = sqliteDateTimeFormatter.parse(cursor.getString(cursor.getColumnIndex("eventDateTimeTo")));
 				
 				String stringFrom = dateTimeFormatter.format(dateTimeFrom);
 				String stringTo = dateTimeFormatter.format(dateTimeTo);

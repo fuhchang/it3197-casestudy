@@ -311,6 +311,9 @@ public class ViewAllEventsActivity extends Activity implements Settings{
 				intent.putExtra("eventDescription", event.getEventDescription());
 				intent.putExtra("eventDateTimeFrom", sqlDateTimeFormatter.format(event.getEventDateTimeFrom()));
 				intent.putExtra("eventDateTimeTo", sqlDateTimeFormatter.format(event.getEventDateTimeTo()));
+
+				System.out.println("From: "+ event.getEventDateTimeFrom());
+				System.out.println("To: "+ event.getEventDateTimeTo());
 				intent.putExtra("occurence", event.getOccurence());
 				intent.putExtra("noOfParticipants", event.getNoOfParticipantsAllowed());
 				intent.putExtra("active", event.getActive());

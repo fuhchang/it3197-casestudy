@@ -238,7 +238,15 @@ public class CreateEventStep1Activity extends Activity implements Settings{
 			Geocoder geoCoder = new Geocoder(CreateEventStep1Activity.this);
 			List<Address> addressList = null;
 			try {
-				 addressList = geoCoder.getFromLocationName(etLocation.getText().toString(), 1);
+				String trimmed = etLocation.getText().toString().trim();
+				int words = trimmed.isEmpty() ? 0 : trimmed.split("\\s+").length;
+				System.out.println(words);
+				if(words > 2){
+					addressList = geoCoder.getFromLocationName(etLocation.getText().toString(), 1);
+				}
+				else{
+					addressList = new ArrayList<Address>();
+				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
