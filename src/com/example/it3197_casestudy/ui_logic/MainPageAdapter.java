@@ -78,7 +78,7 @@ public class MainPageAdapter extends ArrayAdapter<Combined> implements Settings{
 					//txtType.setBackgroundColor(Color.parseColor(myHexColor));
 					txtType.setText(" Hobby: ");
 					txtTitle.setText(hobbyArray.get(0).getGroupName());
-					txtDate.setText("Date here");
+					txtDate.setText(hobbyArray.get(0).getCategory());
 					txtDesc.setText(hobbyArray.get(0).getDescription());
 					
 					iv.setImageResource(R.drawable.hobby_main3);

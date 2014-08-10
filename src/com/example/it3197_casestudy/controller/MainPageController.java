@@ -256,7 +256,7 @@ public class MainPageController extends AsyncTask<Object, Object, Object> implem
 				
 				hobby.setGroupName(dataJob.getString("grpName"));
 				hobby.setDescription(dataJob.getString("grpDesc"));
-				
+				hobby.setCategory(dataJob.getString("category"));
 				
 				hobbyList.add(hobby);
 			}

@@ -10,10 +10,5 @@
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="Search By Map"/>
-     
-	 <item
-        android:id="@+id/action_requestHelp"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="Request Help from hobby"/>
+    
 </menu>

@@ -25,5 +25,5 @@
         android:id="@+id/action_AR"
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="View hang out"/>
+        android:title="AR View"/>
 </menu>
