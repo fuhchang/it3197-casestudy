@@ -47,6 +47,15 @@ public class CreateRiddleActivity extends FragmentActivity {
 		et_riddleAns3 = (EditText) findViewById(R.id.et_riddle_answer_3);
 		et_riddleAns4 = (EditText) findViewById(R.id.et_riddle_answer_4);
 		btn_createRiddle = (Button) findViewById(R.id.btn_create_riddle);
+
+		/************* (Start) For presentation purpose ********************/
+		et_riddleTitle.setText("Up up and away~");
+		et_riddleContent.setText("What goes up but never comes down?");
+		et_riddleAns1.setText("Age");
+		et_riddleAns2.setText("Height");
+		et_riddleAns3.setText("Hair");
+		et_riddleAns4.setText("Knowledge");
+		/************* (End) For presentation purpose ********************/
 		
 		rbtn_riddleAns1.setOnClickListener(new OnClickListener() {
 			@Override
