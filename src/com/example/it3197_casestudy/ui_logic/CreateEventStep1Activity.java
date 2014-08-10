@@ -279,7 +279,19 @@ public class CreateEventStep1Activity extends Activity implements Settings{
 				checkPlaces.execute();
 			}
 			break;
-
+		case R.id.magic_button:
+			String eventName = "Caregiving Welfare Association Fund Raising Event";
+			String eventDescription = "We are welcoming participants for CWA Fund Raising Event, scheduled on 28 Aug 2014 (Saturday), from 8.30am to 4.30pm. All donations collected will go towards the well-being of our clients. ";
+			
+			boolean requestHelp = true;
+			
+			etEventName.setText(eventName);
+			etDescription.setText(eventDescription);
+			spinnerCategory.setSelection(2);
+			spinnerNoOfParticipants.setSelection(4);
+			cBoxRequestHelp.setChecked(requestHelp);
+			
+			break;
 		case R.id.cancel:
 			onBackPressed();
 			break;

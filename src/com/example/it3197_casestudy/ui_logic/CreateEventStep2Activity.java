@@ -169,6 +169,12 @@ public class CreateEventStep2Activity extends Activity implements Settings{
 			
 			CreateEventStep2ValidationController controller = new CreateEventStep2ValidationController(CreateEventStep2Activity.this,eventLocationDetails,posterFileName);
 			controller.validateForm(intent,calendarFrom,calendarTo,event,spinnerRepeats.getSelectedItem().toString(),requestHelp);
+			break;	
+		case R.id.magic_button:
+			btnDateFrom.setText(new StringBuilder().append(11).append("/").append(9 + 1).append("/").append(2014).append(" "));
+			btnDateTo.setText(new StringBuilder().append(13).append("/").append(9 + 1).append("/").append(2014).append(" "));		
+			btnTimeFrom.setText(new StringBuilder().append(pad(10)).append(":").append(pad(30)));
+			btnTimeTo.setText(new StringBuilder().append(pad(4)).append(":").append(pad(30)));
 			break;
 		case R.id.previous:
 			onBackPressed();
