@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+	android:paddingTop="10dp"
+	android:paddingBottom="10dp" >
+	    
+	<RelativeLayout
+	    android:id="@+id/rl_easy"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:paddingTop="5dp"
+	    android:layout_marginLeft="10dp"
+	    android:paddingBottom="5dp" >
+	    
+	    <ImageView 
+	        android:id="@+id/iv_easy"
+	        android:layout_width="40dp"
+	        android:layout_height="40dp"
+	        android:src="@drawable/star_easy"
+	        android:contentDescription="@string/easy" >
+	    </ImageView>
+	    
+	    <TextView
+	        android:id="@+id/tv_easy"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/iv_easy"
+	        android:layout_centerInParent="true"
+	        android:text="@string/easy" >
+	    </TextView>
+	</RelativeLayout>
+    
+	<RelativeLayout
+	    android:id="@+id/rl_medium"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:paddingTop="5dp"
+	    android:layout_marginLeft="23dp"
+	    android:paddingBottom="5dp"
+	    android:layout_toRightOf="@+id/rl_easy" >
+	    
+	    <ImageView 
+	        android:id="@+id/iv_medium"
+	        android:layout_width="80dp"
+	        android:layout_height="40dp"
+	        android:src="@drawable/star_medium"
+	        android:contentDescription="@string/medium" >
+	    </ImageView>
+	    
+	    <TextView
+	        android:id="@+id/tv_medium"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/iv_medium"
+	        android:layout_centerInParent="true"
+	        android:text="@string/medium" >	        
+	    </TextView>
+	</RelativeLayout>
+    
+	<RelativeLayout
+	    android:id="@+id/rl_hard"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentRight="true"
+	    android:paddingTop="5dp"
+	    android:layout_marginRight="10dp"
+	    android:paddingBottom="5dp" >
+	    
+	    <ImageView 
+	        android:id="@+id/iv_hard"
+	        android:layout_width="120dp"
+	        android:layout_height="40dp"
+	        android:src="@drawable/star_hard"
+	        android:contentDescription="@string/hard" >
+	    </ImageView>
+	    
+	    <TextView
+	        android:id="@+id/tv_hard"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/iv_hard"
+	        android:layout_centerInParent="true"
+	        android:text="@string/hard" >	        
+	    </TextView>
+	</RelativeLayout>
+</RelativeLayout>

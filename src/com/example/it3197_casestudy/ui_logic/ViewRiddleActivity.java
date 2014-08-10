@@ -6,13 +6,17 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.it3197_casestudy.R;
@@ -25,13 +29,19 @@ import com.example.it3197_casestudy.model.User;
 
 public class ViewRiddleActivity extends FragmentActivity {
 	TextView tv_riddleTitle, tv_riddleUser, tv_riddleContent;
-	Button btn_riddleAns1, btn_riddleAns2, btn_riddleAns3, btn_riddleAns4;
+	TextView tv_easy, tv_medium, tv_hard;
+	ImageView iv_easy, iv_medium, iv_hard;
+	RelativeLayout rl_easy, rl_medium, rl_hard;
+	Button btn_rate, btn_riddleAns1, btn_riddleAns2, btn_riddleAns3, btn_riddleAns4;
 
 	Bundle data;
 	User user;
 	Riddle riddle;
 	ArrayList<RiddleAnswer> riddleAnswerList;
 	RiddleUserAnswered userAnswer;
+	
+	String rating;
+	GradientDrawable gd;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +64,7 @@ public class ViewRiddleActivity extends FragmentActivity {
 		tv_riddleUser.setText("- " + riddle.getUser().getName());
 		tv_riddleContent.setText(riddle.getRiddleContent());
 		
+		btn_rate = (Button) findViewById(R.id.btn_rate);
 		btn_riddleAns1 = (Button) findViewById(R.id.btn_riddle_ans_1);
 		btn_riddleAns2 = (Button) findViewById(R.id.btn_riddle_ans_2);
 		btn_riddleAns3 = (Button) findViewById(R.id.btn_riddle_ans_3);
@@ -105,6 +116,104 @@ public class ViewRiddleActivity extends FragmentActivity {
 			btn_riddleAns2.setClickable(false);
 			btn_riddleAns3.setClickable(false);
 			btn_riddleAns4.setClickable(false);
+			
+			if(!user.getNric().equals(riddle.getUser().getNric())) {
+				rating = "NULL";
+				btn_rate.setVisibility(1);
+				btn_rate.setOnClickListener(new OnClickListener(){
+					@Override
+					public void onClick(View v) {
+					    AlertDialog.Builder builder = new AlertDialog.Builder(ViewRiddleActivity.this);
+					    LayoutInflater inflater = ViewRiddleActivity.this.getLayoutInflater();
+						View view =  inflater.inflate(R.layout.dialog_rate_riddle, null);
+						builder.setView(view);
+
+						iv_easy = (ImageView) view.findViewById(R.id.iv_easy);
+						iv_medium = (ImageView) view.findViewById(R.id.iv_medium);
+						iv_hard = (ImageView) view.findViewById(R.id.iv_hard);
+						
+						tv_easy = (TextView) view.findViewById(R.id.tv_easy);
+						tv_medium = (TextView) view.findViewById(R.id.tv_medium);
+						tv_hard = (TextView) view.findViewById(R.id.tv_hard);
+						
+						rl_easy = (RelativeLayout) view.findViewById(R.id.rl_easy);
+						rl_medium = (RelativeLayout) view.findViewById(R.id.rl_medium);
+						rl_hard = (RelativeLayout) view.findViewById(R.id.rl_hard);
+						
+						rl_easy.setOnClickListener(new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								gd = new GradientDrawable();
+								gd.setColor(Color.GRAY);
+								rl_easy.setBackground(gd);
+								tv_easy.setTextColor(Color.WHITE);
+								rl_medium.setBackground(null);
+								tv_medium.setTextColor(Color.BLACK);
+								rl_hard.setBackground(null);
+								tv_hard.setTextColor(Color.BLACK);
+								
+								rating = "EASY";
+							}
+						});
+						rl_medium.setOnClickListener(new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								gd = new GradientDrawable();
+								gd.setColor(Color.GRAY);
+								rl_easy.setBackground(null);
+								tv_easy.setTextColor(Color.BLACK);
+								rl_medium.setBackground(gd);
+								tv_medium.setTextColor(Color.WHITE);
+								rl_hard.setBackground(null);
+								tv_hard.setTextColor(Color.BLACK);
+								
+								rating = "MEDIUM";
+							}
+						});
+						rl_hard.setOnClickListener(new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								gd = new GradientDrawable();
+								gd.setColor(Color.GRAY);
+								rl_easy.setBackground(null);
+								tv_easy.setTextColor(Color.BLACK);
+								rl_medium.setBackground(null);
+								tv_medium.setTextColor(Color.BLACK);
+								rl_hard.setBackground(gd);
+								tv_hard.setTextColor(Color.WHITE);
+								
+								rating = "HARD";
+							}
+						});
+						
+						builder.setTitle("Earn 1 point for rating riddle");
+						builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int id) {
+								if(rating.equals("NULL")) {
+								    AlertDialog.Builder builder = new AlertDialog.Builder(ViewRiddleActivity.this);
+								    builder.setMessage("No selection detected.");
+								    builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {										
+										@Override
+										public void onClick(DialogInterface dialog, int which) {
+										}
+									});
+								    builder.create().show();
+								}
+								else {
+									
+								}
+							}
+						});
+						builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								rating = "NULL";
+							}
+						});      
+					    builder.create().show();
+					}
+				});
+			}
 			
 			int index = 0;
 			for(int i = 0; i < riddleAnswerList.size(); i++) {
@@ -160,33 +269,57 @@ public class ViewRiddleActivity extends FragmentActivity {
 				}
 			}
 			
-			int red = Color.parseColor("#FF2400");
-			int green = Color.parseColor("#5FFB17");
+			int red = Color.parseColor("#e52000");
+			int green = Color.parseColor("#55e114");
 			switch(index) {
-				case 0 :
-					btn_riddleAns1.setBackgroundColor(green);
-					btn_riddleAns2.setBackgroundColor(red);
-					btn_riddleAns3.setBackgroundColor(red);
-					btn_riddleAns4.setBackgroundColor(red);
-					break;
-				case 1 :
-					btn_riddleAns1.setBackgroundColor(red);
-					btn_riddleAns2.setBackgroundColor(green);
-					btn_riddleAns3.setBackgroundColor(red);
-					btn_riddleAns4.setBackgroundColor(red);
-					break;
-				case 2 :
-					btn_riddleAns1.setBackgroundColor(red);
-					btn_riddleAns2.setBackgroundColor(red);
-					btn_riddleAns3.setBackgroundColor(green);
-					btn_riddleAns4.setBackgroundColor(red);
-					break;
-				case 3 :
-					btn_riddleAns1.setBackgroundColor(red);
-					btn_riddleAns2.setBackgroundColor(red);
-					btn_riddleAns3.setBackgroundColor(red);
-					btn_riddleAns4.setBackgroundColor(green);
-					break;
+			case 0 :
+				gd = new GradientDrawable();
+				gd.setStroke(8, Color.GRAY);
+				gd.setColor(green);
+				btn_riddleAns1.setBackground(gd);
+				gd = new GradientDrawable();
+				gd.setStroke(8, Color.GRAY);
+				gd.setColor(red);
+				btn_riddleAns2.setBackground(gd);
+				btn_riddleAns3.setBackground(gd);
+				btn_riddleAns4.setBackground(gd);
+				break;
+			case 1 :
+				gd = new GradientDrawable();
+				gd.setStroke(8, Color.GRAY);
+				gd.setColor(green);
+				btn_riddleAns2.setBackground(gd);
+				gd = new GradientDrawable();
+				gd.setStroke(8, Color.GRAY);
+				gd.setColor(red);
+				btn_riddleAns1.setBackground(gd);
+				btn_riddleAns3.setBackground(gd);
+				btn_riddleAns4.setBackground(gd);
+				break;
+			case 2 :
+				gd = new GradientDrawable();
+				gd.setStroke(8, Color.GRAY);
+				gd.setColor(green);
+				btn_riddleAns3.setBackground(gd);
+				gd = new GradientDrawable();
+				gd.setStroke(8, Color.GRAY);
+				gd.setColor(red);
+				btn_riddleAns1.setBackground(gd);
+				btn_riddleAns2.setBackground(gd);
+				btn_riddleAns4.setBackground(gd);
+				break;
+			case 3 :
+				gd = new GradientDrawable();
+				gd.setStroke(8, Color.GRAY);
+				gd.setColor(green);
+				btn_riddleAns4.setBackground(gd);
+				gd = new GradientDrawable();
+				gd.setStroke(8, Color.GRAY);
+				gd.setColor(red);
+				btn_riddleAns1.setBackground(gd);
+				btn_riddleAns2.setBackground(gd);
+				btn_riddleAns3.setBackground(gd);
+				break;
 			}
 		}
 	}

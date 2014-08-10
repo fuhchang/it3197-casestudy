@@ -41,6 +41,7 @@
     <string name="location_alt">You have requested for an event location.</string>
     <string name="suggest_location">Suggest Location</string>
     <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
     <string name="imgdesc">navigation</string>
@@ -155,9 +156,12 @@
     <string name="et_hint_riddle_answer">Enter answer</string>
     <string name="btn_create_riddle">CREATE</string>
     <string name="btn_update_riddle">UPDATE</string>
+    <string name="btn_rate">RATE</string>
+    <string name="easy">Easy</string>
+    <string name="medium">Medium</string>
+    <string name="hard">Hard</string>
 
     <!-- PROFILE -->
-    <string name="tv_username">Username: </string>
     <string name="tv_points">Points: </string>
     <string name="tv_address">Current Location: </string>
 

@@ -1,14 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#ddd" >
+    android:background="@color/hex2B547E" >
+    
+    <RelativeLayout
+        android:id="@+id/rl_userinfo"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent" >
+		
+        <TextView
+            android:id="@+id/tv_username"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+			android:textSize="18sp"
+			android:textColor="#FFFFFF" />
+		
+        <TextView
+            android:id="@+id/tv_points"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentRight="true"
+			android:textSize="18sp"
+			android:textColor="#FFFFFF" />
+    </RelativeLayout>
     
     <ListView
         android:id="@+id/lv_riddle"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
+        android:layout_below="@+id/rl_userinfo"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="5dp"
         android:cacheColorHint="@android:color/transparent"
@@ -18,4 +43,4 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp" />
         
-</LinearLayout>
+</RelativeLayout>

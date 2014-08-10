@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.it3197_casestudy.R;
 import com.example.it3197_casestudy.controller.RetrieveAllRiddleWithAnswers;
@@ -15,6 +16,7 @@ import com.example.it3197_casestudy.model.User;
 import com.example.it3197_casestudy.util.RiddleListAdapter;
 
 public class RiddleActivity extends FragmentActivity {
+	TextView tv_username, tv_points;
 	ListView lv_riddle;
 	RiddleListAdapter riddleAdapter;
 	
@@ -29,7 +31,13 @@ public class RiddleActivity extends FragmentActivity {
 		data = getIntent().getExtras();
 		user = data.getParcelable("user");
 		
+		tv_username = (TextView) findViewById(R.id.tv_username);
+		tv_points = (TextView) findViewById(R.id.tv_points);
 		lv_riddle = (ListView) findViewById(R.id.lv_riddle);
+		
+		tv_username.setText("Welcome, " + user.getName());
+		tv_points.setText("Points: " + user.getPoints());
+		
 		RetrieveAllRiddleWithAnswers retrieveAllRiddleWithAnswers = new RetrieveAllRiddleWithAnswers(this, lv_riddle, user);
 		retrieveAllRiddleWithAnswers.execute();
 	}

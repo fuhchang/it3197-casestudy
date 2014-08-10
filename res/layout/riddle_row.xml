@@ -12,12 +12,21 @@
         android:layout_height="wrap_content"
         android:textSize="18sp"
 	    android:textStyle="bold" />
+	
+		<View 
+		   android:id="@+id/hr"
+		   android:layout_width="fill_parent"
+		   android:layout_height="2dp" 
+		   android:layout_below="@+id/tv_riddle_title"   
+		   android:layout_marginTop="5dp"
+		   android:layout_marginBottom="10dp"
+		   android:background="#848484"/>
     
     <TextView
         android:id="@+id/tv_riddle_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_riddle_title" />
+        android:layout_below="@+id/hr" />
     
     <TextView
         android:id="@+id/tv_riddle_user"
