@@ -33,6 +33,8 @@ import android.widget.Toast;
 import com.example.it3197_casestudy.model.Article;
 import com.example.it3197_casestudy.model.Combined;
 import com.example.it3197_casestudy.model.Event;
+import com.example.it3197_casestudy.model.EventLocationDetail;
+import com.example.it3197_casestudy.model.EventParticipants;
 import com.example.it3197_casestudy.model.Hobby;
 import com.example.it3197_casestudy.model.Riddle;
 import com.example.it3197_casestudy.model.User;
@@ -44,12 +46,15 @@ import com.example.it3197_casestudy.ui_logic.SubmitArticle;
 import com.example.it3197_casestudy.ui_logic.ViewAllEventsActivity;
 import com.example.it3197_casestudy.ui_logic.ViewEventsActivity;
 import com.example.it3197_casestudy.ui_logic.ViewHobbiesMain;
+import com.example.it3197_casestudy.util.MySharedPreferences;
 import com.example.it3197_casestudy.util.Settings;
 
 public class MainPageController extends AsyncTask<Object, Object, Object> implements Settings{
 	
 	private ArrayList<Hobby> hobbyList;
 	private ArrayList<Event> eventList;
+	private ArrayList<EventLocationDetail> eventLocationList;
+	private ArrayList<EventParticipants> eventParticipantsList;
 	private ArrayList<Article> articleList;
 	private ArrayList<Riddle> riddleList;
 	private ArrayList<Combined> combinedList;
@@ -72,6 +77,8 @@ public class MainPageController extends AsyncTask<Object, Object, Object> implem
 	@Override
 	protected void onPreExecute() {
 		eventList = new ArrayList<Event>();
+		eventLocationList = new ArrayList<EventLocationDetail>();
+		eventParticipantsList = new ArrayList<EventParticipants>();
 		hobbyList = new ArrayList<Hobby>();	
 		articleList = new ArrayList<Article>();
 		riddleList = new ArrayList<Riddle>();
@@ -110,21 +117,45 @@ public class MainPageController extends AsyncTask<Object, Object, Object> implem
 					Intent eve = new Intent(activity, ViewEventsActivity.class);
 			        eve.putExtra("eventID", view.getId());
 			        Event event = new Event();
+			        EventLocationDetail eventLocationDetails = new EventLocationDetail();
+			        boolean joined = false;		
+			        MySharedPreferences p = new MySharedPreferences(activity);
+					final String nric = p.getPreferences("nric", "");
 			        for(int i=0;i<eventList.size();i++){
 			        	if(eventList.get(i).getEventID() == view.getId()){
 			        		event = eventList.get(i);
+			        		if(eventParticipantsList.size() > 0){
+						        for(int j=0;j<eventParticipantsList.size();j++){
+						        	if(nric.equals(eventParticipantsList.get(j).getUserNRIC())){
+						        		if(eventParticipantsList.get(j).getEventID() == view.getId()){
+						        			joined = true;
+						        		}
+						        	}
+						        	System.out.println("User NRIC: " + nric);
+						        	System.out.println("Current NRIC: " + eventParticipantsList.get(j).getUserNRIC());
+						        	System.out.println("Joined: " + joined);
+						        }
+			        		}
 			        	}
 			        }
-					eve.putExtra("eventAdminNRIC", event.getEventAdminNRIC());
-					eve.putExtra("eventName", event.getEventName());
-					eve.putExtra("eventCategory", event.getEventCategory());
+			        for(int i=0;i<eventLocationList.size();i++){
+			        	if(event.getEventID() == eventLocationList.get(i).getEventID()){
+			        		eventLocationDetails = eventLocationList.get(i);
+			        	}
+			        }
+			        eve.putExtra("eventAdminNRIC", event.getEventAdminNRIC());
+			        eve.putExtra("eventName", event.getEventName());
+			        eve.putExtra("eventCategory", event.getEventCategory());
 					eve.putExtra("eventDescription", event.getEventDescription());
 					eve.putExtra("eventDateTimeFrom", sqlDateTimeFormatter.format(event.getEventDateTimeFrom()));
 					eve.putExtra("eventDateTimeTo", sqlDateTimeFormatter.format(event.getEventDateTimeTo()));
 					eve.putExtra("occurence", event.getOccurence());
 					eve.putExtra("noOfParticipants", event.getNoOfParticipantsAllowed());
 					eve.putExtra("active", event.getActive());
-
+					eve.putExtra("eventFBPostID", event.getEventFBPostID());
+					eve.putExtra("joined", joined);
+					eve.putExtra("lat", eventLocationDetails.getEventLocationLat());
+					eve.putExtra("lng", eventLocationDetails.getEventLocationLng());
 					activity.startActivity(eve);
 					//Toast.makeText(activity, "Link to Event", Toast.LENGTH_SHORT).show();
 				}
@@ -188,15 +219,17 @@ public class MainPageController extends AsyncTask<Object, Object, Object> implem
 
 	public void parseJSONResponse(String responseBody) {
 		JSONArray art_array;
-		JSONArray event_array;
+		JSONArray event_array,eventLocation_array,eventParticipants_array = null;
 		JSONArray hobby_array;
 		JSONArray riddle_array;
 		JSONObject artJson;
-		JSONObject eventJson;
+		JSONObject eventJson,eventLocationJSON,eventParticipantsJSON;
 		JSONObject hobbyJson;
 		JSONObject riddleJson;
 		Article article;
 		Event event;
+		EventLocationDetail eventLocationDetail;
+		EventParticipants eventParticipants;
 		Hobby hobby;
 		Riddle riddle;
 		//Combined combined = new Combined();
@@ -246,6 +279,48 @@ public class MainPageController extends AsyncTask<Object, Object, Object> implem
 				eventList.add(event);
 			}
 			
+			eventLocationJSON = new JSONObject(responseBody);
+			System.out.println(responseBody);
+			eventLocation_array = eventLocationJSON.getJSONArray("eventLocationList");
+			for(int i = 0 ; i< eventLocation_array.length(); i++){
+				JSONObject dataJob = new JSONObject(eventLocation_array.getString(i));
+				eventLocationDetail = new EventLocationDetail();
+				eventLocationDetail.setEventLocationID(dataJob.getInt("eventLocationID"));
+				eventLocationDetail.setEventID(dataJob.getInt("eventID"));
+				eventLocationDetail.setEventLocationName(dataJob.getString("eventLocationName"));
+				eventLocationDetail.setEventLocationAddress(dataJob.getString("eventLocationAddress"));
+				eventLocationDetail.setEventLocationHyperLink(dataJob.getString("eventLocationHyperLink"));
+				eventLocationDetail.setEventLocationLat(dataJob.getDouble("eventLocationLat"));
+				eventLocationDetail.setEventLocationLng(dataJob.getDouble("eventLocationLng"));
+				eventLocationList.add(eventLocationDetail);
+			}
+			
+			eventParticipantsJSON = new JSONObject(responseBody);
+			System.out.println(responseBody);
+			if(eventParticipantsJSON.has("eventParticipantsList")){
+				eventParticipants_array = eventParticipantsJSON.getJSONArray("eventParticipantsList");
+				if(eventParticipants_array.length() > 0){
+					for(int i = 0 ; i< eventParticipants_array.length(); i++){
+						JSONObject dataJob = new JSONObject(event_array.getString(i));
+						eventParticipants = new EventParticipants();
+
+						if(dataJob.has("eventID")){
+							eventParticipants.setEventID(dataJob.getInt("eventID"));
+						}
+						if(dataJob.has("userNRIC")){
+							eventParticipants.setUserNRIC(dataJob.getString("userNRIC"));
+						}
+						if(dataJob.has("dateTimeJoined")){
+							eventParticipants.setDateTimeJoined(sqlDateTimeFormatter.parse(dataJob.getString("dateTimeJoined")));
+						}
+						if(dataJob.has("checkIn")){
+							eventParticipants.setCheckIn(dataJob.getInt("checkIn"));
+						}
+						
+						eventParticipantsList.add(eventParticipants);
+					}
+				}
+			}
 			
 			hobbyJson = new JSONObject(responseBody);
 			System.out.println(responseBody);
