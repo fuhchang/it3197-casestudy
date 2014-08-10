@@ -51,7 +51,7 @@
 		android:id="@+id/mainListView"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:divider="#0A2229"
+		android:divider="@color/hex2B547E"
 		android:layout_marginLeft="10dp"
 		android:layout_marginRight="10dp"
 		android:layout_marginTop="5dp"
