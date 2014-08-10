@@ -110,6 +110,9 @@ public class CreateEvent extends AsyncTask<Object, Object, Object> implements Se
 				System.out.println("Request Help: " + requestHelp);
 				if(requestHelp){
 					Intent intentAva = new Intent(activity, ViewAvaliableHobby.class);
+					intentAva.putExtra("eventID", event.getEventID());
+					intentAva.putExtra("date1", dateTimeFormatter.format(event.getEventDateTimeFrom()));
+					intentAva.putExtra("date2", dateTimeFormatter.format(event.getEventDateTimeTo()));
 					activity.startActivity(intentAva);
 					activity.finish();
 				}

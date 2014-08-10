@@ -47,6 +47,7 @@ public class GetPlaces extends AsyncTask<Void,Void,Object> {
 		   dialog.dismiss();
 	   }
 	   if(recommendedPlacesArrList.size() > 0){
+		   activity.getLvRecommendedLocations().setVisibility(View.VISIBLE);
 		   for (int i = 0; i < recommendedPlacesArrList.size(); i++) {
 			   	ArrayList<String> listDataHeader = new ArrayList<String>();
 				HashMap<String, List<Place>> listDataChild = new HashMap<String, List<Place>>();
@@ -64,6 +65,9 @@ public class GetPlaces extends AsyncTask<Void,Void,Object> {
 					}
 			    });
 		   }
+	   }
+	   else{
+		   activity.getLvRecommendedLocations().setVisibility(View.GONE);
 	   }
 	}
 

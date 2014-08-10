@@ -174,7 +174,7 @@ public class ViewEventsTimelineFragment extends Fragment implements Settings{
 		if(!CheckNetworkConnection.haveNetworkConnection(ViewEventsTimelineFragment.this.getActivity())){
 			FBCommentsSQLController controller = new FBCommentsSQLController(ViewEventsTimelineFragment.this.getActivity());
 			
-			ArrayList<FBComments> fbCommentsList = controller.getAllFBComments();
+			ArrayList<FBComments> fbCommentsList = controller.getFBComments(eventFBPostID);
 
 			String[][] timelineList = new String[fbCommentsList.size()][3]; 
 			for(int i=0;i<fbCommentsList.size();i++){

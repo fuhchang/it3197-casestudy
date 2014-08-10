@@ -32,7 +32,34 @@ public class FBCommentsSQLController implements Settings{
 		conn.close();
 	}
 	
-	public ArrayList<FBComments> getAllFBComments(){
+	public ArrayList<FBComments> getFBComments(String eventFBPostID){
+	ArrayList<FBComments> fbCommentsList = new ArrayList<FBComments>(); 
+		conn.open();
+		Cursor cursor = conn.getDB().query(conn.getFBCommentsTable(), null, "fbPostID = ?", new String[]{eventFBPostID}, null, null, "time", null);
+		if(cursor.moveToFirst()){
+			do{
+				FBComments fbComments = new FBComments();
+				fbComments.setFBPostID(cursor.getString(cursor.getColumnIndex("fbPostID")));
+				fbComments.setName(cursor.getString(cursor.getColumnIndex("name")));
+				fbComments.setComment(cursor.getString(cursor.getColumnIndex("comment")));
+				try {
+					Date dateTimeFrom = sqliteDateTimeFormatter.parse(cursor.getString(cursor.getColumnIndex("time")));
+					
+					String stringFrom = dateTimeFormatter.format(dateTimeFrom);
+					
+					fbComments.setDateTimeMade(dateTimeFormatter.parse(stringFrom));
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				fbCommentsList.add(fbComments);
+			}while(cursor.moveToNext());
+		}
+		conn.close();
+		return fbCommentsList;
+	}
+	
+	public ArrayList<FBComments> getAllFBComments(){		
 		ArrayList<FBComments> fbCommentsList = new ArrayList<FBComments>();
 		conn.open();
 		Cursor cursor = conn.getDB().query(conn.getFBCommentsTable(), null, null, null, null, null, "time", null);
@@ -58,8 +85,6 @@ public class FBCommentsSQLController implements Settings{
 		conn.close();
 		return fbCommentsList;
 	}
-	
-
 	
 	public void deleteAllFBComments(){
 		conn.open();

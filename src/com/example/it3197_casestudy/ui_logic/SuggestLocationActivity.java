@@ -205,6 +205,7 @@ public class SuggestLocationActivity extends Activity {
 			}
 			break;
 		case R.id.deselect_all_themes:
+			lvRecommendedLocations.setVisibility(View.GONE);
 			if(selectedIndex.size() > 0){
 				for(int i=0;i<myItemArrList.size();i++){
 					myItemArrList.remove(i);
@@ -221,6 +222,7 @@ public class SuggestLocationActivity extends Activity {
 			break;
 
 		case R.id.refresh_map:
+			lvRecommendedLocations.setVisibility(View.GONE);
 			if(selectedIndex.size() > 0){
 				map.clear();
 				for(int i=0;i<selectedIndex.size();i++){
