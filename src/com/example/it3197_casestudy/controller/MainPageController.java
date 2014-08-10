@@ -275,6 +275,7 @@ public class MainPageController extends AsyncTask<Object, Object, Object> implem
 				event.setOccurence(dataJob.getString("occurence"));
 				event.setNoOfParticipantsAllowed(dataJob.getInt("noOfParticipantsAllowed"));
 				event.setActive(dataJob.getInt("active"));
+				event.setEventFBPostID(dataJob.getString("eventFBPostID"));
 				
 				eventList.add(event);
 			}

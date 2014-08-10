@@ -103,8 +103,8 @@ public class CheckInEvent extends AsyncTask<Object, Object, Object> implements S
 	        public void run() {
 	            dialog.dismiss();
 	            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-	            builder.setTitle("Error in updating event ");
-	            builder.setMessage("Unable to update event. Please try again.");
+	            builder.setTitle("Error checking-in");
+	            builder.setMessage("Unable to check in event. Please try again.");
 	            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
