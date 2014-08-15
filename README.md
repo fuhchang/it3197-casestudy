@@ -18,6 +18,14 @@ In order to use this application, you will need:
 * Google Play Services Lib
 * Android Map Util
 * Android Map Extension
+* 
+
+For the backend, you will need: 
+* Tomcat v7 server
+* MySQL Server
+* MySQL Workbench
+* Java SDK v7
+* Eclipse with J2ee development kit
 
 Installation
 ---------------------
